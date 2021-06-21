@@ -1,0 +1,9 @@
+// Makes sure the app component will strech to the full document size
+body {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    min-height: 100%;
+  }

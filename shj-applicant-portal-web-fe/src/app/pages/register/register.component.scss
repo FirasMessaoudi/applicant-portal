@@ -1,0 +1,40 @@
+@import "variables";
+.custom-checkbox a {
+    font-size: 1.1rem;
+}
+
+.datepicker .form-group label {
+    display: none;
+}
+
+.date-eq {
+    margin-top: -1.5rem;
+    margin-bottom: -1rem;
+    font-size: 80%;
+}
+
+@include media-breakpoint-down(sm) {
+    .btn.w_full {
+        margin-bottom: 2rem;
+        margin-top: 2rem;
+        width: 100%;
+    }
+}
+
+.visibility_show{
+    @include media-breakpoint-down(sm) {
+        display: block;
+    }
+    @include media-breakpoint-up(sm) {
+        visibility: show;
+    }
+   
+}
+.visibility_hide{
+    @include media-breakpoint-down(sm) {
+        display: none;
+    }
+    @include media-breakpoint-up(sm) {
+        visibility: hidden;
+    }
+}

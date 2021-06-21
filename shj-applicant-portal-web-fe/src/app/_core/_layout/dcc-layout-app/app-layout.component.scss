@@ -1,0 +1,19 @@
+@import "variables";
+@import "mixins";
+main {
+    @include media-breakpoint-down(sm) {
+        //position: absolute;
+        margin-top: 138px;
+    }
+}
+
+.container_header {
+    @include media-breakpoint-down(sm) {
+        position: fixed;
+        width: 100%;
+        z-index: 100;
+        .bg-dcc-light {
+            background-color: rgba(237, 237, 237, 1) !important;
+        }
+    }
+}

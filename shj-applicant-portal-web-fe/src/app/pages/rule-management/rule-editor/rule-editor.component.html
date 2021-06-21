@@ -1,0 +1,25 @@
+<div class="content__wrapper">
+  <div class="title__Page">
+    <h3 class="sectionTitle">{{'rule-management.rule_details' | translate }}
+      <b class="text-dcc-primary" *ngIf="rule?.id > 0">#{{rule?.id}}</b> :
+      <b class="text-dcc-primary">{{ currentLanguage.startsWith("en") ? rule.labelEn : rule.labelAr }}</b>
+    </h3>
+  </div>
+  <div class="content__section">
+
+    <div class="modeler container-fluid row" style="direction: ltr !important;"><!--
+  <div id="properties" class="col-3"></div>-->
+      <div id="canvas" class="col-12"></div>
+    </div>
+
+    <div class="content__footer__action">
+      <button type="button" [routerLink]="['/rules/list']" class="btn btn-outline-secondary btn-w100 px-5 mr-3">
+        {{ "general.btn_cancel" | translate }}
+      </button>
+      <button type="button" (click)="saveOrUpdate()" class="btn btn-outline-dcc-primary px-5 mr-3">
+        {{ "general.btn_save" | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+

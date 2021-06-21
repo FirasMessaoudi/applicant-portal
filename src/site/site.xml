@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Maven" xmlns="http://maven.apache.org/DECORATION/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
+	<bannerLeft>
+		<name>${project.description}</name>
+		<src>images/logo-en.png</src>
+		<href>http://${this.repository.domain}/${this.repository.user}/${this.repository.name}</href>
+	</bannerLeft>
+	<bannerRight>
+	    <src>images/logo-elm.png</src>
+  	</bannerRight>
+
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-fluido-skin</artifactId>
+		<version>1.7</version>
+	</skin>
+	
+	<custom>
+		<fluidoSkin>
+			<sideBarEnabled>true</sideBarEnabled>
+		</fluidoSkin>
+	</custom>
+
+
+	<body>
+		<links>
+			<item name="${this.organization.name}" href="${this.organization.url}" />
+		</links>
+
+		<menu name="Regular Web Site">
+			<item name="APT Format" href="format.html" />
+			<item name="Xdoc Example" href="xdoc.html" />
+			<item name="FAQ" href="faq.html" />
+		</menu>
+
+		<menu ref="reports" ></menu>
+	</body>
+
+	<poweredBy>
+		<logo name="${this.organization.name}" href="${this.organization.url}" img="images/logo-elm.png" />
+	</poweredBy>
+
+</project>

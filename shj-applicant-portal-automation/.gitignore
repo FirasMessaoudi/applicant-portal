@@ -1,0 +1,10 @@
+test-output/
+target/
+.idea/
+src/main/resources/test-assets/TestData/~$*.xlsx
+logfile.log
+*.rar
+*.jar
+*.iml
+*.lock
+*.sync

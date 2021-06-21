@@ -1,0 +1,74 @@
+<div class="row my-5">
+  <div class="col-md-9 flex-fill d-flex flex-column justify-content-between">
+    <div class="flex-center bg-white h-50 mb-3">
+      <div class="notify">
+        <svg-icon styleClass="text-dcc-primary fa-w-11" icon="lightbulb"></svg-icon>
+      </div>
+      <h4 class="px-3 text-muted">أنت مؤهل الآن لبرنامج النقل من صندوق هدف </h4>
+      <a class="text-nowrap text-dcc-primary ml-auto px-3" href="/">إكمال البيانات</a>
+    </div>
+    <div class="flex-center bg-white h-50">
+      <div class="notify">
+        <svg-icon styleClass="text-dcc-primary fa-w-20" icon="bells"></svg-icon>
+      </div>
+      <h4 class="px-3 text-muted">تم توفير برنامج عقاري الذي يساعدك في الحصول على العقار بتمويل مناسب</h4>
+      <a class="text-dcc-primary ml-auto px-3" href="/"> المزيد</a>
+    </div>
+  </div>
+
+  <div class="col-md-3 mt-3 mt-md-0">
+    <a class="d-inline-block w-100 bg-white" [routerLink]="['/profile']">
+      <figure class="mb-0">
+        <div class="d-flex justify-content-center position-relative">
+          <svg width="150" height="100%" viewBox="0 0 42 42" class="donut" aria-labelledby="beers-title beers-desc"
+            role="img">
+            <circle class="donut-hole" cx="21" cy="21" r="30" r="15.91549430918954" fill="#fff" role="presentation" stroke="#F0F" stroke-width="1"></circle>
+            <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#C2D1CF"
+              stroke-width="2" role="presentation"></circle>
+
+            <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#009F88"
+              stroke-width="2" stroke-dasharray="75" stroke-dashoffset="0"
+              aria-labelledby="donut-segment-1-title donut-segment-1-desc">
+              <title id="donut-segment-1-title">تحت الدراسة</title>
+            </circle>
+          </svg>
+          <div class="percentage">
+            <svg-icon class="text-gray9" styleClass="fa-2x" icon="user"></svg-icon>
+            <p class="font-weight-bold"> 75% </p>
+          </div>
+        </div>
+      </figure>
+      <h4 class="text-center text-muted mb-3">نسبة اكتمال بياناتك</h4>
+    </a>
+  </div>
+</div>
+
+
+<section class="mb-4">
+  <div class="flex-center-between">
+    <h3 class="sectionTitle my-4">البرامج المستحقة</h3>
+    <a class="text-dcc-primary" href="/">عرض بقية البرامج</a>
+  </div>
+  
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4" [@slideItemListAnimation]="eligible.length">
+    <ng-container *ngFor="let program of eligible">
+      <div class="col mb-4">
+      <a class="card h-100 border-light" href="javascript:void(0)" (click)="open()">
+        <div class="px-3 py-3 ml-auto">
+          <small class="text-gray h6">
+            {{program.eligibilityMsg}}
+            <svg-icon [class.text-success]="program.eligibility=='true'" styleClass="fa-lg ml-1" icon="check-circle"></svg-icon>
+          </small>
+        </div>
+        <div class="card-body flex-center">
+          <img class="w-auto" [src]="program.logo" alt="{{program.title}}">
+        </div>
+        <div class="p-3 bg-light">
+          <h4 class="text-dcc-primary font-weight-bold mb-2">{{program.title}}</h4>
+          <h6 class="text-muted">{{program.Description}}</h6>
+        </div>
+      </a>
+    </div>
+    </ng-container>
+  </div>
+</section>

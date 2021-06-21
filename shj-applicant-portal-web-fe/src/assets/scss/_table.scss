@@ -1,0 +1,21 @@
+.table th{
+    color: #5B6067;
+    border-top: 0;
+}
+.table td{
+    color: #8596A9;
+    border-color: #EAEEF1;
+}
+
+.page-item{
+    font-size: 80%;
+    
+    .page-link{
+        cursor: pointer;
+    }
+    &.disabled{
+        .page-link{
+            color: $gray-300 !important;
+        }
+    }
+}

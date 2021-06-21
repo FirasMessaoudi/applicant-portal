@@ -1,0 +1,78 @@
+<div class="content__wrapper">
+  <div class="title__Page">
+    <h3 class="sectionTitle">{{'role-management.role_details' | translate }}
+      <b class="text-dcc-primary">{{ currentLanguage.startsWith("en") ? role?.nameEnglish : role?.nameArabic }}</b>
+    </h3>
+  </div>
+  <div class="content__section" *ngIf="!canSeeRoleDetails">
+    {{'header.welcome' | translate}} <span class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+  </div>
+  <div class="content__section" *ngIf="canSeeRoleDetails">
+    <form enctype="multipart/form-data">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.role_name' | translate}}</label>
+          <span
+            class="form-control-plaintext ">{{ currentLanguage.startsWith("en") ? role?.nameEnglish : role?.nameArabic }}</span>
+        </div>
+        <div class="form-group col col-lg-8 col-md-8">
+          <label class="col-form-label">{{'role-management.authorities' | translate}}</label>
+          <div class="form-control-plaintext ">
+            <ng-container *ngFor="let roleAuthority of role?.roleAuthorities" >
+              <ng-container *ngIf="!roleAuthority.authority.parentId" >
+                <fieldset class="border px-3" *ngIf="!roleAuthority.authority.parentId">
+
+                  <legend class="w-auto mb-0">
+                    <span class="mx-3 sectionTitle h6">{{ currentLanguage.startsWith("en") ? roleAuthority.authority.nameEnglish : roleAuthority.authority.nameArabic }}</span>
+                  </legend>
+
+                  <span *ngIf="!roleAuthority.authority.parentId && (!roleAuthority.authority.children || !roleAuthority.authority.children.length)" class="badge m-2 text-muted">
+                    <svg-icon styleClass="text-gray-300" icon="dot-circle"></svg-icon>
+                    {{ currentLanguage.startsWith("en") ? roleAuthority.authority.nameEnglish : roleAuthority.authority.nameArabic }}
+                  </span>
+
+                  <ng-container *ngFor="let childRoleAuthority of role.roleAuthorities" >
+                    <span *ngIf="childRoleAuthority.authority.parentId === roleAuthority.authority.id" class="badge m-2 text-muted">
+                      <svg-icon styleClass="text-gray-300" icon="dot-circle"></svg-icon>
+                      {{ currentLanguage.startsWith("en") ? childRoleAuthority.authority.nameEnglish : childRoleAuthority.authority.nameArabic }}
+                    </span>
+                  </ng-container>
+                </fieldset>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.role_status' | translate}}</label>
+          <div class="form-control-plaintext">
+          <span *ngIf="!role?.activated" class="text-nowrap">
+            <span class="status mr-1 Suspended"></span>
+            {{'user-management.not_activated' | translate}}
+          </span>
+            <span *ngIf="role?.activated" class="text-nowrap">
+              <span class="status mr-1 done"></span>
+            {{'user-management.activated' | translate}}
+          </span>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.creation_date' | translate}}</label>
+          <span class="form-control-plaintext ">{{ role?.creationDate | dateFormat }}</span>
+        </div>
+
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.update_date' | translate}}</label>
+          <span class="form-control-plaintext ">{{ !role?.updateDate? '--' : role?.updateDate | dateFormat }}</span>
+        </div>
+
+      </div>
+    </form>
+
+    <div class="content__footer__action">
+      <button type="button" [routerLink]="['/roles/list']" class="btn btn-outline-secondary btn-w100 px-5 mr-3">
+        {{ "general.btn_back" | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

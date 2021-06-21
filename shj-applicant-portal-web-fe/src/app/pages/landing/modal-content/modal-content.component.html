@@ -1,0 +1,44 @@
+<div class="modal-header">
+  <h3 class="mb-0">طلب تقديم لبرنامج حساب المواطن</h3>
+</div>
+<div class="modal-body">
+  <div class="d-flex">
+    <div class="border px-4 py-3 rounded mr-4 d-none d-md-inline-block"><img src="assets/images/logo-ca.png" alt=""></div>
+    <div class="align-self-center modalWidthItem">
+      <h3 class="sectionTitle mb-3">حساب المواطن</h3>
+      <div class="row">
+        <div class="col">الجهة الداعم :</div>
+        <div class="col"><b> وزارة العمل </b></div>
+      </div>
+      <div class="row">
+        <div class="col">الفئة المستهدفة :</div>
+        <div class="col"><b> الأسر السعودية </b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border rounded swatch-100 p-4 mt-4" [style.overflow]="'auto'" [style.height.px]="'200'">
+    <p>أنشئ برنامج حساب المواطن لحماية الأسر السعودية من الأثر المباشر وغير المباشر المتوقع من الإصلاحات الاقتصادية
+      المختلفة، تتسبب بعبء إضافي على بعض والتي قد تتسبب بعبء إضافي على بعض فئات المجتمع.
+    </p>
+    <p>
+      يعمل البرنامج على إعادة توجيه المنافع الحكومية للفئات المستحقة لها بالشكل الذي يؤدي إلى تشجيع الاستهلاك الرشيد،
+      ويضمن توجيه الدعم بشكل فعال للفئات المستحقة المختلفة، حيث سيتم توفير الدعم بشكل نقدي يحول مباشرة للمستفيدين
+      المستحقين.
+    </p>
+    <p>
+      تحرص المملكة على توفير كافة الخدمات والاحتياجات اللازمة بتكلفة ملائمة لجميع المواطنين، إلا أن آلية الدعم السابقة
+      لمنتجات الطاقة والمياه شملت جميع المستهلكين، مع تفاوت استهلاكهم.
+    </p>
+    <p>
+      عبر حساب المواطن، يهدف البرنامج إلى رفع كفاءة الدعم الحكومي من خلال إعادة توجيه الدعم ليركز في دعمه على الفئات
+      الأكثر استحقاقًا، وذلك لتقليل الهدرالأكثر ورفع كفاءة الاستهلاك.
+    </p>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')">عودة</button>
+  <button type="button" class="btn btn-dcc-primary px-4" (click)="activeModal.close()" [routerLink]="['/new-request']">تقديم الطلب</button>
+</div>

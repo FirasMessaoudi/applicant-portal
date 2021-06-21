@@ -1,0 +1,39 @@
+.chart-legend {
+    .legend-wrap {
+        width: 100% !important;
+        text-align: center;
+    }
+  .legend-title {
+    display: none;
+  }
+  .legend-labels {
+    text-align: center !important;
+    border-radius: 0 !important;
+    background-color: #FBFBFB !important;
+    padding: 7px 0 0;
+    margin-top: 2rem;
+  }
+
+}
+.tick{
+    fill: #afb7c8;
+  }
+.arcWidth{
+
+    @include media-breakpoint-up(xl) {
+        width: 1100px;
+    }
+    @include media-breakpoint-down(xl) {
+        width: 900px;
+    }
+    @include media-breakpoint-down(lg) {
+        width: 700px;
+    }
+    @include media-breakpoint-down(md) {
+        width: 500px;
+    }
+    @include media-breakpoint-down(sm) {
+        width: 370px;
+    }
+
+}

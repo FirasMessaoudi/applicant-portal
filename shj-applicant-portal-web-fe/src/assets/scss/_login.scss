@@ -1,0 +1,54 @@
+/*--------------------------------------------*/
+
+.bg-svg {
+    position: relative;
+    background-color: #fff;
+    &::before {
+        content: "";
+        width: 100vw;
+        height: 100vh;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+    }
+    &::before {
+        background-image: url("assets/images/login-bg.png");
+        top: 0;
+        @include LTR {
+            transform: scaleX(-1);
+        }
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+}
+
+.z-index {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    // width: 490px;
+    width: 500px;
+    @include media-breakpoint-down(md) {
+        width: 370px;
+    }
+}
+
+.login__box {}
+
+.login-box__wrapper {
+    position: relative;
+    z-index: 2;
+    @include py(4);
+    @include px(5);
+    @include mb(4);
+    // background-color: #fff;
+    border-radius: $border-radius;
+}
+
+.lang_swtich_login {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    @extend .text-right;
+}

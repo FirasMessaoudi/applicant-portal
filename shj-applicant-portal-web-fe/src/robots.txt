@@ -1,0 +1,6 @@
+# www.robotstxt.org/
+
+# Allow crawling of specific content
+User-agent: *
+Disallow: /api/account
+Disallow: /api/users

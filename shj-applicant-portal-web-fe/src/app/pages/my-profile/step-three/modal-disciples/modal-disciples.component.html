@@ -1,0 +1,104 @@
+<div class="modal-header">
+  <h3 class="mb-0">إضافة تابع</h3>
+</div>
+<div class="modal-body">
+
+  <div class="alert alert-info">
+    <b class="d-block mb-1 mt-2">من فضلك قم برفع الوثيقة لاثبات التابعية بناء على ما يلي:</b>
+    <ul>
+      <li>- عقد الزواج للزوج والزوجة.</li>
+      <li>- دفتر العائلة للابناء.</li>
+    </ul>
+  </div>
+
+  <div class="row row-cols-1 row-cols-lg-2">
+    <div class="form-group col">
+        <label class="col-form-label">هوية التابع</label>
+        <select class="custom-select">
+          <option selected value="1">سعودي</option>
+          <option value="2">غير سعودي</option>
+      </select>
+    </div>
+    <div class="form-group col">
+        <label class="col-form-label">رقم الهوية</label>
+        <input type="text" class="form-control" value="1992/01/12" disabled>
+    </div>
+    <div class="form-group col">
+        <label class="col-form-label">الاسم</label>
+        <input type="text" class="form-control" value="0501684966">
+    </div>
+    <div class="form-group col">
+        <label class="col-form-label">تاريخ الميلاد</label>
+        <div class='input-group mr-3 calendar'>
+          <input class="form-control bg-transparent" placeholder="yyyy-mm-dd" name="wp">
+          <i class="icon"></i>
+      </div>
+    </div>
+    <div class="form-group col">
+      <label class="col-form-label">الجنسية</label>
+      <select class="custom-select">
+        <option selected value="1">سعودي</option>
+        <option value="2">غير سعودي</option>
+    </select>
+  </div>
+  <div class="form-group col">
+    <label class="col-form-label">الجنس</label>
+    <div>
+        <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="customRadioInline01" name="customRadioGender" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline01">ذكر</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="customRadioInline02" name="customRadioGender" class="custom-control-input" checked>
+            <label class="custom-control-label" for="customRadioInline02">أنثى</label>
+        </div>
+    </div>
+</div>
+  <div class="form-group col">
+    <label class="col-form-label">الحالة الاجتماعية</label>
+    <div>
+        <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="customRadioInline03" name="customRadioMarital" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline03">أعزب</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="customRadioInline04" name="customRadioMarital" class="custom-control-input" checked>
+            <label class="custom-control-label" for="customRadioInline04">متزوج</label>
+        </div>
+    </div>
+</div>
+  <div class="form-group col">
+    <label class="col-form-label">حالة الحياة</label>
+    <div>
+        <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="customRadioInline05" name="customRadioAlive" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline05">متوفى</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline mr-5">
+            <input type="radio" id="customRadioInline06" name="customRadioAlive" class="custom-control-input" checked>
+            <label class="custom-control-label" for="customRadioInline06">على قيد الحياة</label>
+        </div>
+    </div>
+</div>
+<div class="form-group col">
+  <label class="col-form-label">صلة القرابة مع المتقدم</label>
+  <select class="custom-select">
+    <option selected value="1"> زوجة</option>
+    <option value="2">أم</option>
+    <option value="2">أب</option>
+</select>
+</div>
+<div class="form-group col">
+  <label class="col-form-label">اثبات التابعية</label>
+  <div class='input-group mr-3 download'>
+    <input type="text" class="form-control bg-transparent">
+    <i class="icon"></i>
+  </div>
+</div>
+</div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" aria-label="Close" (click)="activeModal.dismiss('Cross click')">إلغاء</button>
+  <button type="button" class="btn btn-dcc-primary px-4" (click)="activeModal.close('Close click')">إضافة التابع</button>
+</div>

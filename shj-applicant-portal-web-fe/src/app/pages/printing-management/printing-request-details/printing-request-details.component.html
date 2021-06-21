@@ -1,0 +1,116 @@
+<div class="content__wrapper">
+  <div class="title__Page">
+    <h3 class="sectionTitle">{{'printing-management.request_details' | translate }}</h3>
+  </div>
+  <div class="content__section" *ngIf="!canSeePrintRequestDetails">
+    {{'header.welcome' | translate}} <span class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+  </div>
+
+  <div class="content__section" *ngIf="canSeePrintRequestDetails">
+    <div class="cardBox row row-cols-1 row-cols-md-2 row-cols-lg-6">
+      <div class="form-group col mb-lg-0">
+        <label class="col-form-label">{{'printing-management.request_number' | translate}}</label>
+        <span class="form-control-plaintext ">{{'587220'}}</span>
+      </div>
+      <div class="form-group col mb-lg-0">
+        <label class="col-form-label">{{'printing-management.no_batches' | translate}}</label>
+        <span class="form-control-plaintext ">{{'5'}}</span>
+      </div>
+      <div class="form-group col mb-lg-0">
+        <label class="col-form-label">{{'printing-management.no_cards' | translate}}</label>
+        <span class="form-control-plaintext ">{{'2350'}}</span>
+      </div>
+      <div class="form-group col mb-lg-0">
+        <label class="col-form-label">{{'printing-management.creation_date' | translate}}</label>
+        <span class="form-control-plaintext ">{{'23-03-2021'}}</span>
+      </div>
+      <div class="form-group col mb-lg-0">
+        <label class="col-form-label">{{'printing-management.confirm_printing_date' | translate}}</label>
+        <span class="form-control-plaintext ">{{'25-03-2021'}}</span>
+      </div>
+      <div class="form-group col mb-lg-0">
+        <label class="col-form-label">{{'printing-management.request_status' | translate}}</label>
+        <span class="form-control-plaintext "><span class="status mr-1 done"></span> {{'نشط'}}</span>
+      </div>
+    </div>
+
+    <div class="table-responsive my-4">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th class="nameCol" scope="col">{{'card-management.applicant_name' | translate}}</th>
+            <th scope="col">{{'card-management.applicant_id' | translate}}</th>
+            <th scope="col">{{'card-management.card_number' | translate}}</th>
+            <th scope="col">{{'card-management.passport_number' | translate}}</th>
+          </tr>
+        </thead>
+          <tr *ngIf="false" class="text-center">
+            <td colspan="10">
+              <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set" ></svg-icon>
+              <p class="text-light-gray mb-3">{{ "general.table_emtpy_text" | translate }}</p>
+            </td>
+          </tr>
+
+          <thead>
+            <tr>
+              <td class="p-0" colspan="10">
+                <a class="packageBox" href="javascript:void(0)" (click)="isPackageOne = !isPackageOne" [ngClass]=" isPackageOne ? '' : 'active'">
+                  <span class="">{{'printing-management.batch_no' | translate}}<span class="packageNo">{{'1'}}</span></span>
+                  <span class="">{{'printing-management.contains' | translate}} <b>{{'520'}}</b> {{'printing-management.cards' | translate}}</span>
+                </a>
+              </td>
+            </tr>
+          </thead>
+          <tbody [ngbCollapse]="isPackageOne" class="collapse">
+          <tr>
+            <td class="nameCol">
+              <a [routerLink]="['/cards/details/1']">{{'زبير عبد المجيد خان'}} {{'Zubair Abd Almajid Khan'}}</a>
+            </td>
+            <td class="ltr">{{'2367430624'}}</td>
+            <td class="ltr">{{'541285'}}</td>
+            <td class="ltr">{{'5O85X8'}}</td>
+          </tr>
+          <tr>
+            <td class="nameCol">
+              <a [routerLink]="['/cards/details/1']">{{'فاطمة زبير عبد المجيد خان'}} {{'Fatima Zubair Abd Almajid Khan'}}</a>
+            </td>
+            <td class="ltr">{{'2367430426'}}</td>
+            <td class="ltr">{{'541582'}}</td>
+            <td class="ltr">{{'5O8Y84'}}</td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr>
+            <td class="p-0" colspan="10">
+              <a class="packageBox" href="javascript:void(0)" (click)="isPackageTwo = !isPackageTwo" [ngClass]=" isPackageTwo ? '' : 'active'">
+                <span class="">{{'printing-management.batch_no' | translate}}<span class="packageNo">{{'2'}}</span></span>
+                <span class="">{{'printing-management.contains' | translate}} <b>{{'2125'}}</b> {{'printing-management.cards' | translate}}</span>
+              </a>
+            </td>
+          </tr>
+        </thead>
+        <tbody [ngbCollapse]="isPackageTwo" class="collapse">
+          <tr>
+            <td class="nameCol">
+              <a [routerLink]="['/cards/details/1']">{{'محمد سليم أحمد'}} {{'Moh Salim Ahmad'}}</a>
+            </td>
+            <td class="ltr">{{'2367430624'}}</td>
+            <td class="ltr">{{'541285'}}</td>
+            <td class="ltr">{{'5O85X8'}}</td>
+          </tr>
+          <tr>
+            <td class="nameCol">
+              <a [routerLink]="['/cards/details/1']">{{'عبد الرزاق البدر'}} {{'Abd Alrazzaq Albadr'}}</a>
+            </td>
+            <td class="ltr">{{'2367430426'}}</td>
+            <td class="ltr">{{'541582'}}</td>
+            <td class="ltr">{{'5O8Y84'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+
+</div>

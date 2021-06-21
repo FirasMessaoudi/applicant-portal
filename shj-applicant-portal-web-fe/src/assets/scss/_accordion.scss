@@ -1,0 +1,63 @@
+.accordion {
+    width: 100%;
+    .card-header,
+    .rituals_steps_card_header {
+        .collapsed {
+            border-bottom: 1px solid transparent;
+            .arrow {
+                @include RTL {
+                    transform: rotate(0deg);
+                }
+                @include LTR {
+                    transform: rotateY(180deg);
+                }
+            }
+        }
+        .arrow {
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            transform: rotate(-90deg);
+            &:before {
+                content: "";
+                background: url("data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhbCIgZGF0YS1pY29uPSJjaGV2cm9uLWxlZnQiIGNsYXNzPSJzdmctaW5saW5lLS1mYSBmYS1jaGV2cm9uLWxlZnQgZmEtdy04IiByb2xlPSJpbWciIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDI1NiA1MTIiPjxwYXRoIGZpbGw9IiM2Yzc1N2QgIiBkPSJNMjM4LjQ3NSA0NzUuNTM1bDcuMDcxLTcuMDdjNC42ODYtNC42ODYgNC42ODYtMTIuMjg0IDAtMTYuOTcxTDUwLjA1MyAyNTYgMjQ1LjU0NiA2MC41MDZjNC42ODYtNC42ODYgNC42ODYtMTIuMjg0IDAtMTYuOTcxbC03LjA3MS03LjA3Yy00LjY4Ni00LjY4Ni0xMi4yODQtNC42ODYtMTYuOTcgMEwxMC40NTQgMjQ3LjUxNWMtNC42ODYgNC42ODYtNC42ODYgMTIuMjg0IDAgMTYuOTcxbDIxMS4wNTEgMjExLjA1YzQuNjg2IDQuNjg2IDEyLjI4NCA0LjY4NiAxNi45Ny0uMDAxeiI+PC9wYXRoPjwvc3ZnPg==") 97% center no-repeat;
+                padding-right: 1.5rem;
+                background-position: 100% 80%;
+                background-size: 0.8rem;
+                [dir="rtl"] & {
+                    background-position: 20% 70%;
+                    padding-right: 1.5rem;
+                }
+            }
+        }
+    }
+}
+
+.rituals_steps_details {
+    .card-body {
+        @include RTL {
+            padding-left: 2rem;
+            padding-right: 3rem;
+            @include media-breakpoint-down(sm) {
+                padding-right: 4rem;
+            }
+        }
+        @include LTR {
+            padding-right: 2rem;
+            padding-left: 3rem;
+            @include media-breakpoint-down(sm) {
+                padding-left: 4rem;
+            }
+        }
+    }
+}
+
+.rituals_steps_item {
+    @include media-breakpoint-down(sm) {
+        @include LTR {
+            padding-right: 1.6rem !important;
+        }
+        @include RTL {
+            padding-left: 1.6rem !important;
+        }
+    }
+}

@@ -1,0 +1,146 @@
+<div class="content__wrapper mb-4">
+  <h3 class="sectionTitle my-4">الملف الموحد</h3>
+
+  <aw-wizard class="steps-tab" [navBarLayout]="'large-empty'" [awNavigationMode] navigateBackward="allow" navigateForward="allow">
+    <aw-wizard-step>
+      <ng-template awWizardStepTitle>
+        <div class="tabSet">
+          <figure class="mb-0">
+            <div class="d-flex justify-content-center position-relative">
+              <svg width="150" height="100%" viewBox="0 0 42 42" class="donut" aria-labelledby="beers-title beers-desc"
+                role="img">
+                <circle class="donut-hole" cx="21" cy="21" r="30" r="15.91549430918954" fill="#fff" role="presentation" stroke="#F0F" stroke-width="1"></circle>
+                <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#C2D1CF"
+                  stroke-width="2" role="presentation"></circle>
+    
+                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#009F88"
+                  stroke-width="2" stroke-dasharray="100" stroke-dashoffset="0"
+                  aria-labelledby="donut-segment-1-title donut-segment-1-desc">
+                </circle>
+              </svg>
+              <div class="percentage">
+                <svg-icon styleClass="fa-w-14" icon="user"></svg-icon>
+              </div>
+            </div>
+          </figure>
+          <p class="text-center tabLabel">بيانات المستخدم</p>
+        </div>
+      </ng-template>
+      <div class="section">
+        <dcc-step-one></dcc-step-one>
+      </div>
+      <div class="content__footer__action">
+        <button type="button" class="btn btn-outline-secondary border-0 px-5 mr-3">إلغاء</button>
+        <div>
+          <button type="button" class="btn btn-outline-dcc-primary px-5 mr-3">حفظ البيانات</button>
+          <button type="button" class="btn btn-dcc-primary px-5 mr-3" awNextStep>التالي</button>
+        </div>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step>
+      <ng-template awWizardStepTitle>
+        <div class="tabSet">
+          <figure class="mb-0">
+            <div class="d-flex justify-content-center position-relative">
+              <svg width="150" height="100%" viewBox="0 0 42 42" class="donut" aria-labelledby="beers-title beers-desc"
+                role="img">
+                <circle class="donut-hole" cx="21" cy="21" r="30" r="15.91549430918954" fill="#fff" role="presentation" stroke="#F0F" stroke-width="1"></circle>
+                <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#C2D1CF"
+                  stroke-width="2" role="presentation"></circle>
+    
+                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#009F88"
+                  stroke-width="2" stroke-dasharray="50" stroke-dashoffset="25"
+                  aria-labelledby="donut-segment-1-title donut-segment-1-desc">
+                </circle>
+              </svg>
+              <div class="percentage">
+                <svg-icon styleClass="fa-w-14" icon="building"></svg-icon>
+              </div>
+            </div>
+          </figure>
+          <p class="text-center tabLabel">بيانات السكن</p>
+        </div>
+      </ng-template>
+      <div class="section">
+        <dcc-step-two></dcc-step-two>
+      </div>
+      <div class="content__footer__action">
+        <button type="button" class="btn btn-outline-secondary border-0 px-5 mr-3">السابق</button>
+        <div>
+          <button type="button" class="btn btn-outline-dcc-primary px-5 mr-3">حفظ البيانات</button>
+          <button type="button" class="btn btn-dcc-primary px-5 mr-3" awNextStep>التالي</button>
+        </div>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step>
+      <ng-template awWizardStepTitle>
+        <div class="tabSet">
+          <figure class="mb-0">
+            <div class="d-flex justify-content-center position-relative">
+              <svg width="150" height="100%" viewBox="0 0 42 42" class="donut" aria-labelledby="beers-title beers-desc"
+                role="img">
+                <circle class="donut-hole" cx="21" cy="21" r="30" r="15.91549430918954" fill="#fff" role="presentation" stroke="#F0F" stroke-width="1"></circle>
+                <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#C2D1CF"
+                  stroke-width="2" role="presentation"></circle>
+    
+                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#009F88"
+                  stroke-width="2" stroke-dasharray="75" stroke-dashoffset="0"
+                  aria-labelledby="donut-segment-1-title donut-segment-1-desc">
+                </circle>
+              </svg>
+              <div class="percentage">
+                <svg-icon styleClass="fa-w-20" icon="users"></svg-icon>
+              </div>
+            </div>
+          </figure>
+          <p class="text-center tabLabel">بيانات التابعين والموكلين</p>
+        </div>
+      </ng-template>
+      <div class="section">
+        <dcc-step-three></dcc-step-three>
+      </div>
+      <div class="content__footer__action">
+        <button type="button" class="btn btn-outline-secondary border-0 px-5 mr-3">السابق</button>
+        <div>
+          <button type="button" class="btn btn-outline-dcc-primary px-5 mr-3">حفظ البيانات</button>
+          <button type="button" class="btn btn-dcc-primary px-5 mr-3" awNextStep>التالي</button>
+        </div>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step>
+      <ng-template awWizardStepTitle>
+        <div class="tabSet">
+          <figure class="mb-0">
+            <div class="d-flex justify-content-center position-relative">
+              <svg width="150" height="100%" viewBox="0 0 42 42" class="donut" aria-labelledby="beers-title beers-desc"
+                role="img">
+                <circle class="donut-hole" cx="21" cy="21" r="30" r="15.91549430918954" fill="#fff" role="presentation" stroke="#F0F" stroke-width="1"></circle>
+                <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#C2D1CF"
+                  stroke-width="2" role="presentation"></circle>
+    
+                <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#F7AF51"
+                  stroke-width="2" stroke-dasharray="50" stroke-dashoffset="25"
+                  aria-labelledby="donut-segment-1-title donut-segment-1-desc">
+                </circle>
+              </svg>
+              <div class="percentage">
+                <svg-icon styleClass="fa-w-20" icon="money-bill-wave"></svg-icon>
+              </div>
+            </div>
+          </figure>
+          <p class="text-center tabLabel">بيانات الدخل</p>
+        </div>
+      </ng-template>
+      <div class="section">
+        <dcc-step-four></dcc-step-four>
+      </div>
+      <div class="content__footer__action">
+        <button type="button" class="btn btn-outline-secondary border-0 px-5 mr-3">السابق</button>
+        <div>
+          <button type="button" class="btn btn-outline-dcc-primary px-5 mr-3" [routerLink]="['/']">حفظ البيانات</button>
+        </div>
+      </div>
+    </aw-wizard-step>
+  </aw-wizard>
+
+</div>

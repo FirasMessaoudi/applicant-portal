@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+       <groupId>com.elm.shj.applicant.portal</groupId>
+       <artifactId>shj-applicant-portal</artifactId>
+       <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+
+    <groupId>com.elm.shj.applicant.portal.services</groupId>
+    <artifactId>shj-applicant-portal-services</artifactId>
+    <name>shj-applicant-portal-services</name>
+    <description>Services Module</description>
+
+    <dependencies>
+        <!-- INTERNAL DEPENDENCIES -->
+        <dependency>
+            <groupId>com.elm.dcc.foundation</groupId>
+            <artifactId>dcc-commons-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.elm.shj.applicant.portal.orm</groupId>
+            <artifactId>shj-applicant-portal-orm</artifactId>
+        </dependency>
+        <!-- INTERNAL PROVIDERS -->
+        <dependency>
+            <groupId>com.elm.dcc.foundation</groupId>
+            <artifactId>dcc-providers-recaptcha</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.elm.dcc.foundation</groupId>
+            <artifactId>dcc-providers-sms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.elm.dcc.foundation</groupId>
+            <artifactId>dcc-providers-email</artifactId>
+        </dependency>
+        <!-- INTERNAL COMMONS -->
+        <dependency>
+            <groupId>com.elm.dcc.foundation</groupId>
+            <artifactId>dcc-commons-validation</artifactId>
+        </dependency>
+
+        <!-- SPRING DEPENDENCIES -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <!-- THIRD PARTIES DEPENDENCIES -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <!-- zxing -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.javacrumbs.shedlock</groupId>
+            <artifactId>shedlock-provider-jdbc-template</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.ozlerhakan</groupId>
+            <artifactId>poiji</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+        </dependency>
+    </dependencies>
+</project>

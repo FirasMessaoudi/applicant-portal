@@ -1,0 +1,103 @@
+<div class="content__wrapper">
+  <div class="title__Page">
+    <h3 class="sectionTitle">{{'user-management.user_details' | translate }}
+      <b class="text-dcc-primary">{{user?.firstName + " " + user?.familyName}}</b>
+    </h3>
+  </div>
+  <div class="content__section" *ngIf="!canSeeUserDetails">
+    {{'header.welcome' | translate}} <span class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+  </div>
+  <div class="content__section" *ngIf="canSeeUserDetails">
+    <form enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-md-9">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.nin' | translate}}</label>
+            <span class="form-control-plaintext ">{{ user?.nin }}</span>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'general.mobile_number' | translate}}</label>
+            <span class="form-control-plaintext ltr">
+              {{user?.mobileNumber | mobileFormat}}
+            </span>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'general.email' | translate}}</label>
+            <span class="form-control-plaintext ">{{ user?.email }}</span>
+          </div>
+  
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.full_name' | translate}}</label>
+            <span class="form-control-plaintext">{{ user?.firstName + ' ' + user?.familyName }}</span>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'general.date_of_birth' | translate}}</label>
+            <span class="form-control-plaintext">{{ user?.dateOfBirthGregorian | dateFormat }}
+              <span *ngIf="user?.dateOfBirthGregorian">-</span>
+              {{ user?.dateOfBirthHijri | hijriFormat }}
+            </span>
+  
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.gender' | translate}}</label>
+            <span class="form-control-plaintext "
+                  [hidden]="user?.gender == 'M'">{{'user-management.female' | translate}}</span>
+            <span class="form-control-plaintext "
+                  [hidden]="user?.gender == 'F'">{{'user-management.male' | translate}}</span>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.account_status' | translate}}</label>
+            <div class="form-control-plaintext">
+            <span *ngIf="!user?.activated && !user?.blocked" class="text-nowrap">
+              <span class="status mr-1 warning"></span>
+              {{'user-management.not_activated' | translate}}
+            </span>
+              <span *ngIf="user?.activated && !user?.blocked" class="text-nowrap">
+                <span class="status mr-1 done"></span>
+              {{'user-management.activated' | translate}}
+            </span>
+              <span *ngIf="user?.blocked" class="text-nowrap">
+                <span class="status mr-1 Suspended"></span>
+              {{'user-management.locked' | translate}}
+            </span>
+            </div>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.role' | translate}}</label>
+            <span class="form-control-plaintext font-weight-bold">{{ currentLanguage.startsWith("en") ? userMainRole?.nameEnglish : userMainRole?.nameArabic }}</span>
+          </div>
+          <div class="form-group col" *ngIf="user?.userRoles?.length > 1">
+            <label class="col-form-label">{{'user-management.additional_role' | translate}}</label>
+            <ng-container *ngFor="let userRole of user?.userRoles">
+              <span *ngIf="!userRole.mainRole" class="form-control-plaintext font-weight-bold">{{ currentLanguage.startsWith("en") ? userRole?.role?.nameEnglish : userRole?.role?.nameArabic }}</span>
+            </ng-container>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.creation_date' | translate}}</label>
+            <span class="form-control-plaintext ">{{ user?.creationDate | dateFormat }}</span>
+          </div>
+          <div class="form-group col">
+            <label class="col-form-label">{{'user-management.last_login' | translate}}</label>
+            <span class="form-control-plaintext ">{{ user?.lastLoginDate | dateFormat }}</span>
+          </div>
+        </div>
+        </div>
+        <div class="col-md-3">
+          <div class="avatarBox">
+            <div class="avatar">
+              <img [src]="user?.avatar ? 'assets/images/space.png'+user?.avatar : url" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="content__footer__action">
+      <button type="button" [routerLink]="['/users/list']" class="btn btn-outline-secondary btn-w100 px-5 mr-3">
+        {{ "general.btn_back" | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

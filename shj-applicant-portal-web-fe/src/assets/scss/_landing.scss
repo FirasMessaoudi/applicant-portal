@@ -1,0 +1,46 @@
+.landing-bg {
+    position: relative;
+    background-color: #fff;
+    &::before {
+        content: "";
+        width: 100vw;
+        height: 100vh;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+    }
+    &::before {
+        background-image: url("assets/images/landing-bg.png");
+        background-position: center center;
+        top: 0;
+        @include LTR {
+            transform: scaleX(-1);
+        }
+    }
+}
+
+.landing_login_card {
+    min-width: 322px;
+    .btn {
+        @extend .Elm-fontb;
+    }
+    @include media-breakpoint-down(md) {
+        margin-bottom: 3rem;
+    }
+    background-repeat: no-repeat;
+    background-image: url("assets/images/dots-pattern.png");
+    background-size: 50% 50%;
+    background-position-y: 105%;
+    background-position-x: 130%;
+}
+
+.lang-switch {
+    position: absolute;
+    top: 0;
+    [dir="ltr"] & {
+        right: 30px;
+    }
+    [dir="rtl"] & {
+        left: 30px;
+    }
+}

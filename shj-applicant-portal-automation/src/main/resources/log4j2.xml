@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="com.epam.ta.reportportal.log4j.appender" status="WARN">
+    <Appenders>
+        <File name="LogFile" fileName="automation_results/logs/logfile.log">
+            <PatternLayout pattern="[%d] [%t] [%-5level] [%logger{36} - %thread] - %msg%n%throwable%n"/>
+        </File>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="[%d] [%t] [%-5level] [%logger{36} - %thread] - %msg%n%throwable%n"/>
+        </Console>
+<!--        <ReportPortalLog4j2Appender name="ReportPortalAppender">-->
+<!--            <PatternLayout-->
+<!--                    pattern="%msg%n%throwable%n"/>-->
+<!--&lt;!&ndash;                    pattern="[%d] [%t] [%-5level] [%logger{36} - %thread] - %msg%n%throwable%n"/>&ndash;&gt;-->
+<!--        </ReportPortalLog4j2Appender>-->
+    </Appenders>
+    <Loggers>
+        <Root>
+            <AppenderRef ref="LogFile"/>
+        </Root>
+<!--        <Logger name="com.epam.reportportal.service" level="WARN" additivity="false">-->
+<!--            <AppenderRef ref="ReportPortalAppender"/>-->
+<!--        </Logger>-->
+<!--        <Logger name="com.epam.reportportal.utils" level="WARN" additivity="false">-->
+<!--            <AppenderRef ref="ReportPortalAppender"/>-->
+<!--        </Logger>-->
+<!--        <Logger name="com.elm.qa.framework.utilities.ReportPortalLog" additivity="false">-->
+<!--            <AppenderRef ref="ReportPortalAppender"/>-->
+<!--        </Logger>-->
+        <Logger name="com.elm.qa.framework" level="INFO" additivity="false">
+            <AppenderRef ref="LogFile"/>
+        </Logger>
+    </Loggers>
+
+</Configuration>

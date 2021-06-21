@@ -1,0 +1,6 @@
+@import "mixins";
+@include font-face("Elm-font", "../fonts/DroidKufiRegular/DroidKufiRegular");
+@include font-face("Elm-fontb", "../fonts/DroidKufiBold/DroidKufiBold", bold);
+.Elm-fontb {
+    font-family: "Elm-fontb", sans-serif;
+}

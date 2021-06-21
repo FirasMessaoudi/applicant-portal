@@ -1,0 +1,95 @@
+<div class="content__wrapper">
+  <div class="title__Page">
+    <h3 class="sectionTitle">{{'role-management.role_form' | translate }}
+      <b class="text-dcc-primary" *ngIf="role?.id > 0">#{{role?.id}}</b>
+    </h3>
+  </div>
+  <div class="content__section" *ngIf="!canSeeAddUpdateRole">
+    {{'header.welcome' | translate}} <span class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+  </div>
+  <div class="content__section" *ngIf="canSeeAddUpdateRole">
+    <form [formGroup]="roleForm" (ngSubmit)="saveOrUpdateRole()">
+
+      <!-- applicant ID field -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.role_name_ar' | translate}}<span class="text-danger px-1">*</span></label>
+          <input type="text" formControlName="nameArabic" class="form-control" required [class.is-invalid]="f.nameArabic.invalid && f.nameArabic.touched" maxlength="25"/>
+          <div *ngIf="f.nameArabic.invalid && f.nameArabic.touched" class="invalid-feedback">
+            <div *ngIf="f.nameArabic.errors.required">{{'general.field_validation_required' | translate}}</div>
+            <div *ngIf="f.nameArabic.errors.invalid">{{f.nameArabic.errors['invalid'] | translate}}</div>
+            <div *ngIf="f.nameArabic.errors['invalid-characters']">{{f.nameArabic.errors['invalid-characters'] | translate}}</div>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.role_name_en' | translate}}<span class="text-danger px-1">*</span></label>
+          <input type="text" formControlName="nameEnglish" class="form-control" required [class.is-invalid]="f.nameEnglish.invalid && f.nameEnglish.touched" maxlength="25"/>
+          <div *ngIf="f.nameEnglish.invalid && f.nameEnglish.touched" class="invalid-feedback">
+            <div *ngIf="f.nameEnglish.errors.required">{{'general.field_validation_required' | translate}}</div>
+            <div *ngIf="f.nameEnglish.errors.invalid">{{f.nameEnglish.errors['invalid'] | translate}}</div>
+            <div *ngIf="f.nameEnglish.errors['invalid-characters']">{{f.nameEnglish.errors['invalid-characters'] | translate}}</div>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.role_status' | translate}}<span class="text-danger px-1">*</span></label>
+
+          <div class="form-control p-0 border-0 btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="activated">
+            <label ngbButtonLabel class="btn" [class.btn-outline-secondary]="!roleForm.value['activated']" [class.btn-success]="roleForm.value['activated']">
+              <input ngbButton type="radio" [value]="true"> {{'user-management.activated' | translate}}
+            </label>
+            <label ngbButtonLabel class="btn" [class.btn-outline-secondary]="roleForm.value['activated']" [class.btn-danger]="!roleForm.value['activated']">
+              <input ngbButton type="radio" [value]="false"> {{'user-management.not_activated' | translate}}
+            </label>
+          </div>
+
+          <div *ngIf="f.activated.invalid && f.activated.touched" class="invalid-feedback">
+            <div *ngIf="f.activated.errors.required">{{'general.field_validation_required' | translate}}</div>
+            <div *ngIf="f.activated.errors.invalid">{{f.activated.errors['invalid'] | translate}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row row-cols-12">
+        <div class="form-group col">
+          <label class="col-form-label">{{'role-management.authorities' | translate}}<span class="text-danger px-1">*</span></label>
+          <ng-container *ngFor="let roleAuthority of roleAuthorities" >
+            <ng-container *ngIf="!roleAuthority.authority.parentId" >
+              <fieldset class="border py-3 my-2">
+                <legend class="w-auto">
+                  <span class="mx-3 sectionTitle h6">
+                    {{ currentLanguage.startsWith("en") ? roleAuthority.authority.nameEnglish : roleAuthority.authority.nameArabic }}
+                  </span>
+                </legend>
+                
+                  <label ngbButtonLabel class="roleCheck mx-3" *ngIf="!roleAuthority.authority.parentId && (!roleAuthority.authority.children || !roleAuthority.authority.children.length)">
+                    <input ngbButton type="checkbox" class="d-none" [(ngModel)]="roleAuthority.selected" [ngModelOptions]="{standalone: true}">
+                    {{ currentLanguage.startsWith("en") ? roleAuthority.authority.nameEnglish : roleAuthority.authority.nameArabic }}
+                  </label>
+
+                  <ng-container *ngFor="let childRoleAuthority of roleAuthorities" >
+                    <label ngbButtonLabel class="roleCheck mx-3" *ngIf="childRoleAuthority.authority.parentId === roleAuthority.authority.id">
+                      <input class="d-none"  ngbButton type="checkbox" [(ngModel)]="childRoleAuthority.selected" [ngModelOptions]="{standalone: true}">
+                        {{ currentLanguage.startsWith("en") ? childRoleAuthority.authority.nameEnglish : childRoleAuthority.authority.nameArabic }}
+                    </label>
+                  </ng-container>
+                </fieldset>
+              
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+
+    </form>
+
+
+    <div class="content__footer__action">
+      <button type="button" [routerLink]="['/roles/list']" class="btn btn-outline-secondary btn-w100 px-5 mr-3">
+        {{ "general.btn_cancel" | translate }}
+      </button>
+      <button type="button" (click)="saveOrUpdateRole()" class="btn btn-outline-dcc-primary px-5 mr-3">
+        {{ "general.btn_save" | translate }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<div class="d-flex flex-column min-vh-100">
+    <!-- CONTENT (ROUTER OUTLET) -->
+    <!-- <button class="btn navbar-toggler" (click)="toggleNavbar()">
+    <div class="cd-nav-trigger">
+      <span class="cd-nav-icon"></span>
+    </div>
+  </button> -->
+    <section class="d-flex flex-column flex-grow-1 justify-content-between">
+        <div class="flex-grow-1 w-100 d-flex flex-column">
+            <div class="container_header">
+                <!-- HEADER & SETTING -->
+                <app-header [showNavbar]="true"></app-header>
+                <!-- Navigation on sm screen-->
+                <div class="d-flex bg-dcc-light d-md-none">
+                    <nav class="navbar py-3 w-100">
+                        <div class="main-nav">
+                            <ul class="nav d-flex justify-content-between">
+                                <li routerLinkActive="active">
+                                    <a class="py-2 d-block h6" [routerLink]="['/cards/details/1']">
+                    بياناتي
+                  </a>
+                                </li>
+                                <li routerLinkActive="active">
+                                    <a class="py-2 d-block h6" [routerLink]="['/hajj-rituals']">
+                    برنامجي
+                  </a>
+                                </li>
+                                <li routerLinkActive="active">
+                                    <a class="py-2 d-block h6" routerLink="/hajj-journey/list">الجدول الزمني
+                  </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+            <!-- CONTENT (ROUTER OUTLET) -->
+            <!-- <router-outlet></router-outlet> -->
+
+            <main class="bg-dcc-light flex-grow-1 dot_bg">
+                <div class="container page-layout bg-white">
+                    <!-- <app-breadcrumb></app-breadcrumb> -->
+                    <router-outlet></router-outlet>
+                </div>
+            </main>
+        </div>
+        <!-- FOOTER -->
+        <app-footer [backgroundClass]="'bg-dcc-light'" [textClass]="''"></app-footer>
+    </section>
+</div>

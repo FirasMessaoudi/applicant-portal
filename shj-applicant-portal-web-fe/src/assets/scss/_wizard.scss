@@ -1,0 +1,130 @@
+@import "variables";
+
+// color definitions
+$wz-color-current: $dcc-primary;
+$wz-color-done: $dcc-primary;
+$wz-color-editing: darken( $dcc-primary, 10% );
+
+@import "node_modules/angular-archwizard/archwizard.scss";
+/*=====================================================================
+Steps (Wizard)
+=====================================================================*/
+
+.wizard-steps{
+  @include py(4);
+  background-color: #fff; 
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+.steps-custom {
+
+  li{
+
+    .label{
+      top: -43px !important;
+      position: absolute;
+      background-color: #F8F8F8;
+      padding: 0 20px 10px;
+      z-index: 1;
+
+      [dir='rtl'] & {
+        right: calc(50% + 11px) !important;
+      }
+
+      [dir='ltr'] & {
+        left: calc(50% + 11px) !important;
+      }
+    }
+
+    .step-indicator{
+      width: 35px !important;
+      height: 35px !important;
+      line-height: 35px !important;
+      top: -43px !important;
+      color: #777 !important;
+      background-color: #fff;
+    }
+  &.done .step-indicator,
+  &.current .step-indicator,
+  &.editing .step-indicator{
+
+    color: #fff !important;
+
+    &::after {
+      display: block;
+      content: '';
+      height: 100%;
+      width: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+    }
+  }
+
+  &.current .step-indicator {
+    background-color: $wz-color-current;
+  }
+  &.done .step-indicator{
+    background-color: $wz-color-current;
+  }
+
+  &:not(:last-child):after{
+    width: calc(100% - 75px) !important;
+  }
+}
+}
+
+aw-wizard-navigation-bar{
+  background-color: #F5F8F4;
+  border: 1px #C0D1B0 solid;
+}
+
+.steps-tab{
+  box-shadow: 0 5px 74px 55px rgba(73,90,103,0.02);
+  ul.steps-indicator{
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 80% !important;
+
+    li:after{
+      display: none;
+    }
+  }
+  .step-indicator{
+      display: none;
+  }
+  li {
+    &:not(:last-child):before {
+      display: none;
+    }
+
+    .label{
+      display: block !important;
+      padding-top: 0 !important;
+    }
+
+    .tabSet{
+      width: 100%;
+      display: inline-block;
+      background-color: #F8F8F8 ;
+      transition:all .3s ease-in-out;
+      @include py(3)
+    }
+
+    &:not(.current){
+      .tabSet:hover{
+        background-color: #FFF ;
+      }
+    }
+    &.current{
+      .tabSet{
+        background-color: #FEFEFE ;
+      }
+    }
+  }
+
+  
+
+  
+
+}

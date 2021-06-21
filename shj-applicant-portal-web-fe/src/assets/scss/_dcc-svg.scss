@@ -1,0 +1,116 @@
+
+.dcc-svg{
+  i{
+    width: 1em;
+    display: inline-block;
+  }
+
+  svg, path {
+    fill: currentColor;
+}
+
+  .fa-secondary{
+    fill: currentColor;
+    opacity: .4;
+  }
+  .fa-primary{
+    fill: currentColor;
+    opacity: 1;
+  }
+}
+
+
+// Icon Sizes
+// -------------------------
+$fa-css-prefix:        fa;
+
+// makes the font 33% larger relative to the icon container
+.#{$fa-css-prefix}-lg {
+  font-size: (4em / 3);
+  line-height: (3em / 4);
+  vertical-align: -.0667em;
+}
+
+.#{$fa-css-prefix}-xs {
+  font-size: .75em;
+}
+
+.#{$fa-css-prefix}-sm {
+  font-size: .875em;
+}
+
+@for $i from 1 through 10 {
+  .#{$fa-css-prefix}-#{$i}x {
+    font-size: $i * 1em;
+  }
+}
+
+
+/* .svg-inline--fa {
+  display: inline-block;
+  font-size: inherit;
+  height: 1em;
+  overflow: visible;
+  vertical-align: -.125em; } */
+
+  .fa-w-1 {
+    width: 0.0625em;
+  }
+  .fa-w-2 {
+    width: 0.125em;
+  }
+  .fa-w-3 {
+    width: 0.1875em;
+  }
+  .fa-w-4 {
+    width: 0.25em !important;
+  }
+  .fa-w-5 {
+    width: 0.3125em !important;
+  }
+  .fa-w-6 {
+    width: 0.375em !important;
+  }
+  .fa-w-7 {
+    width: 0.4375em !important;
+  }
+  .fa-w-8 {
+    width: 0.5em !important;
+  }
+  .fa-w-9 {
+    width: 0.5625em !important;
+  }
+  .fa-w-10 {
+    width: 0.625em !important;
+  }
+  .fa-w-11 {
+    width: 0.6875em !important;
+  }
+  .fa-w-12 {
+    width: 0.75em !important;
+  }
+  .fa-w-13 {
+    width: 0.8125em !important;
+  }
+  .fa-w-14 {
+    width: 0.875em !important;
+  }
+  .fa-w-15 {
+    width: 0.9375em !important;
+  }
+  .fa-w-16 {
+    width: 1em !important;
+  }
+  .fa-w-17 {
+    width: 1.0625em !important;
+  }
+  .fa-w-18 {
+    width: 1.125em !important;
+  }
+  .fa-w-19 {
+    width: 1.1875em !important;
+  }
+  .fa-w-20 {
+    width: 1.25em !important;
+  }
+  

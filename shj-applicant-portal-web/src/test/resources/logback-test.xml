@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xml>
+<configuration>
+
+	<include resource="org/springframework/boot/logging/logback/base.xml" />
+
+	<logger name="org.springframework.batch" level="ERROR" />
+	<logger name="org.springframework.jdbc" level="ERROR" />
+	<logger name="org.springframework.ui" level="ERROR" />
+	<logger name="org.springframework.beans" level="ERROR" />
+	<logger name="org.springframework.web" level="ERROR" />
+	<logger name="org.springframework.context" level="ERROR" />
+	<logger name="org.springframework.core" level="ERROR" />
+	<logger name="org.springframework.aop" level="ERROR" />
+	<logger name="org.springframework.flex" level="ERROR" />
+	<logger name="org.springframework.integration" level="ERROR" />
+	<logger name="org.springframework.transaction" level="ERROR" />
+	<logger name="org.springframework.security" level="ERROR" />
+	<logger name="org.springframework.context.support" level="ERROR" />
+	<logger name="org.springframework.test" level="ERROR" />
+	<logger name="org.owasp" level="ERROR" />
+	<logger name="net.sf.ehcache" level="ERROR" />
+	<logger name="freemarker.cache" level="ERROR" />
+	<logger name="org.apache.commons.digester.Digester" level="ERROR" />
+	<logger name="org.hibernate" level="ERROR" />
+
+	<logger name="com.elm.shj.applicant.portal" level="DEBUG" />
+
+</configuration>

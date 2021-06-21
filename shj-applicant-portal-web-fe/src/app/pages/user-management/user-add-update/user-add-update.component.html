@@ -1,0 +1,225 @@
+<div class="content__wrapper">
+
+  <div class="title__Page">
+    <h3 class="sectionTitle">{{'user-management.user_form' | translate }}
+      <b class="text-dcc-primary" *ngIf="user?.id > 0">#{{user?.id}}</b>
+    </h3>
+  </div>
+  <div class="content__section" *ngIf="!canSeeAddUpdateUser">
+    {{'header.welcome' | translate}} <span class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+  </div>
+  <div class="content__section" *ngIf="canSeeAddUpdateUser">
+    <form [formGroup]="userForm" (ngSubmit)="saveOrUpdate()" enctype="multipart/form-data">
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+
+        <div class="form-group col">
+          <label class="col-form-label">{{'user-management.first_name' | translate}}<span class="text-danger px-1">*</span></label>
+          <input type="text" formControlName="firstName" [value]="user?.firstName" class="form-control" required
+                 maxlength="25" [class.is-invalid]="f.firstName.invalid && f.firstName.touched"/>
+          <div *ngIf="f.firstName.invalid && f.firstName.touched" class="invalid-feedback">
+            <div *ngIf="f.firstName.errors.required">{{'general.field_validation_required' | translate}}</div>
+            <div *ngIf="f.firstName.errors.invalid">{{f.firstName.errors['invalid'] | translate}}</div>
+            <div *ngIf="f.firstName.errors['characters-only']">{{f.firstName.errors['characters-only'] | translate}}</div>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'user-management.father_name' | translate}}</label>
+          <input type="text" formControlName="fatherName" [value]="user?.fatherName" class="form-control"
+                 maxlength="25" [class.is-invalid]="f.fatherName.invalid && f.fatherName.touched"/>
+          <div *ngIf="f.fatherName.invalid && f.fatherName.touched" class="invalid-feedback">
+            <div *ngIf="f.fatherName.errors.invalid">{{f.fatherName.errors['invalid'] | translate}}</div>
+            <div *ngIf="f.fatherName.errors['characters-only']">{{f.fatherName.errors['characters-only'] | translate}}</div>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'user-management.grand_father_name' | translate}}</label>
+          <input type="text" formControlName="grandFatherName" [value]="user?.grandFatherName" class="form-control"
+                 maxlength="25" [class.is-invalid]="f.grandFatherName.invalid && f.grandFatherName.touched"/>
+          <div *ngIf="f.grandFatherName.invalid && f.grandFatherName.touched" class="invalid-feedback">
+            <div *ngIf="f.grandFatherName.errors.invalid">{{f.grandFatherName.errors['invalid'] | translate}}</div>
+            <div *ngIf="f.grandFatherName.errors['characters-only']">{{f.grandFatherName.errors['characters-only'] | translate}}</div>
+          </div>
+        </div>
+        <div class="form-group col">
+          <label class="col-form-label">{{'user-management.last_name' | translate}}<span class="text-danger px-1">*</span></label>
+          <input type="text" formControlName="familyName" [value]="user?.familyName" class="form-control" required
+                 maxlength="25" [class.is-invalid]="f.familyName.invalid && f.familyName.touched"/>
+          <div *ngIf="f.familyName.invalid && f.familyName.touched" class="invalid-feedback">
+            <div *ngIf="f.familyName.errors.required">{{'general.field_validation_required' | translate}}</div>
+            <div *ngIf="f.familyName.errors.invalid">{{f.familyName.errors['invalid'] | translate}}</div>
+            <div *ngIf="f.familyName.errors['characters-only']">{{f.familyName.errors['characters-only'] | translate}}</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-9">
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2">
+
+            <div class="form-group col">
+              <label class="col-form-label">{{'user-management.nin' | translate}}<span class="text-danger px-1">*</span></label>
+              <input type="text" formControlName="nin" [value]="user?.nin" class="form-control" required
+                     [class.is-invalid]="f.nin.invalid && f.nin.touched" maxlength="10"/>
+              <div *ngIf="f.nin.invalid && f.nin.touched" class="invalid-feedback">
+                <div *ngIf="f.nin.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.nin.errors.invalid">{{f.nin.errors['invalid'] | translate}}</div>
+                <div *ngIf="f.nin.errors['invalid-nin-or-iqama']">{{f.nin.errors['invalid-nin-or-iqama'] | translate}}</div>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label class="col-form-label">{{'general.date_of_birth' | translate}}<span  class="text-danger px-1">*</span></label>
+
+              <hijri-gregorian-datepicker [showLabel]="false"
+                                          name="dateOfBirthGregorian"
+                                          buttonClass="dcc-primary"
+                                          class="datepicker {{f.dateOfBirthGregorian.errors && f.dateOfBirthGregorian.touched ? 'is-invalid' : ''}}"
+                                          [(selectedDate)]="selectedDateOfBirth"
+                                          (selectedDateChange)="onDateOfBirthChange($event)"
+                                          [isRequired]="true"
+                                          [maxGreg]="maxDateOfBirthGregorian"
+                                          [maxHijri]="maxDateOfBirthHijri"
+                                          [GregLabel]="'general.cal_greg' | translate"
+                                          [hijriLabel] ="'general.cal_hijri' | translate"
+                                          [selectedDateType]="selectedDateType"
+                                          [disabled]="false"
+                                          [readonly]="true"
+                                          #datePicker>
+              </hijri-gregorian-datepicker>
+
+              <div class="text-dcc-primary date-eq" *ngIf="dateString">
+                {{'general.cal_eq' | translate}} {{dateString}}
+              </div>
+
+              <div *ngIf="f.dateOfBirthGregorian.errors && f.dateOfBirthGregorian.touched" class="invalid-feedback date-eq">
+                <div *ngIf="f.dateOfBirthGregorian.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.dateOfBirthGregorian.errors.invalid" translate>{{f.dateOfBirthGregorian.errors['invalid']}}</div>
+              </div>
+
+            </div>
+          </div>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+            <div class="form-group col">
+              <label class="col-form-label">{{'user-management.gender' | translate}}<span class="text-danger px-1">*</span></label>
+
+              <div class="form-control p-0 btn-group btn-group-toggle" ngbRadioGroup name="radioGender">
+                <label ngbButtonLabel class="btn" [class.btn-primary]="userForm.value['gender'] === 'M'">
+                  <input ngbButton type="radio" formControlName="gender" [value]="'M'"> {{'user-management.male' | translate}}
+                </label>
+                <label ngbButtonLabel class="btn" [class.btn-dcc-primary]="userForm.value['gender'] === 'F'">
+                  <input ngbButton type="radio" formControlName="gender" [value]="'F'"> {{'user-management.female' | translate}}
+                </label>
+              </div>
+
+              <div *ngIf="f.gender.invalid && f.gender.touched" class="invalid-feedback">
+                <div *ngIf="f.gender.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.gender.errors.invalid">{{f.gender.errors['invalid'] | translate}}</div>
+              </div>
+
+            </div>
+
+            <div class="form-group col">
+              <label class="col-form-label">{{'user-management.account_status' | translate}}<span class="text-danger px-1">*</span></label>
+
+              <div class="form-control p-0 btn-group btn-group-toggle" ngbRadioGroup name="radioActivated" formControlName="activated">
+                <label ngbButtonLabel class="btn" [class.btn-success]="userForm.value['activated']">
+                  <input ngbButton type="radio" [value]="true"> {{'user-management.activated' | translate}}
+                </label>
+                <label ngbButtonLabel class="btn" [class.btn-danger]="!userForm.value['activated']">
+                  <input ngbButton type="radio" [value]="false"> {{'user-management.not_activated' | translate}}
+                </label>
+              </div>
+
+              <div *ngIf="f.activated.invalid && f.activated.touched" class="invalid-feedback">
+                <div *ngIf="f.activated.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.activated.errors.invalid">{{f.activated.errors['invalid'] | translate}}</div>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label class="col-form-label">{{'general.mobile_number' | translate}}<span class="text-danger px-1">*</span></label>
+              <input type="text" formControlName="mobileNumber" [value]="'0'+user?.mobileNumber" class="form-control" required maxlength="10"
+                     placeholder="05xxxxxxxx" [class.is-invalid]="f.mobileNumber.errors && f.mobileNumber.touched"/>
+              <div *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" class="invalid-feedback">
+                <div *ngIf="f.mobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.mobileNumber.errors.invalid" translate>{{f.mobileNumber.errors['invalid']}}</div>
+                <div *ngIf="f.mobileNumber.errors['invalid-mobile-number']">{{f.mobileNumber.errors['invalid-mobile-number'] | translate}}</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2">
+
+            <div class="form-group col">
+              <label class="col-form-label">{{'general.email' | translate}}<span class="text-danger px-1">*</span></label>
+              <input type="text" formControlName="email" [value]="user?.email" class="form-control" required placeholder="mail@company.com"
+                     maxlength="50" [class.is-invalid]="f.email.errors && f.email.touched"/>
+              <div *ngIf="f.email.errors && f.email.touched" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.email.errors.invalid" translate>{{f.email.errors['invalid']}}</div>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label class="col-form-label">{{ "user-management.role" | translate }}<span class="text-danger px-1">*</span></label>
+              <select formControlName="role" class="custom-select {{f.role.errors && f.role.touched ? 'is-invalid' : ''}}"
+                      required [class.text-danger]="f.role.value && !f.role.value.activated" (ngModelChange)="onMainRoleChange($event)">
+                <option [ngValue]="null" disabled selected class="hidden">{{"general.select_option" | translate}}</option>
+                <option *ngFor="let role of roles" [ngValue]="role" [class.text-danger]="!role?.activated" [class.text-black-50]="role?.activated">
+                  {{ currentLanguage.startsWith("en") ? role.nameEnglish : role.nameArabic }}
+                  <span *ngIf="!role?.activated">({{'user-management.not_activated' | translate}})</span>
+                </option>
+              </select>
+
+              <div *ngIf="f.role.errors && f.role.touched" class="invalid-feedback">
+                <div *ngIf="f.role.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div *ngIf="f.role.errors.invalid" translate>{{f.role.errors['invalid']}}</div>
+              </div>
+            </div>
+
+            <div class="form-group col">
+              <label class="col-form-label">{{ "user-management.additional_role" | translate }}</label>
+              <ng-multiselect-dropdown formControlName="additionalRoles" [placeholder]="'general.select_option' | translate"
+                                       [settings]="dropdownSettings" [data]="additionalRoles" [disabled]="!mainSelectedRole">
+              </ng-multiselect-dropdown>
+            </div>
+
+
+          </div>
+
+        </div>
+
+          <div class="col-md-3">
+            <div class="avatarBox">
+              <div class="avatar">
+                <img src="assets/images/space.png" [class.o-25]="!user?.id"
+                     [ngStyle]="{'background-image': 'url(\'' + (this.user.avatar ? 'data:image/jpeg;base64,'+this.user.avatar : url) + '\')'}" />
+              </div>
+              <label class="btn btn-secondary my-3" *ngIf="user?.id">
+                <input type="file" class="hidden" name="avatarFile" aria-describedby="inputGroupFileAddon01" (change)="loadAvatar($event);"/>
+                <a>{{'user-management.change_avatar' | translate}}</a>
+              </label>
+              <small class="text-black-50 my-3" *ngIf="!user?.id">{{ "user-management.avatar-no-edit-text" | translate }}</small>
+            </div>
+          </div>
+
+      </div>
+
+
+    </form>
+
+
+    <div class="content__footer__action">
+      <button type="button" [routerLink]="['/users/list']" class="btn btn-outline-secondary btn-w100 px-5 mr-3">
+        {{ "general.btn_cancel" | translate }}
+      </button>
+      <button type="button" (click)="saveOrUpdate()" class="btn btn-outline-dcc-primary px-5 mr-3">
+        {{ "general.btn_save" | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

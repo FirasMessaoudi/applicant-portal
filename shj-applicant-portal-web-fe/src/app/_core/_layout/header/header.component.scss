@@ -1,0 +1,73 @@
+@import "variables";
+@import "mixins";
+.dropdown-menu {
+    position: absolute;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+    border: 0;
+    &::before {
+        content: "";
+        background-color: transparent;
+        border-right: 8px solid transparent;
+        position: absolute;
+        border-left: 8px solid transparent;
+        border-bottom: 8px solid #f5f5f5;
+        border-top: 8px solid transparent;
+        top: -15px;
+        left: 18px;
+    }
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #fff;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+    padding-bottom: calc(1rem - 3px);
+}
+
+.logo .title {
+    font-size: 1.5rem;
+    color: $dcc-primary;
+}
+
+.logo img {
+    height: 5rem;
+}
+
+
+/* stroke */
+
+a.stroke {
+    &.nav-link {
+        @include p(3);
+        font-size: 1.25rem;
+        position: relative;
+        &:hover {
+            background-color: darken($dcc-primary, 1%);
+        }
+    }
+    &.nav-link,
+    &.nav-link:before {
+        transition: all 0.5s;
+    }
+    &.nav-link:before {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 0%;
+        content: ".";
+        color: transparent;
+        background: rgba(255, 255, 255, 0.5);
+        height: 3px;
+    }
+    &.nav-link:hover:before {
+        width: 100%;
+    }
+    &.nav-link.router-link-active {
+        color: rgba(255, 255, 255, 1);
+        &:before {
+            width: 100%;
+        }
+    }
+}

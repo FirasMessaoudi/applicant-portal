@@ -1,0 +1,16 @@
+to add errors to server and override default error pages:
+
+in ${catalina.home}/conf/server.xml change the following
+
+<Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+		<Valve className="org.apache.catalina.valves.ErrorReportValve"
+			errorCode.400="webapps/ROOT/dcc-error/400.html"
+			errorCode.401="webapps/ROOT/dcc-error/401.html"
+			errorCode.403="webapps/ROOT/dcc-error/401.html"
+			errorCode.404="webapps/ROOT/dcc-error/404.html"
+			errorCode.500="webapps/ROOT/dcc-error/500.html"
+			errorCode.0="webapps/ROOT/dcc-error/500.html"
+			showReport="false"
+			showServerInfo="false" />

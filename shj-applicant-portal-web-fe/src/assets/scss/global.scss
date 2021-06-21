@@ -1,0 +1,56 @@
+@import "vendors";
+@import "utility";
+@import "fonts";
+@import "dcc-svg";
+html,
+body {
+    height: 100%;
+}
+
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    @include media-breakpoint-up(lg) {
+        font-size: 14px;
+    }
+    @include media-breakpoint-down(md) {
+        font-size: 12px;
+    }
+}
+
+a {
+    transition: all 0.2s ease-in;
+}
+
+*:focus {
+    outline: none;
+}
+
+ol,
+ul,
+dl {
+    padding: 0;
+    list-style: none;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Layout ..............................................................................*/
+
+@import "layout";
+@import "login";
+@import "landing";
+@import "pages";
+@import "wizard";
+@import "table";
+@import "charts";
+@import "hamburger-icon";
+@import "animation";
+@import "time-line";
+@import "accordion";
+.min-width-auto {
+    min-width: auto;
+}

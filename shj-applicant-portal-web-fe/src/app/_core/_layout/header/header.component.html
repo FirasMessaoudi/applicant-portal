@@ -1,0 +1,102 @@
+<header class="header-wrapper" [ngClass]="{ light_navbar: showNavbar }">
+    <div class="d-flex justify-content-between align-items-center w-100" [ngClass]="{ container: showNavbar, 'px-md-0': showNavbar }">
+        <div class="left-header d-flex">
+            <!--BACK BUTTON-->
+            <a *ngIf="!showNavbar" class="d-block" (click)="goBack()" href="javascript:void(0);">
+                <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
+                <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
+            </a>
+
+            <!-- LOGO -->
+            <div *ngIf="showNavbar" class="logo flex-center py-3" [ngClass]="{ 'px-md-2': showNavbar }">
+                <a href="javascript:void(0)" [routerLink]="['/']">
+                    <img src="assets/images/logo.png" alt="logo" />
+                </a>
+            </div>
+
+            <!-- NAVIGATION  -->
+            <div *ngIf="showNavbar" class="d-flex">
+                <nav class="navbar p-0 d-none d-md-flex mx-5">
+                    <div class="main-nav">
+                        <ul class="nav d-flex">
+                            <li routerLinkActive="active">
+                                <a (click)="isActive = false" class="py-2 d-block h6" [routerLink]="['/cards/details/1']">
+                  بياناتي
+                </a>
+                            </li>
+                            <li routerLinkActive="active">
+                                <a (click)="isActive = false" class="py-2 d-block h6" [routerLink]="['/hajj-rituals']">
+                  برنامجي
+                </a>
+                            </li>
+                            <li routerLinkActive="active">
+                                <a (click)="isActive = false" class="py-2 d-block h6" routerLink="/hajj-journey/list">الجدول الزمني
+                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!--- PROFILE & SETTING-->
+        <div class="nav-right">
+            <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
+                <li class="dropdown flex-center">
+                    <a class="nav-link d-flex align-items-center dropdown-toggle noArrow" tittle="معلوماتي" href="javascript:void(0)" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
+                        <div class="mx-3">
+                            <h6 class="text-dcc-primary m-0">
+                                {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+                            </h6>
+                            <small class="text-black-50">
+                <ng-container *ngFor="let userRole of currentUser?.userRoles">
+                  <ng-container *ngIf="userRole?.mainRole">
+                    {{
+                      currentLanguage.startsWith("ar")
+                        ? userRole?.role.labelAr
+                        : userRole?.role.labelEn
+                    }}
+                  </ng-container>
+                </ng-container>
+              </small>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="userMenuLink">
+                        <a class="dropdown-item" (click)="viewCurrentUserProfile()" href="javascript:void(0)" routerLinkActive="router-link-active">
+              {{ "header.my_profile" | translate }}
+            </a>
+                        <a class="dropdown-item" [routerLink]="['/change-password']" routerLinkActive="router-link-active">
+              {{ "header.change_password" | translate }}
+            </a>
+                        <div class="dropdown-divider"></div>
+                        <ng-container>
+                            <a class="dropdown-item" href="javascript:void(0)" *ngIf="currentLanguage.startsWith('en')" (click)="setLanguage('ar-SA')">
+                                <span>عربي</span>
+                            </a>
+                            <a class="dropdown-item" href="javascript:void(0)" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+                                <span>English</span>
+                            </a>
+                        </ng-container>
+                    </div>
+                </li>
+                <li class="position-relative">
+                    <a class="nav-link" href="javascript:void(0)" ngbTooltip="">
+                        <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>
+                    </a>
+                    <span class="notif bg-red">4</span>
+                </li>
+                <li class="position-relative">
+                    <a class="nav-link" href="javascript:void(0)" ngbTooltip="">
+                        <svg-icon styleClass="fa-w-16 h4" icon="cog"></svg-icon>
+                    </a>
+                </li>
+                <li class="position-relative">
+                    <a class="nav-link" href="javascript:void(0)" (click)="logout()" ngbTooltip="{{ 'header.logout' | translate }}">
+                        <svg-icon styleClass="fa-w-16 h4 flip" icon="logout"></svg-icon>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>

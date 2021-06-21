@@ -1,0 +1,47 @@
+<div class="content__wrapper">
+  <!-- Header-->
+  <section class="mb-4">
+    <h3 class="text-dcc-primary mb-3">{{'printing-management.new_request' | translate}}</h3>
+  </section>
+
+  <aw-wizard class="steps-custom" [navBarLayout]="'large-empty'">
+    <aw-wizard-step [navigationSymbol]="{ symbol: '1' }">
+      <ng-template awWizardStepTitle>
+        <span>{{'printing-management.prepare_request' | translate}}</span>
+      </ng-template>
+      <div class="section">
+        <app-step-one></app-step-one>
+      </div>
+      <div class="bg-lighter mx-30 p-4 text-center">
+        <button type="button" routerLink="/print-requests/list" class="btn btn-outline-secondary rounded-22 px-5 mr-3">{{'general.btn_cancel' | translate}}</button>
+        <button type="button" awNextStep (click)="saveStepOne()" [disabled]="false" class="btn btn-dcc-primary rounded-22 px-5 mr-3">{{'general.btn_next' | translate}}</button>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step [navigationSymbol]="{ symbol: '2' }">
+      <ng-template awWizardStepTitle>
+        <span>{{'printing-management.create_batch' | translate}}</span>
+      </ng-template>
+      <div class="section">
+        <app-step-two></app-step-two>
+      </div>
+      <div class="bg-lighter mx-30 p-4 text-center">
+        <button type="button" routerLink="/print-requests/list" class="btn btn-outline-secondary rounded-22 px-5 mr-3">{{'general.btn_cancel' | translate}}</button>
+        <button type="button" class="btn btn-outline-dcc-primary rounded-22 px-5 mr-3" awPreviousStep>{{'general.btn_previous' | translate}}</button>
+        <button type="button" awNextStep (click)="saveStepTwo()" [disabled]="false" class="btn btn-dcc-primary rounded-22 px-5 mr-3" translate>general.btn_next</button>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step [navigationSymbol]="{ symbol: '3' }">
+      <ng-template awWizardStepTitle>
+        <span>{{'printing-management.confirm_request' | translate}}</span>
+      </ng-template>
+      <div class="section">
+        <app-step-three></app-step-three>
+      </div>
+      <div class="bg-lighter mx-30 p-4 text-center">
+        <button type="button" routerLink="/print-requests/list" class="btn btn-outline-secondary rounded-22 px-5 mr-3">{{'general.btn_cancel' | translate}}</button>
+        <button type="button" class="btn btn-outline-dcc-primary rounded-22 px-5 mr-3" awPreviousStep>{{'general.btn_previous' | translate}}</button>
+        <button type="button" [disabled]="false" (click)="confirm()" class="btn btn-dcc-primary rounded-22 px-5 mr-3" routerLink="/print-requests/success" >{{'printing-management.btn_confirm_request' | translate}}</button>
+      </div>
+    </aw-wizard-step>
+  </aw-wizard>
+</div>

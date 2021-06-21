@@ -1,0 +1,19 @@
+<nav class="sidebar-wrapper">
+  <div class="logo flex-center pt-3 pb-5">
+    <a href="javascript:void(0)" [routerLink]="['/']">
+      <img src="assets/images/logo.png" alt="logo"/>
+    </a>
+  </div>
+
+  <ul class="sideNav mt-4">
+    <li *ngFor="let link of links">
+      <a class="item" *ngIf="link.display" routerLink="{{ link.routerLink }}"
+         [class.active]="(link.routerLink === '/' && router.routerState.snapshot.url === link.routerLink) || (link.routerLink !== '/' && router.routerState.snapshot.url.indexOf(link.routerLink.split('/')[1]) != -1)">
+          <span class="navIcon">
+            <svg-icon styleClass="mx-3 {{ link.iconFa }}" icon="{{ link.icon }}"></svg-icon>
+          </span>
+        {{ link.title | translate }}
+      </a>
+    </li>
+  </ul>
+</nav>

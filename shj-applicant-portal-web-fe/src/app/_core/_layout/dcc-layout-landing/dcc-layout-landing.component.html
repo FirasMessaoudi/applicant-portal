@@ -1,0 +1,22 @@
+<div class="flex-center-column min-vh-100 landing-bg">
+    <span class="lang-switch">
+    <button
+      class="btn btn-md border btn-light px-3 mt-4 mb-3"
+      *ngIf="currentLanguage.startsWith('en')"
+      (click)="setLanguage('ar-SA')"
+    >
+      <span>عربي</span>
+    </button>
+    <button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+      <span>En</span>
+    </button>
+    </span>
+    <!-- CONTENT (ROUTER OUTLET) -->
+    <div class="row wrapper">
+        <div class="flex-center-column flex-grow-1">
+            <div class="z-index min-vw-100" [@scaleAnimation]="o.isActivated ? o.activatedRoute : ''">
+                <router-outlet #o="outlet" (activate)="onActivate($event)"></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>

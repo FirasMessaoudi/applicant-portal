@@ -1,0 +1,20 @@
+<nav aria-label="breadcrumb" class="pt-2">
+    <ol class="breadcrumb bg-white mb-0 px-0">
+        <li class="breadcrumb-item active" aria-current="page ">الرئيسية</li>
+        <li class="breadcrumb-item active" aria-current="page ">بياناتي</li>
+    </ol>
+</nav>
+
+<div class="title__Page justify-content-start d-flex flex-column flex-md-row mt-md-1">
+    <h3 class="sectionTitle">بطاقتي</h3>
+</div>
+<section class="badge__section pb-4">
+    <div class="d-flex justify-content-center">
+        <app-badge></app-badge>
+    </div>
+    <!--BACK BUTTON-->
+    <a class="d-block my-2" (click)="goBack()" href="javascript:void(0);">
+        <svg-icon styleClass="mr-2 flip" icon="arrow-right"></svg-icon>
+        <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
+    </a>
+</section>

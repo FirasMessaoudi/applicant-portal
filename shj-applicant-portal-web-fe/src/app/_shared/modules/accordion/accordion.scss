@@ -1,0 +1,36 @@
+.accordion-title {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  background-color: rgba(251, 251, 251, 0.53);
+  border: 1px #DFE5EA solid;
+  border-radius: 0.5rem 0.5rem 0 0;
+  font-weight: 700;
+
+  .chevron {
+    transition: all 0.4s ease;
+    width: 1rem;
+  }
+
+  &.active {
+    .chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  &:hover:not(.active) {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border-bottom-color: rgba(0, 159, 136, 0.999);
+    background-color: #f9f9f9;
+  }
+
+}
+
+.accordion-content{
+  border: 1px #EAF1F6 solid;
+  margin-bottom:1rem;
+}

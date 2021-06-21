@@ -1,0 +1,163 @@
+<span class="lang_swtich_login">
+  <button
+    class="btn btn-md border btn-light px-3 mt-4 mb-3"
+    *ngIf="currentLanguage.startsWith('en')"
+    (click)="setLanguage('ar-SA')"
+  >
+    <span>عربي</span>
+</button>
+<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+    <span>En</span>
+  </button>
+</span>
+<div class="login__box">
+    <div class="text-center">
+        <img class="my-4" src="assets/images/logo.png" alt="logo" />
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
+        <div class="alert alert-danger" [hidden]="!error || loading">
+            {{ "login.invalid_username_or_password" | translate }}
+        </div>
+        <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
+            {{ "login.header_title" | translate }}
+        </h1>
+
+        <div class="form-group">
+            <div class="d-flex flex-column flex-lg-row justify-content-between">
+                <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
+                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" />
+                    <label class="custom-control-label" for="customRadioInline1">رقم البطاقة الذكية</label
+          >
+        </div>
+        <div
+          class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0"
+        >
+          <input
+            type="radio"
+            id="customRadioInline2"
+            name="customRadioInline1"
+            class="custom-control-input"
+            checked
+          />
+          <label class="custom-control-label" for="customRadioInline2"
+            >رقم الهوية</label
+          >
+        </div>
+        <div
+          class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0"
+        >
+          <input
+            type="radio"
+            id="customRadioInline3"
+            name="customRadioInline1"
+            class="custom-control-input"
+          />
+          <label class="custom-control-label" for="customRadioInline3"
+            >جواز السفر</label
+          >
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label
+        >{{ "general.nin_or_iqama" | translate
+        }}<span class="text-danger px-1">*</span></label
+      >
+      <input
+        type="text"
+        formControlName="username"
+        class="form-control"
+        required
+        [class.is-invalid]="f.username.invalid && f.username.touched"
+      />
+      <div
+        *ngIf="f.username.invalid && f.username.touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="f.username.errors.required">
+          {{ "general.field_validation_required" | translate }}
+        </div>
+        <div *ngIf="f.username.errors.pattern">
+          {{ "general.field_validation_pattern" | translate }}
+        </div>
+        <div *ngIf="f.username.errors.invalid">
+          {{ f.username.errors["invalid"] | translate }}
+        </div>
+        <div *ngIf="f.username.errors['invalid-nin-or-iqama']">
+          {{ f.username.errors["invalid-nin-or-iqama"] | translate }}
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label
+        >{{ "general.password" | translate
+        }}<span class="text-danger px-1">*</span></label
+      >
+      <input
+        type="password"
+        formControlName="password"
+        class="form-control"
+        required
+        [class.is-invalid]="f.password.invalid && f.password.touched"
+      />
+      <div
+        *ngIf="f.password.invalid && f.password.touched"
+        class="invalid-feedback"
+      >
+        <div *ngIf="f.password.errors.required">
+          {{ "general.field_validation_required" | translate }}
+        </div>
+        <div *ngIf="f.password.errors.invalid">
+          {{ f.password.errors["invalid"] | translate }}
+        </div>
+      </div>
+    </div>
+
+    <ngx-recaptcha2
+      #reCaptchaEl
+      *ngIf="showCaptcha"
+      type="Image"
+      formControlName="recaptcha"
+      class="recaptcha"
+      [siteKey]="recaptchaSiteKey"
+      hl="{{ currentLanguage }}"
+      (load)="onCaptchaLoad()"
+      (ready)="onCaptchaReady()"
+      (success)="onCaptchaSuccess($event)"
+    >
+    </ngx-recaptcha2>
+
+    <div class="form-group">
+      <button
+        class="btn btn-dcc-primary btn-block"
+        [disabled]="loginForm.invalid || loading"
+      >
+        <span
+          *ngIf="loading"
+          class="spinner-border spinner-border-sm mr-1"
+        ></span>
+        {{ "login.btn_login" | translate }}
+      </button>
+
+      <div class="d-flex justify-content-between">
+        <a [routerLink]="['/landing']" class="text-dcc-primary d-block mt-3">
+          دخول المؤسسات
+          <svg-icon styleClass="mx-2 flip" icon="arrow-left-light"></svg-icon>
+        </a>
+        <a
+          [routerLink]="['/reset-password']"
+          class="text-dcc-primary d-block mt-3"
+        >
+          {{ "login.btn_forgot_password" | translate }}
+        </a>
+      </div>
+    </div>
+
+    <div class="form-group mt-6 mb-0">
+      <a routerLink="/register" class="btn btn-outline-dcc-primary btn-block">
+        {{ "login.btn_new_registration" | translate }}
+      </a>
+    </div>
+  </form>
+</div>

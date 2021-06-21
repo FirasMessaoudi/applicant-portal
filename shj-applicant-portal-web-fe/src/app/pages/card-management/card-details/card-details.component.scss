@@ -1,0 +1,29 @@
+@import "variables";
+@import "mixins";
+@include media-breakpoint-down(sm) {
+    .nav-header nav {
+        width: 100%;
+    }
+    .item {
+        padding: 12px 16px 13px;
+        border-bottom: 2px solid transparent;
+        &.active {
+            color: #3b7937;
+            border-bottom: 2px solid #3b7937;
+        }
+    }
+    .item,
+    .middle {
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .scroll {
+        white-space: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar;
+    }
+    .scroll::-webkit-scrollbar {
+        display: none;
+    }
+}

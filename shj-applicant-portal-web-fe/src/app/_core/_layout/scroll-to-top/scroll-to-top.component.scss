@@ -1,0 +1,30 @@
+@import "variables";
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  opacity: 0;
+  transition: all .2s ease-in-out;
+
+  a{
+    display: flex;
+    align-items: center;
+    border-radius: 50rem;
+    width: 3rem;
+    height: 3rem;
+    color: $light;
+    background-color: #f1f2f5;
+
+  &:hover{
+    color: #fff;
+    background-color: $light;
+    @include box-shadow($box-shadow);
+  }
+  }
+}
+
+.show-scrollTop {
+  opacity: 1;
+  transition: all .2s ease-in-out;
+}

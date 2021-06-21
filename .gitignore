@@ -1,0 +1,30 @@
+*.java.hsp
+*.sonarj
+*.sw*
+.DS_Store
+.settings
+.springBeans
+bin
+target/
+*.log
+node_modules/
+dist/
+package-lock.json
+
+# Eclipse artifacts, including WTP generated manifests
+.classpath
+.project
+shj-*/src/main/java/META-INF/MANIFEST.MF
+
+# IDEA artifacts and output dirs
+*.iml
+*.ipr
+*.iws
+.idea
+out
+test-output
+atlassian-ide-plugin.xml
+
+# Test Automation files
+TestNG.xml
+automation_results/

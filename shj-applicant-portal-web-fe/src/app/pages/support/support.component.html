@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-md-12">
+    <button class="btn btn-md border btn-light px-3 mt-4 mb-3"
+            *ngIf="currentLanguage.startsWith('en')" (click)="setLanguage('ar-SA')">
+      <span>عربي</span>
+    </button>
+    <button class="btn btn-md border btn-light px-3 mt-4 mb-3"
+            *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+      <span>En</span>
+    </button>
+  </div>
+
+  <div class="col-md-12 login__box m-2" (click)="copyToClipboard('80012345')"  [ngbTooltip]="'support.click-to-copy' | translate">
+    <div class="login-box__wrapper">
+      <h2 class="text-dcc-primary font-weight-bold mb-2">{{'support.phone_header_title' | translate}}</h2>
+
+      <h1 class="text-secondary mt-4">80012345</h1>
+    </div>
+  </div>
+
+  <div class="col-md-12 login__box m-2" (click)="copyToClipboard('email@company.com')"  [ngbTooltip]="'support.click-to-copy' | translate">
+    <div class="login-box__wrapper">
+      <h2 class="text-dcc-primary font-weight-bold mb-2">{{'support.email_header_title' | translate}}</h2>
+      <h1 class="text-secondary mt-4">email@company.com</h1>
+    </div>
+  </div>
+</div>

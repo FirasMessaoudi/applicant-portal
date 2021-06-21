@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.elm.dcc.foundation</groupId>
+        <artifactId>dcc-foundation-parent</artifactId>
+        <version>1.8.0</version>
+    </parent>
+    <artifactId>shj-applicant-portal</artifactId>
+    <groupId>com.elm.shj.applicant.portal</groupId>
+    <packaging>pom</packaging>
+    <name>shj-applicant-portal</name>
+    <description>Applicant Portal</description>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <modules>
+        <module>shj-applicant-portal-orm</module>
+        <module>shj-applicant-portal-services</module>
+        <module>shj-applicant-portal-web</module>
+        <module>shj-applicant-portal-web-fe</module>
+        <module>shj-applicant-portal-automation</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ======================================================================================= -->
+            <!-- ================================= INTERNAL PROJECTS =================================== -->
+            <!-- ======================================================================================= -->
+            <dependency>
+                <groupId>com.elm.shj.applicant.portal.web</groupId>
+                <artifactId>shj-applicant-portal-web-fe</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>com.elm.shj.applicant.portal.services</groupId>
+                <artifactId>shj-applicant-portal-services</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.elm.shj.applicant.portal.orm</groupId>
+                <artifactId>shj-applicant-portal-orm</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <!-- zxing -->
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>core</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.zxing</groupId>
+                <artifactId>javase</artifactId>
+                <version>${zxing.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.shedlock</groupId>
+                <artifactId>shedlock-spring</artifactId>
+                <version>${shedlock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.javacrumbs.shedlock</groupId>
+                <artifactId>shedlock-provider-jdbc-template</artifactId>
+                <version>${shedlock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ozlerhakan</groupId>
+                <artifactId>poiji</artifactId>
+                <version>${poiji.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.projectreactor</groupId>
+                <artifactId>reactor-core</artifactId>
+                <version>${reactor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.jcraft</groupId>
+                <artifactId>jsch</artifactId>
+                <version>${jsch.version}</version>
+            </dependency>
+            <!-- JDK DEPENDENCIES -->
+            <dependency>
+                <groupId>jakarta.xml.bind</groupId>
+                <artifactId>jakarta.xml.bind-api</artifactId>
+                <version>${jakarta.xml.bind-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.xml.ws</groupId>
+                <artifactId>jakarta.xml.ws-api</artifactId>
+                <version>${jakarta.xml.ws-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-rt</artifactId>
+                <version>${jaxws-rt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.xml.bind</groupId>
+                <artifactId>jaxb-impl</artifactId>
+                <version>${jaxb-impl.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <!-- OPEN API DEPENDENCIES -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-ui</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-webmvc-core</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-security</artifactId>
+                <version>${openapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit</artifactId>
+                <version>${dbunit.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.poi</groupId>
+                        <artifactId>poi</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.poi</groupId>
+                        <artifactId>poi-ooxml</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <properties>
+        <!-- ======================== -->
+        <!-- SCM PROPERTIES -->
+        <!-- ======================== -->
+
+        <!-- @OVERRIDE this property per each project -->
+        <repository.domain>dcc.elm.com.sa:9992</repository.domain>
+        <!-- @OVERRIDE this property per each project -->
+        <repository.user>dcc</repository.user>
+        <!-- @OVERRIDE this property per each project -->
+        <repository.name>dcc-foundation</repository.name>
+
+        <!-- upgrades from basic template -->
+        <fasterxml.jackson.version>2.12.2</fasterxml.jackson.version>
+        <spring.version>5.3.8</spring.version>
+        <spring.boot.version>2.5.1</spring.boot.version>
+        <spring.boot.mobile.version>1.5.22.RELEASE</spring.boot.mobile.version>
+        <spring-ws.version>3.1.1</spring-ws.version>
+        <spring.security.version>5.5.0</spring.security.version>
+        <spring.data.version>2.5.1</spring.data.version>
+        <hibernate.version>5.5.2.Final</hibernate.version>
+        <hibernate.validator.version>6.2.0.Final</hibernate.validator.version>
+        <!-- versions -->
+        <zxing.version>3.4.0</zxing.version>
+        <shedlock.version>4.7.1</shedlock.version>
+        <poiji.version>3.0.3</poiji.version>
+        <reactor.version>3.3.4.RELEASE</reactor.version>
+        <openapi.version>1.5.9</openapi.version>
+        <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+        <jakarta.xml.ws-api.version>2.3.3</jakarta.xml.ws-api.version>
+        <jaxws-rt.version>2.3.3</jaxws-rt.version>
+        <jaxb-impl.version>2.3.3</jaxb-impl.version>
+        <jsch.version>0.1.55</jsch.version>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${basedir}/shj-applicant-portal-orm/target/jacoco-ut/jacoco.xml,${basedir}/shj-applicant-portal-services/target/jacoco-ut/jacoco.xml,${basedir}/shj-applicant-portal-web/target/jacoco-ut/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+        <java.version>13</java.version>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkCount>3</forkCount>
+                    <reuseForks>true</reuseForks>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <!-- update compiler plugin dependency on ASM for Java 11 compatibility -->
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>6.2.1</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>dev</env>
+            </properties>
+        </profile>
+    </profiles>
+
+</project>

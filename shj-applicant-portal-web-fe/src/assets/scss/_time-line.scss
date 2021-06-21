@@ -1,0 +1,163 @@
+@import "animation";
+.small-circle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: block;
+    z-index: 2;
+    border: 2px solid $component-active-bg;
+    &.active {
+        background-color: $component-active-bg;
+    }
+    &.not-active {
+        border: 2px solid $component-active-bg;
+    }
+}
+
+.tl-list .tl-list-item:nth-of-type(even) {
+    background: #fff;
+}
+
+.tl-status-details {
+    border-radius: 10px;
+    overflow: hidden;
+    width: 400px;
+    max-width: 100%;
+    color: #777;
+    @extend .fadeInUp;
+    @extend .animate;
+    @extend .delay2;
+    @include media-breakpoint-down(sm) {
+        margin: 2rem 0;
+        background-color: #fff;
+    }
+}
+
+.tl-status-end,
+.tl-status-start {
+    @extend .d-flex;
+    @extend .flex-column;
+    @extend .justify-content-between;
+    @extend .align-items-center;
+    color: #747a73;
+    padding: 0 1rem;
+    .circle {
+        @extend .small-circle;
+        margin: 0 0 1rem;
+    }
+}
+
+.tl-list {
+    color: #000;
+    .tl-list-item {
+        .view_action_hide .btn {
+            visibility: hidden;
+            border-radius: 50px !important;
+            margin-bottom: 1rem;
+            @include media-breakpoint-down(sm) {
+                visibility: visible;
+            }
+        }
+        &:hover {
+            .view_action_hide .btn {
+                visibility: visible;
+            }
+        }
+        position: relative;
+        background-color: #fafafa;
+        .circle {
+            @extend .small-circle;
+            position: absolute;
+            top: 28px;
+        }
+        @include LTR {
+            padding-left: 3rem;
+        }
+        @include RTL {
+            padding-right: 3rem;
+        }
+        .tl-list-details {
+            position: relative;
+            -webkit-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+            @extend .pt-4;
+            @extend .pb-3;
+            &:before {
+                content: "";
+                position: absolute;
+                top: 46px;
+                height: 100%;
+                width: 1px;
+                z-index: 0;
+                border-right: 3px solid #eaeaea;
+                @include LTR {
+                    right: auto;
+                    left: 8px;
+                }
+                @include RTL {
+                    right: 8px;
+                    left: auto;
+                }
+            }
+            &:after {
+                content: "";
+                position: absolute;
+                top: 0px;
+                height: 30px;
+                width: 1px;
+                z-index: 0;
+                border-right: 3px solid #eaeaea;
+                @include LTR {
+                    right: auto;
+                    left: 8px;
+                }
+                @include RTL {
+                    left: auto;
+                    right: 8px;
+                }
+            }
+            .tl-d {
+                @include LTR {
+                    padding-left: 45px;
+                }
+                @include RTL {
+                    padding-right: 45px;
+                }
+            }
+        }
+    }
+}
+
+.tl-list-item:last-child {
+    .tl-list-details {
+        &::before {
+            display: none;
+        }
+    }
+}
+
+.tl-list-item:first-child {
+    .tl-list-details {
+        &::after {
+            display: none;
+        }
+    }
+}
+
+//animation //
+@for $i from 0 through 10 {
+    .stargger-animation:nth-child(#{$i + 1}) {
+        .tl-d {
+            @extend .animated;
+            @extend .fadeInRight;
+            animation-delay: 0s + ($i * 0.2);
+            animation-duration: 0.4s;
+        }
+        .circle {
+            @extend .animated;
+            @extend .scaleUp;
+            animation-delay: 0s + ($i * 0.2);
+            animation-duration: 0.4s;
+        }
+    }
+}

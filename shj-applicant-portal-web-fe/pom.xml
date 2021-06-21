@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+       <groupId>com.elm.shj.applicant.portal</groupId>
+       <artifactId>shj-applicant-portal</artifactId>
+       <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+
+  <groupId>com.elm.shj.applicant.portal.web</groupId>
+  <artifactId>shj-applicant-portal-web-fe</artifactId>
+  <packaging>pom</packaging>
+  <name>shj-applicant-portal-web-fe</name>
+  <description>Web Front-end Module</description>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>true</skipTests>
+          <argLine>-Dexec.skip</argLine>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>dist</directory>
+              <includes>
+                <include>**</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>angular-cli install</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>install</argument>
+                <argument>--no-package-lock</argument>
+              </arguments>
+              <environmentVariables>
+                <PUPPETEER_SKIP_CHROMIUM_DOWNLOAD>true</PUPPETEER_SKIP_CHROMIUM_DOWNLOAD>
+              </environmentVariables>
+            </configuration>
+          </execution>
+          <execution>
+            <id>angular-cli build</id>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <executable>npm</executable>
+              <arguments>
+                <argument>run-script</argument>
+                <argument>build:${env}</argument>
+              </arguments>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,30 @@
+@import "variables";
+@import "mixins.scss";
+
+/* =============================================================================
+    bootstrap
+================================================================================*/
+
+@import "bootstrap";
+@import "bootstrap-rtl";
+
+/* =============================================================================
+    Fortawesome
+================================================================================*/
+// $fa-font-path: "assets/fonts/fontawesome";
+
+// @import "./fontawesome/fontawesome";
+// .#{$fa-css-prefix}-li {
+//   left: -$fa-li-width;
+
+//   [dir="rtl"] & {
+//     left: unset;
+//     right: -$fa-li-width;
+//   }
+// }
+// @import "./fontawesome/solid";
+// @import "./fontawesome/light";
+// @import "./fontawesome/regular";
+// @import "./fontawesome/duotone";
+
+/*..............................................................................*/

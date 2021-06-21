@@ -1,0 +1,33 @@
+@import 'variables';
+
+.text-gray{
+    color:#ADB7BF
+}
+.text-gray9{
+    color:#9B9B9B
+}
+
+.notify{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 2.5rem;
+    background-color: rgba( $dcc-primary, .12 ); 
+    min-width: 104px;
+
+    @include media-breakpoint-down(md) {
+        min-width: 60px;
+    }
+}
+
+.percentage{
+    position:absolute;
+    top:40px
+}
+
+
+
+a.card:hover{
+    box-shadow: $box-shadow-lg;
+}
