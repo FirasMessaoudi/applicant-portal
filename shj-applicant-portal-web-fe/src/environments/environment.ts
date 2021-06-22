@@ -9,7 +9,7 @@ import {env} from './.env';
 export const environment = {
   production: false,
   dev: true,
-  mock: false,
+  mock: true,
   recaptchaSiteKey: '6LdzHFQUAAAAAKbbaojHVswZvdHgPuzC71VCIUlb',
   invisibleRecaptchaSiteKey: '6Le30G0UAAAAAM3Kwdf4V_feWJ-zD7OFAjxqO3Vo',
   version: env.npm_package_version + '-dev',

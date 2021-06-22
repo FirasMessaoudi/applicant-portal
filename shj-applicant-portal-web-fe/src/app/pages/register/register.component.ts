@@ -32,7 +32,7 @@ export class RegisterComponent implements OnInit {
   _minPickerDate: any;
   _maxPickerDate: any;
 
-  verfiy: boolean=false;
+  verify: boolean=false;
 
   @ViewChild('reCaptchaEl')
   captchaElem: InvisibleReCaptchaComponent;

@@ -74,14 +74,14 @@
               </ngx-invisible-recaptcha> -->
             </div>
             <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                <button class="btn btn-outline-dcc-primary px-5 w_full" (click)="verfiy = !verfiy">
+                <button class="btn btn-outline-dcc-primary px-5 w_full" (click)="verify = !verify">
           تحقق
         </button>
             </div>
         </div>
 
         <div class="mt-5">
-            <div [ngClass]="{ 'animated fadeInUp': verfiy, 'visibility_show': verfiy , 'visibility_hide': !verfiy }">
+            <div [ngClass]="{ 'animated fadeInUp': verify, 'visibility_show': verify , 'visibility_hide': !verify }">
                 <div class="form-group form-row">
                     <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
                         <label> الاسم </label>
@@ -113,7 +113,7 @@
                     <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
                 </a>
 
-                <button [ngClass]="{ 'visibility_show': verfiy , 'visibility_hide': !verfiy }" class="btn btn-dcc-primary w_full" >
+                <button [ngClass]="{ 'visibility_show': verify , 'visibility_hide': !verify }" class="btn btn-dcc-primary w_full" >
           تسجيل المستخدم
         </button>
             </div>

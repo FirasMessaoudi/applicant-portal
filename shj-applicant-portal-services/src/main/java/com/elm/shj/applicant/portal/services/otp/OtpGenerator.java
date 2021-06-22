@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -36,7 +37,7 @@ class OtpGenerator {
      * @param key the key to generate the otp
      * @return the generated otp
      * @throws NoSuchAlgorithmException in case of unknown algorithm
-     * @throws InvalidKeyException in case of invalid key
+     * @throws InvalidKeyException      in case of invalid key
      */
     public String generateOtp(String key) throws NoSuchAlgorithmException, InvalidKeyException {
         Assert.hasText(key, "Key is mandatory");
@@ -113,9 +114,9 @@ class OtpGenerator {
         }
 
         String base32 = trimmed.toString().toUpperCase(Locale.ENGLISH);
-        Base32 decoder = new Base32();
+        Base32 decoder = new Base32(true);
 
-        return decoder.decode(base32);
+        return decoder.decode(base32.getBytes(StandardCharsets.UTF_8));
     }
 
 }

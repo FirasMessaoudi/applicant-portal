@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {finalize} from "rxjs/operators";
-import {interval} from "rxjs";
+import {interval, Subscription} from "rxjs";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -19,6 +19,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
   otpForm: FormGroup;
   loading = false;
   timerContent: string = '';
+  timerSubscription: Subscription;
   formInputs = ['input1', 'input2', 'input3', 'input4'];
   @ViewChildren('formRow') rows: any;
 
@@ -31,7 +32,9 @@ export class OtpComponent implements OnInit, AfterViewInit {
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.isAuthenticated()) {
-      this.router.navigate(['/']);
+      // FIXME the timer is expiring before the token expiry cookie
+      // removing it for now to fix redirecting issue
+      // this.router.navigate(['/']);
     }
   }
 
@@ -74,9 +77,19 @@ export class OtpComponent implements OnInit, AfterViewInit {
         this.loading = false;
       })).subscribe(user => {
       console.log(user);
+      if (this.timerSubscription) {
+        this.timerSubscription.unsubscribe();
+      }
       // login successful if there's a jwt token in the response
       this.authenticationService.updateSubject(user);
-      this.router.navigate(['/'], {replaceUrl: true});
+      if (user.passwordExpired) {
+        console.log('redirect to change password page');
+        // redirect to change password page
+        this.router.navigate(['/change-password'], {replaceUrl: true});
+      } else {
+        console.log('redirect to / page');
+        this.router.navigate(['/'], {replaceUrl: true});
+      }
     }, error => {
       console.log(error);
       this.error = error;
@@ -112,6 +125,9 @@ export class OtpComponent implements OnInit, AfterViewInit {
   }
 
   goBack() {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
     this.router.navigate(['/login']);
   }
 
@@ -120,7 +136,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
     let minutes;
     let seconds;
 
-    interval(1000).subscribe(x => {
+    this.timerSubscription = interval(1000).subscribe(x => {
       minutes = Math.floor(timer / 60);
       seconds = Math.floor(timer % 60);
 
