@@ -4,14 +4,11 @@ import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
 import {PackageCatering} from "@model/package-catering.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {combineLatest} from "rxjs";
-import {map} from "rxjs/operators";
 import {CardService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
 import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {CountryLookup} from "@model/country-lookup.model";
-import {ApplicantHealthSpecialNeeds} from "@model/applicant-health-special-needs.model";
 
 @Component({
   selector: 'app-card-details',
@@ -37,7 +34,7 @@ export class CardDetailsComponent implements OnInit {
      "card-management.hamlah_details",
      "card-management.health_details",
      "card-management.tafweej_details",
-     "card-management.motawef_details" 
+     "card-management.motawef_details"
   ]
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -48,7 +45,7 @@ export class CardDetailsComponent implements OnInit {
               private lookupsService: LookupService) { }
 
   ngOnInit(): void {
-    this.loadLookups();
+    // this.loadLookups();
     // combineLatest(this.route.params, this.route.queryParams).pipe(map(results => ({
     //   params: results[0].id,
     //   qParams: results[1]

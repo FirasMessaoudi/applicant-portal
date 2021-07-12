@@ -8,7 +8,7 @@ export const environment = {
   recaptchaSiteKey: '6LdzHFQUAAAAAKbbaojHVswZvdHgPuzC71VCIUlb',
   invisibleRecaptchaSiteKey: '6Le30G0UAAAAAM3Kwdf4V_feWJ-zD7OFAjxqO3Vo',
   version: env.npm_package_version,
-  backendMappings: [{mapping:'/core', url:'https://[STAG_URL]/shj-applicant/'}, {mapping:'/engine',url:''}],
+  backendMappings: [{mapping:'/core', url:'https://[STAG_URL]/shj-applicant/'}],
   websocketConnection: [{url: ''}],
   defaultLanguage: 'ar-SA',
   termsAndConditionsUrl: '',
