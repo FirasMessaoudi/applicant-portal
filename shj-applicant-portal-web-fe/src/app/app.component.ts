@@ -23,7 +23,7 @@ import {environment} from "@env/environment";
   ]
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'dcc-elm-app';
+  title = 'Shaaer';
 
   rippleInitListener: any;
   rippleMouseDownListener: any;

@@ -1,37 +1,38 @@
 @import "variables";
 :host {
-     ::ng-deep router-outlet~* {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        width: 100%;
-        position: absolute;
-        background-color: #fff;
-        box-shadow: 0 5px 74px 55px rgba(73, 90, 103, 0.02);
-        @include media-breakpoint-up(sm) {
-            position: absolute;
-            border: 1px solid #eae2cf;
-            background-repeat: no-repeat;
-            background-image: url("assets/images/dots-pattern.png");
-            background-size: 200px 200px;
-            background-position-y: 108%;
-            background-position-x: 120%;
-            [dir="ltr"] & {
-                background-position-x: -10%;
-            }
-        }
+  ::ng-deep router-outlet~* {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 5px 74px 55px rgba(73, 90, 103, 0.02);
+    @include media-breakpoint-up(sm) {
+      position: absolute;
+      border: 1px solid #eae2cf;
+      background-repeat: no-repeat;
+      background-image: url("assets/images/dots-pattern.png");
+      background-size: 200px 200px;
+      background-position-y: 108%;
+      background-position-x: 120%;
     }
+
+
+    @media  screen and (min-width: 768px)  and (max-height: 900px) {
+      margin-top: 300px;
+    }
+  }
 }
 
 .logo .title {
-    font-size: 1.5rem;
-    color: $dcc-primary;
+  font-size: 1.5rem;
+  color: $dcc-primary;
 }
 
 .logo img {
-    height: 5rem;
+  height: 5rem;
 }
 
 .wrapper {
-    height: 100vh !important;
+  height: 100vh !important;
 }

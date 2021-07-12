@@ -1,21 +1,145 @@
-.table th{
-    color: #5B6067;
-    border-top: 0;
-}
-.table td{
-    color: #8596A9;
-    border-color: #EAEEF1;
+@import "variables";
+
+// color definitions
+$wz-color-current: $dcc-primary;
+$wz-color-done: $dcc-primary;
+$wz-color-editing: darken( $dcc-primary, 10% );
+
+@import "node_modules/angular-archwizard/archwizard.scss";
+/*=====================================================================
+Steps (Wizard)
+=====================================================================*/
+
+.wizard-steps{
+  @include py(4);
+  background-color: #fff;
+  border-radius: 0 0 $border-radius $border-radius;
 }
 
-.page-item{
-    font-size: 80%;
-    
-    .page-link{
-        cursor: pointer;
+.steps-custom {
+
+  li{
+
+    .label{
+      top: -43px !important;
+      position: absolute;
+      background-color: #F8F8F8;
+      padding: 0 20px 10px;
+      z-index: 1;
+
+      [dir='rtl'] & {
+        right: calc(50% + 11px) !important;
+      }
+
+      [dir='ltr'] & {
+        left: calc(50% + 11px) !important;
+      }
     }
-    &.disabled{
-        .page-link{
-            color: $gray-300 !important;
-        }
+
+    .step-indicator{
+      width: 35px !important;
+      height: 35px !important;
+      line-height: 35px !important;
+      top: -43px !important;
+      color: #777 !important;
+      background-color: #fff;
     }
+    &.done .step-indicator,
+    &.current .step-indicator,
+    &.editing .step-indicator{
+
+      color: #fff !important;
+
+      &::after {
+        display: block;
+        content: '';
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 50%;
+      }
+    }
+
+    &.current .step-indicator {
+      background-color: $wz-color-current;
+    }
+    &.done .step-indicator{
+      background-color: #fff;
+      color:  $dcc-primary;
+      &:after{
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: all 0.5s ease-in-out;
+        text-indent: 0;
+        opacity: 1;
+        width: 100%;
+        height: 100%;
+        content:'';
+
+        background-image: url("data:image/svg+xml;base64,PHN2ZyBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhbCIgZGF0YS1pY29uPSJjaGVjayIgY2xhc3M9InN2Zy1pbmxpbmUtLWZhIGZhLWNoZWNrIGZhLXctMTQiIHJvbGU9ImltZyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNDQ4IDUxMiI+PHBhdGggZmlsbD0iIzNCNzkzNyIgZD0iTTQxMy41MDUgOTEuOTUxTDEzMy40OSAzNzEuOTY2bC05OC45OTUtOTguOTk1Yy00LjY4Ni00LjY4Ni0xMi4yODQtNC42ODYtMTYuOTcxIDBMNi4yMTEgMjg0LjI4NGMtNC42ODYgNC42ODYtNC42ODYgMTIuMjg0IDAgMTYuOTcxbDExOC43OTQgMTE4Ljc5NGM0LjY4NiA0LjY4NiAxMi4yODQgNC42ODYgMTYuOTcxIDBsMjk5LjgxMy0yOTkuODEzYzQuNjg2LTQuNjg2IDQuNjg2LTEyLjI4NCAwLTE2Ljk3MWwtMTEuMzE0LTExLjMxNGMtNC42ODYtNC42ODYtMTIuMjg0LTQuNjg2LTE2Ljk3IDB6Ij48L3BhdGg+PC9zdmc+")
+
+      }
+    }
+
+    &:not(:last-child):after{
+      width: calc(100% - 75px) !important;
+    }
+  }
+}
+
+aw-wizard-navigation-bar{
+  background-color: #F5F8F4;
+  border: 1px #C0D1B0 solid;
+}
+
+.steps-tab{
+  box-shadow: 0 5px 74px 55px rgba(73,90,103,0.02);
+  ul.steps-indicator{
+    padding: 0 !important;
+    margin: 0 auto !important;
+    width: 80% !important;
+
+    li:after{
+      display: none;
+    }
+  }
+  .step-indicator{
+    display: none;
+  }
+  li {
+    &:not(:last-child):before {
+      display: none;
+    }
+
+    .label{
+      display: block !important;
+      padding-top: 0 !important;
+    }
+
+    .tabSet{
+      width: 100%;
+      display: inline-block;
+      background-color: #F8F8F8 ;
+      transition:all .3s ease-in-out;
+      @include py(3)
+    }
+
+    &:not(.current){
+      .tabSet:hover{
+        background-color: #FFF ;
+      }
+    }
+    &.current{
+      .tabSet{
+        background-color: #FEFEFE ;
+      }
+    }
+  }
+}
+
+aw-wizard-navigation-bar.horizontal.large-empty ul.steps-indicator li.editing .step-indicator{
+  border: 2px solid #808080;
 }
