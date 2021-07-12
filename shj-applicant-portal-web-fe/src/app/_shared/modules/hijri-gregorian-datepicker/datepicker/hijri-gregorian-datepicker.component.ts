@@ -32,7 +32,7 @@ export class HijriGregorianDatepickerComponent implements OnInit {
   @Input() label: string;
   @Input() showLabel = true;
 
-  @Input() buttonClass: string = 'primary';
+  @Input() buttonClass: string = 'dcc-primary';
 
   @Input() readonly = false;
   @Input() isRequired = false;

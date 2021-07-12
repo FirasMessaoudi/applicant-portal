@@ -29,7 +29,12 @@
         margin-left: 0.5rem;
     }
 }
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {
+  [dir="ltr"] & {
+    background-position: 3px;
+  }
 
+}
 .input-group-text {
     [dir="rtl"] & {
         border-right-width: 0;
@@ -200,15 +205,25 @@ ngb-datepicker-navigation-select>.custom-select {
 }
 
 .m-w-l {
-    margin-right: 2px;
     border: 0;
     box-shadow: none !important;
+  @include RTL{
+    margin-right: 2px;
+  }
+  @include LTR{
+    margin-left: 2px;
+  }
 }
 
 .m-w-r {
-    margin-left: 2px;
     border: 0;
     box-shadow: none !important;
+  @include RTL{
+    margin-left: 2px;
+  }
+  @include LTR{
+    margin-right: 2px;
+  }
 }
 
 
