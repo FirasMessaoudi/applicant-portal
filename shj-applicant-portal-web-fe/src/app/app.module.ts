@@ -7,7 +7,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {environment} from 'environments/environment';
 import {SharedModule} from "@shared/shared.module";
-import { PrintingManagementModule } from './pages/printing-management/printing-management.module';
 
 
 @NgModule({
@@ -17,8 +16,7 @@ import { PrintingManagementModule } from './pages/printing-management/printing-m
     AppRoutingModule,
     CoreModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    SharedModule,
-    PrintingManagementModule
+    SharedModule
   ],
   exports: [],
   providers: [],

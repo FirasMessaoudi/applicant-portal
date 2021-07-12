@@ -5,7 +5,6 @@ import {Card} from "@model/card.model";
 import {catchError} from "rxjs/internal/operators";
 import {Lookup} from "@model/lookup.model";
 import {CountryLookup} from "@model/country-lookup.model";
-import {ApplicantHealthSpecialNeeds} from "@model/applicant-health-special-needs.model";
 
 @Injectable({
   providedIn: 'root'
