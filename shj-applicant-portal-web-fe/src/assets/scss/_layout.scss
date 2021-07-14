@@ -45,6 +45,7 @@
     @include my(3);
     @include mx(4);
     box-shadow: $box-shadow-sm;
+  align-items: baseline;
 }
 
 .title__Page {
@@ -234,4 +235,17 @@ a:hover {
         margin-left: -1rem !important;
         margin-right: -1rem !important;
     }
+}
+
+
+body a{
+  &:hover{
+    color:rgba(46, 95, 43, 0.999);
+  }
+}
+
+body .btn-select{
+  background: #f6f7f5;
+  color: #3b7937;
+  border: 0;
 }
