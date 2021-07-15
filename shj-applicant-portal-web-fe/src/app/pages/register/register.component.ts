@@ -191,7 +191,7 @@ export class RegisterComponent implements OnInit {
    verifyApplicant(){
      this.isApplicantVerified = false;
      let applicantDateOfBirth=this.registerForm.controls.dateOfBirthGregorian.value?this.registerForm.controls.dateOfBirthGregorian.value:this.registerForm.controls.dateOfBirthHijri.value;
-      this.registerService.verifyApplicant(this.registerForm.controls.uin.value,applicantDateOfBirth).subscribe(response => {
+      this.registerService.verifyApplicant(this.registerForm.controls.uin.value,this.registerForm.controls.dateOfBirthGregorian.value,this.registerForm.controls.dateOfBirthHijri.value).subscribe(response => {
          if(response) {
            this.user=response;
            this.registerForm.controls['fullName'].setValue(this.user.firstName+" "+this.user.fatherName+" "
