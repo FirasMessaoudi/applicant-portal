@@ -1,11 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChildren, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
-import {finalize} from "rxjs/operators";
+import {filter, finalize,  takeLast} from "rxjs/operators";
 import {interval, Subscription} from "rxjs";
-
+import {Location} from "@angular/common";
+import {TranslateService} from "@ngx-translate/core";
+import {NavigationService} from "@core/utilities/navigation.service";
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'otp.component.html',
@@ -21,6 +23,8 @@ export class OtpComponent implements OnInit, AfterViewInit {
   timerContent: string = '';
   timerSubscription: Subscription;
   formInputs = ['input1', 'input2', 'input3', 'input4'];
+  otpTitle:string;
+  previouseUrl:string;
   @ViewChildren('formRow') rows: any;
 
   constructor(
@@ -28,8 +32,14 @@ export class OtpComponent implements OnInit, AfterViewInit {
     private i18nService: I18nService,
     private route: ActivatedRoute,
     private router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private location: Location,
+    private translate: TranslateService,
+   private navigationService: NavigationService
+
   ) {
+
+
     // redirect to home if already logged in
     if (this.authenticationService.isAuthenticated()) {
       // FIXME the timer is expiring before the token expiry cookie
@@ -47,14 +57,26 @@ export class OtpComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+
+
+
     this.createForm();
     this.authenticationService.otpData.subscribe(data => {
-      if (!data || !data.otpExpiryMinutes) {
+      if(data.actionType=="login"){
+        this.otpTitle=this.translate.instant("login.header_title");
+        this.previouseUrl="/login";
+      }
+      else {
+        this.otpTitle=this.translate.instant("register.header_title");
+        this.previouseUrl="/register";
+      }
+      if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-      this.otpData = data;
-      this.startTimer(data.otpExpiryMinutes);
-      this.mask = data.mobileNumber;
+
+      this.otpData = data.user;
+      this.startTimer(data.user.otpExpiryMinutes);
+      this.mask = data.user.mobileNumber;
     });
   }
 
@@ -71,7 +93,8 @@ export class OtpComponent implements OnInit, AfterViewInit {
     console.log(pin);
 
     this.loading = true;
-    this.authenticationService.validateOtp(this.otpData.name, pin)
+    if(this.previouseUrl=="/login"){
+    this.authenticationService.validateOtpForLogin(this.otpData.name, pin)
       .pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
@@ -82,14 +105,6 @@ export class OtpComponent implements OnInit, AfterViewInit {
       }
       // login successful if there's a jwt token in the response
       this.authenticationService.updateSubject(user);
-      if (user.passwordExpired) {
-        console.log('redirect to change password page');
-        // redirect to change password page
-        this.router.navigate(['/change-password'], {replaceUrl: true});
-      } else {
-        console.log('redirect to / page');
-        this.router.navigate(['/'], {replaceUrl: true});
-      }
     }, error => {
       console.log(error);
       this.error = error;
@@ -98,8 +113,36 @@ export class OtpComponent implements OnInit, AfterViewInit {
         this.otpForm.get(field).setValue(null);
         this.rows._results[0].nativeElement.focus();
       });
+
     });
+    }
+    else{
+        this.authenticationService.validateOtpForRegister(this.otpData.name, pin)
+          .pipe(finalize(() => {
+            this.otpForm.markAsPristine();
+            this.loading = false;
+          })).subscribe(user => {
+          console.log(user);
+          if (this.timerSubscription) {
+            this.timerSubscription.unsubscribe();
+          }
+
+          this.authenticationService.setOtpVerifiedForRegisterObs(user);
+
+          }, error => {
+          console.log(error);
+          this.error = error;
+          // reset form
+          Object.keys(this.otpForm.controls).forEach(field => {
+            this.otpForm.get(field).setValue(null);
+            this.rows._results[0].nativeElement.focus();
+          });
+
+        });
+
+    }
   }
+
 
   private createForm() {
     const group: any = {};
@@ -128,7 +171,8 @@ export class OtpComponent implements OnInit, AfterViewInit {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
-    this.router.navigate(['/login']);
+
+    this.router.navigate([this.previouseUrl]);
   }
 
   startTimer(durationMinutes) {

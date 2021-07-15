@@ -81,6 +81,8 @@
     "email": "البريد الالكتروني",
     "mobile_number": "رقم الجوال",
     "password": "كلمة المرور",
+    "confirm_password": "تأكيد كلمة المرور",
+    "register_user": "تسجيل المستخدم",
     "field_pattern_not_matched": "المدخل غير مطابق",
     "search": "بحث",
     "nin": "رقم الهوية",
@@ -101,7 +103,8 @@
     "btn_next": "التالي",
     "btn_previous": "السابق",
     "label_yes": "نعم",
-    "label_no": "لا"
+    "label_no": "لا",
+    "confirm_password_mismatch": "كلمة المرور وتأكيد كلمة المرور غير متطابقتان"
   },
   "header": {
     "welcome": "مرحبا",
@@ -214,7 +217,11 @@
     "link_legal_content": "أقر وأوافق على",
     "link_legal_title": "الشروط والاحكام",
     "link_legal_accept": "الرجاء قراءة وقبول الشروط والأحكام للمتابعة!",
-    "terms_and_conditions_text": "للإطلاع على الشروط والأحكام الرجاء الظغط على <a target='_blank' href='{{url}}'>الرابط</a>"
+    "terms_and_conditions_text": "للإطلاع على الشروط والأحكام الرجاء الظغط على <a target='_blank' href='{{url}}'>الرابط</a>",
+    "smart_id_number": "رقم البطاقة الذكية",
+    "verify": "تحقق",
+    "verification_error": "خطء أثناء التحقق",
+    "applicant_not_found": "المستخدم غير موجود"
   },
   "change-password": {
     "title": "تغيير كلمة المرور",

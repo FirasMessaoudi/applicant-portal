@@ -28,7 +28,7 @@
     @include media-breakpoint-up(sm) {
         visibility: show;
     }
-   
+
 }
 .visibility_hide{
     @include media-breakpoint-down(sm) {
@@ -37,4 +37,16 @@
     @include media-breakpoint-up(sm) {
         visibility: hidden;
     }
+}
+
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

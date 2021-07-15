@@ -18,6 +18,25 @@ export class AuthenticationService {
   public otpData: Observable<any>;
   private otpDataSubject: BehaviorSubject<any>;
 
+  private otpVerifiedForLogin: BehaviorSubject<any> = new BehaviorSubject(null);
+  private otpVerifiedForRegister: BehaviorSubject<any> = new BehaviorSubject(null);
+
+  getOtpVerifiedForLoginObs(): Observable<any> {
+    return this.otpVerifiedForLogin.asObservable();
+  }
+
+  setOtpVerifiedForLoginObs(user: any) {
+    this.otpVerifiedForLogin.next(user);
+  }
+
+  getOtpVerifiedForRegisterObs(): Observable<any> {
+    return this.otpVerifiedForRegister.asObservable();
+  }
+
+  setOtpVerifiedForRegisterObs(user: any) {
+    this.otpVerifiedForRegister.next(user);
+  }
+
   constructor(private http: HttpClient) {
     this.otpDataSubject = new BehaviorSubject<any>({});
     this.otpData = this.otpDataSubject.asObservable();
@@ -55,9 +74,20 @@ export class AuthenticationService {
    * @param otp the entered otp.
    * @return if entered otp is the same sent to the user.
    */
-  validateOtp(username: string, otp: string): Observable<any> {
+  validateOtpForLogin(username: string, otp: string): Observable<any> {
 
-    return this.http.post<any>('/core/api/auth/otp', {'idNumber': username, 'otp': otp})
+    return this.http.post<any>('/core/api/auth/otp-for-login', {'idNumber': username, 'otp': otp})
+      .pipe(map(response => {
+        console.log(JSON.stringify(response));
+        return response;
+      }), catchError((err: HttpErrorResponse) => {
+        return throwError(err);
+      }));
+  }
+
+  validateOtpForRegister(username: string, otp: string): Observable<any> {
+
+    return this.http.post<any>('/core/api/auth/otp-for-registration', {'idNumber': username, 'otp': otp})
       .pipe(map(response => {
         console.log(JSON.stringify(response));
         return response;
@@ -130,13 +160,14 @@ export class AuthenticationService {
   updateSubject(user: any) {
     if (user && user.principal) {
       this.setCurrentUser(user);
+      this.setOtpVerifiedForLoginObs(user);
     } else {
       this.setCurrentUser();
     }
   }
 
-  updateOtpSubject(user: any) {
-    this.otpDataSubject.next(user);
+  updateOtpSubject(data: any) {
+    this.otpDataSubject.next(data);
   }
 
   /**
@@ -146,5 +177,8 @@ export class AuthenticationService {
   hasAuthority(authority: EAuthority): boolean {
     return this.currentUser && this.currentUser.authorities && this.currentUser.authorities.filter(authorityObj => authorityObj.authority === authority.toString()).length > 0;
   }
+
+
+
 
 }

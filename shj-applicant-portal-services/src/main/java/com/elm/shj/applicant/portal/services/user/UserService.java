@@ -5,10 +5,15 @@ package com.elm.shj.applicant.portal.services.user;
 
 import com.elm.dcc.foundation.providers.email.service.EmailService;
 import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
+import com.elm.shj.applicant.portal.orm.entity.JpaRegistrationToken;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
+import com.elm.shj.applicant.portal.orm.repository.RegistrationTokenRepository;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
+import com.elm.shj.applicant.portal.services.dto.RegistrationTokenDto;
+import com.elm.shj.applicant.portal.services.dto.RoleDto;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
+import com.elm.shj.applicant.portal.services.dto.UserRoleDto;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
@@ -195,7 +200,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      */
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     public UserDto createUser(UserDto user, boolean selfRegistration) {
-        user.setPassword(generatePassword());
+
         // encode the password
         user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
         // set default values for new user
@@ -210,11 +215,20 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         user.setUpdateDate(null);
         user.setCreationDate(new Date());
         //update UserRole objects
-        user.getUserRoles().forEach(userRole -> {
-            userRole.setUser(user);
-            userRole.setCreationDate(new Date());
-            userRole.setId(0);
-        });
+//        if (selfRegistration) {
+//            RoleDto rDTO = new RoleDto();
+//            rDTO.setId(SYSTEM_USER_ROLE_ID);
+//            UserRoleDto userRoleDto = constructNewUserRoleDTO(user, rDTO);
+//            Set userRoles = new HashSet<UserRoleDto>();
+//            userRoles.add(userRoleDto);
+//            user.setUserRoles(userRoles);
+//        } else {
+//            user.getUserRoles().forEach(userRole -> {
+//                userRole.setUser(user);
+//                userRole.setCreationDate(new Date());
+//                userRole.setId(0);
+//            });
+//        }
         // save user information
         UserDto savedUser = save(user);
         // user created successfully, send SMS notification which contains the temporary password
@@ -226,6 +240,17 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         log.debug("Email notification status: {}", emailSent);
 
         return savedUser;
+    }
+
+
+
+    protected UserRoleDto constructNewUserRoleDTO(UserDto user, RoleDto rDTO) {
+        UserRoleDto userRoleDto = new UserRoleDto();
+        userRoleDto.setUser(user);
+        userRoleDto.setRole(rDTO);
+        userRoleDto.setMainRole(true);
+
+        return userRoleDto;
     }
 
     /**
@@ -314,4 +339,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
         return smsSent || emailSent;
     }
-}
+
+
+    }
+

@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.web.login;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.services.dto.RegistrationTokenDto;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
@@ -76,8 +77,8 @@ public class AuthenticationController {
      *
      * @return the generated token
      */
-    @PostMapping("/otp")
-    public ResponseEntity<JwtToken> otp(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
+    @PostMapping("/otp-for-login")
+    public ResponseEntity<JwtToken> otpForLogin(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         log.debug("OTP request handler");
         JwtToken authentication;
         try {
@@ -93,6 +94,17 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtToken(null, ((UsernamePasswordAuthenticationToken) authentication.getPrincipal()).getName(),
                 authentication.getAuthorities(), authentication.isPasswordExpired(), authentication.getFirstName(),
                 authentication.getLastName(), authentication.getId(), authentication.getUserRoles()));
+    }
+
+
+    @PostMapping("/otp-for-registration")
+    public ResponseEntity<RegistrationTokenDto> otpForRegistration(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
+
+        /**TODO:use data in credintial to check if there is record in dummy table that is created when the user is verified in admin portal
+            then reply to caller with this registration token that insure that user is verified
+         */
+//        credentials.get("idNumber"), credentials.get("otp");
+        return ResponseEntity.ok(null);
     }
 
     /**

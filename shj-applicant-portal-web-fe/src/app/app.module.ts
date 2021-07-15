@@ -8,6 +8,7 @@ import {AppComponent} from './app.component';
 import {environment} from 'environments/environment';
 import {SharedModule} from "@shared/shared.module";
 import { PrintingManagementModule } from './pages/printing-management/printing-management.module';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { PrintingManagementModule } from './pages/printing-management/printing-m
     CoreModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
     SharedModule,
-    PrintingManagementModule
+    PrintingManagementModule,
+    BrowserAnimationsModule
   ],
   exports: [],
   providers: [],

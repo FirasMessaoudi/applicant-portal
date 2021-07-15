@@ -82,6 +82,8 @@
     "email": "Email",
     "mobile_number": "Mobile Number",
     "password": "Password",
+    "confirm_password": "Confirm Password",
+    "register_user": "Register User",
     "field_pattern_not_matched": "Pattern does not match",
     "search" : "search",
     "nin": "NIN",
@@ -102,7 +104,8 @@
     "btn_next": "Next",
     "btn_previous": "Previous",
     "label_yes": "Yes",
-    "label_no": "No"
+    "label_no": "No",
+    "confirm_password_mismatch": "Password and Confirm Password Mismatch"
   },
 
   "header": {
@@ -221,7 +224,12 @@
     "link_legal_content": "I agree on",
     "link_legal_title": "Terms and Conditions",
     "link_legal_accept": "Please read and accept Terms and Conditions to proceed!",
-    "terms_and_conditions_text": "To view the terms and conditions, please click on the <a target='_blank' href='{{url}}'>link</a>"
+    "terms_and_conditions_text": "To view the terms and conditions, please click on the <a target='_blank' href='{{url}}'>link</a>",
+    "smart_id_number": "Smart ID Number",
+    "verify": "verify",
+    "verification_error": "Verification Error",
+    "applicant_not_found": "Applicant Not Found"
+
   },
 
   "change-password": {

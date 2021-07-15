@@ -1,0 +1,28 @@
+<span class="lang_swtich_login">
+  <button
+    class="btn btn-md border btn-light px-3 mt-4 mb-3"
+    *ngIf="currentLanguage.startsWith('en')"
+    (click)="setLanguage('ar-SA')"
+  >
+    <span>عربي</span>
+</button>
+<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
+        (click)="setLanguage('en-US')">
+    <span>En</span>
+  </button>
+</span>
+<div class="login__box">
+  <div class="text-center">
+    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
+  </div>
+  <div >
+    <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
+      {{ "this is Dummy Success Page" }}
+    </h1>
+    <div class="form-group form-row">
+
+      <button (click)="goBack()">{{"login.btn_login"|translate}}</button>
+    </div>
+
+  </div>
+</div>

@@ -6,38 +6,40 @@
   >
     <span>عربي</span>
 </button>
-<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
+        (click)="setLanguage('en-US')">
     <span>En</span>
   </button>
 </span>
 <div class="login__box">
-    <div class="text-center">
-        <img class="my-4" src="assets/images/logo.png" alt="logo" />
-    </div>
+  <div class="text-center">
+    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
+  </div>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
-        <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
-            {{ "register.header_title" | translate }}
-        </h1>
-        <div class="form-group form-row">
-            <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                <label>رقم البطاقة الذكية<span class="text-danger px-1">*</span></label>
-                <input type="text" formControlName="firstName" class="form-control" maxlength="25" />
-            </div>
-            <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                <label>{{ "general.date_of_birth" | translate
-          }}<span class="text-danger px-1">*</span></label
-        >
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-box__wrapper" >
+    <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
+      {{ "register.header_title" | translate }}
+    </h1>
+    <div class="form-group form-row">
+      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+        <label>{{"register.smart_id_number"|translate}}<span class="text-danger px-1">*</span></label>
+        <input id="uin" type="number" formControlName="uin" class="form-control"
+               onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length<=9"
+               min="0" step="1" [class.is-invalid]="f.uin.invalid && f.uin.touched" maxlength="50"/>
+        <div *ngIf="f.uin.invalid && f.uin.touched" class="invalid-feedback">
+          <div *ngIf="f.uin.errors.required">{{'general.field_validation_required' | translate}}</div>
+          <div *ngIf="f.uin.errors.invalid">{{f.nin.errors['invalid'] | translate}}</div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+        <label>{{ "general.date_of_birth" | translate}}<span class="text-danger px-1">*</span></label>
 
         <hijri-gregorian-datepicker
           [showLabel]="false"
           name="dateOfBirthGregorian"
           buttonClass="dcc-primary"
           class="datepicker {{
-            f.dateOfBirthGregorian.errors && f.dateOfBirthGregorian.touched
-              ? 'is-invalid'
-              : ''
-          }}"
+            f.dateOfBirthGregorian.errors && f.dateOfBirthGregorian.touched? 'is-invalid': ''}}"
           [(selectedDate)]="selectedDateOfBirth"
           (selectedDateChange)="onDateOfBirthChange($event)"
           [isRequired]="false"
@@ -55,68 +57,139 @@
         <div class="text-dcc-primary date-eq" *ngIf="dateString">
           {{ "general.cal_eq" | translate }} {{ dateString }}
         </div>
+
+        <div *ngIf="f.dateOfBirthGregorian.invalid && f.dateOfBirthGregorian.touched" class="invalid-feedback date-eq">
+          <div *ngIf="f.dateOfBirthGregorian.errors.required">{{'general.field_validation_required' | translate}}</div>
+          <div *ngIf="f.dateOfBirthGregorian.errors.invalid"
+               translate>{{f.dateOfBirthGregorian.errors['invalid']}}</div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+        <ngx-invisible-recaptcha
+          #reCaptchaEl
+          type="Image"
+          [siteKey]="recaptchaSiteKey"
+          formControlName="recaptcha"
+          hl="{{ currentLanguage }}"
+          badge="Badge"
+          (load)="onCaptchaLoad()"
+          (ready)="onCaptchaReady()"
+          (success)="onCaptchaSuccess($event)">
+        </ngx-invisible-recaptcha>
       </div>
 
       <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-        <label>رمز التحقق<span class="text-danger px-1">*</span></label>
-                <input type="text" formControlName="nin" class="form-control" maxlength="10" />
-                <!-- <ngx-invisible-recaptcha
-                #reCaptchaEl
-                type="Image"
-                [siteKey]="recaptchaSiteKey"
-                formControlName="recaptcha"
-                hl="{{ currentLanguage }}"
-                badge="Badge"
-                (load)="onCaptchaLoad()"
-                (ready)="onCaptchaReady()"
-                (success)="onCaptchaSuccess($event)"
-              >
-              </ngx-invisible-recaptcha> -->
-            </div>
-            <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                <button class="btn btn-outline-dcc-primary px-5 w_full" (click)="verify = !verify">
-          تحقق
+        <button class="btn btn-outline-dcc-primary px-5 w_full" [disabled]="!dateString || !f.uin.value"
+                (click)="verifyApplicant()">
+          {{"register.verify"|translate}}
         </button>
+      </div>
+    </div>
+
+    <div class="mt-5">
+      <div
+        [ngClass]="{ 'animated fadeInUp': isApplicantVerified, 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }">
+        <div class="form-group form-row">
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label> الاسم </label>
+            <input type="text" class="form-control" formControlName="fullName" disabled
+                    />
+          </div>
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label> {{"general.mobile_number"|translate}}</label>
+            <input type="text" class="form-control" formControlName="mobileNumber" maxlength="10"
+                   [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
+
+            <div *ngIf="f.mobileNumber.invalid && f.mobileNumber.touched" class="invalid-feedback">
+              <div *ngIf="f.mobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
+              <div *ngIf="f.mobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
+              <div *ngIf="f.mobileNumber.errors.invalid">{{f.mobileNumber.errors['invalid'] | translate}}</div>
             </div>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label>   {{"general.email"|translate}} </label>
+            <input type="text" class="form-control" formControlName="email" maxlength="50"
+                   [class.is-invalid]="f.email.invalid && f.email.touched"/>
+            <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+              <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
+              <div *ngIf="f.email.errors.invalid">{{f.email.errors['invalid'] | translate}}</div>
+            </div>
+          </div>
         </div>
-
-        <div class="mt-5">
-            <div [ngClass]="{ 'animated fadeInUp': verify, 'visibility_show': verify , 'visibility_hide': !verify }">
-                <div class="form-group form-row">
-                    <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                        <label> الاسم </label>
-                        <input type="text" class="form-control" disabled value="سعيد مالك عبدالرحمن الزهراني" />
-                    </div>
-                    <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                        <label> رقم الجوال</label>
-                        <input type="text" class="form-control" value="0557959559" />
-                    </div>
-                    <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                        <label> البريد الإلكتروني </label>
-                        <input type="text" class="form-control" value="saeed345@gmail.com" />
-                    </div>
-                </div>
-                <div class="form-group form-row">
-                    <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                        <label>كلمة المرور</label>
-                        <input type="password" class="form-control" />
-                    </div>
-                    <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-                        <label>تأكيد كلمة المرور</label>
-                        <input type="password" class="form-control" />
-                    </div>
-                </div>
+        <div class="form-group form-row">
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label>{{"general.password"|translate}}</label>
+            <input type="password" formControlName="password"
+                   [ngClass]="{'is-invalid': f.password.errors && f.password.touched}" class="form-control"/>
+            <div *ngIf="f.password.errors && f.password.touched" class="text-danger" >
+              <div *ngIf="f.password.errors.required">
+                {{ "general.field_validation_required" | translate }}
+              </div>
+              <div *ngIf="f.password.errors.minLength">
+                {{
+                "general.field_validation_min_length" | translate: {minLength: 8}
+                }}
+              </div>
+              <div *ngIf="f.password.errors.maxLength">
+                {{
+                "general.field_validation_max_length" | translate: {maxLength: 16}
+                }}
+              </div>
+              <div *ngIf="f.password.errors.invalid">
+                {{ f.password.errors["invalid"] | translate }}
+              </div>
             </div>
-            <div class="d-flex flex-column-reverse flex-md-row justify-content-between my-3">
-                <a class="d-block w_full text-center text-md-left" (click)="goBack()" href="javascript:void(0);">
-                    <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
-                    <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
-                </a>
+          </div>
 
-                <button [ngClass]="{ 'visibility_show': verify , 'visibility_hide': !verify }" class="btn btn-dcc-primary w_full" >
-          تسجيل المستخدم
+
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label>{{"general.confirm_password"|translate}}</label>
+            <input type="password" formControlName="confirmPassword"
+                   [ngClass]="{'is-invalid':  (f.confirmPassword.errors && f.confirmPassword.touched) ||
+                        (registerForm.errors?.mismatch &&(f.password.dirty || f.confirmPassword.touched))}" class="form-control"/>
+             <div *ngIf="f.confirmPassword.errors && f.confirmPassword.touched" class="text-danger">
+              <div *ngIf="f.confirmPassword.errors.required">
+                {{ "general.field_validation_required" | translate }}
+              </div>
+              <div *ngIf="f.confirmPassword.errors.minLength">
+                {{
+                "general.field_validation_min_length" | translate: {minLength: 8}
+                }}
+              </div>
+              <div *ngIf="f.confirmPassword.errors.maxLength">
+                {{
+                "general.field_validation_max_length" | translate: {maxLength: 16}
+                }}
+              </div>
+
+              <div *ngIf="f.confirmPassword.errors.invalid">
+                {{ f.confirmPassword.errors["invalid"] | translate }}
+              </div>
+
+            </div>
+            <div *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched || f.confirmPassword.invalid)"  class="text-danger">
+              {{"general.confirm_password_mismatch"|translate}}
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+      <div class="d-flex flex-column-reverse flex-md-row justify-content-between my-3">
+        <a class="d-block w_full text-center text-md-left" (click)="goBack()" href="javascript:void(0);">
+          <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
+          <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
+        </a>
+
+        <button [ngClass]="{ 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }"
+                class="btn btn-dcc-primary w_full">
+          {{"general.register_user"|translate}}
         </button>
-            </div>
-        </div>
-    </form>
+      </div>
+    </div>
+  </form>
+
+
+
 </div>

@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse,HttpParams} from "@angular/common/http";
 import {catchError} from "rxjs/operators";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {User} from '@model/user.model';
+import {environment} from "@env/environment";
+import {ValidateApplicantCmd} from "@model/validate-applicant-cmd.model";
 
 
 /**
@@ -20,8 +22,13 @@ export class RegisterService {
       if (error.hasOwnProperty('error')) {
         return of(error.error);
       } else {
-        return of(error);;
+        return of(error);
       }
     }));
   }
+
+  verifyApplicant(uin:any,dateOfBirthGregorian:any,dateOfBirthHijri:any){
+    let command = new ValidateApplicantCmd(uin,dateOfBirthGregorian,dateOfBirthHijri);
+    return this.http.post<any>("/core/api/register/verify",command);
+   }
 }
