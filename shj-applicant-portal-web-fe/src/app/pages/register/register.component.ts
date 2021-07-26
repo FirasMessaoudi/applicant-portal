@@ -196,6 +196,7 @@ export class RegisterComponent implements OnInit {
       if (response) {
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
+        this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
         this.registerForm.controls['localMobileNumber'].setValue(this.user.mobileNumber);
         this.registerForm.controls['email'].setValue(this.user.email);
         this.isApplicantVerified = true;

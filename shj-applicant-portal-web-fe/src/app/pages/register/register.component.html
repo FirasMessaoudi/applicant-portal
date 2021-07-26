@@ -90,9 +90,14 @@
         [ngClass]="{ 'animated fadeInUp': isApplicantVerified, 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }">
         <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-            <label> الاسم </label>
+            <label> Full Name In English </label>
             <input type="text" class="form-control" formControlName="fullNameEn" disabled
                     />
+          </div>
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label> Full Name In Arabic </label>
+            <input type="text" class="form-control" formControlName="fullNameAr" disabled
+            />
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label> {{"general.mobile_number"|translate}}</label>
