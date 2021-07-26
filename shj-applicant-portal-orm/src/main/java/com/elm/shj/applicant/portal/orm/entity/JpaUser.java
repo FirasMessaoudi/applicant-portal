@@ -57,20 +57,20 @@ public class JpaUser implements Serializable {
 	@Column(length = 255)
 	private String email;
 
-	@Column(name = "FAMILY_NAME", nullable = false, length = 100)
-	private String familyName;
 
-	@Column(name = "FATHER_NAME", length = 100)
-	private String fatherName;
 
-	@Column(name = "FIRST_NAME", nullable = false, length = 100)
-	private String firstName;
 
-	@Column(nullable = false, length = 1)
+
+	@Column(name = "full_name_en",  length = 150)
+	private String fullNameEn;
+
+	@Column(name = "full_name_ar", length = 150)
+	private String fullNameAr;
+
+	@Column( length = 1)
 	private String gender;
 
-	@Column(name = "GRAND_FATHER_NAME", length = 100)
-	private String grandFatherName;
+
 
 	@Column(name = "LAST_LOGIN_DATE")
 	private Date lastLoginDate;
@@ -78,8 +78,11 @@ public class JpaUser implements Serializable {
 	@Column(name = "MOBILE_NUMBER", nullable = false)
 	private int mobileNumber;
 
-	@Column(nullable = false)
+	@Column()
 	private long nin;
+
+	@Column(nullable = false)
+	private long uin;
 
 	@Column(name = "NUMBER_OF_TRIES")
 	private int numberOfTries;

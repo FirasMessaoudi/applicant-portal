@@ -78,8 +78,8 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
      */
     private UserDto buildUser() {
         UserDto user = new UserDto();
-        user.setFirstName("first name");
-        user.setFamilyName("last name");
+        user.setFullNameEn("first name");
+        user.setFullNameAr("");
         user.setPassword("C0mpl3xP@ss");
         user.setDateOfBirthHijri(14101010);
         user.setEmail("email@company.com");

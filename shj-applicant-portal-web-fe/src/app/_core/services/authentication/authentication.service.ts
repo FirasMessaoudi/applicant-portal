@@ -85,6 +85,8 @@ export class AuthenticationService {
       }));
   }
 
+
+
   validateOtpForRegister(username: string, otp: string): Observable<any> {
 
     return this.http.post<any>('/core/api/auth/otp-for-registration', {'idNumber': username, 'otp': otp})
@@ -95,6 +97,7 @@ export class AuthenticationService {
         return throwError(err);
       }));
   }
+
 
   /**
    * Logs out the user and clear credentials.

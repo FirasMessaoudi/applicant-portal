@@ -70,9 +70,9 @@ export class OtpComponent implements OnInit, AfterViewInit {
         this.otpTitle=this.translate.instant("register.header_title");
         this.previouseUrl="/register";
       }
-      if (!data.user || !data.user.otpExpiryMinutes) {
-        this.goBack();
-      }
+      // if (!data.user || !data.user.otpExpiryMinutes) {
+      //   this.goBack();
+      // }
 
       this.otpData = data.user;
       this.startTimer(data.user.otpExpiryMinutes);
@@ -113,11 +113,10 @@ export class OtpComponent implements OnInit, AfterViewInit {
         this.otpForm.get(field).setValue(null);
         this.rows._results[0].nativeElement.focus();
       });
-
     });
     }
     else{
-        this.authenticationService.validateOtpForRegister(this.otpData.name, pin)
+        this.authenticationService.validateOtpForRegister(this.otpData, pin)
           .pipe(finalize(() => {
             this.otpForm.markAsPristine();
             this.loading = false;
@@ -126,9 +125,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
           if (this.timerSubscription) {
             this.timerSubscription.unsubscribe();
           }
-
           this.authenticationService.setOtpVerifiedForRegisterObs(user);
-
           }, error => {
           console.log(error);
           this.error = error;
@@ -171,7 +168,6 @@ export class OtpComponent implements OnInit, AfterViewInit {
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe();
     }
-
     this.router.navigate([this.previouseUrl]);
   }
 

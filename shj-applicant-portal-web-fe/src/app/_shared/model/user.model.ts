@@ -5,14 +5,14 @@ export class User {
   dateOfBirthGregorian: any;
   dateOfBirthHijri: any;
   email: string;
-  familyName: string;
-  firstName: string;
+  fullNameEn: string;
+  fullNameAr: string;
   gender: string;
   grandFatherName: string;
-  fatherName: string;
   lastLoginDate: Date;
   mobileNumber: any;
   nin: number;
+  uin: number;
   avatarFile: any;
   avatar: string;
   userName: string;

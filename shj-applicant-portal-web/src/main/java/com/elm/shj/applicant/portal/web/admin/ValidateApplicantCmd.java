@@ -13,8 +13,8 @@ public class ValidateApplicantCmd implements Serializable {
 
     private String uin;
 
-    @Past
-    private Date dateOfBirthGregorian;
+
+    private String dateOfBirthGregorian;
 
     private int dateOfBirthHijri;
 

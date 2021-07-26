@@ -5,12 +5,9 @@ package com.elm.shj.applicant.portal.services.user;
 
 import com.elm.dcc.foundation.providers.email.service.EmailService;
 import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
-import com.elm.shj.applicant.portal.orm.entity.JpaRegistrationToken;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
-import com.elm.shj.applicant.portal.orm.repository.RegistrationTokenRepository;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
-import com.elm.shj.applicant.portal.services.dto.RegistrationTokenDto;
 import com.elm.shj.applicant.portal.services.dto.RoleDto;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.UserRoleDto;
@@ -78,6 +75,15 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         JpaUser user = userRepository.findByNinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(nin);
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
+
+
+    public Optional<UserDto> findByUinAndDateOfBirth(long nin,Date dateOfBirth) {
+        JpaUser user = userRepository.findDistinctByDeletedFalseAndNinEqualsAndDateOfBirthGregorianEquals(nin,dateOfBirth);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
+
+
+
 
     /**
      * finds users by role id, nin or account status
@@ -339,6 +345,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
         return smsSent || emailSent;
     }
+
+
 
 
     }

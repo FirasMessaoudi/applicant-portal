@@ -113,7 +113,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         String url = Navigation.API_USERS + "/update";
         UserDto user = buildParams(true);
 
-        user.setFamilyName("");
+        user.setFullNameEn("");
         user.setEmail("invalid_email");
 
         mockMvc.perform(post(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -302,10 +302,8 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         user.setDateOfBirthHijri(14101010);
         user.setDateOfBirthGregorian(DateUtils.addDays(new Date(), -20 * 365));
         user.setEmail("email@company.com");
-        user.setFamilyName("familyName");
-        user.setFirstName("firstName");
-        user.setGrandFatherName("grandFatherName");
-        user.setFatherName("fatherName");
+        user.setFullNameEn("familyName");
+        user.setFullNameAr("");
         user.setMobileNumber(512345678);
         user.setNin(1234567897L);
         user.setPassword(TEST_USER_PASSWORD);

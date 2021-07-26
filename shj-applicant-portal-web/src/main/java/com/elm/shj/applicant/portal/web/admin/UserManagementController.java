@@ -298,13 +298,12 @@ public class UserManagementController {
         databaseUser.setDateOfBirthHijri(user.getDateOfBirthHijri());
         databaseUser.setActivated(user.isActivated());
         databaseUser.setEmail(user.getEmail());
-        databaseUser.setFamilyName(user.getFamilyName());
-        databaseUser.setFatherName(user.getFatherName());
-        databaseUser.setFirstName(user.getFirstName());
+        databaseUser.setFullNameAr(user.getFullNameAr());
         databaseUser.setGender(user.getGender());
-        databaseUser.setGrandFatherName(user.getGrandFatherName());
+        databaseUser.setFullNameEn(user.getFullNameEn());
         databaseUser.setMobileNumber(user.getMobileNumber());
         databaseUser.setNin(user.getNin());
+        databaseUser.setUin(user.getUin());
         databaseUser.setUserRoles(user.getUserRoles());
         UserDto savedUser = maskUserInfo(userService.save(databaseUser));
 

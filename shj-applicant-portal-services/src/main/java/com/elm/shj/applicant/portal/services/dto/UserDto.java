@@ -37,25 +37,24 @@ public class UserDto implements Serializable {
     @Length(max = 50, min = 3)
     @Email
     private String email;
+
     @NotBlank(groups = {CreateUserValidationGroup.class})
     @Length(max = 100, min = 1)
     @CharactersOnly
-    private String familyName;
-    @NotBlank(groups = {CreateUserValidationGroup.class})
-    @Length(max = 100, min = 1)
-    @CharactersOnly
-    private String firstName;
+    private String fullNameAr;
     private String gender;
     @Length(max = 100, min = 0)
-    @CharactersOnly(allowEmpty = true)
-    private String grandFatherName;
+    @CharactersOnly
+    private String fullNameEn;
     @Length(max = 100, min = 0)
-    @CharactersOnly(allowEmpty = true)
-    private String fatherName;
+
     private Date lastLoginDate;
     @MobileNumber
     private Integer mobileNumber;
-    @Unique(columnName = "nin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
+
+    @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
+    private Long uin;
+
     @NinOrIqama
     private Long nin;
     @SafeFile
@@ -74,6 +73,8 @@ public class UserDto implements Serializable {
     private Date creationDate;
     private Set<UserRoleDto> userRoles;
     private Date tokenExpiryDate;
+
+
 
     @Override
     public boolean equals(Object o) {

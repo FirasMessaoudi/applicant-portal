@@ -2,10 +2,9 @@ USE sha_portal
 GO
 -- sha_user data
 SET IDENTITY_INSERT sha_portal.sha_user ON;
-insert into sha_portal.sha_user (id, nin, gender , mobile_number, date_of_birth_gregorian,
-password_hash, first_name, father_name, family_name, activated, creation_date) values ('1', 1234567897, 'M',
- 512345678, convert(date, '14/02/1972', 103), '$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK', N'سعد'
- , N'عبد الرحمن', N'الغامدي', 1, current_timestamp);
+insert into sha_portal.sha_user (id, nin,uin, gender , mobile_number, date_of_birth_gregorian,
+                                 password_hash,full_name_ar, full_name_en , activated, creation_date) values ('1', 1234567897,1234567897, 'M',
+                                                                                                              512345678, convert(date, '14/02/1972', 103), '$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK',  N'سعد الغامدي' , 'Saad El Ghamdy', 1, current_timestamp);
 SET IDENTITY_INSERT sha_portal.sha_user OFF;
 
 -- sha_config data
@@ -58,6 +57,7 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.fi
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.filescan.port', '1344');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.filescan.username', 'sha_portalfilescan-username');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.filescan.password', 'sha_portalfilescan-password');
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('admin.portal.url', 'http://localhost:8085/shj-admin/api');
 
 GO
 -- update sha_user data in 1.2.0 version

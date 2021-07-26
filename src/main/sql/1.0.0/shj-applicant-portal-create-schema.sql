@@ -11,20 +11,19 @@ GO
 if not exists (select * from sys.tables where name = 'sha_user')
 create table sha_portal.sha_user
   (
-    id 						int not null primary key identity(1,1),
-    user_name 				nvarchar(50) not null,
-    nin 						bigint not null,
-    gender 					nvarchar(1) not null,
+    id 						    int not null primary key identity(1,1),
+    user_name 				    nvarchar(50) not null,
+    full_name_ar                nvarchar(150),
+    full_name_en                varchar(150),
+    uin                         bigint  not null,
+    nin 						bigint ,
+    gender 					   nvarchar(1) ,
     mobile_number 			int not null,
     date_of_birth_gregorian 	date,
     date_of_birth_hijri 		int null default 0,
     password_hash				nvarchar(256) not null,
     email 					nvarchar(256),
-    first_name 				nvarchar(100) not null,
-    father_name 				nvarchar(100) null default '',
-    grand_father_name 		nvarchar(100) null default '',
     subtribe_name 			nvarchar(100) null default '',
-    family_name 				nvarchar(100) not null,
     activated       			bit default 0,
     deleted       			bit default 0,
     blocked       			bit default 0,
@@ -37,8 +36,10 @@ create table sha_portal.sha_user
     update_date 				smalldatetime null,
     avatar					nvarchar(max),
     constraint sha_user_user_name_unique unique (user_name),
-    constraint sha_user_nin_unique unique (nin)
+    constraint sha_user_nin_unique unique (uin)
   );
+
+
 GO
 if not exists (select * from sys.tables where name = 'sha_user_authorities')
 create table sha_portal.sha_user_authorities
@@ -251,3 +252,6 @@ create table sha_portal.sha_scheduled_tasks_lock
     locked_by  varchar(255) NOT NULL,
 );
 GO
+
+
+
