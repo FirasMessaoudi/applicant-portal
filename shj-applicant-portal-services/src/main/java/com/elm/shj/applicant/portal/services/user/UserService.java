@@ -77,8 +77,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-    public Optional<UserDto> findByUinAndDateOfBirth(long nin,Date dateOfBirth) {
-        JpaUser user = userRepository.findDistinctByDeletedFalseAndNinEqualsAndDateOfBirthGregorianEquals(nin,dateOfBirth);
+    public Optional<UserDto> findByUinAndDateOfBirth(long uin,Date dateOfBirth) {
+        JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEqualsAndDateOfBirthGregorianEquals(uin,dateOfBirth);
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
 
