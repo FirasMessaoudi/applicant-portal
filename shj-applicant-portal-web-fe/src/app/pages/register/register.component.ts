@@ -190,8 +190,6 @@ export class RegisterComponent implements OnInit {
 
   verifyApplicant() {
     this.isApplicantVerified = false;
-    let applicantDateOfBirth = this.registerForm.controls.dateOfBirthGregorian.value ? this.registerForm.controls.dateOfBirthGregorian.value : this.registerForm.controls.dateOfBirthHijri.value;
-
     this.registerService.verifyApplicant(this.registerForm.controls.uin.value, this.datepipe.transform(this.registerForm.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm.controls.dateOfBirthHijri.value).subscribe(response => {
       if (response) {
         this.user = response;
@@ -209,16 +207,13 @@ export class RegisterComponent implements OnInit {
     }, error => {
       console.log(error);
       this.registerForm.markAsUntouched();
-
       this.isApplicantVerified = false;
       // this.showCaptcha = (error.status == 555);
       this.error = error;
       if (error.status == 560) {
         this.toastr.warning(this.translate.instant("user already registered"), this.translate.instant("register.verification_error"));
-
       } else {
         this.toastr.warning(this.translate.instant("user not found"), this.translate.instant("register.verification_error"));
-
       }
     });
   }
