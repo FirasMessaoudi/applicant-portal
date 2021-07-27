@@ -31,6 +31,8 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     JpaUser findByNinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(long nin);
 
+    JpaUser findByUinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(long uin);
+
     @Modifying
     @Query("update JpaUser user set user.deleted = true, user.actionDate = CURRENT_TIMESTAMP where user.id =:userId")
     void markDeleted(@Param("userId") long userId);

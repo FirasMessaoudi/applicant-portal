@@ -76,6 +76,17 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
 
+    /**
+     * Finds a user by his nin
+     *
+     * @param uin the uin of the user to find
+     * @return the founded user or empty structure
+     */
+    public Optional<UserDto> findByUin(long uin) {
+        JpaUser user = userRepository.findByUinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(uin);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
+
 
     public Optional<UserDto> findByUinAndDateOfBirth(long uin,Date dateOfBirth) {
         JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEqualsAndDateOfBirthGregorianEquals(uin,dateOfBirth);

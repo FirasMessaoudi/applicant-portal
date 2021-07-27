@@ -6,7 +6,7 @@ import {AuthenticationService} from '@app/_core/services/authentication/authenti
 import {I18nService} from "@dcc-commons-ng/services";
 import {ReCaptcha2Component, ReCaptchaV3Service} from "ngx-captcha";
 import {environment} from "@env/environment";
-import {DccValidators, IdType} from "@shared/validators";
+
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -114,7 +114,7 @@ export class LoginComponent implements OnInit {
 
   private createForm() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.compose([Validators.required, DccValidators.ninOrIqama(IdType.NIN_OR_IQAMA)])],
+      username: ['', Validators.compose([Validators.required])],
       password: ['', Validators.required],
       recaptcha: ['']
     });

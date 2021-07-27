@@ -62,7 +62,7 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
         long idNumber = Long.parseLong(authentication.getName());
         String password = (String) authentication.getCredentials();
 
-        UserDto user = userService.findByNin(idNumber).orElseThrow(() ->
+        UserDto user = userService.findByUin(idNumber).orElseThrow(() ->
                 // throw RecaptchaException to prevent DOS attack in case of idNumberStr is not exist
                 new RecaptchaException("idNumber not found."));
         // check if user is active

@@ -212,6 +212,7 @@
     "btn_new_registration": "Don't have an account? Register now.",
     "btn_forgot_password": "Forgot Password",
     "invalid_username_or_password":"Invalid username or password!",
+    "invalid_uin_or_password":"Invalid smart id number or password!",
     "otp_remaining_time": "Remaining time:",
     "otp_text": "Please enter the code that have been sent to the mobile number you have registered with",
     "invalid_otp":"Invalid OTP! Please try again..."

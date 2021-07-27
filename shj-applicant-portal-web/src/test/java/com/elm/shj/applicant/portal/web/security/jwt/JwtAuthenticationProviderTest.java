@@ -65,7 +65,7 @@ public class JwtAuthenticationProviderTest {
     @Test
     public void test_authenticate_wrong_username() {
         assertThrows(RecaptchaException.class, () -> {
-            when(userService.findByNin(anyLong())).thenReturn(Optional.empty());
+            when(userService.findByUin(anyLong())).thenReturn(Optional.empty());
             classToTest.authenticate(new TestingAuthenticationToken("0000000000000", null));
         });
     }
@@ -73,7 +73,7 @@ public class JwtAuthenticationProviderTest {
     @Test
     public void test_authenticate_wrong_password() {
         assertThrows(RecaptchaException.class, () -> {
-            when(userService.findByNin(anyLong())).thenReturn(Optional.empty());
+            when(userService.findByUin(anyLong())).thenReturn(Optional.empty());
             try(MockedStatic<BCrypt> mocked = mockStatic(BCrypt.class)) {
                 mocked.when(() -> BCrypt.checkpw(anyString(), anyString())).thenReturn(Boolean.FALSE);
                 classToTest.authenticate(new TestingAuthenticationToken("0000000000000", "fake"));
@@ -100,7 +100,7 @@ public class JwtAuthenticationProviderTest {
         userDto.setPasswordHash(BCrypt.hashpw(EXISTING_USER_PASS, BCrypt.gensalt()));
         userDto.setActivated(true);
         userDto.setUserRoles(Collections.singleton(userRole));
-        when(userService.findByNin(anyLong())).thenReturn(Optional.of(userDto));
+        when(userService.findByUin(anyLong())).thenReturn(Optional.of(userDto));
         doAnswer((Answer<Void>) invocation -> {
             // do nothing
             return null;
@@ -119,7 +119,7 @@ public class JwtAuthenticationProviderTest {
 
     @BeforeEach
     public void setUp() throws SecurityException, IllegalArgumentException {
-        ReflectionTestUtils.setField(classToTest, "allowedFailedLogins", 3);
+//        ReflectionTestUtils.setField(classToTest, "allowedFailedLogins", 3);
         ReflectionTestUtils.setField(classToTest, "userService", userService);
         ReflectionTestUtils.setField(classToTest, "passwordHistoryService", passwordHistoryService);
         ReflectionTestUtils.setField(classToTest, "jwtTokenService", jwtTokenService);

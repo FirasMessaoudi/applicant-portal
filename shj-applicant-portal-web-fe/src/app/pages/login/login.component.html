@@ -17,7 +17,7 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
         <div class="alert alert-danger" [hidden]="!error || loading">
-            {{ "login.invalid_username_or_password" | translate }}
+            {{ "login.invalid_uin_or_password" | translate }}
         </div>
         <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
             {{ "login.header_title" | translate }}
@@ -26,7 +26,7 @@
         <div class="form-group">
             <div class="d-flex flex-column flex-lg-row justify-content-between">
                 <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
-                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" />
+                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked/>
                     <label class="custom-control-label" for="customRadioInline1">رقم البطاقة الذكية</label
           >
         </div>
@@ -38,7 +38,7 @@
             id="customRadioInline2"
             name="customRadioInline1"
             class="custom-control-input"
-            checked
+            [disabled]="true"
           />
           <label class="custom-control-label" for="customRadioInline2"
             >رقم الهوية</label
@@ -52,6 +52,7 @@
             id="customRadioInline3"
             name="customRadioInline1"
             class="custom-control-input"
+            [disabled]="true"
           />
           <label class="custom-control-label" for="customRadioInline3"
             >جواز السفر</label
@@ -61,8 +62,8 @@
     </div>
     <div class="form-group">
       <label
-        >{{ "general.nin_or_iqama" | translate
-        }}<span class="text-danger px-1">*</span></label
+        >{{"register.smart_id_number"|translate}}
+        <span class="text-danger px-1">*</span></label
       >
       <input
         type="text"
@@ -84,9 +85,7 @@
         <div *ngIf="f.username.errors.invalid">
           {{ f.username.errors["invalid"] | translate }}
         </div>
-        <div *ngIf="f.username.errors['invalid-nin-or-iqama']">
-          {{ f.username.errors["invalid-nin-or-iqama"] | translate }}
-        </div>
+
       </div>
     </div>
     <div class="form-group">
