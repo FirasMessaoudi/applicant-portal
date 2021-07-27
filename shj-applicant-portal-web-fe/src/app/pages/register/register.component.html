@@ -101,13 +101,14 @@
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label> {{"general.mobile_number"|translate}}</label>
-            <input type="text" class="form-control" formControlName="localMobileNumber" maxlength="10"
-                   [class.is-invalid]="f.localMobileNumber.invalid && f.localMobileNumber.touched"/>
+            <input type="number" class="form-control" formControlName="localMobileNumber" maxlength="10" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length<=9"
+                   min="0" step="1"
+                   [class.is-invalid]="f.localMobileNumber.invalid && f.localMobileNumber.touched" />
 
             <div *ngIf="f.localMobileNumber.invalid && f.localMobileNumber.touched" class="invalid-feedback">
               <div *ngIf="f.localMobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
               <div *ngIf="f.localMobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
-              <div *ngIf="f.localMobileNumber.errors.invalid">{{f.localMobileNumber.errors['invalid'] | translate}}</div>
+              <div *ngIf="f.localMobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
@@ -116,7 +117,7 @@
                    [class.is-invalid]="f.email.invalid && f.email.touched"/>
             <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
               <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
-              <div *ngIf="f.email.errors.invalid">{{f.email.errors['invalid'] | translate}}</div>
+              <div *ngIf="f.email.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
         </div>
