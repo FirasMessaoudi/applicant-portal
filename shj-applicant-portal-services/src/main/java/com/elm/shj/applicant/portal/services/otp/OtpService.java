@@ -69,6 +69,7 @@ public class OtpService {
         try {
             String generatedOtp = otpGenerator.generateOtp(principal);
             otpCache.put(principal, generatedOtp);
+            //TODO:need to be changed since uin is not required to start with 1
             String locale = principal.startsWith("1") ? "ar" : "en";
             String registerUserSms = messageSource.getMessage(OTP_SMS_NOTIFICATION_MSG, new String[]{generatedOtp}, Locale.forLanguageTag(locale));
             smsService.sendMessage(Long.valueOf(mobileNumber), registerUserSms);

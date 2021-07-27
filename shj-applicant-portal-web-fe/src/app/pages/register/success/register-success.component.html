@@ -1,28 +1,27 @@
-<span class="lang_swtich_login">
-  <button
-    class="btn btn-md border btn-light px-3 mt-4 mb-3"
-    *ngIf="currentLanguage.startsWith('en')"
-    (click)="setLanguage('ar-SA')"
-  >
-    <span>عربي</span>
-</button>
-<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
-        (click)="setLanguage('en-US')">
-    <span>En</span>
-  </button>
-</span>
-<div class="login__box">
-  <div class="text-center">
-    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
-  </div>
-  <div >
-    <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
-      {{ "this is Dummy Success Page" }}
-    </h1>
-    <div class="form-group form-row">
 
-      <button (click)="goBack()">{{"login.btn_login"|translate}}</button>
+<div class="login__box  form-group" >
+  <div class="text-center">
+    <img class="my-4" src="assets/images/logo.png" alt="logo" />
+  </div>
+
+  <form   class="login-box__wrapper">
+
+    <h1 class="text-center text-dcc-primary font-weight-bold mb-4 h3">
+      {{ "user had been registered successfully" |translate}}
+    </h1>
+
+    <div class="text-center text-secondary mt-5">
+      {{ "user had been registered successfully" |translate}}
     </div>
 
-  </div>
+    <div class="text-center">
+      <button class="btn btn-outline-dcc-primary px-5 w_full"
+              (click)="goBack()">
+        {{ "login.btn_login"| translate }}
+      </button>
+
+    </div>
+
+  </form>
 </div>
+

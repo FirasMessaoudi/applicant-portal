@@ -46,16 +46,14 @@ public class UserDto implements Serializable {
     @Length(max = 100, min = 0)
     @CharactersOnly
     private String fullNameEn;
-    @Length(max = 100, min = 0)
-
     private Date lastLoginDate;
     @MobileNumber
     private Integer mobileNumber;
 
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
     private Long uin;
-
-    @NinOrIqama
+//TODO:TO BE CHEKED BECAUSE IT IS NOT MANDATORY NOW
+//    @NinOrIqama
     private Long nin;
     @SafeFile
     private MultipartFile avatarFile;

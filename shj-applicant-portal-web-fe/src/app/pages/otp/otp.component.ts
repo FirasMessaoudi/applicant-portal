@@ -70,12 +70,12 @@ export class OtpComponent implements OnInit, AfterViewInit {
         this.otpTitle=this.translate.instant("register.header_title");
         this.previouseUrl="/register";
       }
-      // if (!data.user || !data.user.otpExpiryMinutes) {
-      //   this.goBack();
-      // }
+      if (!data.user || !data.user.otpExpiryMinutes) {
+        this.goBack();
+      }
 
       this.otpData = data.user;
-      this.startTimer(data.user.otpExpiryMinutes);
+      this.startTimer(data.user?.otpExpiryMinutes);
       this.mask = data.user.mobileNumber;
     });
   }
@@ -116,7 +116,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
     });
     }
     else{
-        this.authenticationService.validateOtpForRegister(this.otpData, pin)
+        this.authenticationService.validateOtpForRegister(this.otpData.uin, pin)
           .pipe(finalize(() => {
             this.otpForm.markAsPristine();
             this.loading = false;

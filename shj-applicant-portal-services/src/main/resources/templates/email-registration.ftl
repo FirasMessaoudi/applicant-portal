@@ -26,9 +26,9 @@
         </tr>
         <tr>
             <td bgcolor="#eaeaea" style="padding: 40px 30px 40px 30px;">
-                <p>Dear ${user.firstName} ${user.familyName},</p>
+                <p>Dear ${user.fullNameEn} ,</p>
                 <p>You have successfully registered to ELM Product</p>
-                <p>Your username: <b>${user.nin}</b></p>
+                <p>Your username: <b>${user.uin}</b></p>
                 <p>Your password has been sent to your mobile number</p>
                 </br>
                 <p>Thanks</p>

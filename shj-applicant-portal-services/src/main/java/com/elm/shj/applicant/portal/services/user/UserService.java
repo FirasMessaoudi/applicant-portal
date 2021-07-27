@@ -345,7 +345,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      */
     public boolean notifyRegisteredUser(UserDto user) {
         String[] smsNotificationArgs = new String[]{user.getPassword()};
-        String locale = isCitizen(user.getNin()) ? "ar" : "en";
+        //TODO:CAN NOT DEPEND ON NIN SINCE IT IS NOT MANDATORY NOW
+        String locale = /**isCitizen(user.getNin()) ? "ar" :*/ "en";
         String createdUserSms = messageSource.getMessage(CREATE_USER_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
 
         // Send Email notification
@@ -374,16 +375,16 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     }
 
-    public  UserDto  updateUserInAdminPortal(UserDto user)  {
+    public  UserDto  updateUserInAdminPortal(JSONObject commandJsonObject,Long uin)  {
         HttpHeaders headers = new HttpHeaders();
         headers.set("CALLER-TYPE", "WEB-SERVICE");
-        final String url = adminPortalUrl + "/" + user.getUin() + "/update";
-
-        ApplicantLiteDto updatedApplicant = callAdminPortal(headers, url, user.toString());
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        final String url = adminPortalUrl + "/applicants/update/"+uin;
+        ApplicantLiteDto updatedApplicant = callAdminPortal(headers, url, commandJsonObject.toString());
 
         if (updatedApplicant!=null){
             UserDto constructedUser = constructUserFromApplicant(updatedApplicant);
-            constructedUser.setUin(user.getUin() );
+            constructedUser.setUin(uin);
             return constructedUser;
         }
         return null;

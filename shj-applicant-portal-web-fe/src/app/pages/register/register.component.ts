@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, PatternValidator, Validators} from '@angular/for
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {InvisibleReCaptchaComponent} from "ngx-captcha";
 import {ToastService} from "@shared/components/toast/toast-service";
 import {TranslateService} from "@ngx-translate/core";
@@ -36,8 +36,9 @@ export class RegisterComponent implements OnInit {
   isApplicantVerified: boolean = false;
   fullName: string;
   user: User;
-  showSuccessPage: boolean = true;
-
+  showSuccessPage: boolean = false;
+   originalEmail:any;
+   originalMobileNo:any;
   @ViewChild('reCaptchaEl')
   captchaElem: InvisibleReCaptchaComponent;
 
@@ -57,6 +58,7 @@ export class RegisterComponent implements OnInit {
 
 
   constructor(
+    private modalService: NgbModal,
     private formBuilder: FormBuilder,
     private i18nService: I18nService,
     private router: Router,
@@ -91,13 +93,14 @@ export class RegisterComponent implements OnInit {
       month: toDayGregorian.month,
       day: toDayGregorian.day
     };
+
     this.maxDateOfBirthHijri = {
       year: toDayHijri.year - DEFAULT_MAX_USER_AGE,
       month: toDayHijri.month,
       day: toDayHijri.day
     };
     this.selectedDateType = DateType.Gregorian;
-
+    this.showSuccessPage=false;
     this.createForm();
     this.recaptchaSiteKey = environment.invisibleRecaptchaSiteKey;
     this._minPickerDate = {
@@ -135,7 +138,7 @@ export class RegisterComponent implements OnInit {
     this.user.email = this.registerForm.controls['email'].value;
     this.user.mobileNumber = this.registerForm.controls['localMobileNumber'].value;
     this.user.password = this.registerForm.controls['password'].value;
-    this.registerService.register(this.user, this.captchaElem.getCurrentResponse()).subscribe(response => {
+    this.registerService.generateOTPForRegistration(this.user, this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (!response) {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
         this.captchaElem.reloadCaptcha();
@@ -151,14 +154,26 @@ export class RegisterComponent implements OnInit {
           });
         }
       } else {
+          this.user.otpExpiryMinutes=response.otpExpiryMinutes;
+         this.authenticationService.updateOtpSubject({user: this.user, actionType: "register"});
+         this.router.navigate(['/otp'], {replaceUrl: true});
+        this.authenticationService.getOtpVerifiedForRegisterObs().subscribe(response => {
+          if (response) {
+            let updateAdminRequired=this.originalMobileNo != this.user.mobileNumber ||
+                                    this.originalEmail !=this.user.email;
 
-        // this.authenticationService.updateOtpSubject({user: this.user, actionType: "register"});
-        this.router.navigate(['/otp'], {replaceUrl: true});
-        // this.authenticationService.getOtpVerifiedForRegisterObs().subscribe(response => {
-        //   if (response) {
-        //     this.router.navigate(['/register-success'], {replaceUrl: true});
-        //   }
-        // });
+            this.registerService.register(this.user, updateAdminRequired).subscribe(response => {
+              if (!response) {
+                this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
+                this.captchaElem.reloadCaptcha();
+              }else{
+                this.modalService.dismissAll();
+                 this.showSuccessPage=true;
+              }
+            });
+
+          }
+        });
       }
 
     });
@@ -198,6 +213,8 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls['localMobileNumber'].setValue(this.user.mobileNumber);
         this.registerForm.controls['email'].setValue(this.user.email);
         this.isApplicantVerified = true;
+        this.originalMobileNo=this.user.mobileNumber
+        this.originalEmail=this.user.email;
         this.registerForm.markAsUntouched();
       } else {
         this.isApplicantVerified = false;

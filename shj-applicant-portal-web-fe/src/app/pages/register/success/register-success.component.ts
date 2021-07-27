@@ -18,7 +18,7 @@ import {Location} from "@angular/common";
 import {User} from "@shared/model";
 
 @Component({
-  encapsulation: ViewEncapsulation.None,
+  selector: 'register-success',
   templateUrl: 'register-success.component.html',
   styleUrls: ['register-success.component.scss']
 })
@@ -35,11 +35,11 @@ export class RegisterSuccessComponent {
     private authenticationService: AuthenticationService,
 
   ) {
-    alert("heeeeeeeeeeeeeeeeer")
+
     // redirect to home if already logged in
-    // if (this.authenticationService.isAuthenticated()) {
-    //   this.router.navigate(['/']);
-    // }
+    if (this.authenticationService.isAuthenticated()) {
+      this.router.navigate(['/']);
+    }
   }
 
   get currentLanguage(): string {
