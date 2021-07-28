@@ -7,11 +7,9 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {SharedModule} from "@shared/shared.module";
 import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-datepicker/hijri-gregorian-datepicker.module";
-import {RegisterSuccessComponent} from "@pages/register/success/register-success.component";
 
 @NgModule({
   exports: [
-    RegisterSuccessComponent
   ],
   imports: [
     CommonModule,
@@ -23,8 +21,7 @@ import {RegisterSuccessComponent} from "@pages/register/success/register-success
   ],
 
   declarations: [
-    RegisterComponent,
-    RegisterSuccessComponent
+    RegisterComponent
   ]
 })
 export class RegisterModule {

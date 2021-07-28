@@ -170,7 +170,7 @@ export class RegisterComponent implements OnInit {
                   this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
                   this.captchaElem.reloadCaptcha();
                 } else {
-                  this.router.navigate(['/change-password'], {replaceUrl: true});
+                  this.router.navigate(['/register-success'], {replaceUrl: true});
                 }
               });
 
@@ -265,6 +265,7 @@ export class RegisterComponent implements OnInit {
 
 
   goBack() {
+
     this.router.navigate(['/login'])
   }
 }
