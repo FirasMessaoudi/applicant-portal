@@ -1,28 +1,16 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, PatternValidator, Validators} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
-import {environment} from "@env/environment";
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
-import {InvisibleReCaptchaComponent} from "ngx-captcha";
-import {ToastService} from "@shared/components/toast/toast-service";
-import {TranslateService} from "@ngx-translate/core";
-import {RegisterService} from "@core/services/register/register.service";
-import {DateType} from "@shared/modules/hijri-gregorian-datepicker/datepicker/consts";
-import {HijriGregorianDatepickerComponent} from "@shared/modules/hijri-gregorian-datepicker/datepicker/hijri-gregorian-datepicker.component";
-import {DateFormatterService} from "@shared/modules/hijri-gregorian-datepicker/datepicker/date-formatter.service";
-import {DEFAULT_MAX_USER_AGE} from "@core/services";
-import {DccValidators, IdType} from "@shared/validators";
-import {Location} from "@angular/common";
-import {User} from "@shared/model";
+
 
 @Component({
-  selector: 'register-success',
-  templateUrl: 'register-success.component.html',
-  styleUrls: ['register-success.component.scss']
+  selector: 'app-register-success',
+  templateUrl: './register-success.component.html',
+  styleUrls: ['./register-success.component.scss']
 })
-export class RegisterSuccessComponent {
+export class RegisterSuccessComponent implements OnInit {
 
   recaptcha: any = null;
 
@@ -33,13 +21,17 @@ export class RegisterSuccessComponent {
     private i18nService: I18nService,
     private router: Router,
     private authenticationService: AuthenticationService,
-
   ) {
 
     // redirect to home if already logged in
-    if (this.authenticationService.isAuthenticated()) {
-      this.router.navigate(['/']);
-    }
+    // if (this.authenticationService.isAuthenticated()) {
+    //   this.router.navigate(['/']);
+    // }
+    alert("+++++")
+  }
+
+  ngOnInit() {
+    console.log('sdfdsfsdfdsfs');
   }
 
   get currentLanguage(): string {

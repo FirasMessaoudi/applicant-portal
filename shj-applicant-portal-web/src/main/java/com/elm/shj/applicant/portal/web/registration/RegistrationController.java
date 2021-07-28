@@ -11,7 +11,6 @@ import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.admin.ValidateApplicantCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
-import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,8 +88,8 @@ public class RegistrationController {
 
 
     @PostMapping("/generate-otp-for-registration")
-    public ResponseEntity<OtpToken> generateOTPForRegistration(@RequestBody UserDto user,
-                                                      @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken,HttpServletRequest request) {
+    public ResponseEntity<OtpToken> generateOTPForRegistration(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user,
+                                                               @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken, HttpServletRequest request) {
 
         // check recaptcha
         RecaptchaInfo recaptchaInfo;

@@ -35,7 +35,6 @@ export class AuthenticationService {
 
   setOtpVerifiedForRegisterObs(user: any) {
     this.otpVerifiedForRegister.next(user);
-    console.log("+++++++++++++++++++++++++++++++++++++++++");
   }
 
   constructor(private http: HttpClient) {

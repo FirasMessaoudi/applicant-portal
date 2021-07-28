@@ -8,10 +8,11 @@ import {HttpClientModule} from '@angular/common/http';
 import {SharedModule} from "@shared/shared.module";
 import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-datepicker/hijri-gregorian-datepicker.module";
 import {RegisterSuccessComponent} from "@pages/register/success/register-success.component";
-import * as fromRegister from './';
-import {register} from "./";
 
 @NgModule({
+  exports: [
+    RegisterSuccessComponent
+  ],
   imports: [
     CommonModule,
     REGISTERRoutingModule,
@@ -20,8 +21,10 @@ import {register} from "./";
     SharedModule,
     HijriGregorianDatepickerModule
   ],
+
   declarations: [
-    ...fromRegister.register,
+    RegisterComponent,
+    RegisterSuccessComponent
   ]
 })
 export class RegisterModule {

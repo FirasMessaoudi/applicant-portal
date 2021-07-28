@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse,HttpParams} from "@angular/common/http";
-import {catchError, map} from "rxjs/operators";
-import {BehaviorSubject, Observable, of, throwError} from "rxjs";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {catchError} from "rxjs/operators";
+import {Observable, of} from "rxjs";
 import {User} from '@model/user.model';
-import {environment} from "@env/environment";
 import {ValidateApplicantCmd} from "@model/validate-applicant-cmd.model";
 
 
@@ -29,11 +28,12 @@ export class RegisterService {
 
   generateOTPForRegistration(user: User, recaptchaToken: string): Observable<any> {
     return this.http.post<any>('/core/api/register/generate-otp-for-registration?grt=' + recaptchaToken, user)
-      .pipe(map(response => {
-        console.log(JSON.stringify(response));
-        return response;
-      }), catchError((err: HttpErrorResponse) => {
-        return throwError(err);
+      .pipe(catchError((error: HttpErrorResponse) => {
+        if (error.hasOwnProperty('error')) {
+          return of(error.error);
+        } else {
+          return of(error);
+        }
       }));
   }
 
