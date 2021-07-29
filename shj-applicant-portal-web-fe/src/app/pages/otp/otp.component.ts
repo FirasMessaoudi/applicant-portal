@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChildren, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChildren, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
@@ -14,7 +14,7 @@ import {NavigationService} from "@core/utilities/navigation.service";
   templateUrl: 'otp.component.html',
   styleUrls: ['otp.component.scss']
 })
-export class OtpComponent implements OnInit, AfterViewInit {
+export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   otpData: any;
   mask: string;
@@ -24,8 +24,9 @@ export class OtpComponent implements OnInit, AfterViewInit {
   timerContent: string = '';
   timerSubscription: Subscription;
   formInputs = ['input1', 'input2', 'input3', 'input4'];
-  otpTitle:string;
-  previouseUrl:string;
+  otpTitle: string;
+  previouseUrl: string;
+  otpDataSubscription: Subscription;
   @ViewChildren('formRow') rows: any;
 
   constructor(
@@ -61,7 +62,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
 
 
     this.createForm();
-    this.authenticationService.otpData.subscribe(data => {
+    this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
@@ -77,6 +78,10 @@ export class OtpComponent implements OnInit, AfterViewInit {
     this.rows._results[0].nativeElement.focus();
   }
 
+  ngOnDestroy() {
+    this.otpDataSubscription.unsubscribe();
+  }
+
   onSubmit() {
     let pin: string = '';
     Object.keys(this.otpForm.controls).forEach(field => {
@@ -86,7 +91,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
     console.log(pin);
 
     this.loading = true;
-    if(this.previouseUrl=="/login"){
+    if (this.previouseUrl == "/login") {
     this.authenticationService.validateOtpForLogin(this.otpData.name, pin)
       .pipe(finalize(() => {
         this.otpForm.markAsPristine();
