@@ -129,17 +129,12 @@ export class RegisterComponent implements OnInit {
       control.markAsTouched({onlySelf: true});
     });
 
-
     // stop here if form is invalid
     if (this.registerForm.invalid) {
       return;
     }
 
-
-    this.user.email = this.registerForm.controls['email'].value;
-    this.user.mobileNumber = this.registerForm.controls['localMobileNumber'].value;
-    this.user.password = this.registerForm.controls['password'].value;
-    this.registerService.generateOTPForRegistration(this.user, this.captchaElem.getCurrentResponse()).subscribe(response => {
+    this.registerService.generateOTPForRegistration(this.registerForm.value, this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (!response) {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
         this.captchaElem.reloadCaptcha();
@@ -159,9 +154,9 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/otp'], {replaceUrl: true});
           this.authenticationService.getOtpVerifiedForRegisterObs().subscribe(response => {
             if (response) {
-              let updateAdminRequired = this.originalMobileNo != this.user.mobileNumber ||
-                this.originalEmail != this.user.email;
-              this.registerService.register(this.user, updateAdminRequired).subscribe(response => {
+              let updateAdminRequired = this.originalMobileNo != this.registerForm.controls['mobileNumber'].value ||
+                this.originalEmail != this.registerForm.controls['email'].value;
+              this.registerService.register(this.registerForm.value, updateAdminRequired).subscribe(response => {
                 if (!response) {
                   this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
                   this.captchaElem.reloadCaptcha();
@@ -198,7 +193,7 @@ export class RegisterComponent implements OnInit {
       fullNameAr: [''],
       dateOfBirthGregorian: ['', Validators.required],
       dateOfBirthHijri: ['', Validators.required],
-      localMobileNumber: ['', [DccValidators.mobileNumber, Validators.required]],
+      mobileNumber: ['', [DccValidators.mobileNumber, Validators.required]],
       email: ['', [DccValidators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
@@ -219,10 +214,10 @@ export class RegisterComponent implements OnInit {
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
         this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
-        this.registerForm.controls['localMobileNumber'].setValue(this.user.mobileNumber);
+        this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
         this.registerForm.controls['email'].setValue(this.user.email);
         this.isApplicantVerified = true;
-        this.originalMobileNo=this.user.mobileNumber
+        this.originalMobileNo = this.user.mobileNumber
         this.originalEmail=this.user.email;
         this.registerForm.markAsUntouched();
       } else {
@@ -238,8 +233,10 @@ export class RegisterComponent implements OnInit {
       this.error = error;
       if (error.status == 560) {
         this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
-      } else {
+      } else if (error.status == 561) {
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
+      } else {
+        this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
       }
     });
   }

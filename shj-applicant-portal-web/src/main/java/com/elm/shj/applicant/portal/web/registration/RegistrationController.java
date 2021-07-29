@@ -6,6 +6,8 @@ package com.elm.shj.applicant.portal.web.registration;
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
+import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
+import com.elm.shj.applicant.portal.services.dto.UpdateApplicantCmd;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
@@ -17,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.groups.Default;
-import java.text.ParseException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,7 +46,6 @@ public class RegistrationController {
     private final RecaptchaService recaptchaService;
     private final UserService userService;
     private final OtpService otpService;
-
     private static final int USER_ALREADY_REGISTERED_RESPONSE_CODE = 560;
     private static final int USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE = 561;
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
@@ -54,10 +53,8 @@ public class RegistrationController {
     @PostMapping
     public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal) throws JSONException {
         if (needToUpdateInAdminPortal) {
-            JSONObject commandJsonObject = new JSONObject();
-            commandJsonObject.put("localMobileNumber", user.getMobileNumber());
-            commandJsonObject.put("email", user.getEmail());
-            userService.updateUserInAdminPortal(commandJsonObject, user.getUin());
+            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), String.valueOf(user.getMobileNumber()));
+            userService.updateUserInAdminPortal(applicantCmd);
         }
         Optional<UserDto> userInApplicantPortal = userService.findByUinNotDeleted(user.getUin());
         if (userInApplicantPortal.isPresent()) {
@@ -68,13 +65,14 @@ public class RegistrationController {
         return ResponseEntity.ok(createdUser);
     }
 
+
     @PostMapping("/verify")
-    public ResponseEntity<UserDto> verify(@RequestBody ValidateApplicantCmd command) throws JSONException, ParseException {
+    public ResponseEntity<ApplicantLiteDto> verify(@RequestBody ValidateApplicantCmd command) {
         Optional<UserDto> userInApplicantPortal = userService.findByUinNotDeleted(Long.parseLong(command.getUin()));
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        UserDto userFromAdminPortal = userService.verify(command);
+        ApplicantLiteDto userFromAdminPortal = userService.verify(command);
         if (userFromAdminPortal == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
         }

@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,8 +56,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final MessageSource messageSource;
     private final SmsGatewayService smsGatewayService;
     private final EmailService emailService;
-    private static final int USER_ALREADY_REGISTERED_RESPONSE_CODE = 560;
-    private static final int USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE = 561;
     /**
      * Finds all non deleted users.
      *
@@ -395,54 +392,29 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-    public UserDto verify(ValidateApplicantCmd command) {
+    public ApplicantLiteDto verify(ValidateApplicantCmd command) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         final String url = adminPortalUrl + "/applicants/verify";
-        ApplicantLiteDto returnedApplicant = callAdminPortal(headers, url, command.toString());
-        if (returnedApplicant != null) {
-            UserDto constructedUser = constructUserFromApplicant(returnedApplicant);
-            constructedUser.setUin(Long.parseLong(command.getUin()));
-            return constructedUser;
-        }
-        return null;
+        return callAdminPortal(headers, url, command.toString());
 
     }
 
-    public  UserDto  updateUserInAdminPortal(JSONObject commandJsonObject,Long uin)  {
+    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        final String url = adminPortalUrl + "/applicants/update/"+uin;
-        ApplicantLiteDto updatedApplicant = callAdminPortal(headers, url, commandJsonObject.toString());
-
-        if (updatedApplicant!=null){
-            UserDto constructedUser = constructUserFromApplicant(updatedApplicant);
-            constructedUser.setUin(uin);
-            return constructedUser;
-        }
-        return null;
+        final String url = adminPortalUrl + "/applicants/update";
+        return callAdminPortal(headers, url, applicantCmd.toString());
     }
+
 
     private ApplicantLiteDto callAdminPortal(HttpHeaders headers, String url, String body) {
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
     }
-
-
-    private UserDto constructUserFromApplicant(ApplicantLiteDto applicant) {
-        UserDto user = new UserDto();
-        user.setFullNameEn(applicant.getFullNameEn());
-        user.setFullNameAr(applicant.getFullNameAr());
-        user.setEmail(applicant.getEmail());
-        user.setDateOfBirthGregorian(applicant.getDateOfBirthGregorian());
-        user.setDateOfBirthHijri(applicant.getDateOfBirthHijri().intValue());
-        user.setMobileNumber(Integer.parseInt(applicant.getLocalMobileNumber()));
-        return user;
-    }
-
 
 
     }

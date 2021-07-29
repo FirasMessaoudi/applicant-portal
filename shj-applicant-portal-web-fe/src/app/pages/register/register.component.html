@@ -104,14 +104,14 @@
         <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label> {{"general.mobile_number"|translate}}</label>
-            <input type="number" class="form-control" formControlName="localMobileNumber" maxlength="10"
+            <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
                    onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length<=9"
                    min="0" step="1"
-                   [class.is-invalid]="f.localMobileNumber.invalid && f.localMobileNumber.touched"/>
-            <div *ngIf="f.localMobileNumber.invalid && f.localMobileNumber.touched" class="invalid-feedback">
-              <div *ngIf="f.localMobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
-              <div *ngIf="f.localMobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
-              <div *ngIf="f.localMobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
+                   [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
+            <div *ngIf="f.mobileNumber.invalid && f.mobileNumber.touched" class="invalid-feedback">
+              <div *ngIf="f.mobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
+              <div *ngIf="f.mobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
+              <div *ngIf="f.mobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
