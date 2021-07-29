@@ -29,7 +29,7 @@
                min="0" step="1" [class.is-invalid]="f.uin.invalid && f.uin.touched" maxlength="50"/>
         <div *ngIf="f.uin.invalid && f.uin.touched" class="invalid-feedback">
           <div *ngIf="f.uin.errors.required">{{'general.field_validation_required' | translate}}</div>
-          <div *ngIf="f.uin.errors.invalid">{{f.nin.errors['invalid'] | translate}}</div>
+          <div *ngIf="f.uin.errors.invalid">{{f.uin.errors['invalid'] | translate}}</div>
         </div>
       </div>
       <div class="col-md-4 col-sm-12 mb-4 mb-md-0">

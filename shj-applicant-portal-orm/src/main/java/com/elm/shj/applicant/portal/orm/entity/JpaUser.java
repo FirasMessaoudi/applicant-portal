@@ -78,7 +78,6 @@ public class JpaUser implements Serializable {
 	@Column(name = "MOBILE_NUMBER", nullable = false)
 	private int mobileNumber;
 
-	@Column()
 	private long nin;
 
 	@Column(nullable = false)

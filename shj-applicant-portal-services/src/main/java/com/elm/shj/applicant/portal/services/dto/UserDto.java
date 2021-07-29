@@ -52,8 +52,6 @@ public class UserDto implements Serializable {
 
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
     private Long uin;
-//TODO:TO BE CHEKED BECAUSE IT IS NOT MANDATORY NOW
-//    @NinOrIqama
     private Long nin;
     @SafeFile
     private MultipartFile avatarFile;

@@ -8,10 +8,7 @@ import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
-import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
-import com.elm.shj.applicant.portal.services.dto.RoleDto;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.dto.UserRoleDto;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
@@ -34,10 +30,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 
-;
 /**
  * Service handling user management operations
  *
@@ -100,12 +94,15 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-    public Optional<UserDto> findByUinAndDateOfBirth(long uin,Date dateOfBirth) {
-        JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEqualsAndDateOfBirthGregorianEquals(uin,dateOfBirth);
+    public Optional<UserDto> findByUinAndDateOfBirth(long uin, Date dateOfBirth) {
+        JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEqualsAndDateOfBirthGregorianEquals(uin, dateOfBirth);
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
 
-
+    public Optional<UserDto> findByUinNotDeleted(long uin) {
+        JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEquals(uin);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
 
 
     /**
@@ -371,15 +368,15 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-    public UserDto verify(JSONObject commandJsonObject) throws JSONException, ParseException {
+    public UserDto verify(ValidateApplicantCmd command) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         final String url = adminPortalUrl + "/applicants/verify";
-        ApplicantLiteDto returnedApplicant = callAdminPortal(headers, url, commandJsonObject.toString());
+        ApplicantLiteDto returnedApplicant = callAdminPortal(headers, url, command.toString());
         if (returnedApplicant != null) {
             UserDto constructedUser = constructUserFromApplicant(returnedApplicant);
-            constructedUser.setUin(commandJsonObject.getLong("uin"));
+            constructedUser.setUin(Long.parseLong(command.getUin()));
             return constructedUser;
         }
         return null;
@@ -402,10 +399,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     private ApplicantLiteDto callAdminPortal(HttpHeaders headers, String url, String body) {
-        HttpEntity<String> request = new HttpEntity<String>(body, headers);
+        HttpEntity<String> request = new HttpEntity<>(body, headers);
         RestTemplate restTemplate = new RestTemplate();
-        ApplicantLiteDto response = restTemplate.postForObject(url, request,ApplicantLiteDto.class);
-        return response;
+        return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
     }
 
 

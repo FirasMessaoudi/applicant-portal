@@ -27,6 +27,8 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     JpaUser findDistinctByDeletedFalseAndUinEqualsAndDateOfBirthGregorianEquals(long uin, Date dateOfBirth);
 
+    JpaUser findDistinctByDeletedFalseAndUinEquals(long uin);
+
     Page<JpaUser> findDistinctByDeletedFalseAndIdNotAndUserRolesRoleIdNot(Pageable pageable, long userId, long roleId);
 
     JpaUser findByNinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(long nin);

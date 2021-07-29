@@ -7,9 +7,9 @@ import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
+import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
-import com.elm.shj.applicant.portal.web.admin.ValidateApplicantCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.groups.Default;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
@@ -68,29 +66,21 @@ public class RegistrationController {
 
     @PostMapping("/verify")
     public ResponseEntity<UserDto> verify(@RequestBody ValidateApplicantCmd command) throws JSONException, ParseException {
-
-        Date formatedGregorianDate = new SimpleDateFormat("yyyy-MM-dd").parse(command.getDateOfBirthGregorian());
-        Optional<UserDto> userInApplicantPortal = userService.findByUinAndDateOfBirth(Long.parseLong(command.getUin()), formatedGregorianDate);
+        Optional<UserDto> userInApplicantPortal = userService.findByUinNotDeleted(Long.parseLong(command.getUin()));
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        JSONObject commandJsonObject = new JSONObject();
-        commandJsonObject.put("dateOfBirthGregorian", command.getDateOfBirthGregorian());
-        commandJsonObject.put("uin", command.getUin());
-        commandJsonObject.put("dateOfBirthHijri", command.getDateOfBirthHijri());
-        UserDto userFromAdminPortal = userService.verify(commandJsonObject);
+        UserDto userFromAdminPortal = userService.verify(command);
         if (userFromAdminPortal == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
         }
         return ResponseEntity.ok(userFromAdminPortal);
-
     }
 
 
     @PostMapping("/otp")
     public ResponseEntity<OtpToken> otpRegistration(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user,
                                                     @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken, HttpServletRequest request) {
-
         // check recaptcha
         RecaptchaInfo recaptchaInfo;
         if (StringUtils.isBlank(reCaptchaToken)) {
@@ -114,12 +104,10 @@ public class RegistrationController {
         String maskedMobileNumber = user.getMobileNumber() == null ? null : Integer.toString(user.getMobileNumber()).replaceAll("\\b\\d+(\\d{3})", "*******$1");
         String maskedEmail = user.getEmail() == null ? null : user.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");
         // return the Otp Token
-        //TODO:change getNin to getUin
         OtpToken token = new OtpToken(true, otpService.getOtpExpiryMinutes(), user.getUin(), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail);
 
         return ResponseEntity.ok(token);
     }
-
 
     @PostMapping("/otp/validate")
     public ResponseEntity<Boolean> validateOtpRegistration(@RequestBody Map<String, String> credentials, HttpServletResponse response) {

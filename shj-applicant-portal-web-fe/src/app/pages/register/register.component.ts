@@ -36,10 +36,9 @@ export class RegisterComponent implements OnInit {
   isApplicantVerified: boolean = false;
   fullName: string;
   user: User;
-  // passwordPattern="/^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$/";
   showSuccessPage: boolean = false;
-   originalEmail:any;
-   originalMobileNo:any;
+  originalEmail: any;
+  originalMobileNo: any;
   @ViewChild('reCaptchaEl')
   captchaElem: InvisibleReCaptchaComponent;
 
@@ -156,15 +155,12 @@ export class RegisterComponent implements OnInit {
             }
           });
         } else {
-          this.user.otpExpiryMinutes = response.otpExpiryMinutes;
-          this.authenticationService.updateOtpSubject({user: this.user});
+          this.authenticationService.updateOtpSubject({user: response});
           this.router.navigate(['/otp']);
           this.authenticationService.getOtpVerifiedForRegisterObs().subscribe(response => {
             if (response) {
-
               let updateAdminRequired = this.originalMobileNo != this.user.mobileNumber ||
                 this.originalEmail != this.user.email;
-
               this.registerService.register(this.user, updateAdminRequired).subscribe(response => {
                 if (!response) {
                   this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));

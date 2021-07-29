@@ -107,7 +107,7 @@ export class OtpComponent implements OnInit, AfterViewInit {
     });
     }
     else{
-        this.authenticationService.validateOtpForRegister(this.otpData.uin, pin)
+        this.authenticationService.validateOtpForRegister(this.otpData.name, pin)
           .pipe(finalize(() => {
             this.otpForm.markAsPristine();
             this.loading = false;
