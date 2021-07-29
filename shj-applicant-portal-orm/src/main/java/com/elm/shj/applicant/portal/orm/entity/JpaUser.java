@@ -25,8 +25,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 public class JpaUser implements Serializable {
-	private static final long serialVersionUID = 1L;
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
@@ -57,11 +57,7 @@ public class JpaUser implements Serializable {
 	@Column(length = 255)
 	private String email;
 
-
-
-
-
-	@Column(name = "full_name_en",  length = 150)
+	@Column(name = "full_name_en", length = 150)
 	private String fullNameEn;
 
 	@Column(name = "full_name_ar", length = 150)
@@ -69,8 +65,6 @@ public class JpaUser implements Serializable {
 
 	@Column( length = 1)
 	private String gender;
-
-
 
 	@Column(name = "LAST_LOGIN_DATE")
 	private Date lastLoginDate;
