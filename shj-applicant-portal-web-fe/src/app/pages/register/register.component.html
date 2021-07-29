@@ -11,12 +11,12 @@
   </button>
 </span>
 
-<div class="login__box" *ngIf="!showSuccessPage">
-    <div class="text-center">
-        <img class="my-4" src="assets/images/logo.png" alt="logo" />
-    </div>
+<div class="login__box">
+  <div class="text-center">
+    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
+  </div>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-box__wrapper" >
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
     <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
       {{ "register.header_title" | translate }}
 
@@ -106,7 +106,6 @@
             <input type="number" class="form-control" formControlName="localMobileNumber" maxlength="10" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length<=9"
                    min="0" step="1"
                    [class.is-invalid]="f.localMobileNumber.invalid && f.localMobileNumber.touched" />
-
             <div *ngIf="f.localMobileNumber.invalid && f.localMobileNumber.touched" class="invalid-feedback">
               <div *ngIf="f.localMobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
               <div *ngIf="f.localMobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
@@ -128,16 +127,17 @@
             <label>{{"general.password"|translate}}</label>
             <input type="password" formControlName="password"
                    [ngClass]="{'is-invalid': f.password.errors && f.password.touched}" class="form-control"/>
-            <div *ngIf="f.password.errors && f.password.touched" class="text-danger" >
+
+            <div *ngIf="f.password.errors && f.password.touched" class="text-danger">
               <div *ngIf="f.password.errors.required">
                 {{ "general.field_validation_required" | translate }}
               </div>
-              <div *ngIf="f.password.errors.minLength">
+              <div *ngIf="f.password.errors.minlength">
                 {{
                 "general.field_validation_min_length" | translate: {minLength: 8}
                 }}
               </div>
-              <div *ngIf="f.password.errors.maxLength">
+              <div *ngIf="f.password.errors.maxlength">
                 {{
                 "general.field_validation_max_length" | translate: {maxLength: 16}
                 }}
@@ -153,17 +153,18 @@
             <label>{{"general.confirm_password"|translate}}</label>
             <input type="password" formControlName="confirmPassword"
                    [ngClass]="{'is-invalid':  (f.confirmPassword.errors && f.confirmPassword.touched) ||
-                        (registerForm.errors?.mismatch &&(f.password.dirty || f.confirmPassword.touched))}" class="form-control"/>
-             <div *ngIf="f.confirmPassword.errors && f.confirmPassword.touched" class="text-danger">
+                        (registerForm.errors?.mismatch &&(f.password.dirty && f.confirmPassword.touched))}"
+                   class="form-control"/>
+            <div *ngIf="f.confirmPassword.errors && f.confirmPassword.touched" class="text-danger">
               <div *ngIf="f.confirmPassword.errors.required">
                 {{ "general.field_validation_required" | translate }}
               </div>
-              <div *ngIf="f.confirmPassword.errors.minLength">
+              <div *ngIf="f.confirmPassword.errors.minlength">
                 {{
                 "general.field_validation_min_length" | translate: {minLength: 8}
                 }}
               </div>
-              <div *ngIf="f.confirmPassword.errors.maxLength">
+              <div *ngIf="f.confirmPassword.errors.maxlength">
                 {{
                 "general.field_validation_max_length" | translate: {maxLength: 16}
                 }}
@@ -174,6 +175,7 @@
               </div>
 
             </div>
+
             <div *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched || f.confirmPassword.invalid)"  class="text-danger">
               {{"general.confirm_password_mismatch"|translate}}
             </div>
@@ -200,4 +202,4 @@
 
 
 </div>
-<register-success *ngIf="showSuccessPage"></register-success>
+
