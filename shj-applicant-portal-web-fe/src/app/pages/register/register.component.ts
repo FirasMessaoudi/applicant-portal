@@ -157,8 +157,8 @@ export class RegisterComponent implements OnInit {
           });
         } else {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
-          this.authenticationService.updateOtpSubject({user: this.user, actionType: "register"});
-          this.router.navigate(['/otp'], {replaceUrl: true});
+          this.authenticationService.updateOtpSubject({user: this.user});
+          this.router.navigate(['/otp']);
           this.authenticationService.getOtpVerifiedForRegisterObs().subscribe(response => {
             if (response) {
 

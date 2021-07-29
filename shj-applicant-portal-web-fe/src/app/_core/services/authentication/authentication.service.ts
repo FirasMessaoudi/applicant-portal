@@ -76,7 +76,7 @@ export class AuthenticationService {
    */
   validateOtpForLogin(username: string, otp: string): Observable<any> {
 
-    return this.http.post<any>('/core/api/auth/otp-for-login', {'idNumber': username, 'otp': otp})
+    return this.http.post<any>('/core/api/auth/otp', {'idNumber': username, 'otp': otp})
       .pipe(map(response => {
         console.log(JSON.stringify(response));
         return response;
@@ -89,7 +89,7 @@ export class AuthenticationService {
 
   validateOtpForRegister(uin: string, otp: string): Observable<any> {
 
-     return this.http.post<any>('/core/api/register/validate-otp-for-registration', {'uin': uin, 'otp': otp})
+    return this.http.post<any>('/core/api/register/otp/validate', {'uin': uin, 'otp': otp})
 
       .pipe(map(response => {
         console.log(JSON.stringify(response));

@@ -371,13 +371,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-    public  UserDto  verifyUser(JSONObject commandJsonObject) throws JSONException, ParseException {
+    public UserDto verify(JSONObject commandJsonObject) throws JSONException, ParseException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         final String url = adminPortalUrl + "/applicants/verify";
         ApplicantLiteDto returnedApplicant = callAdminPortal(headers, url, commandJsonObject.toString());
-        if (returnedApplicant!=null){
+        if (returnedApplicant != null) {
             UserDto constructedUser = constructUserFromApplicant(returnedApplicant);
             constructedUser.setUin(commandJsonObject.getLong("uin"));
             return constructedUser;

@@ -27,7 +27,7 @@ export class RegisterService {
   }
 
   generateOTPForRegistration(user: User, recaptchaToken: string): Observable<any> {
-    return this.http.post<any>('/core/api/register/generate-otp-for-registration?grt=' + recaptchaToken, user)
+    return this.http.post<any>('/core/api/register/otp?grt=' + recaptchaToken, user)
       .pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {
           return of(error.error);

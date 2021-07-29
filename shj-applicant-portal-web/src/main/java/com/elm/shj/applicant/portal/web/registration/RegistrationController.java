@@ -54,12 +54,12 @@ public class RegistrationController {
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
 
     @PostMapping
-    public ResponseEntity<UserDto> registerUser( @RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user , @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal) throws JSONException {
-        if(needToUpdateInAdminPortal){
+    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal) throws JSONException {
+        if (needToUpdateInAdminPortal) {
             JSONObject commandJsonObject = new JSONObject();
             commandJsonObject.put("localMobileNumber", user.getMobileNumber());
             commandJsonObject.put("email", user.getEmail());
-            userService.updateUserInAdminPortal(commandJsonObject,user.getUin());
+            userService.updateUserInAdminPortal(commandJsonObject, user.getUin());
         }
         UserDto createdUser = userService.createUser(user, true);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
@@ -78,18 +78,18 @@ public class RegistrationController {
         commandJsonObject.put("dateOfBirthGregorian", command.getDateOfBirthGregorian());
         commandJsonObject.put("uin", command.getUin());
         commandJsonObject.put("dateOfBirthHijri", command.getDateOfBirthHijri());
-        UserDto userFromAdminPortal= userService.verifyUser(commandJsonObject);
-        if (userFromAdminPortal==null){
-            return  ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
+        UserDto userFromAdminPortal = userService.verify(commandJsonObject);
+        if (userFromAdminPortal == null) {
+            return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
         }
         return ResponseEntity.ok(userFromAdminPortal);
 
     }
 
 
-    @PostMapping("/generate-otp-for-registration")
-    public ResponseEntity<OtpToken> generateOTPForRegistration(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user,
-                                                               @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken, HttpServletRequest request) {
+    @PostMapping("/otp")
+    public ResponseEntity<OtpToken> otpRegistration(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user,
+                                                    @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken, HttpServletRequest request) {
 
         // check recaptcha
         RecaptchaInfo recaptchaInfo;
@@ -121,11 +121,11 @@ public class RegistrationController {
     }
 
 
-        @PostMapping("/validate-otp-for-registration")
-        public ResponseEntity<Boolean> validateOtpForRegistration(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
+    @PostMapping("/otp/validate")
+    public ResponseEntity<Boolean> validateOtpRegistration(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         // validate OTP
         if (!otpService.validateOtp(credentials.get("uin"), credentials.get("otp"))) {
-            return  ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(false);
+            return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(false);
         }
         return ResponseEntity.ok(true);
     }
