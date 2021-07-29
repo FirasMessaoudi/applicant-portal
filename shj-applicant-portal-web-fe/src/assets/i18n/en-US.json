@@ -105,7 +105,8 @@
     "btn_previous": "Previous",
     "label_yes": "Yes",
     "label_no": "No",
-    "confirm_password_mismatch": "Password and Confirm Password Mismatch"
+    "confirm_password_mismatch": "Password and Confirm Password Mismatch",
+    "identity_number": "Identity Number"
   },
 
   "header": {

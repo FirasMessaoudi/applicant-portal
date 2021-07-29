@@ -104,7 +104,8 @@
     "btn_previous": "السابق",
     "label_yes": "نعم",
     "label_no": "لا",
-    "confirm_password_mismatch": "كلمة المرور وتأكيد كلمة المرور غير متطابقتان"
+    "confirm_password_mismatch": "كلمة المرور وتأكيد كلمة المرور غير متطابقتان",
+    "identity_number": "رقم الهوية"
   },
   "header": {
     "welcome": "مرحبا",

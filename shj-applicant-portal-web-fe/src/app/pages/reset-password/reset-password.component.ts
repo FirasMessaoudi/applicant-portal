@@ -128,7 +128,7 @@ export class ResetPasswordComponent implements OnInit {
           });
         }
       } else {
-        this.toastr.success(this.translate.instant('general.dialog_edit_success_text'), this.translate.instant('reset-password.title'));
+        this.toastr.success(this.translate.instant('reset-password.success_text'), this.translate.instant('reset-password.title'));
         this.router.navigate(['/login']);
       }
     },error => {
