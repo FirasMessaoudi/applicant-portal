@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
           // redirect to change password page
           this.router.navigate(['/change-password'], {replaceUrl: true});
         } else if (user.otpRequired) {
-          this.authenticationService.updateOtpSubject({user:user,actionType:"login"});
+          this.authenticationService.updateOtpSubject({user: user});
           this.router.navigateByUrl('/otp', {replaceUrl: true});
           // this.authenticationService.getOtpVerifiedForLoginObs().subscribe(user=>{
           //   if(user){
