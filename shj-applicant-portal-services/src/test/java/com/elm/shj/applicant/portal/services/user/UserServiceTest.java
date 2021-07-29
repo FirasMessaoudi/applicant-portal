@@ -48,6 +48,7 @@ public class UserServiceTest {
     private static final long TEST_USER_ID = 5;
     private static final long TEST_ROLE_ID = 5;
     private static final Long TEST_NIN = 1234567897L;
+    private static final Long TEST_UIN = 1234567899L;
     private static final int TEST_MOBILE = 12345678;
     private static final PageRequest TEST_PAGE = PageRequest.of(0, 10);
 
@@ -285,9 +286,10 @@ public class UserServiceTest {
     @Test
     public void test_resetPassword_notify_ok() {
         UserDto user = new UserDto();
+        user.setUin(TEST_UIN);
         user.setNin(TEST_NIN);
         user.setMobileNumber(TEST_MOBILE);
-        when(serviceToTest.notifyRegisteredUser(user)).thenReturn(true);
+        when(serviceToTest.notifyUserOnPasswordReset(user)).thenReturn(true);
         String updatedPasswordMock = "DUMMY_PASS";
         when(passwordEncoder.encode(anyString())).thenReturn(updatedPasswordMock);
         user.setId(TEST_USER_ID);
@@ -298,11 +300,24 @@ public class UserServiceTest {
     @Test
     public void test_resetPassword_notify_ko() {
         UserDto user = new UserDto();
+        user.setUin(TEST_UIN);
         user.setNin(TEST_NIN);
         user.setMobileNumber(TEST_MOBILE);
-        when(serviceToTest.notifyRegisteredUser(user)).thenReturn(false);
+        when(serviceToTest.notifyUserOnPasswordReset(user)).thenReturn(false);
         serviceToTest.resetPassword(user);
         verify(userRepository, times(0)).resetPwd(anyLong(), anyString(), anyBoolean());
+    }
+    @Test
+    public void test_notifyUserOnPasswordReset() {
+        when(smsGatewayService.sendMessage(any(),any())).thenReturn(true);
+        when(emailService.sendMailFromTemplate(any(),any(),any(),any(),any())).thenReturn(true);
+        UserDto user = new UserDto();
+        user.setUin(TEST_UIN);
+        user.setNin(TEST_NIN);
+        user.setMobileNumber(TEST_MOBILE);
+
+        boolean res= serviceToTest.notifyUserOnPasswordReset(user);
+        assertTrue(res);
     }
 
     @Test

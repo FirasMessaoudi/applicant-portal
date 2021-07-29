@@ -61,8 +61,9 @@ public class UserRepositoryTest extends AbstractJpaTest {
         JpaUser existingUser = userRepository.findByNinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(NIN_USER_NOT_DELETED);
         assertNotNull(existingUser);
         assertEquals(NIN_USER_NOT_DELETED, existingUser.getNin());
+        assertEquals(UIN_USER_NOT_DELETED, existingUser.getUin());
         assertEquals(USER_PASSWORD_HASH, existingUser.getPasswordHash());
-        userRepository.updatePassword(NIN_USER_NOT_DELETED, newPassHash);
+        userRepository.updatePassword(UIN_USER_NOT_DELETED, newPassHash);
         entityManager.clear();
         existingUser = userRepository.findByNinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(NIN_USER_NOT_DELETED);
         assertEquals(newPassHash, existingUser.getPasswordHash());
@@ -83,7 +84,7 @@ public class UserRepositoryTest extends AbstractJpaTest {
 
     @Test
     public void test_retrieve_password_hash_success() {
-        String passwordHash = userRepository.retrievePasswordHash(NIN_USER_NOT_DELETED);
+        String passwordHash = userRepository.retrievePasswordHash(UIN_USER_NOT_DELETED);
         assertEquals(USER_PASSWORD_HASH, passwordHash);
     }
 

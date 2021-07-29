@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {AuthenticationService} from '../services/authentication/authentication.service';
 
 
-export const PUBLIC_URL_PATTERNS: Array<string> = ['/login', '/otp', '/register', '/reset-password', '/support', '/register-success'];
+export const PUBLIC_URL_PATTERNS: Array<string> = ['/login', '/otp', '/register', '/reset-password', '/support'];
 export const LOGIN_URL: string = '/login';
 
 @Injectable({providedIn: 'root'})

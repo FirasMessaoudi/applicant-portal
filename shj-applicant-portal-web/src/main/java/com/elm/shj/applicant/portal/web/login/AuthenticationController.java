@@ -76,7 +76,7 @@ public class AuthenticationController {
      *
      * @return the generated token
      */
-    @PostMapping("/otp")
+    @PostMapping("/otp-for-login")
     public ResponseEntity<JwtToken> otpForLogin(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         log.debug("OTP request handler");
         JwtToken authentication;

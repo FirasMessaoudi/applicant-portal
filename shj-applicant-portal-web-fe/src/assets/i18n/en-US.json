@@ -244,7 +244,9 @@
   "reset-password": {
     "title": "Reset Password",
     "btn_reset_password": "Reset Password",
-    "btn_back_to_login": "Back to Login"
+    "btn_back_to_login": "Back to Login",
+    "success_text": "The temporary password sent to your mobile number please reset password after login ",
+    "invalid_uin_or_birthdate": "Invalid smart id number or birthdate!"
   },
 
   "footer": {

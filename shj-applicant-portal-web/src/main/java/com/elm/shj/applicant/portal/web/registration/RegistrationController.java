@@ -11,6 +11,7 @@ import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
+import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

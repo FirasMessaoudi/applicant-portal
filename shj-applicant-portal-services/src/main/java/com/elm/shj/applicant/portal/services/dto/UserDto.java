@@ -57,7 +57,6 @@ public class UserDto implements Serializable {
     private MultipartFile avatarFile;
     private String avatar;
     private int numberOfTries;
-    @Password
     private String password;
     private String passwordHash;
     private String preferredLanguage;

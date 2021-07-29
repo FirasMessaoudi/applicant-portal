@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, PatternValidator, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
@@ -13,7 +13,7 @@ import {DateType} from "@shared/modules/hijri-gregorian-datepicker/datepicker/co
 import {HijriGregorianDatepickerComponent} from "@shared/modules/hijri-gregorian-datepicker/datepicker/hijri-gregorian-datepicker.component";
 import {DateFormatterService} from "@shared/modules/hijri-gregorian-datepicker/datepicker/date-formatter.service";
 import {DEFAULT_MAX_USER_AGE} from "@core/services";
-import {DccValidators} from "@shared/validators";
+import {DccValidators, IdType} from "@shared/validators";
 import {DatePipe, Location} from "@angular/common";
 import {User} from "@shared/model";
 
@@ -36,9 +36,9 @@ export class RegisterComponent implements OnInit {
   isApplicantVerified: boolean = false;
   fullName: string;
   user: User;
-  showSuccessPage: boolean = false;
-  originalEmail: any;
-  originalMobileNo: any;
+   showSuccessPage: boolean = false;
+   originalEmail:any;
+   originalMobileNo:any;
   @ViewChild('reCaptchaEl')
   captchaElem: InvisibleReCaptchaComponent;
 
@@ -261,7 +261,6 @@ export class RegisterComponent implements OnInit {
 
 
   goBack() {
-
     this.router.navigate(['/login'])
   }
 }

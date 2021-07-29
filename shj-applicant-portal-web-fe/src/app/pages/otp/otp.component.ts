@@ -1,14 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewChildren, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router, RouterEvent} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
-import {finalize} from "rxjs/operators";
+import {filter, finalize,  takeLast} from "rxjs/operators";
 import {interval, Subscription} from "rxjs";
 import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
 import {NavigationService} from "@core/utilities/navigation.service";
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'otp.component.html',
@@ -58,13 +57,23 @@ export class OtpComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.previouseUrl = this.navigationService.getPreviousUrl();
-    this.otpTitle = this.previouseUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
+
+
+
     this.createForm();
     this.authenticationService.otpData.subscribe(data => {
+      if(data.actionType=="login"){
+        this.otpTitle=this.translate.instant("login.header_title");
+        this.previouseUrl="/login";
+      }
+      else {
+        this.otpTitle=this.translate.instant("register.header_title");
+        this.previouseUrl="/register";
+      }
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
+
       this.otpData = data.user;
       this.startTimer(data.user?.otpExpiryMinutes);
       this.mask = data.user.mobileNumber;
@@ -96,6 +105,16 @@ export class OtpComponent implements OnInit, AfterViewInit {
       }
       // login successful if there's a jwt token in the response
       this.authenticationService.updateSubject(user);
+
+      if (user.passwordExpired) {
+        console.log('redirect to change password page');
+        // redirect to change password page
+        this.router.navigate(['/change-password'], {replaceUrl: true});
+      } else {
+        console.log('redirect to / page');
+        // clearInterval(this.timerInterval);
+        this.router.navigate(['/'], {replaceUrl: true});
+      }
     }, error => {
       console.log(error);
       this.error = error;
