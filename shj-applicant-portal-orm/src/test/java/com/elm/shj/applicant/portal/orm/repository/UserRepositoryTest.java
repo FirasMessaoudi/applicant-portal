@@ -49,7 +49,7 @@ public class UserRepositoryTest extends AbstractJpaTest {
 
     @Test
     public void test_find_by_uin_success() {
-        JpaUser existingUser = userRepository.findByUinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(UIN_USER_NOT_DELETED);
+        JpaUser existingUser = userRepository.findByUinAndDeletedFalseAndActivatedTrue(UIN_USER_NOT_DELETED);
         assertNotNull(existingUser);
         assertEquals(UIN_USER_NOT_DELETED, existingUser.getUin());
     }
@@ -78,7 +78,7 @@ public class UserRepositoryTest extends AbstractJpaTest {
 
     @Test
     public void test_find_by_uin_does_not_exist() {
-        JpaUser nonExistingUser = userRepository.findByUinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(UIN_USER_FAKE);
+        JpaUser nonExistingUser = userRepository.findByUinAndDeletedFalseAndActivatedTrue(UIN_USER_FAKE);
         assertNull(nonExistingUser);
     }
 
@@ -96,7 +96,7 @@ public class UserRepositoryTest extends AbstractJpaTest {
 
     @Test
     public void test_find_by_uin_not_deleted_user_deleted() {
-        JpaUser deletedUser = userRepository.findByUinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(UIN_USER_DELETED);
+        JpaUser deletedUser = userRepository.findByUinAndDeletedFalseAndActivatedTrue(UIN_USER_DELETED);
         assertNull(deletedUser);
     }
 

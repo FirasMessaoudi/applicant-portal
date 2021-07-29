@@ -108,6 +108,7 @@
     "confirm_password_mismatch": "Password and Confirm Password Mismatch",
     "full_name_En": "Full Name In English",
     "full_name_Ar": "Full Name In Arabic"
+    "identity_number": "Identity Number"
   },
 
   "header": {
@@ -231,8 +232,8 @@
     "smart_id_number": "Smart ID Number",
     "verify": "verify",
     "verification_error": "Verification Error",
-    "applicant_not_found": "Cannot register no record match the entry please check the input values",
-    "user_already_registered": "Applicant already registered please you can login or request reset password"
+    "applicant_not_found": "Applicant Not Found"
+
   },
 
   "change-password": {
