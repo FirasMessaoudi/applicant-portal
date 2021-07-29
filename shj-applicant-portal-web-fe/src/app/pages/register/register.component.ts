@@ -168,8 +168,17 @@ export class RegisterComponent implements OnInit {
                 } else {
                   this.router.navigate(['/register-success'], {replaceUrl: true});
                 }
+              }, error => {
+                console.log(error);
+                this.registerForm.markAsUntouched();
+                this.isApplicantVerified = false;
+                this.error = error;
+                if (error.status == 560) {
+                  this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
+                } else {
+                  this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
+                }
               });
-
             }
           });
         }
@@ -228,9 +237,9 @@ export class RegisterComponent implements OnInit {
       // this.showCaptcha = (error.status == 555);
       this.error = error;
       if (error.status == 560) {
-        this.toastr.warning(this.translate.instant("user already registered"), this.translate.instant("register.verification_error"));
+        this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
       } else {
-        this.toastr.warning(this.translate.instant("user not found"), this.translate.instant("register.verification_error"));
+        this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
       }
     });
   }
