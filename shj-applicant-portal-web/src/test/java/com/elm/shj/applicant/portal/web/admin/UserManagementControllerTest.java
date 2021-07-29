@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
@@ -40,6 +41,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
     private static final long TEST_USER_ID = 5;
 
     private List<UserDto> users;
+
 
     /**
      * {@inheritDoc}
@@ -210,6 +212,31 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         mockMvc.perform(post(url).cookie(tokenCookie).content(objectToJson(params)).contentType(MediaType.APPLICATION_JSON_UTF8).with(csrf())).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").doesNotExist());
 
         verify(userService, times(1)).updateUserPassword(eq(Long.parseLong(TEST_USER_NIN)), anyString());
+    }
+
+
+    @Test
+    public void test_reset_user_password_success() throws Exception {
+        String newPassword = "newC0mpl@x";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date birthdate=sdf.parse("1994-11-27");
+        long uin=12345678;
+        String url = Navigation.API_USERS + "/reset-password?grt=GOOGLE_RECAPTCHA_RESPONSE";
+
+        ResetPasswordCmd params= new ResetPasswordCmd();
+        params.setDateOfBirthGregorian(birthdate);
+        params.setIdNumber(uin);
+
+        UserDto user =new UserDto();
+        user.setDateOfBirthGregorian(birthdate);
+        user.setUin(uin);
+
+        when(userService.findByUin(uin)).thenReturn(Optional.of(user));
+
+        mockMvc.perform(post(url).content(objectToJson(params)).contentType(MediaType.APPLICATION_JSON_UTF8).with(csrf())).andDo(print()).andExpect(status().isOk());
+
+        verify(userService, times(1)).resetPassword(user);
     }
 
     @Test

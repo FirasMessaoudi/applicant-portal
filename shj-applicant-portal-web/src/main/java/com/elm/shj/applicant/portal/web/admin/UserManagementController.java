@@ -173,16 +173,16 @@ public class UserManagementController {
             throw new RecaptchaException("Invalid captcha.");
         }
 
-        UserDto user = userService.findByNin(command.getIdNumber()).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + command.getIdNumber()));
+        UserDto user = userService.findByUin(command.getIdNumber()).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + command.getIdNumber()));
 
         boolean dateOfBirthMatched;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // decide which date of birth to use
         if (command.getDateOfBirthGregorian() != null) {
-            String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
-            String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
-            dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
+                String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
+                String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
+                dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
         } else {
             dateOfBirthMatched = command.getDateOfBirthHijri() == user.getDateOfBirthHijri();
         }
@@ -190,7 +190,7 @@ public class UserManagementController {
             userService.resetPassword(user);
         } else {
             log.debug("invalid data for username {}", command.getIdNumber());
-            throw new UsernameNotFoundException("invalid data");
+            throw new BadCredentialsException("invalid credentials.");
         }
     }
 

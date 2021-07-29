@@ -53,6 +53,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public static final String REGISTRATION_EMAIL_SUBJECT = "Welcome to ELM Product";
     public static final String REGISTRATION_EMAIL_TPL_NAME = "email-registration.ftl";
     public static final String RESET_PASSWORD_EMAIL_TPL_NAME = "email-reset-password.ftl";
+    public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
+    public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset User Password إعادة تعيين كلمة السر";
+
     @Value("${admin.portal.url}")
     private String adminPortalUrl;
     private final UserRepository userRepository;
@@ -338,14 +341,38 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public void resetPassword(UserDto user) {
         String newPassword = generatePassword();
         user.setPassword(newPassword);
+        log.warn("Password reset for user {} , new password is {} .",user.getUin(),newPassword);
         // first notify user with the new password, if notification failed, password will not be changed
-        if (!notifyRegisteredUser(user)) {
+        if (!notifyUserOnPasswordReset(user)) {
             log.error("Password reset cannot be done, unable to notify user with the new password.");
             return;
         }
 
         String updatedPwd = passwordEncoder.encode(newPassword);
         userRepository.resetPwd(user.getId(), updatedPwd, true);
+    }
+
+
+    /**
+     * Send SMS and Email for user on password reset.
+     *
+     * @param user
+     * @return
+     */
+    public boolean notifyUserOnPasswordReset(UserDto user) {
+        // Send SMS notification
+        String[] smsNotificationArgs = new String[]{user.getPassword()};
+        String locale = isCitizen(user.getNin()) ? "ar" : "en";
+        String createdUserSms = messageSource.getMessage(RESET_PASSWORD_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
+        boolean smsSent = smsGatewayService.sendMessage(user.getMobileNumber().longValue(), createdUserSms);
+        log.debug("SMS notification status: {}", smsSent);
+
+        // Send Email notification
+        boolean emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
+                RESET_PASSWORD_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
+        log.debug("Email notification status: {}", emailSent);
+
+        return smsSent || emailSent;
     }
 
     /**

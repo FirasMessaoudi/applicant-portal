@@ -114,7 +114,8 @@ export class ResetPasswordComponent implements OnInit {
     // if we get a successful response from recaptcha, then we send the form
     this.userService.resetPassword(user, this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (response) {
-        this.toastr.warning(this.translate.instant('general.dialog_form_error_text'), this.translate.instant('reset-password.title'));
+        this.error = response;
+        this.toastr.warning(this.translate.instant('reset-password.invalid_uin_or_birthdate'), this.translate.instant('reset-password.title'));
         this.captchaElem.reloadCaptcha();
         if (response.hasOwnProperty('errors') && response.errors) {
           Object.keys(this.resetPasswordForm.controls).forEach(field => {
@@ -130,12 +131,16 @@ export class ResetPasswordComponent implements OnInit {
         this.toastr.success(this.translate.instant('general.dialog_edit_success_text'), this.translate.instant('reset-password.title'));
         this.router.navigate(['/login']);
       }
+    },error => {
+      console.log(error);
+
+      this.error = error;
     });
   }
 
   private createForm() {
     this.resetPasswordForm = this.formBuilder.group({
-      idNumber: ['', Validators.compose([Validators.required, DccValidators.ninOrIqama(IdType.NIN_OR_IQAMA)])],
+      idNumber: ['', Validators.compose([Validators.required])],
       dateOfBirthGregorian: ['', Validators.compose([Validators.required])],
       dateOfBirthHijri: ['', Validators.compose([Validators.required])],
       recaptcha: ['']

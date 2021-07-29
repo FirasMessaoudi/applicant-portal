@@ -47,7 +47,7 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     @Modifying
     @Query("update JpaUser user set user.passwordHash = :passwordHash, user.changePasswordRequired = false, " +
-            "user.updateDate = CURRENT_TIMESTAMP where user.nin =:idNumber")
+            "user.updateDate = CURRENT_TIMESTAMP where user.uin =:idNumber")
     void updatePassword(@Param("idNumber") long idNumber, @Param("passwordHash") String passwordHash);
 
     @Modifying
@@ -55,13 +55,13 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
     void updateAvatar(@Param("userId") long userId, @Param("avatar") String avatar);
 
     @Modifying
-    @Query("update JpaUser user set user.tokenExpiryDate = null where user.nin =:idNumber")
+    @Query("update JpaUser user set user.tokenExpiryDate = null where user.uin =:idNumber")
     void clearToken(@Param("idNumber") long idNumber);
 
-    @Query("select user.passwordHash from JpaUser user where user.nin =:idNumber")
+    @Query("select user.passwordHash from JpaUser user where user.uin =:idNumber")
     String retrievePasswordHash(@Param("idNumber") long idNumber);
 
-    @Query("select user.tokenExpiryDate from JpaUser user where user.nin =:idNumber")
+    @Query("select user.tokenExpiryDate from JpaUser user where user.uin =:idNumber")
     Date retrieveTokenExpiryDate(@Param("idNumber") long idNumber);
 
     @Modifying
