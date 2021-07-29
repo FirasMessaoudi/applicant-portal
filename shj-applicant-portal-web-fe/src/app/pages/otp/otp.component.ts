@@ -58,13 +58,15 @@ export class OtpComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.previouseUrl = this.navigationService.getPreviousUrl();
-    this.otpTitle = this.previouseUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
+
+
     this.createForm();
     this.authenticationService.otpData.subscribe(data => {
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
+      this.previouseUrl = data.actionType;
+      this.otpTitle = this.previouseUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
       this.otpData = data.user;
       this.startTimer(data.user?.otpExpiryMinutes);
       this.mask = data.user.mobileNumber;
