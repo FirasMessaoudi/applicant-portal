@@ -29,6 +29,7 @@
 
   "general": {
     "app_name": "Elm Product",
+    "app_title": "Shaaer",
     "dialog_alert_title": "Alert",
     "dialog_confirmation_title": "Confirmation",
     "dialog_confirmation_text": "Are you sure?",
