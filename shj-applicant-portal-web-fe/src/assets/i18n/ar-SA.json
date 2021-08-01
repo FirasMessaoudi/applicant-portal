@@ -107,7 +107,7 @@
     "label_no": "لا",
     "confirm_password_mismatch": "كلمة المرور وتأكيد كلمة المرور غير متطابقتان",
     "full_name_En": "الاسم بالكامل بالانجليزيه",
-    "full_name_Ar": "الاسم بالكامل بالعربيه"
+    "full_name_Ar": "الاسم بالكامل بالعربيه",
     "identity_number": "رقم الهوية"
   },
   "header": {
