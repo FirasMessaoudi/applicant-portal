@@ -100,7 +100,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public Optional<UserDto> findByUinNotDeleted(long uin) {
-        JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEquals(uin);
+        JpaUser user = userRepository.findByUinAndDeletedFalseAndActivatedTrue(uin);
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
 
