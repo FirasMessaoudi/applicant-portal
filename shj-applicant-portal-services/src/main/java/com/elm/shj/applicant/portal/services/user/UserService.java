@@ -392,30 +392,25 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-    public ApplicantLiteDto verify(ValidateApplicantCmd command) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("CALLER-TYPE", "WEB-SERVICE");
+    public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
         final String url = adminPortalUrl + "/applicants/verify";
-        return callAdminPortal(headers, url, command.toString());
-
+        return callAdminPortal(url, command.toString(), restTemplate);
     }
 
-    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd) {
+    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
+        final String url = adminPortalUrl + "/applicants/update";
+        return callAdminPortal(url, applicantCmd.toString(), restTemplate);
+    }
+
+
+    private ApplicantLiteDto callAdminPortal(String url, String body, RestTemplate restTemplate) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        final String url = adminPortalUrl + "/applicants/update";
-        return callAdminPortal(headers, url, applicantCmd.toString());
-    }
-
-
-    private ApplicantLiteDto callAdminPortal(HttpHeaders headers, String url, String body) {
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
     }
 
 
-    }
+}
 

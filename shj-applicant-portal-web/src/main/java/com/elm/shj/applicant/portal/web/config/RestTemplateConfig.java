@@ -40,4 +40,9 @@ public class RestTemplateConfig {
         scheduler.setPoolSize(50);
         return scheduler;
     }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }

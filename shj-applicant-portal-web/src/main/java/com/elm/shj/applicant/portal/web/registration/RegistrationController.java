@@ -12,6 +12,7 @@ import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
+import com.elm.shj.applicant.portal.web.config.RestTemplateConfig;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
@@ -49,12 +50,13 @@ public class RegistrationController {
     private static final int USER_ALREADY_REGISTERED_RESPONSE_CODE = 560;
     private static final int USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE = 561;
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
+    private final RestTemplateConfig restTemplateConfig;
 
     @PostMapping
     public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal) throws JSONException {
         if (needToUpdateInAdminPortal) {
             UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), String.valueOf(user.getMobileNumber()));
-            userService.updateUserInAdminPortal(applicantCmd);
+            userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
         }
         Optional<UserDto> userInApplicantPortal = userService.findByUinNotDeleted(user.getUin());
         if (userInApplicantPortal.isPresent()) {
@@ -72,7 +74,8 @@ public class RegistrationController {
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        ApplicantLiteDto userFromAdminPortal = userService.verify(command);
+
+        ApplicantLiteDto userFromAdminPortal = userService.verify(command, restTemplateConfig.restTemplate());
         if (userFromAdminPortal == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
         }
