@@ -10,8 +10,7 @@ import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.dto.UserDtoMapper;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.role.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +24,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -50,8 +50,9 @@ public class UserServiceTest {
     private static final Long TEST_NIN = 1234567897L;
     private static final Long TEST_UIN = 1234567899L;
     private static final int TEST_MOBILE = 12345678;
+    private static final String TEST_DATE_OG_BIRTH_GREGORIAN = "1981-11-05";
     private static final PageRequest TEST_PAGE = PageRequest.of(0, 10);
-
+    private static final String TEST_EMAIL = "app@elm.sa";
     @InjectMocks
     private UserService serviceToTest;
 
@@ -81,8 +82,10 @@ public class UserServiceTest {
 
     @Mock
     private CycleAvoidingMappingContext mappingContext;
+    @Mock
+    RestTemplate restTemplate;
 
-    private final MockMultipartFile mockAvatar = new MockMultipartFile("fileData",    "mock avatar",    "text/plain",    "mock content".getBytes());
+    private final MockMultipartFile mockAvatar = new MockMultipartFile("fileData", "mock avatar", "text/plain", "mock content".getBytes());
 
     @BeforeEach
     public void setUp() {
@@ -270,17 +273,48 @@ public class UserServiceTest {
     @Test
     public void test_createUser() {
         UserDto user = new UserDto();
-        user.setNin(TEST_NIN);
+        user.setUin(TEST_UIN);
         user.setMobileNumber(TEST_MOBILE);
         String passwordMock = "DUMMY_PASS";
         user.setPassword(passwordMock);
-        when(serviceToTest.notifyRegisteredUser(user)).thenReturn(true);
+
         when(passwordEncoder.encode(anyString())).thenReturn(passwordMock);
-
         serviceToTest.createUser(user, true);
-
+        when(serviceToTest.notifyRegisteredUser(user)).thenReturn(true);
         verify(roleService, times(1)).findNewUserDefaultRole();
         verify(emailService, times(1)).sendMailFromTemplate(any(), any(), any(), any(), any());
+    }
+
+    @Test
+    public void test_verify_applicant_uin_notFound() {
+        ValidateApplicantCmd command = new ValidateApplicantCmd();
+        command.setUin(String.valueOf(TEST_UIN));
+        command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
+        when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(null);
+        assertNull(serviceToTest.verify(command, restTemplate));
+    }
+
+
+    @Test
+    public void test_verify_uin_applicant_uin_exist() {
+        ValidateApplicantCmd command = new ValidateApplicantCmd();
+        ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
+        applicantLiteDto.setMobileNumber(String.valueOf(TEST_MOBILE));
+        command.setUin(String.valueOf(TEST_UIN));
+        command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
+        when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
+        assertEquals(applicantLiteDto, serviceToTest.verify(command, restTemplate));
+
+    }
+
+    @Test
+    public void test_update_applicant_by_uin() {
+        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, String.valueOf(TEST_MOBILE));
+        ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
+        applicantLiteDto.setMobileNumber(String.valueOf(TEST_MOBILE));
+        when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
+        assertEquals(applicantLiteDto, serviceToTest.updateUserInAdminPortal(applicant, restTemplate));
+
     }
 
     @Test
