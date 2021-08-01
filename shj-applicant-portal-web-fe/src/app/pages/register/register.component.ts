@@ -213,7 +213,6 @@ export class RegisterComponent implements OnInit {
       } else {
         this.isApplicantVerified = false;
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
-
       }
     }, error => {
       console.log(error);

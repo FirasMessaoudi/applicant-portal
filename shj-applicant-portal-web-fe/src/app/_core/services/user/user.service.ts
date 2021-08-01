@@ -176,7 +176,7 @@ export class UserService {
       .pipe(catchError((error: HttpErrorResponse) => {
 
         if (error.hasOwnProperty('error')) {
-          console.error('eee ' , error);
+
           return of(error.error);
         } else {
           console.error('An error happen while registering new user : ' + error);
