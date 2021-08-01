@@ -4,10 +4,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {finalize} from "rxjs/operators";
-import {interval, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
-import {NavigationService} from "@core/utilities/navigation.service";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -17,16 +16,16 @@ import {NavigationService} from "@core/utilities/navigation.service";
 export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   otpData: any;
+  otpDataSubscription: Subscription;
   mask: string;
   error: string;
   otpForm: FormGroup;
   loading = false;
   timerContent: string = '';
-  timerSubscription: Subscription;
+  timerInterval: any;
   formInputs = ['input1', 'input2', 'input3', 'input4'];
   otpTitle: string;
-  previouseUrl: string;
-  otpDataSubscription: Subscription;
+  previousUrl: string;
   @ViewChildren('formRow') rows: any;
 
   constructor(
@@ -36,19 +35,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     private router: Router,
     private authenticationService: AuthenticationService,
     private location: Location,
-    private translate: TranslateService,
-   private navigationService: NavigationService
-
-  ) {
-
-
-    // redirect to home if already logged in
-    if (this.authenticationService.isAuthenticated()) {
-      // FIXME the timer is expiring before the token expiry cookie
-      // removing it for now to fix redirecting issue
-      // this.router.navigate(['/']);
-    }
-  }
+    private translate: TranslateService) {}
 
   get currentLanguage(): string {
     return this.i18nService.language;
@@ -59,27 +46,25 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-
-
     this.createForm();
     this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-      this.previouseUrl = data.actionType;
-      this.otpTitle = this.previouseUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
+      this.previousUrl = data.actionType;
+      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
       this.otpData = data.user;
       this.startTimer(data.user?.otpExpiryMinutes);
       this.mask = data.user.mobileNumber;
     });
   }
 
-  ngAfterViewInit() {
-    this.rows._results[0].nativeElement.focus();
-  }
-
   ngOnDestroy() {
     this.otpDataSubscription.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    this.rows._results[0].nativeElement.focus();
   }
 
   onSubmit() {
@@ -91,26 +76,23 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(pin);
 
     this.loading = true;
-    if (this.previouseUrl == "/login") {
+    if (this.previousUrl == "/login") {
     this.authenticationService.validateOtpForLogin(this.otpData.name, pin)
       .pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
       })).subscribe(user => {
       console.log(user);
-      if (this.timerSubscription) {
-        this.timerSubscription.unsubscribe();
-      }
+      clearInterval(this.timerInterval);
       // login successful if there's a jwt token in the response
       this.authenticationService.updateSubject(user);
 
       if (user.passwordExpired) {
         console.log('redirect to change password page');
-        // redirect to change password page
         this.router.navigate(['/change-password'], {replaceUrl: true});
       } else {
         console.log('redirect to / page');
-        // clearInterval(this.timerInterval);
+        clearInterval(this.timerInterval);
         this.router.navigate(['/'], {replaceUrl: true});
       }
     }, error => {
@@ -122,32 +104,26 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.rows._results[0].nativeElement.focus();
       });
     });
-    }
-    else{
-        this.authenticationService.validateOtpForRegister(this.otpData.name, pin)
-          .pipe(finalize(() => {
-            this.otpForm.markAsPristine();
-            this.loading = false;
-          })).subscribe(user => {
-          console.log(user);
-          if (this.timerSubscription) {
-            this.timerSubscription.unsubscribe();
-          }
-          this.authenticationService.setOtpVerifiedForRegisterObs(user);
-          }, error => {
-          console.log(error);
-          this.error = error;
-          // reset form
-          Object.keys(this.otpForm.controls).forEach(field => {
-            this.otpForm.get(field).setValue(null);
-            this.rows._results[0].nativeElement.focus();
-          });
-
+    } else {
+      this.authenticationService.validateOtpForRegister(this.otpData.name, pin)
+        .pipe(finalize(() => {
+          this.otpForm.markAsPristine();
+          this.loading = false;
+        })).subscribe(user => {
+        console.log(user);
+        clearInterval(this.timerInterval);
+        this.authenticationService.setOtpVerifiedForRegisterObs(user);
+      }, error => {
+        console.log(error);
+        this.error = error;
+        // reset form
+        Object.keys(this.otpForm.controls).forEach(field => {
+          this.otpForm.get(field).setValue(null);
+          this.rows._results[0].nativeElement.focus();
         });
-
+      });
     }
   }
-
 
   private createForm() {
     const group: any = {};
@@ -173,10 +149,8 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   goBack() {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-    this.router.navigate([this.previouseUrl]);
+    clearInterval(this.timerInterval);
+    this.router.navigate([this.previousUrl]);
   }
 
   startTimer(durationMinutes) {
@@ -184,7 +158,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     let minutes;
     let seconds;
 
-    this.timerSubscription = interval(1000).subscribe(x => {
+    this.timerInterval = setInterval(() => {
       minutes = Math.floor(timer / 60);
       seconds = Math.floor(timer % 60);
 
@@ -197,6 +171,6 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       if (--timer < 0) {
         this.goBack();
       }
-    })
+    }, 1000);
   }
 }
