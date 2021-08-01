@@ -7,6 +7,8 @@ import {finalize} from "rxjs/operators";
 import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
+import {RegisterService} from "@core/services";
+import {ToastService} from "@shared/components/toast";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -26,6 +28,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   formInputs = ['input1', 'input2', 'input3', 'input4'];
   otpTitle: string;
   previousUrl: string;
+  updateAdminRequired: boolean;
   @ViewChildren('formRow') rows: any;
 
   constructor(
@@ -34,7 +37,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private registerService: RegisterService,
     private location: Location,
+    private toastr: ToastService,
     private translate: TranslateService) {}
 
   get currentLanguage(): string {
@@ -48,14 +53,16 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
+      this.previousUrl = data.actionType;
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-      this.previousUrl = data.actionType;
+
       this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
       this.otpData = data.user;
+      this.updateAdminRequired = data.updateAdmin;
       this.startTimer(data.user?.otpExpiryMinutes);
-      this.mask = data.user.mobileNumber;
+      this.mask = this.otpData.maskedMobileNumber;
     });
   }
 
@@ -105,14 +112,29 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     });
     } else {
-      this.authenticationService.validateOtpForRegister(this.otpData.name, pin)
+      this.authenticationService.validateOtpForRegister(this.otpData.uin, pin)
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
-        this.authenticationService.setOtpVerifiedForRegisterObs(user);
+        this.registerService.register(this.otpData, this.updateAdminRequired).subscribe(response => {
+          if (!response || response.errors) {
+            this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
+
+          } else {
+            this.router.navigate(['/register-success'], {replaceUrl: true});
+          }
+        }, error => {
+          console.log(error);
+          this.error = error;
+          if (error.status == 560) {
+            this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
+          } else {
+            this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
+          }
+        });
       }, error => {
         console.log(error);
         this.error = error;

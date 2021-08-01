@@ -23,5 +23,6 @@ export class User {
   creationDate: Date;
   authorities: any;
   userRoles: Array<UserRole>;
-  otpExpiryMinutes:number;
+  otpExpiryMinutes: number;
+  maskedMobileNumber: string;
 }

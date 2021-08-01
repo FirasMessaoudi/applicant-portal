@@ -89,6 +89,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/change-password'], {replaceUrl: true});
         } else if (user.otpRequired) {
           console.log('redirect to otp page');
+          user.maskedMobileNumber = user.mobileNumber;
           this.authenticationService.updateOtpSubject({user: user, actionType: "/login"});
           this.router.navigate(['/otp'], {replaceUrl: true});
         } else {

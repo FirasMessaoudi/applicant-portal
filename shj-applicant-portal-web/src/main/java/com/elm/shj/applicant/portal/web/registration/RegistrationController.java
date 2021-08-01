@@ -58,7 +58,7 @@ public class RegistrationController {
             UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), String.valueOf(user.getMobileNumber()));
             userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
         }
-        Optional<UserDto> userInApplicantPortal = userService.findByUinNotDeleted(user.getUin());
+        Optional<UserDto> userInApplicantPortal = userService.findByUin(user.getUin());
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
@@ -70,7 +70,7 @@ public class RegistrationController {
 
     @PostMapping("/verify")
     public ResponseEntity<ApplicantLiteDto> verify(@RequestBody ValidateApplicantCmd command) {
-        Optional<UserDto> userInApplicantPortal = userService.findByUinNotDeleted(Long.parseLong(command.getUin()));
+        Optional<UserDto> userInApplicantPortal = userService.findByUin(Long.parseLong(command.getUin()));
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }

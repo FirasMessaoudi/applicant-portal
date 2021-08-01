@@ -18,25 +18,6 @@ export class AuthenticationService {
   public otpData: Observable<any>;
   private otpDataSubject: BehaviorSubject<any>;
 
-  private otpVerifiedForLogin: BehaviorSubject<any> = new BehaviorSubject(null);
-  private otpVerifiedForRegister: BehaviorSubject<any> = new BehaviorSubject(null);
-
-  getOtpVerifiedForLoginObs(): Observable<any> {
-    return this.otpVerifiedForLogin.asObservable();
-  }
-
-  setOtpVerifiedForLoginObs(user: any) {
-    this.otpVerifiedForLogin.next(user);
-  }
-
-  getOtpVerifiedForRegisterObs(): Observable<any> {
-    return this.otpVerifiedForRegister.asObservable();
-  }
-
-  setOtpVerifiedForRegisterObs(user: any) {
-    this.otpVerifiedForRegister.next(user);
-  }
-
   constructor(private http: HttpClient) {
     this.otpDataSubject = new BehaviorSubject<any>({});
     this.otpData = this.otpDataSubject.asObservable();
@@ -164,7 +145,6 @@ export class AuthenticationService {
   updateSubject(user: any) {
     if (user && user.principal) {
       this.setCurrentUser(user);
-      this.setOtpVerifiedForLoginObs(user);
     } else {
       this.setCurrentUser();
     }

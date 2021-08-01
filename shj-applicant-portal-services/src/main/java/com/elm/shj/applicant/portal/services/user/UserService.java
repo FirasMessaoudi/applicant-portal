@@ -99,11 +99,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
 
-    public Optional<UserDto> findByUinNotDeleted(long uin) {
-        JpaUser user = userRepository.findByUinAndDeletedFalseAndActivatedTrue(uin);
-        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
-    }
-
 
     /**
      * finds users by role id, nin or account status

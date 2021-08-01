@@ -150,32 +150,22 @@ export class RegisterComponent implements OnInit {
             }
           });
         } else {
-          this.authenticationService.updateOtpSubject({user: response, actionType: "/register"});
-          this.router.navigate(['/otp'], {replaceUrl: true});
-          this.authenticationService.getOtpVerifiedForRegisterObs().subscribe(response => {
-            if (response) {
-              let updateAdminRequired = this.originalMobileNo != this.registerForm.controls['mobileNumber'].value ||
-                this.originalEmail != this.registerForm.controls['email'].value;
-              this.registerService.register(this.registerForm.value, updateAdminRequired).subscribe(response => {
-                if (!response) {
-                  this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
-                  this.captchaElem.reloadCaptcha();
-                } else {
-                  this.router.navigate(['/register-success'], {replaceUrl: true});
-                }
-              }, error => {
-                console.log(error);
-                this.registerForm.markAsUntouched();
-                this.isApplicantVerified = false;
-                this.error = error;
-                if (error.status == 560) {
-                  this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
-                } else {
-                  this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
-                }
-              });
-            }
+
+          let updateAdminRequired = this.originalMobileNo != this.registerForm.controls['mobileNumber'].value ||
+            this.originalEmail != this.registerForm.controls['email'].value;
+
+          this.user.otpExpiryMinutes = response.otpExpiryMinutes;
+          this.user.maskedMobileNumber = response.mobileNumber;
+          this.user.uin = this.registerForm.controls.uin.value;
+          this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
+          this.user.password = this.registerForm.controls.password.value;
+          this.authenticationService.updateOtpSubject({
+            user: this.user,
+            actionType: "/register",
+            updateAdmin: updateAdminRequired
           });
+          this.router.navigate(['/otp'], {replaceUrl: true});
+
         }
 
       }
@@ -209,7 +199,7 @@ export class RegisterComponent implements OnInit {
 
   verifyApplicant() {
     this.isApplicantVerified = false;
-    this.registerService.verifyApplicant(this.registerForm.controls.uin.value, this.datepipe.transform(this.registerForm.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm.controls.dateOfBirthHijri.value).subscribe(response => {
+    this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
       if (response) {
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
@@ -218,7 +208,7 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls['email'].setValue(this.user.email);
         this.isApplicantVerified = true;
         this.originalMobileNo = this.user.mobileNumber
-        this.originalEmail=this.user.email;
+        this.originalEmail = this.user.email;
         this.registerForm.markAsUntouched();
       } else {
         this.isApplicantVerified = false;
