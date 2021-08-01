@@ -6,7 +6,8 @@
   >
     <span>عربي</span>
 </button>
-<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
+        (click)="setLanguage('en-US')">
     <span>English</span>
   </button>
 </span>
@@ -25,7 +26,7 @@
       <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
         <label>{{"register.smart_id_number"|translate}}<span class="text-danger px-1">*</span></label>
         <input id="uin" type="number" formControlName="uin" class="form-control"
-               onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length<=9"
+               onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 14"
                min="0" step="1" [class.is-invalid]="f.uin.invalid && f.uin.touched" maxlength="50"/>
         <div *ngIf="f.uin.invalid && f.uin.touched" class="invalid-feedback">
           <div *ngIf="f.uin.errors.required">{{'general.field_validation_required' | translate}}</div>
@@ -105,7 +106,7 @@
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label> {{"general.mobile_number"|translate}}</label>
             <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
-                   onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length<=9"
+                   onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
                    min="0" step="1"
                    [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
             <div *ngIf="f.mobileNumber.invalid && f.mobileNumber.touched" class="invalid-feedback">
@@ -184,7 +185,6 @@
           </div>
 
 
-
         </div>
       </div>
       <div class="d-flex flex-column-reverse flex-md-row justify-content-between my-3">
@@ -200,7 +200,6 @@
       </div>
     </div>
   </form>
-
 
 
 </div>
