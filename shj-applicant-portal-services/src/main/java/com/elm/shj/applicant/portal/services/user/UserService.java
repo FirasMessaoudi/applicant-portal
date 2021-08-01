@@ -335,7 +335,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public void resetPassword(UserDto user) {
         String newPassword = generatePassword();
         user.setPassword(newPassword);
-        log.warn("Password reset for user {} , new password is {} .",user.getUin(),newPassword);
+        log.info("Password reset for user {} , new password is {} .",user.getUin(),newPassword);
         // first notify user with the new password, if notification failed, password will not be changed
         if (!notifyUserOnPasswordReset(user)) {
             log.error("Password reset cannot be done, unable to notify user with the new password.");
@@ -356,7 +356,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public boolean notifyUserOnPasswordReset(UserDto user) {
         // Send SMS notification
         String[] smsNotificationArgs = new String[]{user.getPassword()};
-        String locale = isCitizen(user.getNin()) ? "ar" : "en";
+        String locale = (user.getNin() != null && isCitizen(user.getNin())) ? "ar" : "en";
+
+
         String createdUserSms = messageSource.getMessage(RESET_PASSWORD_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
         boolean smsSent = smsGatewayService.sendMessage(user.getMobileNumber().longValue(), createdUserSms);
         log.debug("SMS notification status: {}", smsSent);

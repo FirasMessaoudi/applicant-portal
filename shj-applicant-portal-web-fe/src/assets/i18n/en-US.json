@@ -246,7 +246,7 @@
   },
 
   "reset-password": {
-    "title": "Reset Password",
+    "title": "Forgot Password",
     "btn_reset_password": "Reset Password",
     "btn_back_to_login": "Back to Login",
     "success_text": "The temporary password sent to your mobile number please reset password after login ",
