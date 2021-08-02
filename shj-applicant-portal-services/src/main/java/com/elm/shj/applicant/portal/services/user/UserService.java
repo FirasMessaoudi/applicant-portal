@@ -26,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -405,7 +406,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+        try {
+            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+        } catch (HttpServerErrorException ex) {
+            return null;
+        }
     }
 
 
