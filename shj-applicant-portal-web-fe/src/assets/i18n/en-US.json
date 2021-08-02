@@ -234,7 +234,9 @@
     "validate": "Validate",
     "verification_error": "Verification Error",
     "applicant_not_found": " Cannot register no record match the entry please check the input values",
-    "user_already_registered": "Applicant already registered please you can login or request reset password"
+    "user_already_registered": "Applicant already registered please you can login or request reset password",
+    "registered_successfully": "user has been registered successfully",
+    "email_will_be_sent": "an email will be sent to you to confirm your registration"
   },
 
   "change-password": {

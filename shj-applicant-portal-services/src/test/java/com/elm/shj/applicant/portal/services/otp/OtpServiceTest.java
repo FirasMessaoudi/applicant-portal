@@ -15,10 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.context.MessageSource;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
@@ -36,8 +33,6 @@ import static org.mockito.Mockito.when;
  */
 
 @ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
-@ActiveProfiles("test")
 class OtpServiceTest {
 
   private static final String TEST_UIN = "1234567899";

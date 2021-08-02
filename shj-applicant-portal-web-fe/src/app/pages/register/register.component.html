@@ -101,8 +101,6 @@
             <label>{{"general.full_name_Ar"|translate}} </label>
             <input type="text" class="form-control" formControlName="fullNameAr" disabled/>
           </div>
-        </div>
-        <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label> {{"general.mobile_number"|translate}}</label>
             <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
@@ -115,6 +113,9 @@
               <div *ngIf="f.mobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
+        </div>
+
+        <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label>   {{"general.email"|translate}} </label>
             <input type="text" class="form-control" formControlName="email" maxlength="50"
@@ -124,8 +125,6 @@
               <div *ngIf="f.email.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
-        </div>
-        <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label>{{"general.password"|translate}}</label>
             <input type="password" formControlName="password"
