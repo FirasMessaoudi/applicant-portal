@@ -25,7 +25,7 @@
     <div class="form-group form-row">
       <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
         <label>{{"register.smart_id_number"|translate}}<span class="text-danger px-1">*</span></label>
-        <input id="uin" type="number" formControlName="uin" class="form-control"
+        <input id="uin" type="number" formControlName="uin" class="form-control" [readonly]="isApplicantVerified"
                onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 14"
                min="0" step="1" [class.is-invalid]="f.uin.invalid && f.uin.touched" maxlength="50"/>
         <div *ngIf="f.uin.invalid && f.uin.touched" class="invalid-feedback">
@@ -50,7 +50,7 @@
           [GregLabel]="'general.cal_greg' | translate"
           [hijriLabel]="'general.cal_hijri' | translate"
           [selectedDateType]="selectedDateType"
-          [disabled]="false"
+          [disabled]="isApplicantVerified"
           [readonly]="true"
           #datePicker
         >
