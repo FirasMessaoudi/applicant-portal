@@ -22,7 +22,7 @@ import java.util.Locale;
  * @since 1.0.0
  */
 @Service
-class OtpGenerator {
+public class OtpGenerator {
 
     private static final long T_ZERO = 0L;
     private static final long T_ONE = 30000L;

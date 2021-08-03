@@ -277,11 +277,12 @@ public class UserServiceTest {
         user.setMobileNumber(TEST_MOBILE);
         String passwordMock = "DUMMY_PASS";
         user.setPassword(passwordMock);
-
+        when(mapperRegistry.mapperOf(UserDto.class, JpaUser.class)).thenReturn(userDtoMapper);
         when(passwordEncoder.encode(anyString())).thenReturn(passwordMock);
-        serviceToTest.createUser(user, true);
+        when(serviceToTest.save(user)).thenReturn(user);
         when(serviceToTest.notifyRegisteredUser(user)).thenReturn(true);
-        verify(roleService, times(1)).findNewUserDefaultRole();
+        serviceToTest.createUser(user, true);
+
         verify(emailService, times(1)).sendMailFromTemplate(any(), any(), any(), any(), any());
     }
 
