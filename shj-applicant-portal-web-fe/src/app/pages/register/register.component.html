@@ -44,7 +44,7 @@
             f.dateOfBirthGregorian.errors && f.dateOfBirthGregorian.touched? 'is-invalid': ''}}"
           [(selectedDate)]="selectedDateOfBirth"
           (selectedDateChange)="onDateOfBirthChange($event)"
-          [isRequired]="false"
+          [isRequired]="true"
           [maxGreg]="maxDateOfBirthGregorian"
           [maxHijri]="maxDateOfBirthHijri"
           [GregLabel]="'general.cal_greg' | translate"
@@ -59,7 +59,6 @@
         <div class="text-dcc-primary date-eq" *ngIf="dateString">
           {{ "general.cal_eq" | translate }} {{ dateString }}
         </div>
-
         <div *ngIf="f.dateOfBirthGregorian.invalid && f.dateOfBirthGregorian.touched" class="invalid-feedback date-eq">
           <div *ngIf="f.dateOfBirthGregorian.errors.required">{{'general.field_validation_required' | translate}}</div>
           <div *ngIf="f.dateOfBirthGregorian.errors.invalid"

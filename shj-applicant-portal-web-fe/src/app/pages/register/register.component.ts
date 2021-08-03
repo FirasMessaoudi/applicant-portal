@@ -273,6 +273,10 @@ export class RegisterComponent implements OnInit {
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.registerForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(this.dateStructGreg));
       this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(dateStructHijri).split('/').reverse().join(''));
+    } else if (event == null) {
+      this.dateString = '';
+      this.registerForm.controls.dateOfBirthGregorian.setErrors({'required': true})
+      this.registerForm.controls.dateOfBirthGregorian.markAsTouched({onlySelf: true});
     }
   }
 
