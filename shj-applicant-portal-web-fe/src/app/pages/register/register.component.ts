@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
-import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct, NgbModal, NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 import {InvisibleReCaptchaComponent} from "ngx-captcha";
 import {ToastService} from "@shared/components/toast/toast-service";
 import {TranslateService} from "@ngx-translate/core";
@@ -16,6 +16,10 @@ import {DEFAULT_MAX_USER_AGE} from "@core/services";
 import {DccValidators} from "@shared/validators";
 import {DatePipe, Location} from "@angular/common";
 import {User} from "@shared/model";
+
+import {Observable, OperatorFunction} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
+import {COUNTRY} from "@model/enum/country_code";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -54,8 +58,10 @@ export class RegisterComponent implements OnInit {
   selectedDateType: any;
   dateStructGreg: any;
 
-  @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
+  COUNTRY = COUNTRY;
+  selectedCountry="sa";
 
+  @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
   constructor(
     private modalService: NgbModal,
@@ -74,6 +80,20 @@ export class RegisterComponent implements OnInit {
     if (this.authenticationService.isAuthenticated()) {
       this.router.navigate(['/']);
     }
+  }
+
+  search: OperatorFunction<string, readonly { dial_code, name, code}[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      map(term => term === '' ? []
+        // : this.statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        : this.COUNTRY.filter(v => v.dial_code.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
+
+  formatter = (x: { dial_code: string}) => x.dial_code;
+  selectedItem($event){
+    this.registerForm.controls["countryCode"].setValue($event.item.dial_code);
+    this.selectedCountry= $event.item.code.toLowerCase();
   }
 
   get currentLanguage(): string {
@@ -183,11 +203,12 @@ export class RegisterComponent implements OnInit {
       fullNameAr: [''],
       dateOfBirthGregorian: ['', Validators.required],
       dateOfBirthHijri: ['', Validators.required],
-      mobileNumber: ['', [DccValidators.mobileNumber, Validators.required]],
+      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(16)]],
       email: ['', [DccValidators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
-      recaptcha: ['']
+      recaptcha: [''],
+      countryCode:[{ dial_code: "+966"},Validators.compose([Validators.required])]
     }, {validator: this.passwordMatchValidator});
 
 

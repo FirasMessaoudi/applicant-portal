@@ -376,6 +376,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public boolean notifyRegisteredUser(UserDto user) {
         String[] smsNotificationArgs = new String[]{user.getPassword()};
         //TODO:CAN NOT DEPEND ON NIN SINCE IT IS NOT MANDATORY NOW
+        // if nin is there and start by 1 then locale ar otherwise locale is en
         String locale = /**isCitizen(user.getNin()) ? "ar" :*/ "en";
         String createdUserSms = messageSource.getMessage(CREATE_USER_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
 

@@ -102,11 +102,23 @@
             <input type="text" class="form-control" formControlName="fullNameAr" disabled/>
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <ng-template #rt let-r="result" let-t="term">
+              <ngb-highlight [result]="r.dial_code" [term]="t"></ngb-highlight>
+              <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}}"></span>
+            </ng-template>
             <label> {{"general.mobile_number"|translate}}</label>
-            <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
-                   onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
-                   min="0" step="1"
-                   [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
+            <div dir="rtl" class="input-group">
+              <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
+                     onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
+                     min="0" step="1"
+                     [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
+              <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">
+                <span class="flag-icon mx-2 flag-icon-{{selectedCountry}} flag-icon-selected"></span>
+                <input id="typeahead-template" type="text" class="form-control arrow_icon" [ngbTypeahead]="search"
+                       [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                       formControlName="countryCode" (selectItem)="selectedItem($event)" #instance="ngbTypeahead"/>
+              </div>
+            </div>
             <div *ngIf="f.mobileNumber.invalid && f.mobileNumber.touched" class="invalid-feedback">
               <div *ngIf="f.mobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
               <div *ngIf="f.mobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
