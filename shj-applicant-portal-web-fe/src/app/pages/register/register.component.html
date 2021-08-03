@@ -119,8 +119,9 @@
                        formControlName="countryCode" (selectItem)="selectedItem($event)" #instance="ngbTypeahead"/>
               </div>
             </div>
-            <div *ngIf="f.mobileNumber.invalid && f.mobileNumber.touched" class="invalid-feedback">
-              <div *ngIf="f.mobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
+
+            <div *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" style="color:#dc3545">
+              <div *ngIf="f.mobileNumber.errors.required"> {{'general.field_validation_required' | translate}} </div>
               <div *ngIf="f.mobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
               <div *ngIf="f.mobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
@@ -134,7 +135,8 @@
                    [class.is-invalid]="f.email.invalid && f.email.touched"/>
             <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
               <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
-              <div *ngIf="f.email.invalid">{{'general.field_validation_pattern' | translate}}</div>
+              <div
+                *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
@@ -190,7 +192,9 @@
 
             </div>
 
-            <div *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched )" class="text-danger">
+            <div
+              *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched ) &&!f.confirmPassword.errors?.required"
+              class="text-danger">
               {{"general.confirm_password_mismatch"|translate}}
             </div>
           </div>
