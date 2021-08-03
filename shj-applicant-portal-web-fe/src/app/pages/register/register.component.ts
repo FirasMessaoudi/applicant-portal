@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
-import {NgbDateStruct, NgbModal, NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {InvisibleReCaptchaComponent} from "ngx-captcha";
 import {ToastService} from "@shared/components/toast/toast-service";
 import {TranslateService} from "@ngx-translate/core";
@@ -178,6 +178,7 @@ export class RegisterComponent implements OnInit {
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
           this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
+          this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.authenticationService.updateOtpSubject({
             user: this.user,
