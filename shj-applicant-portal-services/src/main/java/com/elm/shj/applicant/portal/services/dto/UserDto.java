@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -47,7 +45,7 @@ public class UserDto implements Serializable {
     @CharactersOnly
     private String fullNameEn;
     private Date lastLoginDate;
-    @MobileNumber
+    @NotNull
     private Integer mobileNumber;
 
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})

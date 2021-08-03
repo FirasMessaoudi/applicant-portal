@@ -1,42 +1,44 @@
 @import "variables";
+
 .custom-checkbox a {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 .datepicker .form-group label {
-    display: none;
+  display: none;
 }
 
 .date-eq {
-    margin-top: -1.5rem;
-    margin-bottom: -1rem;
-    font-size: 80%;
+  margin-top: -1.5rem;
+  margin-bottom: -1rem;
+  font-size: 80%;
 }
 
 @include media-breakpoint-down(sm) {
-    .btn.w_full {
-        margin-bottom: 2rem;
-        margin-top: 2rem;
-        width: 100%;
-    }
+  .btn.w_full {
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+  }
 }
 
-.visibility_show{
-    @include media-breakpoint-down(sm) {
-        display: block;
-    }
-    @include media-breakpoint-up(sm) {
-        visibility: show;
-    }
+.visibility_show {
+  @include media-breakpoint-down(sm) {
+    display: block;
+  }
+  @include media-breakpoint-up(sm) {
+    visibility: show;
+  }
 
 }
-.visibility_hide{
-    @include media-breakpoint-down(sm) {
-        display: none;
-    }
-    @include media-breakpoint-up(sm) {
-        visibility: hidden;
-    }
+
+.visibility_hide {
+  @include media-breakpoint-down(sm) {
+    display: none;
+  }
+  @include media-breakpoint-up(sm) {
+    visibility: hidden;
+  }
 }
 
 
@@ -49,4 +51,52 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+.arrow_icon {
+  background: url(~assets/images/svg-icons/chevron-down-light.svg) no-repeat;
+  background-size: 18px 15px;
+  background-position: calc(100% - 5px) center;
+  padding-left: 35px;
+  direction: ltr;
+  font-weight: normal !important;
+}
+
+.country_code_flag {
+  position: relative;
+
+  .flag-icon {
+    .flag-icon.flag-icon-selected {
+      background-size: cover;
+      position: absolute;
+      left: 0;
+      right: calc(100% + -35px);
+      top: 12px;
+    }
+
+    .flag-icon {
+      background-size: cover;
+      position: absolute;
+      left: 0;
+      right: calc(100% + -35px);
+    }
+
+  }
+}
+
+.dropdown-menu {
+  min-width: 7.4rem;
+
+  .dropdown-item.active, .dropdown-item:active {
+    color: #212529;
+    text-decoration: none;
+    background-color: #f7f4ef;
+  }
+
+  .dropdown-item {
+
+    [dir='ltr'] & {
+      padding-left: 35px;
+    }
+  }
 }
