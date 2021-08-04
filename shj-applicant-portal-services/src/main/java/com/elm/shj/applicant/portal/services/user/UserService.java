@@ -435,7 +435,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
             return Optional.empty();
         }
 
-        if (response.getStatusCode() == HttpStatus.OK) {
+        if (response !=null && response.getStatusCode() == HttpStatus.OK) {
             return Optional.of(response.getBody());
         } else {
             System.out.println("Request Failed");

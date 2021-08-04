@@ -16,12 +16,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
@@ -360,5 +365,25 @@ public class UserServiceTest {
         serviceToTest.hasToken(TEST_NIN);
         verify(userRepository, times(1)).retrieveTokenExpiryDate(TEST_NIN);
     }
+
+    @Test
+    public void test_find_user_main_data_by_uin_notFound() {
+        ResponseEntity responseEntity = new ResponseEntity<ApplicantMainDataDto>((ApplicantMainDataDto) null, HttpStatus.BAD_REQUEST);
+        when(restTemplate.exchange(Matchers.anyString(),
+                Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.<Class<ApplicantMainDataDto>>any())).thenReturn(responseEntity);
+        Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), restTemplate);
+        assertFalse(applicantMainDataDto.isPresent());
+    }
+
+    @Test
+    public void test_find_user_main_data_by_uin_found() {
+        ApplicantMainDataDto dto = new ApplicantMainDataDto();
+        ResponseEntity responseEntity = new ResponseEntity<ApplicantMainDataDto>(dto, HttpStatus.OK);
+        when(restTemplate.exchange(Matchers.anyString(),
+                Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.<Class<ApplicantMainDataDto>>any())).thenReturn(responseEntity);
+        Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), restTemplate);
+        assertTrue(applicantMainDataDto.isPresent());
+    }
+
 
 }
