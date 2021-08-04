@@ -109,7 +109,11 @@
     "confirm_password_mismatch": "Password and Confirm Password Mismatch",
     "full_name_En": "Full Name In English",
     "full_name_Ar": "Full Name In Arabic",
-    "identity_number": "Identity Number"
+    "identity_number": "Identity Number",
+    "select-year": "Select year",
+    "select-month": "Select month",
+    "previous-month": "Previous month",
+    "next-month": "Next month"
   },
 
   "header": {
