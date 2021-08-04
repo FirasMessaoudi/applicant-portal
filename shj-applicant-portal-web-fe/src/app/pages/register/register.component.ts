@@ -54,12 +54,14 @@ export class RegisterComponent implements OnInit {
   selectedDateOfBirth: NgbDateStruct;
   maxDateOfBirthGregorian: NgbDateStruct;
   maxDateOfBirthHijri: NgbDateStruct;
+  minDateOfBirthHijri: NgbDateStruct;
+  minDateOfBirthGregorian: NgbDateStruct;
   dateString: string;
   selectedDateType: any;
   dateStructGreg: any;
 
   COUNTRY = COUNTRY;
-  selectedCountry="sa";
+  selectedCountry = "sa";
 
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
@@ -114,14 +116,24 @@ export class RegisterComponent implements OnInit {
       month: toDayGregorian.month,
       day: toDayGregorian.day
     };
-
+    this.minDateOfBirthGregorian = {
+      year: toDayGregorian.year - DEFAULT_MAX_USER_AGE - 100,
+      month: toDayGregorian.month + 1,
+      day: toDayGregorian.day
+    };
     this.maxDateOfBirthHijri = {
       year: toDayHijri.year - DEFAULT_MAX_USER_AGE,
       month: toDayHijri.month,
       day: toDayHijri.day
     };
+    this.minDateOfBirthHijri = {
+      year: toDayHijri.year - DEFAULT_MAX_USER_AGE - 100,
+      month: toDayHijri.month + 1,
+      day: toDayHijri.day
+    };
+
     this.selectedDateType = DateType.Gregorian;
-    this.showSuccessPage=false;
+    this.showSuccessPage = false;
     this.createForm();
     this.recaptchaSiteKey = environment.invisibleRecaptchaSiteKey;
     this._minPickerDate = {
@@ -134,6 +146,8 @@ export class RegisterComponent implements OnInit {
       month: new Date().getMonth() + 1,
       day: new Date().getDate()
     };
+
+
   }
 
   // convenience getter for easy access to form fields
