@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -54,15 +55,20 @@ public class RegistrationController {
 
     @PostMapping
     public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal) throws JSONException {
-        if (needToUpdateInAdminPortal) {
-            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), String.valueOf(user.getMobileNumber()));
-            userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
-        }
         Optional<UserDto> userInApplicantPortal = userService.findByUin(user.getUin());
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        UserDto createdUser = userService.createUser(user, true);
+
+        if (needToUpdateInAdminPortal) {
+            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), String.valueOf(user.getMobileNumber()));
+
+            ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
+            if (returnedApplicant == null)
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+        UserDto createdUser = userService.createUser(user);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
         return ResponseEntity.ok(createdUser);
     }

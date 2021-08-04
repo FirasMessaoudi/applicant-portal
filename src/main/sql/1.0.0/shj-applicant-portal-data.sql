@@ -108,59 +108,48 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.commons.we
 GO
 
 UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.cache.read.timeout';
-UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.yakeen.connect.timeout';
-UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.yakeen.receive.timeout';
-UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.smsgateway.connect.timeout';
-UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.smsgateway.receive.timeout';
-UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.recaptcha.connection.timeout';
-UPDATE sha_portal.sha_config SET conf_value = '5000' WHERE conf_key = 'elm.providers.recaptcha.read.timeout';
+UPDATE sha_portal.sha_config
+SET conf_value = '5000'
+WHERE conf_key = 'elm.providers.yakeen.connect.timeout';
+UPDATE sha_portal.sha_config
+SET conf_value = '5000'
+WHERE conf_key = 'elm.providers.yakeen.receive.timeout';
+UPDATE sha_portal.sha_config
+SET conf_value = '5000'
+WHERE conf_key = 'elm.providers.smsgateway.connect.timeout';
+UPDATE sha_portal.sha_config
+SET conf_value = '5000'
+WHERE conf_key = 'elm.providers.smsgateway.receive.timeout';
+UPDATE sha_portal.sha_config
+SET conf_value = '5000'
+WHERE conf_key = 'elm.providers.recaptcha.connection.timeout';
+UPDATE sha_portal.sha_config
+SET conf_value = '5000'
+WHERE conf_key = 'elm.providers.recaptcha.read.timeout';
 GO
 
 -- insert authorities
 SET IDENTITY_INSERT sha_portal.sha_authority_lk ON;
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (1, N'لوحة المعلومات', 'Admin Dashboard', 'ADMIN_DASHBOARD', NULL);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (2, N'إدارة المستخدمين', 'User Management', 'USER_MANAGEMENT', NULL);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (3, N'إضافة مستخدم', 'Add User', 'ADD_USER', 2);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (4, N'تعديل مستخدم', 'Edit User', 'EDIT_USER', 2);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (5, N'تغيير حالة مستخدم', 'Change User Status', 'CHANGE_USER_STATUS', 2);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (6, N'إعادة تعيين كلمة المرور', 'Reset Password', 'RESET_PASSWORD', 2);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (7, N'حذف مستخدم', 'Delete User', 'DELETE_USER', 2);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (8, N'إدارة الأدوار', 'Role Management', 'ROLE_MANAGEMENT', NULL);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (9, N'إضافة دور', 'Add Role', 'ADD_ROLE', 8);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (10, N'تعديل دور', 'Edit Role', 'EDIT_ROLE', 8);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (11, N'حذف دور', 'Delete Role', 'DELETE_ROLE', 8);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (12, N'تغيير حالة دور', 'Change Role Status', 'CHANGE_ROLE_STATUS', 8);
-INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id) VALUES (13, N'إعادة تعيين كلمة مرور المستخدم', 'Reset User Password', 'RESET_USER_PASSWORD', 2);
-SET IDENTITY_INSERT sha_portal.sha_authority_lk OFF;
+INSERT INTO sha_portal.sha_authority_lk(id, label_ar, label_en, code, parent_id)
+VALUES (1, N'صلاحيات ضيف الرحمن', 'applicant privilege', 'APPLICANT_PRIVILEGE', NULL);
+
+SET
+IDENTITY_INSERT sha_portal.sha_authority_lk OFF;
 GO
 
 SET IDENTITY_INSERT sha_portal.sha_role ON;
-INSERT INTO sha_portal.sha_role(id, label_ar, label_en, deleted, activated) VALUES (1, N'مشرف النظام', 'System Admin', 0, 1);
-SET IDENTITY_INSERT sha_portal.sha_role OFF;
+INSERT INTO sha_portal.sha_role(id, label_ar, label_en, deleted, activated)
+VALUES (1, N'ضيف الرحمن', 'applicant', 0, 1);
+SET
+IDENTITY_INSERT sha_portal.sha_role OFF;
 GO
 
 INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 1);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 2);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 3);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 4);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 5);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 6);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 7);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 8);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 9);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 10);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 11);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 12);
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 13);
+
+
 GO
 
-SET IDENTITY_INSERT sha_portal.sha_role ON;
-INSERT INTO sha_portal.sha_role(id, label_ar, label_en, deleted, activated) VALUES (2, N'مستخدم النظام', 'System User', 0, 1);
-SET IDENTITY_INSERT sha_portal.sha_role OFF;
-GO
 
-INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (2, 1);
-GO
 
 UPDATE sha_portal.sha_user SET number_of_tries = 0 WHERE number_of_tries IS NULL;
 GO

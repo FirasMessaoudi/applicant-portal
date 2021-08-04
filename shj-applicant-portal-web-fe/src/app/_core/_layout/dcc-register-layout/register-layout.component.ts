@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {$animations} from "@shared/animate/animate.animations";
 
 @Component({
   selector: 'app-register-layout',
   templateUrl: './register-layout.component.html',
-  styleUrls: ['./register-layout.component.scss']
+  styleUrls: ['./register-layout.component.scss'],
+  animations: $animations
 })
 export class RegisterLayoutComponent implements OnInit {
 

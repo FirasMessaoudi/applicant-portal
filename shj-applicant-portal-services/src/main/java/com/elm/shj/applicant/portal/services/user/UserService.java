@@ -47,6 +47,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public static final String RESET_PASSWORD_EMAIL_TPL_NAME = "email-reset-password.ftl";
     public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
     public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset User Password إعادة تعيين كلمة السر";
+    private static final long APPLICANT_ROLE_ID = 1L;
+    private String VERIFIED_UIN;
+
 
     @Value("${admin.portal.url}")
     private String adminPortalUrl;
@@ -55,6 +58,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final MessageSource messageSource;
     private final SmsGatewayService smsGatewayService;
     private final EmailService emailService;
+
     /**
      * Finds all non deleted users.
      *
@@ -219,7 +223,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      * @return UserDto saved one
      */
     @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-    public UserDto createUser(UserDto user, boolean selfRegistration) {
+    public UserDto createUser(UserDto user) {
 
         // encode the password
         user.setPasswordHash(passwordEncoder.encode(user.getPassword()));
@@ -235,20 +239,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         user.setUpdateDate(null);
         user.setCreationDate(new Date());
         //update UserRole objects
-//        if (selfRegistration) {
-//            RoleDto rDTO = new RoleDto();
-//            rDTO.setId(SYSTEM_USER_ROLE_ID);
-//            UserRoleDto userRoleDto = constructNewUserRoleDTO(user, rDTO);
-//            Set userRoles = new HashSet<UserRoleDto>();
-//            userRoles.add(userRoleDto);
-//            user.setUserRoles(userRoles);
-//        } else {
-//            user.getUserRoles().forEach(userRole -> {
-//                userRole.setUser(user);
-//                userRole.setCreationDate(new Date());
-//                userRole.setId(0);
-//            });
-//        }
+        RoleDto rDTO = new RoleDto();
+        rDTO.setId(APPLICANT_ROLE_ID);
+        UserRoleDto userRoleDto = constructNewUserRoleDTO(user, rDTO);
+        Set userRoles = new HashSet<UserRoleDto>();
+        userRoles.add(userRoleDto);
+        user.setUserRoles(userRoles);
         // save user information
         UserDto savedUser = save(user);
         // user created successfully, send SMS notification which contains the temporary password
@@ -373,9 +369,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      */
     public boolean notifyRegisteredUser(UserDto user) {
         String[] smsNotificationArgs = new String[]{user.getPassword()};
-        //TODO:CAN NOT DEPEND ON NIN SINCE IT IS NOT MANDATORY NOW
-        // if nin is there and start by 1 then locale ar otherwise locale is en
-        String locale = /**isCitizen(user.getNin()) ? "ar" :*/ "en";
+        // if nin  is there and start by 1 then locale ar otherwise locale is en
+        String locale = (user.getNin() != null && isCitizen(user.getNin())) ? "ar" : "en";
+
         String createdUserSms = messageSource.getMessage(CREATE_USER_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
 
         // Send Email notification
@@ -389,40 +385,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/find/main-data/"+uin;
-        return callAdminPortalGetRequest(url,  restTemplate);
-    }
+        final String url = adminPortalUrl + "/applicants/find/main-data/" + uin;
 
-    public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/verify";
-        return callAdminPortal(url, command.toString(), restTemplate);
-    }
-
-    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/update";
-        return callAdminPortal(url, applicantCmd.toString(), restTemplate);
-    }
-
-
-    private ApplicantLiteDto callAdminPortal(String url, String body, RestTemplate restTemplate) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("CALLER-TYPE", "WEB-SERVICE");
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> request = new HttpEntity<>(body, headers);
-        try {
-            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
-        } catch (Exception ex) {
-            return null;
-        }
-    }
-
-    private Optional<ApplicantMainDataDto> callAdminPortalGetRequest(String url, RestTemplate restTemplate) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("CALLER-TYPE", "WEB-SERVICE");
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> request = new HttpEntity<>(headers);
-
+        HttpEntity<String> request = new HttpEntity<>(preCallAdmin());
         ResponseEntity<ApplicantMainDataDto> response = null;
         try {
             response = restTemplate.exchange(
@@ -435,13 +400,43 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
             return Optional.empty();
         }
 
-        if (response !=null && response.getStatusCode() == HttpStatus.OK) {
+        if (response != null && response.getStatusCode() == HttpStatus.OK) {
             return Optional.of(response.getBody());
         } else {
             System.out.println("Request Failed");
             return Optional.empty();
         }
+    }
 
+    public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
+        final String url = adminPortalUrl + "/applicants/verify";
+        VERIFIED_UIN = command.getUin();
+        HttpEntity<String> request = new HttpEntity<>(command.toString(), preCallAdmin());
+        try {
+            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+        } catch (Exception ex) {
+            return null;
+        }
+
+    }
+
+    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
+        final String url = adminPortalUrl + "/applicants/update";
+        HttpEntity<String> request = new HttpEntity<>(applicantCmd.toString(), preCallAdmin());
+        try {
+            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+        } catch (Exception ex) {
+            return null;
+        }
+
+    }
+
+
+    private HttpHeaders preCallAdmin() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("CALLER-TYPE", "WEB-SERVICE");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return headers;
     }
 
 
