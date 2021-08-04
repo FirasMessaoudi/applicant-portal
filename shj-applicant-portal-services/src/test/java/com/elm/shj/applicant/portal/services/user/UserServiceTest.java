@@ -286,7 +286,7 @@ public class UserServiceTest {
         when(passwordEncoder.encode(anyString())).thenReturn(passwordMock);
         when(serviceToTest.save(user)).thenReturn(user);
         when(serviceToTest.notifyRegisteredUser(user)).thenReturn(true);
-        serviceToTest.createUser(user, true);
+        serviceToTest.createUser(user);
 
         verify(emailService, times(1)).sendMailFromTemplate(any(), any(), any(), any(), any());
     }

@@ -58,20 +58,20 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
         mockMvc.perform(post(Navigation.API_REGISTRATION + "?uadmin=false").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().is(USER_ALREADY_REGISTERED_RESPONSE_CODE));
 
-        verify(userService, times(0)).createUser(user, true);
+        verify(userService, times(0)).createUser(user);
     }
 
 
     @Test
     public void test_register_user_success() throws Exception {
 
-        when(userService.createUser(any(), anyBoolean())).thenReturn(new UserDto());
+        when(userService.createUser(any())).thenReturn(new UserDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
 
         mockMvc.perform(post(Navigation.API_REGISTRATION + "?uadmin=false").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());
 
-        verify(userService, times(1)).createUser(user, true);
+        verify(userService, times(1)).createUser(user);
     }
 
     @Test
@@ -100,14 +100,14 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_register_user_admin_portal_update() throws Exception {
 
-        when(userService.createUser(any(), anyBoolean())).thenReturn(new UserDto());
+        when(userService.createUser(any())).thenReturn(new UserDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
         when(userService.updateUserInAdminPortal(any(), any())).thenReturn(new ApplicantLiteDto());
 
         mockMvc.perform(post(Navigation.API_REGISTRATION + "?uadmin=true").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());
         verify(userService, times(1)).updateUserInAdminPortal(any(), any());
-        verify(userService, times(1)).createUser(user, true);
+        verify(userService, times(1)).createUser(user);
     }
 
     @Test
@@ -145,24 +145,24 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_register_user_no_recaptcha() throws Exception {
 
-        when(userService.createUser(any(), anyBoolean())).thenReturn(new UserDto());
+        when(userService.createUser(any())).thenReturn(new UserDto());
 
         mockMvc.perform(post(Navigation.API_REGISTRATION).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());
 
-        verify(userService, times(0)).createUser(user, true);
+        verify(userService, times(0)).createUser(user);
     }
 
 
     @Test
     public void test_register_user_invalid_recaptcha() throws Exception {
 
-        when(userService.createUser(any(), anyBoolean())).thenReturn(new UserDto());
+        when(userService.createUser(any())).thenReturn(new UserDto());
 
         mockMvc.perform(post(Navigation.API_REGISTRATION).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());
 
-        verify(userService, times(0)).createUser(user, true);
+        verify(userService, times(0)).createUser(user);
     }
 
     /**

@@ -334,7 +334,7 @@ public class UserManagementController {
         log.debug("Handler for {}", "Create User");
         UserDto savedUser = null;
         try {
-            savedUser = userService.createUser(user, false);
+            savedUser = userService.createUser(user);
         } catch (Exception e) {
             log.error("Error while creating user.", e);
             return ResponseEntity.of(Optional.empty());
