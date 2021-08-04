@@ -35,7 +35,9 @@ export class ResetPasswordComponent implements OnInit {
 
   selectedDateOfBirth: NgbDateStruct;
   maxDateOfBirthGregorian: NgbDateStruct;
+  minDateOfBirthGregorian:NgbDateStruct
   maxDateOfBirthHijri: NgbDateStruct;
+  minDateOfBirthHijri: NgbDateStruct;
   dateString: string;
   selectedDateType: any;
 
@@ -68,9 +70,20 @@ export class ResetPasswordComponent implements OnInit {
       month: toDayGregorian.month,
       day: toDayGregorian.day
     };
+    this.minDateOfBirthGregorian = {
+      year: toDayGregorian.year - DEFAULT_MAX_USER_AGE-100,
+      month: toDayGregorian.month+1,
+      day: toDayGregorian.day
+    };
     this.maxDateOfBirthHijri = {
       year: toDayHijri.year - DEFAULT_MAX_USER_AGE,
       month: toDayHijri.month,
+      day: toDayHijri.day
+    };
+
+    this.minDateOfBirthHijri = {
+      year: toDayHijri.year - DEFAULT_MAX_USER_AGE-100,
+      month: toDayHijri.month+1,
       day: toDayHijri.day
     };
     this.selectedDateType = DateType.Gregorian;
@@ -167,6 +180,11 @@ export class ResetPasswordComponent implements OnInit {
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.resetPasswordForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(dateStructGreg));
       this.resetPasswordForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(dateStructHijri).split('/').reverse().join(''));
+    }else{
+      this.dateString = null;
+      this.resetPasswordForm.controls.dateOfBirthGregorian.setValue(null);
+      this.resetPasswordForm.controls.dateOfBirthHijri.setValue(null);
+
     }
   }
 }
