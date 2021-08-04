@@ -16,6 +16,6 @@ export class LookupService {
     let item: Lookup = lookupItems.find(type => type.code === code && this.i18nService.language.startsWith(type.lang));
     if (!item)
       item = lookupItems.find(type => type.code === code && type.lang.startsWith(defaultLang));
-    return item.label;
+    return item?.label;
   }
 }
