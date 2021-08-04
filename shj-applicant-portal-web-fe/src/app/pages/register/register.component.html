@@ -25,7 +25,7 @@
     <div class="form-group form-row">
       <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
         <label>{{"register.smart_id_number"|translate}}<span class="text-danger px-1">*</span></label>
-        <input id="uin" type="number" formControlName="uin" class="form-control"
+        <input id="uin" type="number" formControlName="uin" class="form-control" [readonly]="isApplicantVerified"
                onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 14"
                min="0" step="1" [class.is-invalid]="f.uin.invalid && f.uin.touched" maxlength="50"/>
         <div *ngIf="f.uin.invalid && f.uin.touched" class="invalid-feedback">
@@ -44,13 +44,13 @@
             f.dateOfBirthGregorian.errors && f.dateOfBirthGregorian.touched? 'is-invalid': ''}}"
           [(selectedDate)]="selectedDateOfBirth"
           (selectedDateChange)="onDateOfBirthChange($event)"
-          [isRequired]="false"
+          [isRequired]="true"
           [maxGreg]="maxDateOfBirthGregorian"
           [maxHijri]="maxDateOfBirthHijri"
           [GregLabel]="'general.cal_greg' | translate"
           [hijriLabel]="'general.cal_hijri' | translate"
           [selectedDateType]="selectedDateType"
-          [disabled]="false"
+          [disabled]="isApplicantVerified"
           [readonly]="true"
           #datePicker
         >
@@ -59,7 +59,6 @@
         <div class="text-dcc-primary date-eq" *ngIf="dateString">
           {{ "general.cal_eq" | translate }} {{ dateString }}
         </div>
-
         <div *ngIf="f.dateOfBirthGregorian.invalid && f.dateOfBirthGregorian.touched" class="invalid-feedback date-eq">
           <div *ngIf="f.dateOfBirthGregorian.errors.required">{{'general.field_validation_required' | translate}}</div>
           <div *ngIf="f.dateOfBirthGregorian.errors.invalid"
@@ -84,7 +83,7 @@
         <button class="btn btn-outline-dcc-primary px-5 w_full"
                 [disabled]="!dateString || !f.uin.value ||isApplicantVerified"
                 (click)="verifyApplicant()">
-          {{"register.verify"|translate}}
+          {{"register.validate"|translate}}
         </button>
       </div>
     </div>
@@ -101,31 +100,44 @@
             <label>{{"general.full_name_Ar"|translate}} </label>
             <input type="text" class="form-control" formControlName="fullNameAr" disabled/>
           </div>
-        </div>
-        <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <ng-template #rt let-r="result" let-t="term">
+              <ngb-highlight [result]="r.dial_code" [term]="t"></ngb-highlight>
+              <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}}"></span>
+            </ng-template>
             <label> {{"general.mobile_number"|translate}}</label>
-            <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
-                   onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
-                   min="0" step="1"
-                   [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
-            <div *ngIf="f.mobileNumber.invalid && f.mobileNumber.touched" class="invalid-feedback">
-              <div *ngIf="f.mobileNumber.errors.required">{{'general.field_validation_required' | translate}}</div>
+            <div dir="rtl" class="input-group">
+              <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
+                     onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
+                     min="0" step="1"
+                     [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
+              <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">
+                <span class="flag-icon mx-2 flag-icon-{{selectedCountry}} flag-icon-selected"></span>
+                <input id="typeahead-template" type="text" class="form-control arrow_icon" [ngbTypeahead]="search"
+                       [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                       formControlName="countryCode" (selectItem)="selectedItem($event)" #instance="ngbTypeahead"/>
+              </div>
+            </div>
+
+            <div *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" style="color:#dc3545">
+              <div *ngIf="f.mobileNumber.errors.required"> {{'general.field_validation_required' | translate}} </div>
               <div *ngIf="f.mobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
               <div *ngIf="f.mobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
+        </div>
+
+        <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label>   {{"general.email"|translate}} </label>
             <input type="text" class="form-control" formControlName="email" maxlength="50"
                    [class.is-invalid]="f.email.invalid && f.email.touched"/>
             <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
               <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
-              <div *ngIf="f.email.invalid">{{'general.field_validation_pattern' | translate}}</div>
+              <div
+                *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
-        </div>
-        <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label>{{"general.password"|translate}}</label>
             <input type="password" formControlName="password"
@@ -179,7 +191,9 @@
 
             </div>
 
-            <div *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched )" class="text-danger">
+            <div
+              *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched ) &&!f.confirmPassword.errors?.required"
+              class="text-danger">
               {{"general.confirm_password_mismatch"|translate}}
             </div>
           </div>

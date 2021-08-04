@@ -17,6 +17,10 @@ import {DccValidators} from "@shared/validators";
 import {DatePipe, Location} from "@angular/common";
 import {User} from "@shared/model";
 
+import {Observable, OperatorFunction} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
+import {COUNTRY} from "@model/enum/country_code";
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'register.component.html',
@@ -54,8 +58,10 @@ export class RegisterComponent implements OnInit {
   selectedDateType: any;
   dateStructGreg: any;
 
-  @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
+  COUNTRY = COUNTRY;
+  selectedCountry="sa";
 
+  @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
   constructor(
     private modalService: NgbModal,
@@ -74,6 +80,20 @@ export class RegisterComponent implements OnInit {
     if (this.authenticationService.isAuthenticated()) {
       this.router.navigate(['/']);
     }
+  }
+
+  search: OperatorFunction<string, readonly { dial_code, name, code}[]> = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      map(term => term === '' ? []
+        // : this.statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        : this.COUNTRY.filter(v => v.dial_code.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
+
+  formatter = (x: { dial_code: string}) => x.dial_code;
+  selectedItem($event){
+    this.registerForm.controls["countryCode"].setValue($event.item.dial_code);
+    this.selectedCountry= $event.item.code.toLowerCase();
   }
 
   get currentLanguage(): string {
@@ -158,6 +178,7 @@ export class RegisterComponent implements OnInit {
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
           this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
+          this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.authenticationService.updateOtpSubject({
             user: this.user,
@@ -183,11 +204,12 @@ export class RegisterComponent implements OnInit {
       fullNameAr: [''],
       dateOfBirthGregorian: ['', Validators.required],
       dateOfBirthHijri: ['', Validators.required],
-      mobileNumber: ['', [DccValidators.mobileNumber, Validators.required]],
+      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(16)]],
       email: ['', [DccValidators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
-      recaptcha: ['']
+      recaptcha: [''],
+      countryCode:[{ dial_code: "+966"},Validators.compose([Validators.required])]
     }, {validator: this.passwordMatchValidator});
 
 
@@ -251,6 +273,10 @@ export class RegisterComponent implements OnInit {
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.registerForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(this.dateStructGreg));
       this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(dateStructHijri).split('/').reverse().join(''));
+    } else if (event == null) {
+      this.dateString = '';
+      this.registerForm.controls.dateOfBirthGregorian.setErrors({'required': true})
+      this.registerForm.controls.dateOfBirthGregorian.markAsTouched({onlySelf: true});
     }
   }
 

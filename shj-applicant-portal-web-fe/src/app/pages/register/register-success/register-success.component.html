@@ -1,27 +1,36 @@
+<span class="lang_swtich_login">
+  <button
+    class="btn btn-md border btn-light px-3 mt-4 mb-3"
+    *ngIf="currentLanguage.startsWith('en')"
+    (click)="setLanguage('ar-SA')"
+  >
+    <span>عربي</span>
+</button>
+<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
+        (click)="setLanguage('en-US')">
+    <span>English</span>
+  </button>
+</span>
+<div class="login__box pb-md-7 animated fadeInUp delay1">
 
-<div class="login__box ">
   <div class="text-center">
-    <img class="my-4" src="../../../../assets/images/logo.png" alt="logo"/>
+    <div class="my-5">
+
+      <div class="border border-dcc-primary rounded-circle check-img-border ">
+        <svg-icon styleClass="  fa-w-21 text-dcc-primary mb-0" icon="check-light"></svg-icon>
+
+      </div>
+
+      <h2 class="text-dcc-primary mt-5 mb-3 h4 Elm-fontb ">{{ "register.registered_successfully"| translate }} </h2>
+      <p class="mb-4 h6">{{ "register.email_will_be_sent"| translate }} </p>
+    </div>
+
+    <div class="my-6">
+      <button (click)="goBack()" class="btn btn-outline-dcc-primary px-5"> {{ "login.btn_login"| translate }}</button>
+    </div>
   </div>
 
-  <form class="login-box__wrapper">
 
-    <h1 class="text-center text-dcc-primary font-weight-bold mb-4 h3">
-      {{ "user had been registered successfully" |translate}}
-    </h1>
-
-    <div class="text-center text-secondary mt-5">
-      {{ "user had been registered successfully" |translate}}
-    </div>
-
-    <div class="text-center">
-      <button class="btn btn-outline-dcc-primary px-5 w_full"
-              (click)="goBack()">
-        {{ "login.btn_login"| translate }}
-      </button>
-
-    </div>
-
-  </form>
 </div>
+
 

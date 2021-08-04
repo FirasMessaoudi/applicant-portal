@@ -57,6 +57,7 @@
         "dmn-js": "^10.1.0",
         "dmn-js-properties-panel": "^0.6.0",
         "file-saver": "^2.0.5",
+        "flag-icon-css": "^3.5.0",
         "hijri-date": "^0.2.2",
         "i": "^0.3.6",
         "ibantools": "^2.2.0",
@@ -94,7 +95,7 @@
       "karma-jasmine-html-reporter": "^1.4.2",
       "protractor": "~5.4.3",
       "ts-node": "~8.3.0",
-        "tslint": "~6.1.0",
-        "typescript": "~3.8.3"
+      "tslint": "~6.1.0",
+      "typescript": "~3.8.3"
     }
 }

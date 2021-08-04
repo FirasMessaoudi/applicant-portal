@@ -374,6 +374,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public boolean notifyRegisteredUser(UserDto user) {
         String[] smsNotificationArgs = new String[]{user.getPassword()};
         //TODO:CAN NOT DEPEND ON NIN SINCE IT IS NOT MANDATORY NOW
+        // if nin is there and start by 1 then locale ar otherwise locale is en
         String locale = /**isCitizen(user.getNin()) ? "ar" :*/ "en";
         String createdUserSms = messageSource.getMessage(CREATE_USER_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
 
@@ -408,7 +409,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         headers.set("CALLER-TYPE", "WEB-SERVICE");
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+        try {
+            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     private Optional<ApplicantMainDataDto> callAdminPortalGetRequest(String url, RestTemplate restTemplate) {
