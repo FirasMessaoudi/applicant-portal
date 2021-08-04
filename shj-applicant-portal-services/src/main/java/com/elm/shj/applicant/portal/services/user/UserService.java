@@ -421,6 +421,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
+        applicantCmd.setUin(VERIFIED_UIN);
         final String url = adminPortalUrl + "/applicants/update";
         HttpEntity<String> request = new HttpEntity<>(applicantCmd.toString(), preCallAdmin());
         try {
