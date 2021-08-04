@@ -473,7 +473,11 @@
     "morshid_id": "Morshid ID Number",
     "morshid_name": "Morshid Name",
     "morshid_title": "’Morshid Title",
-    "morshid_contact_number": "Contact Number"
+    "morshid_contact_number": "Contact Number",
+    "hajj_identity":"identity Number",
+    "main": "Main",
+    "my_profile": "My profile",
+    "view_my_card": "View my card"
   },
   "printing-management": {
     "title": "Printing Management",

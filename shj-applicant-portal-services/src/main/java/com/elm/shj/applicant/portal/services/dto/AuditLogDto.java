@@ -23,7 +23,7 @@ public class AuditLogDto implements Serializable {
     private static final long serialVersionUID = 4778905193540470232L;
 
     private long id;
-    private int userIdNumber;
+    private long userIdNumber;
     private String handler;
     private String action;
     private String params;

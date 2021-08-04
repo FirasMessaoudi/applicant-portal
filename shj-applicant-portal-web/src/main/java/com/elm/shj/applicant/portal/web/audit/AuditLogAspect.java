@@ -94,7 +94,7 @@ public class AuditLogAspect {
                         .replaceAll("token\":.*\\}(.*)", "token\":<protected>\\}$1")
                         .replaceAll("credentials\":.*,(.*)", "credentials\":<protected>,$1")
                         .replaceAll("credentials\":.*\\}(.*)", "credentials\":<protected>\\}$1"))
-                .userIdNumber(!(authentication instanceof JwtToken) ? -1 : Integer.parseInt(authentication.getName()))
+                .userIdNumber(!(authentication instanceof JwtToken) ? -1 : Long.parseLong(authentication.getName()))
                 .build();
 
         log.debug(
@@ -133,7 +133,7 @@ public class AuditLogAspect {
                 .processingTime(-1)
                 .httpStatus(response != null ? response.getStatus() : -1)
                 .params(Arrays.toString(joinPoint.getArgs()).replaceAll("password=.*\\}(.*)", "password=<protected>\\}$1").replaceAll("password=.*,(.*)", "password=<protected>,$1"))
-                .userIdNumber(!(authentication instanceof JwtToken) ? -1 : Integer.parseInt(authentication.getName()))
+                .userIdNumber(!(authentication instanceof JwtToken) ? -1 : Long.parseLong(authentication.getName()))
                 .errorDetails(exception.getClass().getSimpleName() + ":" + exception.getMessage() + "::" + ((ArrayUtils.getLength(exception.getStackTrace()) > 0) ? exception.getStackTrace()[0] : ""))
                 .build();
 

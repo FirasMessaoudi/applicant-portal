@@ -7,11 +7,13 @@ import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
+import com.elm.shj.applicant.portal.services.dto.ApplicantMainDataDto;
 import com.elm.shj.applicant.portal.services.dto.AuthorityConstants;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
+import com.elm.shj.applicant.portal.web.config.RestTemplateConfig;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -19,12 +21,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -80,6 +79,7 @@ public class UserManagementController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final RecaptchaService recaptchaService;
+    private final RestTemplateConfig restTemplateConfig;
 
 
     /**
@@ -132,6 +132,18 @@ public class UserManagementController {
     public UserDto findByNin(@PathVariable Long nin) {
         log.debug("Find by nin {}", nin);
         return maskUserInfo(userService.findByNin(nin).orElse(null));
+    }
+
+    /**
+     * get user main data by uin
+     *
+     */
+    @GetMapping("/main-data")
+    public ApplicantMainDataDto findUserMainDataByUin() {
+        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
+        return userService.findUserMainDataByUin(loggedInUserUin, restTemplateConfig.restTemplate()).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
+
     }
 
     /**

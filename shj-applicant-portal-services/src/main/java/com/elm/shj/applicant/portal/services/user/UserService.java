@@ -19,13 +19,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -388,6 +387,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return smsSent || emailSent;
     }
 
+    public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, RestTemplate restTemplate) {
+        final String url = adminPortalUrl + "/applicants/find/main-data/"+uin;
+        return callAdminPortalGetRequest(url,  restTemplate);
+    }
 
     public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
         final String url = adminPortalUrl + "/applicants/verify";
@@ -406,6 +409,34 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> request = new HttpEntity<>(body, headers);
         return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+    }
+
+    private Optional<ApplicantMainDataDto> callAdminPortalGetRequest(String url, RestTemplate restTemplate) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("CALLER-TYPE", "WEB-SERVICE");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> request = new HttpEntity<>(headers);
+
+        ResponseEntity<ApplicantMainDataDto> response = null;
+        try {
+            response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    request,
+                    ApplicantMainDataDto.class
+            );
+        } catch (HttpStatusCodeException e) {
+            return Optional.empty();
+        }
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return Optional.of(response.getBody());
+        } else {
+            System.out.println("Request Failed");
+            return Optional.empty();
+        }
+
     }
 
 

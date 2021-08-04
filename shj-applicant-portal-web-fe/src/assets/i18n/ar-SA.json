@@ -458,7 +458,13 @@
     "morshid_id": "رقم هوية المطوف",
     "morshid_name": "اسم المطوف",
     "morshid_title": "دور المرشد",
-    "morshid_contact_number": "رقم التواصل"
+    "morshid_contact_number": "رقم التواصل",
+    "hajj_identity":"هوية الحاج",
+    "card_number": "رقم البطاقة",
+    "main": "الرئيسية",
+    "my_profile": "بياناتي",
+    "view_my_card": "عرض بطاقتي"
+
   },
   "printing-management": {
     "title": "إدارة الطباعة",
