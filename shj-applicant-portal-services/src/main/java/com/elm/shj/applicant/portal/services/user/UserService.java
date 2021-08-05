@@ -248,12 +248,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         // save user information
         UserDto savedUser = save(user);
         // user created successfully, send SMS notification which contains the temporary password
-        boolean smsSent = notifyRegisteredUser(user);
+        boolean smsSent = notifyRegisteredUser(savedUser);
         log.debug("SMS notification status: {}", smsSent);
-        // Send Email notification which contains the username
-        boolean emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
-                REGISTRATION_EMAIL_SUBJECT, REGISTRATION_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
-        log.debug("Email notification status: {}", emailSent);
 
         return savedUser;
     }
@@ -374,9 +370,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
         String createdUserSms = messageSource.getMessage(CREATE_USER_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
 
-        // Send Email notification
+        // Send Email notification which contains the username
         boolean emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
-                REGISTRATION_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
+                REGISTRATION_EMAIL_SUBJECT, REGISTRATION_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
         log.debug("Email notification status: {}", emailSent);
 
         boolean smsSent = smsGatewayService.sendMessage(user.getMobileNumber().longValue(), createdUserSms);
