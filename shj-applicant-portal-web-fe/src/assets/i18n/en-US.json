@@ -248,7 +248,8 @@
     "header_text": "Your password has expired, please create a new one.",
     "old_password": "Old Password",
     "new_password": "New Password",
-    "new_password_confirm": "Confirm New Password"
+    "new_password_confirm": "Confirm New Password",
+    "success_text": "Password has been changed Successfully, please login with the new password"
   },
 
   "reset-password": {

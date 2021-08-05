@@ -195,7 +195,8 @@
                                 font-size: 16px;
                                 margin: 0 0 20px 0;
                                 color: #707070;
-                              "><#if user.gender == "M">عزيزي <#else>عزيزتي </#if>${user.fullNameAr}،</h2>
+                              "><#if  user.gender??><#if  user.gender == "M">عزيزي <#else>عزيزتي </#if> <#else> عزيزي</#if>
+                                                    ${user.fullNameAr}،</h2>
                                                 <p style="font-size: 14px; margin: 0; color: #707070"> يمكنك الدخول على
                                                     المنصة باستخدام رقم هوية شعائر
                                                      <#setting number_format="0" />${user.uin}<#setting number_format="" />

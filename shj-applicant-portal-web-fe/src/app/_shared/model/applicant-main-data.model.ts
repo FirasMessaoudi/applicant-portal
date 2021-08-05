@@ -9,6 +9,6 @@ export class ApplicantMainData extends Applicant{
   uin: string;
   ritualTypeCode: string;
   cardReferenceNumber: string;
-  cardStatusCode: string;
+  cardStatusCode: any;
 
 }
