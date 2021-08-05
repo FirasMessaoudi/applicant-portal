@@ -118,7 +118,7 @@
                 <input id="typeahead-template" type="text" class="form-control arrow_icon" [ngbTypeahead]="search"
                        [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
                        [class.is-invalid]="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"
-                       formControlName="countryPhonePrefix" (selectItem)="selectedItem($event)"
+                       formControlName="countryPhonePrefix" (selectItem)="selectedItem($event)"  (focus)="onFocus($event)"
                        #instance="ngbTypeahead"/>
               </div>
             </div>

@@ -90,12 +90,20 @@ export class RegisterComponent implements OnInit {
   search: OperatorFunction<string, readonly { dial_code, name, code}[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
-      map(term => term === '' ? []
+      map(term => term === '' ? this.COUNTRY
         // : this.statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-        : this.COUNTRY.filter(v => v.dial_code.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+        : this.COUNTRY.filter(v => v.dial_code.toLowerCase().indexOf(term.toLowerCase()) > -1))
     )
 
   formatter = (x: { dial_code: string}) => x.dial_code;
+
+  public onFocus(e: Event): void {
+    e.stopPropagation();
+    setTimeout(() => {
+      const inputEvent: Event = new Event('input');
+      e.target.dispatchEvent(inputEvent);
+    }, 0);
+  }
 
   selectedItem($event) {
     this.registerForm.controls["countryPhonePrefix"].setValue($event.item.dial_code);
