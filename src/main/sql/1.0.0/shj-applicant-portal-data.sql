@@ -26,7 +26,7 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.password', '');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.from.address', 'no-reply@elm.sa');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.from.name', 'Elm Product');
-INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.smtp.auth', 'true');
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.smtp.auth', 'false');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.mock.enabled', 'false');
 
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.smsgateway.url', 'http://te1-iqa-rv-sg:8080/ElmSMSGatewayEJB/ElmSMSGatewayWS');
