@@ -110,7 +110,7 @@
             <label> {{"general.mobile_number"|translate}}</label>
             <div dir="rtl" class="input-group">
               <input type="number" class="form-control" formControlName="mobileNumber" maxlength="30"
-                     onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
+                     onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
                      min="0" step="1"
                      [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
               <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">

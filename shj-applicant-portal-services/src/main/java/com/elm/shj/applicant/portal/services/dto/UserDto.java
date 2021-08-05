@@ -52,7 +52,7 @@ public class UserDto implements Serializable {
     private String fullNameEn;
     private Date lastLoginDate;
     @NotNull
-    @Length(max = 30, min = 5)
+    @Length(max = 20, min = 5)
     private String mobileNumber;
 
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
