@@ -48,7 +48,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
     public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset User Password إعادة تعيين كلمة السر";
     private static final long APPLICANT_ROLE_ID = 1L;
-    private String VERIFIED_UIN;
+    private String verified_uin;
 
 
     @Value("${admin.portal.url}")
@@ -406,7 +406,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
         final String url = adminPortalUrl + "/applicants/verify";
-        VERIFIED_UIN = command.getUin();
+        verified_uin = command.getUin();
         HttpEntity<String> request = new HttpEntity<>(command.toString(), preCallAdmin());
         try {
             return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
@@ -417,7 +417,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
-        applicantCmd.setUin(VERIFIED_UIN);
+        applicantCmd.setUin(verified_uin);
         final String url = adminPortalUrl + "/applicants/update";
         HttpEntity<String> request = new HttpEntity<>(applicantCmd.toString(), preCallAdmin());
         try {
