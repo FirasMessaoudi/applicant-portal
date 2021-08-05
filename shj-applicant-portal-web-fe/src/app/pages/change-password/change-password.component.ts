@@ -5,6 +5,8 @@ import {AuthenticationService, UserService} from "@core/services";
 import {ChangePasswordCmd} from "@shared/model";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {I18nService} from "@dcc-commons-ng/services";
+import {TranslateService} from "@ngx-translate/core";
+import {ToastService} from "@shared/components/toast";
 
 @Component({
   selector: 'app-change-password',
@@ -19,7 +21,9 @@ export class ChangePasswordComponent implements OnInit {
               private i18nService: I18nService,
               private formBuilder: FormBuilder,
               private userService: UserService,
-              private authenticationService: AuthenticationService) { }
+              private authenticationService: AuthenticationService,
+              private translate: TranslateService,
+              private toastr: ToastService) { }
 
   ngOnInit() {
     this.createForm();
@@ -66,6 +70,7 @@ export class ChangePasswordComponent implements OnInit {
             }
           });
       } else {
+        this.toastr.success(this.translate.instant('change-password.success_text'), this.translate.instant('change-password.title'));
         this.logout();
       }
     });
