@@ -350,7 +350,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
 
         String createdUserSms = messageSource.getMessage(RESET_PASSWORD_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
-        boolean smsSent = smsGatewayService.sendMessage(user.getMobileNumber().longValue(), createdUserSms);
+        boolean smsSent = smsGatewayService.sendMessage(Long.parseLong(user.getMobileNumber()), createdUserSms);
         log.debug("SMS notification status: {}", smsSent);
 
         // Send Email notification
@@ -378,8 +378,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         boolean emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
                 REGISTRATION_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
         log.debug("Email notification status: {}", emailSent);
-
-        boolean smsSent = smsGatewayService.sendMessage(user.getMobileNumber().longValue(), createdUserSms);
+        //TODO:TO CHECK SMSGETWAY EXPECTED NUMBER FORMAT
+        boolean smsSent = smsGatewayService.sendMessage(Long.parseLong(user.getMobileNumber()), createdUserSms);
 
         return smsSent || emailSent;
     }

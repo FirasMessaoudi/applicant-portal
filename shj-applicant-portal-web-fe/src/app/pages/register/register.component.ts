@@ -40,9 +40,11 @@ export class RegisterComponent implements OnInit {
   isApplicantVerified: boolean = false;
   fullName: string;
   user: User;
-   showSuccessPage: boolean = false;
-   originalEmail:any;
-   originalMobileNo:any;
+  showSuccessPage: boolean = false;
+  originalEmail: any;
+  originalMobileNo: any;
+  SAUDI_MOBILE_NUMBER_REGEX: RegExp = new RegExp("^(009665|9665|\\+9665|05|5)([0-9]{8})$");
+  isSaudiNumber: boolean;
   @ViewChild('reCaptchaEl')
   captchaElem: InvisibleReCaptchaComponent;
 
@@ -59,9 +61,10 @@ export class RegisterComponent implements OnInit {
   dateString: string;
   selectedDateType: any;
   dateStructGreg: any;
-
+  applicantCountry: any;
   COUNTRY = COUNTRY;
-  selectedCountry = "sa";
+  selectedCountryCode = "ae";
+  formattedCountryDial: any;
 
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
@@ -93,9 +96,10 @@ export class RegisterComponent implements OnInit {
     )
 
   formatter = (x: { dial_code: string}) => x.dial_code;
-  selectedItem($event){
-    this.registerForm.controls["countryCode"].setValue($event.item.dial_code);
-    this.selectedCountry= $event.item.code.toLowerCase();
+
+  selectedItem($event) {
+    this.registerForm.controls["countryPhonePrefix"].setValue($event.item.dial_code);
+    this.selectedCountryCode = $event.item.code.toLowerCase();
   }
 
   get currentLanguage(): string {
@@ -191,7 +195,8 @@ export class RegisterComponent implements OnInit {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
-          this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
+          //TODO:change this formatted dial to be changed when user change the value in the screen
+          this.user.mobileNumber = this.formattedCountryDial + this.registerForm.controls.mobileNumber.value;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.authenticationService.updateOtpSubject({
@@ -223,7 +228,7 @@ export class RegisterComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       recaptcha: [''],
-      countryCode:[{ dial_code: "+966"},Validators.compose([Validators.required])]
+      countryPhonePrefix: [{dial_code: ''}, [Validators.required]]
     }, {validator: this.passwordMatchValidator});
 
 
@@ -233,6 +238,7 @@ export class RegisterComponent implements OnInit {
     return frm.controls['password'].value === frm.controls['confirmPassword'].value ? null : {'mismatch': true};
   }
 
+
   verifyApplicant() {
     this.isApplicantVerified = false;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
@@ -240,10 +246,33 @@ export class RegisterComponent implements OnInit {
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
         this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
-        this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
         this.registerForm.controls['email'].setValue(this.user.email);
+
+
+        this.isSaudiNumber = this.SAUDI_MOBILE_NUMBER_REGEX.test(this.user.mobileNumber);
+
+        if (this.isSaudiNumber) {
+          this.applicantCountry = COUNTRY.filter(function (c) {
+            return "SA" == c.code;
+          });
+        } else {
+          this.applicantCountry = COUNTRY.filter(function (c) {
+            return response.countryCode.toUpperCase() == c.code;
+          });
+        }
+        this.selectedCountryCode = this.applicantCountry[0].code.toLowerCase();
+        this.registerForm.controls["countryPhonePrefix"].setValue({dial_code: this.applicantCountry[0].dial_code});
+        let reg1 = /\+/gi;
+        let reg2 = /\-/gi;
+        // Use of String replace() Method
+        this.formattedCountryDial = this.applicantCountry[0].dial_code.replace(reg1, "00").replace(reg2, "");
+        let applicantMobileNumber = this.user.mobileNumber.length > 10 ? this.user.mobileNumber.substring(this.formattedCountryDial.length)
+          : (this.user.mobileNumber.length == 10 ? this.user.mobileNumber.substring(1) : this.user.mobileNumber);
+        this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         this.isApplicantVerified = true;
-        this.originalMobileNo = this.user.mobileNumber
+        this.originalMobileNo = applicantMobileNumber
+
+
         this.originalEmail = this.user.email;
         this.registerForm.markAsUntouched();
       } else {

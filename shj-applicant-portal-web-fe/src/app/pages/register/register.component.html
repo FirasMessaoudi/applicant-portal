@@ -109,22 +109,28 @@
             </ng-template>
             <label> {{"general.mobile_number"|translate}}</label>
             <div dir="rtl" class="input-group">
-              <input type="number" class="form-control" formControlName="mobileNumber" maxlength="10"
+              <input type="number" class="form-control" formControlName="mobileNumber" maxlength="30"
                      onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 16"
                      min="0" step="1"
                      [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
               <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">
-                <span class="flag-icon mx-2 flag-icon-{{selectedCountry}} flag-icon-selected"></span>
+                <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode}} flag-icon-selected"></span>
                 <input id="typeahead-template" type="text" class="form-control arrow_icon" [ngbTypeahead]="search"
                        [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
-                       formControlName="countryCode" (selectItem)="selectedItem($event)" #instance="ngbTypeahead"/>
+                       [class.is-invalid]="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"
+                       formControlName="countryPhonePrefix" (selectItem)="selectedItem($event)"
+                       #instance="ngbTypeahead"/>
               </div>
             </div>
 
-            <div *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" style="color:#dc3545">
-              <div *ngIf="f.mobileNumber.errors.required"> {{'general.field_validation_required' | translate}} </div>
-              <div *ngIf="f.mobileNumber.errors.pattern">{{'general.field_validation_pattern' | translate}}</div>
-              <div *ngIf="f.mobileNumber.errors.invalid">{{'general.field_validation_pattern' | translate}}</div>
+            <div
+              *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched) || (f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched)"
+              class="text-danger">
+              <div
+                *ngIf="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"> {{'general.field_validation_required' | translate}} </div>
+              <div *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
+              <div *ngIf="f.mobileNumber.errors?.pattern">{{'general.field_validation_pattern' | translate}}</div>
+              <div *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
           </div>
         </div>

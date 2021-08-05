@@ -70,7 +70,7 @@ public class JpaUser implements Serializable {
 	private Date lastLoginDate;
 
 	@Column(name = "MOBILE_NUMBER", nullable = false)
-	private int mobileNumber;
+	private String mobileNumber;
 
 	private long nin;
 

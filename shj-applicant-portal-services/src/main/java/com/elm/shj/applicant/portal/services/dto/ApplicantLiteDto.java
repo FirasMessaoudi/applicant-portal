@@ -28,4 +28,5 @@ public class ApplicantLiteDto implements Serializable {
     private String fullNameOrigin;
     private String email;
     private String mobileNumber;
+    private String countryCode;
 }

@@ -61,7 +61,7 @@ public class RegistrationController {
         }
 
         if (needToUpdateInAdminPortal) {
-            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), String.valueOf(user.getMobileNumber()));
+            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getMobileNumber());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
             if (returnedApplicant == null)
@@ -112,7 +112,7 @@ public class RegistrationController {
 
         String otp = otpService.createOtp(Long.toString(user.getUin()), user.getMobileNumber());
         log.debug("###################### OTP for [{}] : {} in Registration", user.getUin(), otp);
-        String maskedMobileNumber = user.getMobileNumber() == null ? null : Integer.toString(user.getMobileNumber()).replaceAll("\\b\\d+(\\d{3})", "*******$1");
+        String maskedMobileNumber = user.getMobileNumber() == null ? null : user.getMobileNumber().replaceAll("\\b\\d+(\\d{3})", "*******$1");
         String maskedEmail = user.getEmail() == null ? null : user.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");
         // return the Otp Token
         OtpToken token = new OtpToken(true, otpService.getOtpExpiryMinutes(), user.getUin(), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail);

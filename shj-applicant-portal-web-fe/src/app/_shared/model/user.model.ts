@@ -25,4 +25,5 @@ export class User {
   userRoles: Array<UserRole>;
   otpExpiryMinutes: number;
   maskedMobileNumber: string;
+  countryCode: string;
 }

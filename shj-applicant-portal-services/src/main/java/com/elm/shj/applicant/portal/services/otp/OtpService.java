@@ -65,7 +65,7 @@ public class OtpService {
      * @param principal the key to attach to the created otp
      * @return the created otp
      */
-    public String createOtp(String principal, Integer mobileNumber) {
+    public String createOtp(String principal, String mobileNumber) {
         try {
             String generatedOtp = otpGenerator.generateOtp(principal);
             otpCache.put(principal, generatedOtp);

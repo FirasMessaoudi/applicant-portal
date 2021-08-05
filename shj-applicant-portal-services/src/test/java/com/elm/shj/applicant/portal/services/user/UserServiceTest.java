@@ -54,7 +54,7 @@ public class UserServiceTest {
     private static final long TEST_ROLE_ID = 5;
     private static final Long TEST_NIN = 1234567897L;
     private static final Long TEST_UIN = 1234567899L;
-    private static final int TEST_MOBILE = 12345678;
+    private static final String TEST_MOBILE = "12345678";
     private static final String TEST_DATE_OG_BIRTH_GREGORIAN = "1981-11-05";
     private static final PageRequest TEST_PAGE = PageRequest.of(0, 10);
     private static final String TEST_EMAIL = "app@elm.sa";

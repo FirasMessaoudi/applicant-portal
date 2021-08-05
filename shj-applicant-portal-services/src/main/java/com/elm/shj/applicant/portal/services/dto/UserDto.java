@@ -3,7 +3,10 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import com.elm.dcc.foundation.commons.validation.*;
+import com.elm.dcc.foundation.commons.validation.CharactersOnly;
+import com.elm.dcc.foundation.commons.validation.Password;
+import com.elm.dcc.foundation.commons.validation.SafeFile;
+import com.elm.dcc.foundation.commons.validation.Unique;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.google.common.base.MoreObjects;
 import lombok.Data;
@@ -11,7 +14,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -46,7 +52,8 @@ public class UserDto implements Serializable {
     private String fullNameEn;
     private Date lastLoginDate;
     @NotNull
-    private Integer mobileNumber;
+    @Length(max = 30, min = 5)
+    private String mobileNumber;
 
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
     private Long uin;

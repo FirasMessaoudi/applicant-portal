@@ -331,7 +331,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         user.setEmail("email@company.com");
         user.setFullNameEn("familyName");
         user.setFullNameAr("");
-        user.setMobileNumber(512345678);
+        user.setMobileNumber("512345678");
         user.setNin(1234567897L);
         user.setPassword(TEST_USER_PASSWORD);
 

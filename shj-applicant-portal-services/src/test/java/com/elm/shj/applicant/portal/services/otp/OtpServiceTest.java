@@ -36,8 +36,8 @@ import static org.mockito.Mockito.when;
 class OtpServiceTest {
 
   private static final String TEST_UIN = "1234567899";
-  private static final int TEST_MOBILE = 12345678;
-  private static final String TEST_OTP = "1234";
+    private static final String TEST_MOBILE = "12345678";
+    private static final String TEST_OTP = "1234";
   private static final String TEST_WRONG_OTP = "4321";
   @InjectMocks
   private OtpService serviceToTest;
