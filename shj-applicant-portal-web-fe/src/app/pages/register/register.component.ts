@@ -195,7 +195,11 @@ export class RegisterComponent implements OnInit {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
-          //TODO:change this formatted dial to be changed when user change the value in the screen
+
+          let reg1 = /\+/gi;
+          // Use of String replace() Method
+          let currentPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value;
+          this.formattedCountryDial = currentPhonePrefix.dial_code.replace(reg1, "00");
           this.user.mobileNumber = this.formattedCountryDial + this.registerForm.controls.mobileNumber.value;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
