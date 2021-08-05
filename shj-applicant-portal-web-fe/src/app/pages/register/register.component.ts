@@ -227,7 +227,7 @@ export class RegisterComponent implements OnInit {
       fullNameAr: [''],
       dateOfBirthGregorian: ['', Validators.required],
       dateOfBirthHijri: ['', Validators.required],
-      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(16)]],
+      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
       email: ['', [DccValidators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
