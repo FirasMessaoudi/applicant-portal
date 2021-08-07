@@ -75,27 +75,37 @@ GO
 if not exists (select * from sys.tables where name = 'sha_user_password_history')
 create table sha_portal.sha_user_password_history
 (
-    id int PRIMARY KEY NOT NULL identity(1,1),
-    user_id int NOT NULL,
+    id                int PRIMARY KEY                         NOT NULL identity(1,1),
+    user_id           int                                     NOT NULL,
     old_password_hash nvarchar(256) NOT NULL,
-    creation_date smalldatetime DEFAULT current_timestamp NOT NULL,
+    creation_date     smalldatetime DEFAULT current_timestamp NOT NULL,
     CONSTRAINT fk_sha_password_history_user FOREIGN KEY (user_id) REFERENCES sha_portal.sha_user (id)
 );
 GO
 ALTER TABLE sha_portal.sha_user DROP COLUMN token;
 GO
-ALTER TABLE sha_portal.sha_user ADD token_expiry_date smalldatetime NULL;
+ALTER TABLE sha_portal.sha_user
+    ADD token_expiry_date smalldatetime NULL;
 GO
 USE sha_portal
+ALTER TABLE sha_portal.sha_user
+ALTER
+COLUMN mobile_number nvarchar(30);
+USE
+sha_portal
 GO
 drop table if exists sha_portal.sha_audit_event_data;
 drop table if exists sha_portal.sha_audit_event;
 GO
 
-declare @schema_name nvarchar(256)
-declare @table_name nvarchar(256)
-declare @col_name nvarchar(256)
-declare @Command  nvarchar(1000)
+declare
+@schema_name nvarchar(256)
+declare
+@table_name nvarchar(256)
+declare
+@col_name nvarchar(256)
+declare
+@Command  nvarchar(1000)
 set @schema_name = N'sha_portal'
 set @table_name = N'sha_user'
 set @col_name = N'number_of_tries'
