@@ -57,7 +57,7 @@ input[type=number] {
   background: url(~assets/images/svg-icons/chevron-down-light.svg) no-repeat;
   background-size: 18px 15px;
   background-position: calc(100% - 5px) center;
-  padding-left: 35px;
+
   direction: ltr;
   font-weight: normal !important;
 }
@@ -72,6 +72,7 @@ input[type=number] {
       left: 0;
       right: calc(100% + -35px);
       top: 12px;
+      margin-top: 0;
     }
 
     .flag-icon {
@@ -79,24 +80,26 @@ input[type=number] {
       position: absolute;
       left: 0;
       right: calc(100% + -35px);
+      margin-top: 0.3rem;
     }
 
   }
 }
 
-.dropdown-menu {
+ngb-typeahead-window.dropdown-menu {
   min-width: 7.4rem;
-
-  .dropdown-item.active, .dropdown-item:active {
+  max-height: 250px;
+  overflow: auto;
+  button.dropdown-item.active, .dropdown-item:active {
     color: #212529;
     text-decoration: none;
     background-color: #f7f4ef;
   }
-
-  .dropdown-item {
-
-    [dir='ltr'] & {
-      padding-left: 35px;
-    }
+  [dir='rtl'] & {right: auto;
+    text-align: left !important;}
+  .dropdown-item{
+    direction: ltr;
+    [dir='rtl'] & { padding-left: 35px;}
+    [dir='ltr'] & { padding-left: 35px;}
   }
 }
