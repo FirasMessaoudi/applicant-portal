@@ -207,7 +207,7 @@ export class RegisterComponent implements OnInit {
           let reg1 = /\+/gi;
           // Use of String replace() Method
           let currentPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value;
-          this.formattedCountryDial = currentPhonePrefix.dial_code.replace(reg1, "00");
+          this.formattedCountryDial = currentPhonePrefix.dial_code?.replace(reg1, "00");
           this.user.mobileNumber = this.formattedCountryDial + this.registerForm.controls.mobileNumber.value;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;

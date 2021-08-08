@@ -10,10 +10,14 @@ import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -27,8 +31,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service handling user management operations
@@ -48,7 +54,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
     public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset User Password إعادة تعيين كلمة السر";
     private static final long APPLICANT_ROLE_ID = 1L;
-    private String verified_uin;
+    public static final String APPLICANT_NOT_FOUND_EXCEPTION = "applicant not found";
 
 
     @Value("${admin.portal.url}")
@@ -58,6 +64,21 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final MessageSource messageSource;
     private final SmsGatewayService smsGatewayService;
     private final EmailService emailService;
+    private LoadingCache<String, String> uinCache;
+    //    @Value("${uin.cache.expiry.minutes}")
+    private int uinCachingExpiryMinutes = 5;
+
+    @PostConstruct
+    private void initCache() {
+        uinCache = CacheBuilder.newBuilder()
+                .expireAfterWrite(uinCachingExpiryMinutes, TimeUnit.MINUTES)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String s) {
+                        return StringUtils.EMPTY;
+                    }
+                });
+    }
 
     /**
      * Finds all non deleted users.
@@ -231,7 +252,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         user.setId(0);
         user.setBlockDate(null);
         user.setBlocked(false);
-        user.setChangePasswordRequired(true);
+        user.setChangePasswordRequired(false);
         user.setDeleted(false);
         user.setActivated(true);
         user.setLastLoginDate(null);
@@ -406,7 +427,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
         final String url = adminPortalUrl + "/applicants/verify";
-        verified_uin = command.getUin();
+        uinCache.put(command.getUin(), command.getUin());
         HttpEntity<String> request = new HttpEntity<>(command.toString(), preCallAdmin());
         try {
             return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
@@ -417,10 +438,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
-        applicantCmd.setUin(verified_uin);
+
         final String url = adminPortalUrl + "/applicants/update";
         HttpEntity<String> request = new HttpEntity<>(applicantCmd.toString(), preCallAdmin());
         try {
+            if (uinCache.getIfPresent(applicantCmd.getUin()) == null) {
+                throw new RuntimeException(APPLICANT_NOT_FOUND_EXCEPTION);
+            }
             return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
         } catch (Exception ex) {
             return null;
