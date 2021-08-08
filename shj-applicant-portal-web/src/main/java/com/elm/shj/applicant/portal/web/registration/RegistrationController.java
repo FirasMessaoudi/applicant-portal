@@ -61,7 +61,7 @@ public class RegistrationController {
         }
 
         if (needToUpdateInAdminPortal) {
-            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getMobileNumber());
+            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getMobileNumber(), user.getDateOfBirthHijri());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
             if (returnedApplicant == null)

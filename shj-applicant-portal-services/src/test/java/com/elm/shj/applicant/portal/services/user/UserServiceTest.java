@@ -315,7 +315,7 @@ public class UserServiceTest {
 
     @Test
     public void test_update_applicant_by_uin() {
-        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, String.valueOf(TEST_MOBILE));
+        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, String.valueOf(TEST_MOBILE), any());
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
         applicantLiteDto.setMobileNumber(String.valueOf(TEST_MOBILE));
         when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
