@@ -165,3 +165,7 @@ VALUES ('otp.expiry.minutes', '5'),
        ('otp.pin.length', '4'),
        ('otp.mock.enabled', 'true');
 GO
+
+-- add lookup loading scheduler cron
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('scheduler.load.lookups.cron', '0 0/45 * * * *');
+GO
