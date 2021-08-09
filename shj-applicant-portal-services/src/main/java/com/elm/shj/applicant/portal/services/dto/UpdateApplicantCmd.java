@@ -34,12 +34,13 @@ public class UpdateApplicantCmd implements Serializable {
     @Length(max = 16, min = 5)
     private String mobileNumber;
 
-
+    @Length(max = 20)
+    private String countryCode;
     private int dateOfBirthHijri;
 
 
     @Override
     public String toString() {
-        return '{' + "\"uin\":" + "\"" + uin + "\"" + ",\"email\":" + "\"" + email + "\"" + ",\"mobileNumber\":" + "\"" + mobileNumber + "\"" + ",\"dateOfBirthHijri\":" + "\"" + dateOfBirthHijri + "\"" + '}';
+        return '{' + "\"uin\":" + "\"" + uin + "\"" + ",\"email\":" + "\"" + email + "\"" + ",\"mobileNumber\":" + "\"" + mobileNumber + "\"" + ",\"dateOfBirthHijri\":" + "\"" + dateOfBirthHijri + "\"" + ",\"countryCode\":" + "\"" + countryCode + "\"" + '}';
     }
 }

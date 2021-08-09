@@ -54,31 +54,34 @@ public class JpaUser implements Serializable {
 
 	private boolean deleted;
 
-	@Column(length = 255)
-	private String email;
+    @Column(length = 255)
+    private String email;
 
-	@Column(name = "full_name_en", length = 150)
-	private String fullNameEn;
+    @Column(name = "full_name_en", length = 150)
+    private String fullNameEn;
 
-	@Column(name = "full_name_ar", length = 150)
-	private String fullNameAr;
+    @Column(name = "full_name_ar", length = 150)
+    private String fullNameAr;
 
-	@Column( length = 1)
-	private String gender;
+    @Column(length = 1)
+    private String gender;
 
-	@Column(name = "LAST_LOGIN_DATE")
-	private Date lastLoginDate;
+    @Column(name = "LAST_LOGIN_DATE")
+    private Date lastLoginDate;
+    @Column(name = "COUNTRY_CODE")
+    private String countryCode;
+    @Column(name = "country_phone_prefix")
+    private String countryPhonePrefix;
+    @Column(name = "MOBILE_NUMBER", nullable = false)
+    private String mobileNumber;
 
-	@Column(name = "MOBILE_NUMBER", nullable = false)
-	private String mobileNumber;
+    private long nin;
 
-	private long nin;
+    @Column(nullable = false)
+    private long uin;
 
-	@Column(nullable = false)
-	private long uin;
-
-	@Column(name = "NUMBER_OF_TRIES")
-	private int numberOfTries;
+    @Column(name = "NUMBER_OF_TRIES")
+    private int numberOfTries;
 
 	@Column(name = "PASSWORD_HASH", nullable = false, length = 256)
 	private String passwordHash;

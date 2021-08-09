@@ -7,10 +7,7 @@ import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
-import com.elm.shj.applicant.portal.services.dto.ApplicantMainDataDto;
-import com.elm.shj.applicant.portal.services.dto.AuthorityConstants;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.config.RestTemplateConfig;
@@ -25,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -136,7 +134,6 @@ public class UserManagementController {
 
     /**
      * get user main data by uin
-     *
      */
     @GetMapping("/main-data")
     public ApplicantMainDataDto findUserMainDataByUin() {
@@ -192,9 +189,9 @@ public class UserManagementController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // decide which date of birth to use
         if (command.getDateOfBirthGregorian() != null) {
-                String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
-                String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
-                dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
+            String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
+            String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
+            dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
         } else {
             dateOfBirthMatched = command.getDateOfBirthHijri() == user.getDateOfBirthHijri();
         }
@@ -323,6 +320,44 @@ public class UserManagementController {
     }
 
     /**
+     * Updates and existing user
+     *
+     * @param userContacts the user contacts info to update
+     * @return the updated user contacts
+     */
+    @PutMapping("/contacts")
+    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts) {
+        log.debug("Handler for {}", "Update User Contacts");
+        UserDto databaseUser = null;
+        try {
+            databaseUser = userService.findByUin(userContacts.getUin()).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + userContacts.getUin()));
+        } catch (Exception e) {
+            log.error("Error while find user in  updating user contacts.", e);
+            return ResponseEntity.notFound().build();
+        }
+
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(userContacts.getUin()), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri());
+        ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
+        if (returnedApplicant == null)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+
+        // sets form fields to database user instance
+        databaseUser.setEmail(userContacts.getEmail());
+        databaseUser.setMobileNumber(userContacts.getMobileNumber());
+        databaseUser.setCountryPhonePrefix(userContacts.getCountryPhonePrefix());
+        databaseUser.setCountryCode(userContacts.getCountryCode());
+        try {
+            userService.save(databaseUser);
+        } catch (Exception e) {
+            log.error("Error while updating user contacts.", e);
+            return ResponseEntity.of(Optional.empty());
+        }
+        returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
+        return ResponseEntity.ok(Objects.requireNonNull(returnedApplicant));
+    }
+
+    /**
      * Add new user.
      *
      * @param user the user to create
@@ -397,4 +432,6 @@ public class UserManagementController {
         }
         return user;
     }
+
+
 }

@@ -54,10 +54,12 @@ public class UserServiceTest {
     private static final long TEST_ROLE_ID = 5;
     private static final Long TEST_NIN = 1234567897L;
     private static final Long TEST_UIN = 1234567899L;
-    private static final String TEST_MOBILE = "12345678";
+    private static final String TEST_MOBILE = "555359285";
     private static final String TEST_DATE_OG_BIRTH_GREGORIAN = "1981-11-05";
     private static final PageRequest TEST_PAGE = PageRequest.of(0, 10);
     private static final String TEST_EMAIL = "app@elm.sa";
+    private static final String TEST_COUNTRY_CODE = "SA";
+    private static final int TEST_DATE_OG_BIRTH_HIGRI = 14051016;
     @InjectMocks
     private UserService serviceToTest;
 
@@ -315,9 +317,10 @@ public class UserServiceTest {
 
     @Test
     public void test_update_applicant_by_uin() {
-        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, String.valueOf(TEST_MOBILE), any());
+        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, TEST_MOBILE, TEST_COUNTRY_CODE, TEST_DATE_OG_BIRTH_HIGRI);
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
-        applicantLiteDto.setMobileNumber(String.valueOf(TEST_MOBILE));
+        applicantLiteDto.setMobileNumber(TEST_MOBILE);
+        applicantLiteDto.setEmail(TEST_EMAIL);
         when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
         assertEquals(applicantLiteDto, serviceToTest.updateUserInAdminPortal(applicant, restTemplate));
 

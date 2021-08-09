@@ -8,12 +8,11 @@ import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,8 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,7 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserManagementControllerTest extends AbstractControllerTestSuite {
 
     private static final long TEST_USER_ID = 5;
-
+    private static final String TEST_EMAIL = "app@elm.sa";
+    private static final String TEST_COUNTRY_CODE = "SA";
+    private static final String TEST_COUNTRY_PHONE_PREFIX = "+966";
+    private static final Long TEST_UIN = 50208700000027L;
+    private static final Long TEST_WRONG_UIN = 1234567899L;
+    private static final String TEST_MOBILE = "555359285";
     private List<UserDto> users;
 
 
@@ -48,11 +51,11 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
      */
     @Override
     public void setUp() throws Exception {
-        initUserList();
-        when(userService.save(Mockito.any(UserDto.class))).then((Answer<UserDto>) this::mockSaveUser);
-        when(userService.findAllNotDeleted(any(Pageable.class), anyLong(), any())).thenReturn(new PageImpl<>(users));
-        mockSuccessfulLogin();
-        triggerLogin();
+//        initUserList();
+//        when(userService.save(Mockito.any(UserDto.class))).then((Answer<UserDto>) this::mockSaveUser);
+//        when(userService.findAllNotDeleted(any(Pageable.class), anyLong(), any())).thenReturn(new PageImpl<>(users));
+//        mockSuccessfulLogin();
+//        triggerLogin();
     }
 
     /**
@@ -108,6 +111,81 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
                 .content(objectToJson(user)).with(csrf()))
                 .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.id", is((int) userIdToUpdate)));
 
+    }
+
+    @Test
+    public void test_update_user_contacts_not_found_exception() throws Exception {
+        String url = Navigation.API_USERS + "/contacts";
+        UpdateContactsCmd userContacts = new UpdateContactsCmd();
+        userContacts.setUin(TEST_UIN);
+        userContacts.setCountryCode(TEST_COUNTRY_CODE);
+        userContacts.setEmail(TEST_EMAIL);
+        userContacts.setMobileNumber(TEST_MOBILE);
+        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
+        when(userService.findByUin(anyInt()))
+                .thenThrow(UsernameNotFoundException.class);
+        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectToJson(userContacts)).with(csrf()))
+                .andDo(print()).andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void test_update_user_contacts_not_found() throws Exception {
+        String url = Navigation.API_USERS + "/contacts";
+        UpdateContactsCmd userContacts = new UpdateContactsCmd();
+        userContacts.setUin(TEST_WRONG_UIN);
+        userContacts.setCountryCode(TEST_COUNTRY_CODE);
+        userContacts.setEmail(TEST_EMAIL);
+        userContacts.setMobileNumber(TEST_MOBILE);
+        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
+
+        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectToJson(userContacts)).with(csrf()))
+                .andDo(print()).andExpect(status().isNotFound());
+
+    }
+
+    @Test
+    public void test_update_user_contacts_success() throws Exception {
+        String url = Navigation.API_USERS + "/contacts";
+        UpdateContactsCmd userContacts = new UpdateContactsCmd();
+        UserDto user = new UserDto();
+        userContacts.setUin(TEST_UIN);
+        userContacts.setCountryCode(TEST_COUNTRY_CODE);
+        userContacts.setEmail(TEST_EMAIL);
+        userContacts.setMobileNumber(TEST_MOBILE);
+        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
+        when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
+        when(userService.updateUserInAdminPortal(any(), any())).thenReturn(new ApplicantLiteDto());
+        when(userService.save(any())).thenReturn(user);
+
+        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectToJson(userContacts)).with(csrf()))
+                .andDo(print()).andExpect(status().isOk());
+        verify(userService, times(1)).findByUin(anyLong());
+        verify(userService, times(1)).updateUserInAdminPortal(any(), any());
+        verify(userService, times(1)).save(any());
+
+    }
+
+    @Test
+    public void test_update_user_contacts_fail_update_admin() throws Exception {
+        String url = Navigation.API_USERS + "/contacts";
+        UpdateContactsCmd userContacts = new UpdateContactsCmd();
+        UserDto user = new UserDto();
+        userContacts.setUin(TEST_UIN);
+        userContacts.setCountryCode(TEST_COUNTRY_CODE);
+        userContacts.setEmail(TEST_EMAIL);
+        userContacts.setMobileNumber(TEST_MOBILE);
+        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
+        when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
+        when(userService.updateUserInAdminPortal(any(), any())).thenReturn(null);
+        when(userService.save(any())).thenReturn(user);
+
+        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectToJson(userContacts)).with(csrf()))
+                .andDo(print()).andExpect(status().isInternalServerError());
     }
 
     @Test

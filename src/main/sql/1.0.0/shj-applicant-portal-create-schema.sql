@@ -91,8 +91,12 @@ USE sha_portal
 ALTER TABLE sha_portal.sha_user
 ALTER
 COLUMN mobile_number nvarchar(30);
+
+ALTER TABLE sha_user
+    ADD country_phone_prefix nvarchar(10);
 USE
 sha_portal
+
 GO
 drop table if exists sha_portal.sha_audit_event_data;
 drop table if exists sha_portal.sha_audit_event;

@@ -26,4 +26,5 @@ export class User {
   otpExpiryMinutes: number;
   maskedMobileNumber: string;
   countryCode: string;
+  countryPhonePrefix: string;
 }
