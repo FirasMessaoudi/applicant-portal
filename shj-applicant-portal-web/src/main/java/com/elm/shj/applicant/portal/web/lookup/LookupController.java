@@ -3,19 +3,16 @@
  */
 package com.elm.shj.applicant.portal.web.lookup;
 
-import com.elm.shj.applicant.portal.services.dto.AuthorityConstants;
-import com.elm.shj.applicant.portal.services.dto.AuthorityLookupDto;
-import com.elm.shj.applicant.portal.services.lookup.AuthorityLookupService;
+import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -30,12 +27,72 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class LookupController {
 
-    private final AuthorityLookupService authorityLookupService;
+    private final LookupService lookupService;
 
-    @GetMapping("/authority/list/parent")
-    @RolesAllowed(AuthorityConstants.ROLE_MANAGEMENT)
-    public List<AuthorityLookupDto> listParentAuthorities(Authentication authentication) {
-        return authorityLookupService.findAllParentAuthorities();
+    /**
+     * List ritual types.
+     *
+     * @return list of ritual types
+     */
+    @GetMapping("/ritual-type/list")
+    public List<RitualTypeLookupDto> listRitualTypes() {
+        log.debug("list ritual types...");
+        return lookupService.retrieveRitualTypes();
+    }
+
+    /**
+     * List card statuses.
+     *
+     * @return list of card statuses
+     */
+    @GetMapping("/card-status/list")
+    public List<CardStatusLookupDto> listCardStatuses() {
+        log.debug("list card statuses...");
+        return lookupService.retrieveCardStatuses();
+    }
+
+    /**
+     * List relative relationships.
+     *
+     * @return list of relative relationships
+     */
+    @GetMapping("/relative-relationship/list")
+    public List<RelativeRelationshipLookupDto> listRelativeRelationships() {
+        log.debug("list relative relationships...");
+        return lookupService.retrieveRelativeRelationships();
+    }
+
+    /**
+     * List marital statuses.
+     *
+     * @return list of marital statuses
+     */
+    @GetMapping("/marital-status/list")
+    public List<MaritalStatusLookupDto> listMaritalStatuses() {
+        log.debug("list marital statuses...");
+        return lookupService.retrieveMaritalStatuses();
+    }
+
+    /**
+     * List countries.
+     *
+     * @return list of countries
+     */
+    @GetMapping("/country/list")
+    public List<CountryLookupDto> listCountries() {
+        log.debug("list countries...");
+        return lookupService.retrieveCountries();
+    }
+
+    /**
+     * List health special needs types.
+     *
+     * @return list of health special needs types
+     */
+    @GetMapping("/health-special-needs/list")
+    public List<HealthSpecialNeedsTypeLookupDto> listHealthSpecialNeeds() {
+        log.debug("list health special needs...");
+        return lookupService.retrieveHealthSpecialNeedsTypes();
     }
 
 }

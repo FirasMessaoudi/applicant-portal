@@ -9,12 +9,14 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenFilter;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import com.elm.shj.applicant.portal.web.security.otp.OtpAuthenticationProvider;
+import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.LiteDeviceResolver;
 import org.springframework.security.access.event.LoggerListener;
@@ -59,7 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String HEADER_WRITER_PATTERN = "/*";
     // any URL does not require authentication should be added to this array
-    private static final String[] PUBLIC_URLS = {"/api/auth/login", "/api/auth/otp", "/api/users/reset-password", "/api/register", "/api/register/otp/validate", "/api/register/otp", "/api/register/verify", "/index.html", "/error", "/api-docs", "/swagger-ui.html", "/swagger-ui/**"};
+    private static final String[] PUBLIC_URLS = {"/api/lookup/**", "/api/auth/login", "/api/auth/otp", "/api/users/reset-password", "/api/register", "/api/register/otp/validate", "/api/register/otp", "/api/register/verify", "/index.html", "/error", "/api-docs", "/swagger-ui.html", "/swagger-ui/**"};
     // URLs that will be ignored by spring security should be added to this array
     private static final String[] IGNORED_URLS = {"/assets/**", "/cpm-error/**", "/*.png", "/*.jpg", "/*.jpeg",
             "/*.ttf", "/*.svg", "/*.woff", "/*.woff2", "/*.eot", "/*.ico", "/*.js", "/*.css", "/*.json"};
@@ -89,8 +91,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private String contentSecurityPolicyScriptSrc;
 
     @Bean
-    WebClient authWebClient() {
-        return WebClient.builder().build();
+    WebClient commandWebClient() {
+        return WebClient.builder().defaultHeaders(httpHeaders -> {
+            httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+            httpHeaders.set("CALLER-TYPE", "WEB-SERVICE");
+        }).build();
     }
 
     /**

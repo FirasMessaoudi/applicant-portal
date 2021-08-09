@@ -71,11 +71,6 @@
                 <version>${poiji.version}</version>
             </dependency>
             <dependency>
-                <groupId>io.projectreactor</groupId>
-                <artifactId>reactor-core</artifactId>
-                <version>${reactor.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.jcraft</groupId>
                 <artifactId>jsch</artifactId>
                 <version>${jsch.version}</version>
@@ -162,7 +157,7 @@
         <zxing.version>3.4.0</zxing.version>
         <shedlock.version>4.7.1</shedlock.version>
         <poiji.version>3.0.3</poiji.version>
-        <reactor.version>3.3.4.RELEASE</reactor.version>
+        <reactor.version>3.4.8</reactor.version>
         <openapi.version>1.5.9</openapi.version>
         <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
         <jakarta.xml.ws-api.version>2.3.3</jakarta.xml.ws-api.version>
