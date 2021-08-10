@@ -209,8 +209,8 @@ export class RegisterComponent implements OnInit {
           let currentPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value;
           this.formattedCountryDial = currentPhonePrefix.dial_code?.replace(reg1, "00");
           this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
-          this.user.countryCode = this.formattedCountryDial;
-          this.user.countryPhonePrefix = this.selectedCountryCode.toUpperCase();
+          this.user.countryCode = this.selectedCountryCode.toUpperCase();
+          this.user.countryPhonePrefix = this.formattedCountryDial;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.authenticationService.updateOtpSubject({

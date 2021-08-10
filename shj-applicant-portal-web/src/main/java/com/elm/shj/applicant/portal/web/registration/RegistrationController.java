@@ -26,9 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.groups.Default;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -54,12 +52,15 @@ public class RegistrationController {
     private final RestTemplateConfig restTemplateConfig;
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal) throws JSONException {
+    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
+
+        if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
+            return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
+        }
         Optional<UserDto> userInApplicantPortal = userService.findByUin(user.getUin());
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-
         if (needToUpdateInAdminPortal) {
             UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
 
@@ -67,6 +68,7 @@ public class RegistrationController {
             if (returnedApplicant == null)
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
 
         UserDto createdUser = userService.createUser(user);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
@@ -109,7 +111,6 @@ public class RegistrationController {
             log.info("Captcha validation was not successful!");
             return null;
         }
-
         String otp = otpService.createOtp(Long.toString(user.getUin()), user.getMobileNumber());
         log.debug("###################### OTP for [{}] : {} in Registration", user.getUin(), otp);
         String maskedMobileNumber = user.getMobileNumber() == null ? null : user.getMobileNumber().replaceAll("\\b\\d+(\\d{3})", "*******$1");
@@ -119,22 +120,6 @@ public class RegistrationController {
 
         return ResponseEntity.ok(token);
     }
-
-    @PostMapping("/otp/validate")
-    public ResponseEntity<Boolean> validateOtpRegistration(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
-        // validate OTP
-        if (!otpService.validateOtp(credentials.get("uin"), credentials.get("otp"))) {
-            return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(false);
-        }
-        return ResponseEntity.ok(true);
-    }
-
-
-
-
-
-
-
 
 
 }

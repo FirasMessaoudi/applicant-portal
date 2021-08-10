@@ -55,7 +55,7 @@ export class AuthenticationService {
    * @param otp the entered otp.
    * @return if entered otp is the same sent to the user.
    */
-  validateOtpForLogin(username: string, otp: string): Observable<any> {
+  validateOtpThenLogin(username: string, otp: string): Observable<any> {
 
     return this.http.post<any>('/core/api/auth/otp', {'idNumber': username, 'otp': otp})
       .pipe(map(response => {
@@ -66,19 +66,6 @@ export class AuthenticationService {
       }));
   }
 
-
-
-  validateOtpForRegister(uin: string, otp: string): Observable<any> {
-
-    return this.http.post<any>('/core/api/register/otp/validate', {'uin': uin, 'otp': otp})
-
-      .pipe(map(response => {
-        console.log(JSON.stringify(response));
-        return response;
-      }), catchError((err: HttpErrorResponse) => {
-        return throwError(err);
-      }));
-  }
 
 
   /**

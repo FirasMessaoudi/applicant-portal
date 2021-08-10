@@ -15,18 +15,12 @@ export class RegisterService {
   constructor(private http: HttpClient) {
   }
 
-  register(user: User,needToUpdateInAdminPortal:boolean): Observable<any> {
-    return this.http.post('/core/api/register?uadmin='+needToUpdateInAdminPortal, user).pipe(
-      catchError((error: HttpErrorResponse) => {
-      if (error.hasOwnProperty('error')) {
-        return of(error.error);
-      } else {
-        return of(error);
-      }
-    }));
+  validateOtpThenRegister(user: User, needToUpdateInAdminPortal: boolean, pin: string): Observable<any> {
+    return this.http.post('/core/api/register?uadmin=' + needToUpdateInAdminPortal + '&pin=' + pin, user);
   }
 
   generateOTPForRegistration(user: User, recaptchaToken: string): Observable<any> {
+    user.countryPhonePrefix = user.countryPhonePrefix?.dial_code;
     return this.http.post<any>('/core/api/register/otp?grt=' + recaptchaToken, user)
       .pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {

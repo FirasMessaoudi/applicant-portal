@@ -40,7 +40,8 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     private registerService: RegisterService,
     private location: Location,
     private toastr: ToastService,
-    private translate: TranslateService) {}
+    private translate: TranslateService) {
+  }
 
   get currentLanguage(): string {
     return this.i18nService.language;
@@ -57,7 +58,6 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-
       this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
       this.otpData = data.user;
       this.updateAdminRequired = data.updateAdmin;
@@ -84,57 +84,23 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.loading = true;
     if (this.previousUrl == "/login") {
-    this.authenticationService.validateOtpForLogin(this.otpData.name, pin)
-      .pipe(finalize(() => {
-        this.otpForm.markAsPristine();
-        this.loading = false;
-      })).subscribe(user => {
-      console.log(user);
-      clearInterval(this.timerInterval);
-      // login successful if there's a jwt token in the response
-      this.authenticationService.updateSubject(user);
-
-      if (user.passwordExpired) {
-        console.log('redirect to change password page');
-        this.router.navigate(['/change-password'], {replaceUrl: true});
-      } else {
-        console.log('redirect to / page');
-        clearInterval(this.timerInterval);
-        this.router.navigate(['/'], {replaceUrl: true});
-      }
-    }, error => {
-      console.log(error);
-      this.error = error;
-      // reset form
-      Object.keys(this.otpForm.controls).forEach(field => {
-        this.otpForm.get(field).setValue(null);
-        this.rows._results[0].nativeElement.focus();
-      });
-    });
-    } else {
-      this.authenticationService.validateOtpForRegister(this.otpData.uin, pin)
+      this.authenticationService.validateOtpThenLogin(this.otpData.name, pin)
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
-        this.registerService.register(this.otpData, this.updateAdminRequired).subscribe(response => {
-          if (!response || response.errors) {
-            this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
-
-          } else {
-            this.router.navigate(['/register-success'], {replaceUrl: true});
-          }
-        }, error => {
-          console.log(error);
-          this.error = error;
-          if (error.status == 560) {
-            this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
-          } else {
-            this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
-          }
-        });
+        // login successful if there's a jwt token in the response
+        this.authenticationService.updateSubject(user);
+        if (user.passwordExpired) {
+          console.log('redirect to change password page');
+          this.router.navigate(['/change-password'], {replaceUrl: true});
+        } else {
+          console.log('redirect to / page');
+          clearInterval(this.timerInterval);
+          this.router.navigate(['/'], {replaceUrl: true});
+        }
       }, error => {
         console.log(error);
         this.error = error;
@@ -143,6 +109,30 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           this.otpForm.get(field).setValue(null);
           this.rows._results[0].nativeElement.focus();
         });
+      });
+    } else {
+      this.registerService.validateOtpThenRegister(this.otpData, this.updateAdminRequired, pin)
+        .pipe(finalize(() => {
+          this.otpForm.markAsPristine();
+          this.loading = false;
+        })).subscribe(user => {
+        console.log(user);
+        clearInterval(this.timerInterval);
+        this.router.navigate(['/register-success'], {replaceUrl: true});
+      }, error => {
+        console.log(error);
+        this.error = error;
+        if (error.status == 560) {
+          this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
+        } else if (error.status == 562) {
+          Object.keys(this.otpForm.controls).forEach(field => {
+            this.otpForm.get(field).setValue(null);
+            this.rows._results[0].nativeElement.focus();
+          });
+        } else {
+          this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
+        }
+
       });
     }
   }
@@ -179,16 +169,12 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     let timer = durationMinutes * 60;
     let minutes;
     let seconds;
-
     this.timerInterval = setInterval(() => {
       minutes = Math.floor(timer / 60);
       seconds = Math.floor(timer % 60);
-
       minutes = minutes < 10 ? "0" + minutes : minutes;
       seconds = seconds < 10 ? "0" + seconds : seconds;
-
       this.timerContent = minutes + ":" + seconds;
-
       --timer;
       if (--timer < 0) {
         this.goBack();
