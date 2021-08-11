@@ -8,8 +8,10 @@ import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,11 +53,11 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
      */
     @Override
     public void setUp() throws Exception {
-//        initUserList();
-//        when(userService.save(Mockito.any(UserDto.class))).then((Answer<UserDto>) this::mockSaveUser);
-//        when(userService.findAllNotDeleted(any(Pageable.class), anyLong(), any())).thenReturn(new PageImpl<>(users));
-//        mockSuccessfulLogin();
-//        triggerLogin();
+        initUserList();
+        when(userService.save(Mockito.any(UserDto.class))).then((Answer<UserDto>) this::mockSaveUser);
+        when(userService.findAllNotDeleted(any(Pageable.class), anyLong(), any())).thenReturn(new PageImpl<>(users));
+        mockSuccessfulLogin();
+        triggerLogin();
     }
 
     /**
@@ -298,15 +300,15 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         String newPassword = "newC0mpl@x";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        Date birthdate=sdf.parse("1994-11-27");
-        long uin=12345678;
+        Date birthdate = sdf.parse("1994-11-27");
+        long uin = 12345678;
         String url = Navigation.API_USERS + "/reset-password?grt=GOOGLE_RECAPTCHA_RESPONSE";
 
-        ResetPasswordCmd params= new ResetPasswordCmd();
+        ResetPasswordCmd params = new ResetPasswordCmd();
         params.setDateOfBirthGregorian(birthdate);
         params.setIdNumber(uin);
 
-        UserDto user =new UserDto();
+        UserDto user = new UserDto();
         user.setDateOfBirthGregorian(birthdate);
         user.setUin(uin);
 
@@ -318,20 +320,51 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
     }
 
     @Test
-    void test_activate_user()  throws Exception {
-        String url = Navigation.API_USERS + "/activate/"+TEST_USER_ID;
+    void test_activate_user() throws Exception {
+        String url = Navigation.API_USERS + "/activate/" + TEST_USER_ID;
         mockMvc.perform(post(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk());
         verify(userService, times(1)).activateUser(TEST_USER_ID);
     }
 
     @Test
-    void test_deactivate_user()  throws Exception {
-        String url = Navigation.API_USERS + "/deactivate/"+TEST_USER_ID;
+    void test_deactivate_user() throws Exception {
+        String url = Navigation.API_USERS + "/deactivate/" + TEST_USER_ID;
         mockMvc.perform(post(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk());
         verify(userService, times(1)).deactivateUser(TEST_USER_ID);
     }
 
+    @Test
+    public void test_find_applicant_ritual_seasons_by_uin_success() throws Exception {
+        String url = Navigation.API_USERS + "/ritual-seasons";
 
+        List<Integer> seasons = Arrays.asList(1442);
+        when(userService.findApplicantRitualSeasons(any(), any())).thenReturn(seasons);
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(seasons.size())))
+                .andExpect(jsonPath("$[0]", is(1442)));
+
+
+        verify(userService, times(1)).findApplicantRitualSeasons(any(), any());
+
+    }
+
+    @Test
+    public void test_find_applicant_ritual_by_uin_and_season_success() throws Exception {
+        String url = Navigation.API_USERS + "/ritual-lite/1442";
+
+        ApplicantRitualLiteDto applicantRitualLiteDto = new ApplicantRitualLiteDto();
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = Arrays.asList(applicantRitualLiteDto);
+        when(userService.findApplicantRitualByUinAndSeasons(any(), any(), any())).thenReturn(applicantRitualLiteDtos);
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()", is(applicantRitualLiteDtos.size())))
+                .andExpect(jsonPath("$[0].hijriSeason", is(applicantRitualLiteDto.getHijriSeason())));
+
+
+        verify(userService, times(1)).findApplicantRitualByUinAndSeasons(any(), any(), any());
+
+    }
 
 
     /**

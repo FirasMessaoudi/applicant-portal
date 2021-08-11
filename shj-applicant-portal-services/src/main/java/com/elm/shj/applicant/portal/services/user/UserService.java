@@ -17,6 +17,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -254,7 +255,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
-
     protected UserRoleDto constructNewUserRoleDTO(UserDto user, RoleDto rDTO) {
         UserRoleDto userRoleDto = new UserRoleDto();
         userRoleDto.setUser(user);
@@ -320,7 +320,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public void resetPassword(UserDto user) {
         String newPassword = generatePassword();
         user.setPassword(newPassword);
-        log.info("Password reset for user {} , new password is {} .",user.getUin(),newPassword);
+        log.info("Password reset for user {} , new password is {} .", user.getUin(), newPassword);
         // first notify user with the new password, if notification failed, password will not be changed
         if (!notifyUserOnPasswordReset(user)) {
             log.error("Password reset cannot be done, unable to notify user with the new password.");
@@ -400,6 +400,58 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } else {
             System.out.println("Request Failed");
             return Optional.empty();
+        }
+    }
+
+    public List<Integer> findApplicantRitualSeasons(String uin, RestTemplate restTemplate) {
+        final String url = adminPortalUrl + "/applicants/find/ritual-seasons/" + uin;
+
+
+        HttpEntity<String> request = new HttpEntity<>(preCallAdmin());
+        ResponseEntity<List<Integer>> response = null;
+        try {
+            response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    request,
+                    new ParameterizedTypeReference<List<Integer>>() {
+                    }
+            );
+        } catch (HttpStatusCodeException e) {
+            return new ArrayList<>();
+        }
+
+        if (response != null && response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
+        } else {
+            System.out.println("Request Failed");
+            return new ArrayList<>();
+        }
+    }
+
+    public List<ApplicantRitualLiteDto> findApplicantRitualByUinAndSeasons(String uin, int season, RestTemplate restTemplate) {
+        final String url = adminPortalUrl + "/applicants/find/ritual-lite/" + uin + "/" + season;
+
+
+        HttpEntity<String> request = new HttpEntity<>(preCallAdmin());
+        ResponseEntity<List<ApplicantRitualLiteDto>> response = null;
+        try {
+            response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    request,
+                    new ParameterizedTypeReference<List<ApplicantRitualLiteDto>>() {
+                    }
+            );
+        } catch (HttpStatusCodeException e) {
+            return new ArrayList<>();
+        }
+
+        if (response != null && response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
+        } else {
+            System.out.println("Request Failed");
+            return new ArrayList<>();
         }
     }
 

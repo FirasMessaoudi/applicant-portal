@@ -10,7 +10,9 @@ import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
 import com.elm.shj.applicant.portal.services.audit.AuditLogService;
 import com.elm.shj.applicant.portal.services.dashboard.DashboardService;
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.lookup.AuthorityLookupService;
+import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.otp.OtpGenerator;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.role.RoleService;
@@ -119,6 +121,13 @@ public abstract class AbstractControllerTestSuite {
     protected OtpService otpService;
     @MockBean
     protected AuditLogService auditLogService;
+
+    @MockBean
+    protected LookupService lookupService;
+
+    @MockBean
+    protected IntegrationService integrationService;
+
     protected Cookie tokenCookie;
 
     protected UserDto loggedInUser;
@@ -160,11 +169,21 @@ public abstract class AbstractControllerTestSuite {
         Map<String, String> credentials = new HashMap<>();
         credentials.put("idNumber", TEST_USER_NIN);
         credentials.put("password", TEST_USER_PASSWORD);
+
+        Map<String, String> otpCredentials = new HashMap<>();
+        otpCredentials.put("idNumber", TEST_USER_NIN);
+        otpCredentials.put("otp", "1111");
+
         mockMvc.perform(post(Navigation.API_AUTH + "/login").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(credentials)).with(csrf())).andExpect(status().isOk()).andDo(result -> {
-            Cookie tokenCookie = result.getResponse().getCookie(JwtTokenService.TOKEN_COOKIE_NAME);
-            assertNotNull(tokenCookie);
-            this.tokenCookie = tokenCookie;
+
+            mockMvc.perform(post(Navigation.API_AUTH + "/otp").contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(objectToJson(otpCredentials)).with(csrf())).andExpect(status().isOk()).andDo(result2 -> {
+                Cookie tokenCookie = result2.getResponse().getCookie(JwtTokenService.TOKEN_COOKIE_NAME);
+                assertNotNull(tokenCookie);
+                this.tokenCookie = tokenCookie;
+            });
+
         });
     }
 
@@ -188,12 +207,14 @@ public abstract class AbstractControllerTestSuite {
         loggedInUser.setNin(new Long(TEST_USER_NIN));
         loggedInUser.setUserRoles(Collections.singleton(userRole));
         loggedInUser.setActivated(true);
-        Mockito.when(userService.findByNin(new Long(TEST_USER_NIN))).thenReturn(Optional.of(loggedInUser));
+        Mockito.when(userService.findByUin(new Long(TEST_USER_NIN))).thenReturn(Optional.of(loggedInUser));
         Mockito.when(userService.hasToken(new Long(TEST_USER_NIN))).thenReturn(true);
 
         UserPasswordHistoryDto userPasswordHistoryDto = new UserPasswordHistoryDto();
         userPasswordHistoryDto.setCreationDate(Date.from(LocalDateTime.now(UTC).minusSeconds(10).toInstant(UTC)));
         Mockito.when(passwordHistoryService.findLastByUserId(anyLong())).thenReturn(Optional.of(userPasswordHistoryDto));
+
+        Mockito.when(otpService.validateOtp(any(), any())).thenReturn(true);
 
         doAnswer((Answer<Void>) invocation -> {
             // do nothing

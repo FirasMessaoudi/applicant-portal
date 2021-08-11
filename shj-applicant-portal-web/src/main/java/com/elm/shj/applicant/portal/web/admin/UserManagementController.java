@@ -47,6 +47,7 @@ import javax.validation.groups.Default;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -140,6 +141,28 @@ public class UserManagementController {
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
         return userService.findUserMainDataByUin(loggedInUserUin, restTemplateConfig.restTemplate()).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
+
+    }
+
+    /**
+     * get user ritual seasons by uin
+     */
+    @GetMapping("/ritual-seasons")
+    public List<Integer> findApplicantRitualSeasonsByUin() {
+        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
+        return userService.findApplicantRitualSeasons(loggedInUserUin, restTemplateConfig.restTemplate());
+
+    }
+
+    /**
+     * get user ritual lite by seasons and uin
+     */
+    @GetMapping("/ritual-lite/season/{season}")
+    public List<ApplicantRitualLiteDto> findApplicantRitualByUinAndSeasons(@PathVariable int season) {
+        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
+        return userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season, restTemplateConfig.restTemplate());
 
     }
 

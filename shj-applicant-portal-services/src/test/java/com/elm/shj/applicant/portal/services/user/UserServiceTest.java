@@ -22,6 +22,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 import org.springframework.context.MessageSource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -32,10 +33,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -350,21 +348,22 @@ public class UserServiceTest {
         serviceToTest.resetPassword(user);
         verify(userRepository, times(0)).resetPwd(anyLong(), anyString(), anyBoolean());
     }
+
     @Test
     public void test_notifyUserOnPasswordReset() {
-        when(smsGatewayService.sendMessage(any(),any())).thenReturn(true);
-        when(emailService.sendMailFromTemplate(any(),any(),any(),any(),any())).thenReturn(true);
+        when(smsGatewayService.sendMessage(any(), any())).thenReturn(true);
+        when(emailService.sendMailFromTemplate(any(), any(), any(), any(), any())).thenReturn(true);
         UserDto user = new UserDto();
         user.setUin(TEST_UIN);
         user.setNin(TEST_NIN);
         user.setMobileNumber(TEST_MOBILE);
 
-        boolean res= serviceToTest.notifyUserOnPasswordReset(user);
+        boolean res = serviceToTest.notifyUserOnPasswordReset(user);
         assertTrue(res);
     }
 
     @Test
-    public void test_hasToken () {
+    public void test_hasToken() {
         serviceToTest.hasToken(TEST_NIN);
         verify(userRepository, times(1)).retrieveTokenExpiryDate(TEST_NIN);
     }
@@ -386,6 +385,56 @@ public class UserServiceTest {
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.<Class<ApplicantMainDataDto>>any())).thenReturn(responseEntity);
         Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), restTemplate);
         assertTrue(applicantMainDataDto.isPresent());
+    }
+
+    @Test
+    public void test_find_applicant_ritual_seasons_notFound() {
+        ResponseEntity responseEntity = new ResponseEntity<List<Integer>>((List<Integer>) null, HttpStatus.BAD_REQUEST);
+        when(restTemplate.exchange(Matchers.anyString(),
+                Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
+        List<Integer> seasonList = serviceToTest.findApplicantRitualSeasons(TEST_UIN.toString(), restTemplate);
+        assertNotNull(seasonList);
+        assertEquals(0, seasonList.size());
+    }
+
+    @Test
+    public void test_find_applicant_ritual_seasons_found() {
+        ResponseEntity responseEntity = new ResponseEntity<List<Integer>>(Arrays.asList(1442), HttpStatus.OK);
+        when(restTemplate.exchange(Matchers.anyString(),
+                Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
+        List<Integer> seasonList = serviceToTest.findApplicantRitualSeasons(TEST_UIN.toString(), restTemplate);
+        assertNotNull(seasonList);
+        assertEquals(1, seasonList.size());
+        assertEquals(1442, seasonList.get(0));
+    }
+
+    @Test
+    public void test_find_applicant_ritual_by_uin_and_seasons_found() {
+
+        ResponseEntity responseEntity = new ResponseEntity<List<ApplicantRitualLiteDto>>(Arrays.asList(new ApplicantRitualLiteDto()), HttpStatus.OK);
+
+        when(restTemplate.exchange(Matchers.anyString(),
+                Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
+
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442, restTemplate);
+        assertNotNull(applicantRitualLiteDtos);
+        assertEquals(1, applicantRitualLiteDtos.size());
+
+    }
+
+
+    @Test
+    public void test_find_applicant_ritual_by_uin_and_seasons_notFound() {
+
+        ResponseEntity responseEntity = new ResponseEntity<List<ApplicantRitualLiteDto>>((List<ApplicantRitualLiteDto>) null,  HttpStatus.BAD_REQUEST);
+
+        when(restTemplate.exchange(Matchers.anyString(),
+                Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
+
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442, restTemplate);
+        assertNotNull(applicantRitualLiteDtos);
+        assertEquals(0, applicantRitualLiteDtos.size());
+
     }
 
 
