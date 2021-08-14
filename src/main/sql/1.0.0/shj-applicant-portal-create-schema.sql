@@ -92,8 +92,9 @@ ALTER TABLE sha_portal.sha_user
 ALTER
 COLUMN mobile_number nvarchar(30);
 
-ALTER TABLE sha_user
+ALTER TABLE sha_portal.sha_user
     ADD country_phone_prefix nvarchar(10);
+GO
 USE
 sha_portal
 
