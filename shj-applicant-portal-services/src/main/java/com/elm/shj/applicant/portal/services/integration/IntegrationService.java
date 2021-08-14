@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -25,19 +27,51 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class IntegrationService {
 
+    private final String COMMAND_INTEGRATION_AUTH_URL = "/ws/auth";
+    /* lookups relative URLs */
+    private final String RITUAL_TYPES_LOOKUP_URL = "/ws/ritual-type/list";
+    private final String CARD_STATUSES_LOOKUP_URL = "/ws/card-status/list";
+    private final String RELATIVE_RELATIONSHIPS_LOOKUP_URL = "/ws/relative-relationship/list";
+    private final String MARITAL_STATUS_LOOKUP_URL = "/ws/marital-status/list";
+    private final String COUNTRIES_LOOKUP_URL = "/ws/country/list";
+    private final String HEALTH_SPECIAL_NEEDS_LOOKUP_URL = "/ws/health-special-needs/list";
+    private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
+    @Value("${integration.access.username}")
+    private String username;
+    @Value("${integration.access.password}")
+    private String password;
 
-    /* lookups relative URLs */
-    private final String RITUAL_TYPES_LOOKUP_URL = "/applicant/lookup/ritual-type/list";
-    private final String CARD_STATUSES_LOOKUP_URL = "/applicant/lookup/card-status/list";
-    private final String RELATIVE_RELATIONSHIPS_LOOKUP_URL = "/applicant/lookup/relative-relationship/list";
-    private final String MARITAL_STATUS_LOOKUP_URL = "/applicant/lookup/marital-status/list";
-    private final String COUNTRIES_LOOKUP_URL = "/applicant/lookup/country/list";
-    private final String HEALTH_SPECIAL_NEEDS_LOOKUP_URL = "/applicant/lookup/health-special-needs/list";
+    /**
+     * Call an integration web service, authenticate first to get the token then do the actual call using the generated token.
+     *
+     * @param serviceRelativeUrl relative url of service to be called
+     * @param httpMethod         HttpMethod of the service to be called
+     * @param bodyToSend         body to send in the call, it can be null
+     * @param <T>                the return type contained in the WsResponse
+     * @return WsResponse which contains status and body
+     * @throws WsAuthenticationException thrown in case of failed authentication
+     */
+    private <T> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, T bodyToSend) throws WsAuthenticationException {
+        WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
+                .body(BodyInserters.fromValue(LoginRequestVo.builder().username(username).password(password).build()))
+                .retrieve().bodyToMono(WsResponse.class).block();
+        if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
+            // cannot authenticate, throw an exception
+            throw new WsAuthenticationException(accessTokenWsResponse.getBody());
+            // TODO: check available spring security exception to be reused instead.
+        }
 
+        // check if no body
+        if (bodyToSend == null) {
+            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .retrieve().bodyToMono(WsResponse.class).block();
+        }
 
-    private final WebClient webClient;
+        return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(WsResponse.class).block();
+    }
 
     /**
      * Load ritual types from command portal.
@@ -45,18 +79,31 @@ public class IntegrationService {
      * @return
      */
     public List<RitualTypeLookupDto> loadRitualTypes() {
-        RitualTypeLookupDto[] ritualTypesArray = webClient.get().uri(commandIntegrationUrl + RITUAL_TYPES_LOOKUP_URL).retrieve().bodyToMono(RitualTypeLookupDto[].class).block();
-        return Arrays.asList(ritualTypesArray);
+        WsResponse<List<RitualTypeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(RITUAL_TYPES_LOOKUP_URL, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+
     }
 
     /**
      * Load card statuses from command portal.
      *
-     * @return
+     * @return list of card statuses or empty list in case of failed authentication
      */
     public List<CardStatusLookupDto> loadCardStatuses() {
-        CardStatusLookupDto[] cardStatusesArray = webClient.get().uri(commandIntegrationUrl + CARD_STATUSES_LOOKUP_URL).retrieve().bodyToMono(CardStatusLookupDto[].class).block();
-        return Arrays.asList(cardStatusesArray);
+        WsResponse<List<CardStatusLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CARD_STATUSES_LOOKUP_URL, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 
     /**
@@ -65,8 +112,14 @@ public class IntegrationService {
      * @return
      */
     public List<RelativeRelationshipLookupDto> loadRelativeRelationships() {
-        RelativeRelationshipLookupDto[] relativeRelationshipsArray = webClient.get().uri(commandIntegrationUrl + RELATIVE_RELATIONSHIPS_LOOKUP_URL).retrieve().bodyToMono(RelativeRelationshipLookupDto[].class).block();
-        return Arrays.asList(relativeRelationshipsArray);
+        WsResponse<List<RelativeRelationshipLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(RELATIVE_RELATIONSHIPS_LOOKUP_URL, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 
     /**
@@ -75,8 +128,14 @@ public class IntegrationService {
      * @return
      */
     public List<MaritalStatusLookupDto> loadMaritalStatuses() {
-        MaritalStatusLookupDto[] maritalStatusesArray = webClient.get().uri(commandIntegrationUrl + MARITAL_STATUS_LOOKUP_URL).retrieve().bodyToMono(MaritalStatusLookupDto[].class).block();
-        return Arrays.asList(maritalStatusesArray);
+        WsResponse<List<MaritalStatusLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(MARITAL_STATUS_LOOKUP_URL, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 
     /**
@@ -85,8 +144,14 @@ public class IntegrationService {
      * @return
      */
     public List<CountryLookupDto> loadCountries() {
-        CountryLookupDto[] countriesArray = webClient.get().uri(commandIntegrationUrl + COUNTRIES_LOOKUP_URL).retrieve().bodyToMono(CountryLookupDto[].class).block();
-        return Arrays.asList(countriesArray);
+        WsResponse<List<CountryLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COUNTRIES_LOOKUP_URL, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 
     /**
@@ -95,7 +160,13 @@ public class IntegrationService {
      * @return
      */
     public List<HealthSpecialNeedsTypeLookupDto> loadSpecialNeedsTypes() {
-        HealthSpecialNeedsTypeLookupDto[] specialNeedsTypesArray = webClient.get().uri(commandIntegrationUrl + HEALTH_SPECIAL_NEEDS_LOOKUP_URL).retrieve().bodyToMono(HealthSpecialNeedsTypeLookupDto[].class).block();
-        return Arrays.asList(specialNeedsTypesArray);
+        WsResponse<List<HealthSpecialNeedsTypeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(HEALTH_SPECIAL_NEEDS_LOOKUP_URL, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 }
