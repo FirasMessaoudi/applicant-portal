@@ -145,11 +145,7 @@ IDENTITY_INSERT sha_portal.sha_role OFF;
 GO
 
 INSERT INTO sha_portal.sha_role_authority(role_id, authority_id) VALUES (1, 1);
-
-
 GO
-
-
 
 UPDATE sha_portal.sha_user SET number_of_tries = 0 WHERE number_of_tries IS NULL;
 GO
