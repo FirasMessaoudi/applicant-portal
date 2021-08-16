@@ -39,6 +39,7 @@ public class IntegrationService {
     private final String RITUAL_SEASON_URL = "/ws/find/ritual-seasons";
     private final String RITUAL_LITE_URL = "/ws/find/ritual-lite";
     private final String RITUAL_LITE_LATEST_URL = "/ws/find/ritual-lite/latest";
+    private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -211,7 +212,7 @@ public class IntegrationService {
     }
 
     /**
-     * Load latest ritual lite by uin from command portal.
+     * Load the latest ritual lite by uin from command portal.
      *
      * @return
      */
@@ -224,6 +225,18 @@ public class IntegrationService {
             return null;
         }
         return mapper.convertValue(wsResponse.getBody(),ApplicantRitualLiteDto.class);
+
+    }
+
+    public ApplicantHealthLiteDto loadApplicantHealthDetails(String uin, Long ritualId) {
+        WsResponse<String> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_HEALTH_DETAILS_URL +"/" + uin + "/" + ritualId, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load applicant health details.", e);
+            return null;
+        }
+        return mapper.convertValue(wsResponse.getBody(),ApplicantHealthLiteDto.class);
 
     }
 }

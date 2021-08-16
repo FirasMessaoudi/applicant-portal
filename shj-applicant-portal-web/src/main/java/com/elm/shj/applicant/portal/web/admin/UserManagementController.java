@@ -178,6 +178,17 @@ public class UserManagementController {
     }
 
     /**
+     * get user health details by uin and ritual ID
+     */
+    @GetMapping("/health/{ritualId}")
+    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId) {
+        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
+        return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+
+    }
+
+    /**
      * Reset user password by admin as part of user management
      *
      * @param idNumber

@@ -3,7 +3,7 @@ import {ApplicantHealth} from "@model/applicant-health.model";
 export class ApplicantHealthDisease {
   id: number;
   applicantHealth: ApplicantHealth;
-  diseaseNameAr: string;
-  diseaseNameEn: string;
+  labelAr: string;
+  labelEn: string;
   creationDate: Date;
 }

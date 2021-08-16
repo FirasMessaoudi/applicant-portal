@@ -479,7 +479,7 @@
                 "card-management.blood_type" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                card?.applicantRitual?.applicant?.healths[0]?.bloodType
+                healthDetails?.bloodType
                 }}</span>
             </div>
             <div class="form-group col">
@@ -487,14 +487,14 @@
                 "card-management.special_needs_assistance_needed" | translate
                 }}</label>
               <span class="form-control-plaintext" *ngIf="
-                  card?.applicantRitual?.applicant?.healths[0]?.specialNeeds
+                  healthDetails?.specialNeeds
                     ?.length > 0
                 ">{{ "general.label_yes" | translate }}</span
               >
               <span
                 class="form-control-plaintext"
                 *ngIf="
-                  card?.applicantRitual?.applicant?.healths[0]?.specialNeeds
+                  healthDetails?.specialNeeds
                     ?.length === 0
                 "
               >{{ "general.label_no" | translate }}</span
@@ -507,7 +507,7 @@
               <span
                 class="form-control-plaintext"
                 *ngIf="
-                  card?.applicantRitual?.applicant?.healths[0]?.diseases
+                  healthDetails?.diseases
                     ?.length > 0
                 "
               >{{ "general.label_yes" | translate }}</span
@@ -515,7 +515,7 @@
               <span
                 class="form-control-plaintext"
                 *ngIf="
-                  card?.applicantRitual?.applicant?.healths[0]?.diseases
+                  healthDetails?.diseases
                     ?.length === 0
                 "
               >{{ "general.label_no" | translate }}</span
@@ -528,7 +528,7 @@
               <span
                 class="form-control-plaintext"
                 *ngIf="
-                  card?.applicantRitual?.applicant?.healths[0]?.immunizations
+                  healthDetails?.immunizations
                     ?.length > 0
                 "
               >{{ "general.label_yes" | translate }}</span
@@ -536,7 +536,7 @@
               <span
                 class="form-control-plaintext"
                 *ngIf="
-                  card?.applicantRitual?.applicant?.healths[0]?.immunizations
+                  healthDetails?.immunizations
                     ?.length === 0
                 "
               >{{ "general.label_no" | translate }}</span
@@ -549,8 +549,7 @@
               <span class="form-control-plaintext">
                 <span
                   *ngFor="
-                    let need of card?.applicantRitual?.applicant?.healths[0]
-                      ?.specialNeeds;
+                    let need of healthDetails?.specialNeeds;
                     let lastItem = last
                   "
                 >
@@ -571,15 +570,14 @@
               <span class="form-control-plaintext">
                 <span
                   *ngFor="
-                    let disease of card?.applicantRitual?.applicant?.healths[0]
-                      ?.diseases;
+                    let disease of healthDetails?.diseases;
                     let lastItem = last
                   "
                 >
                   {{
                   currentLanguage.startsWith("en")
-                    ? disease.diseaseNameEn
-                    : disease.diseaseNameAr
+                    ? disease.labelEn
+                    : disease.labelAr
                   }}<span *ngIf="!lastItem">-</span></span>
                             </span>
             </div>
@@ -605,8 +603,7 @@
               </thead>
               <tbody>
               <tr *ngFor="
-                    let immunization of card?.applicantRitual?.applicant
-                      ?.healths[0]?.immunizations
+                    let immunization of healthDetails?.immunizations
                   ">
                 <td class="ltr">{{ immunization.immunizationCode }}</td>
                 <td class="ltr">
