@@ -6,6 +6,7 @@ import {catchError} from "rxjs/internal/operators";
 import {Lookup} from "@model/lookup.model";
 import {CountryLookup} from "@model/country-lookup.model";
 import {ApplicantMainData} from "@model/applicant-main-data.model";
+import {ApplicantHealth} from "@model/applicant-health.model";
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +45,22 @@ export class CardService {
    */
   findMainProfile(): Observable<ApplicantMainData> {
     return this.http.get<any>('/core/api/users/main-data').pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
+
+  /**
+   * Finds user health details
+   *
+   * @return {Observable<ApplicantHealth>}
+   */
+  findHealthDetails(ritualId: number): Observable<ApplicantHealth> {
+    return this.http.get<any>('/core/api/users/health/' + ritualId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);

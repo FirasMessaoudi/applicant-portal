@@ -448,5 +448,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public ApplicantRitualLiteDto findApplicantRitualLatestByUin(String uin) {
         return integrationService.loadApplicantRitualLatestByUin(uin);
     }
+
+    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(String uin, Long ritualId) {
+        return integrationService.loadApplicantHealthDetails(uin, ritualId);
+    }
 }
 

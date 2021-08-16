@@ -4,8 +4,9 @@
 package com.elm.shj.applicant.portal.services.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,7 +19,8 @@ import java.util.List;
  * @since 1.0.0
  */
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class ApplicantHealthDto implements Serializable {
 
     private static final long serialVersionUID = 2731031329221419001L;
