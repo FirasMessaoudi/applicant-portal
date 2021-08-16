@@ -273,6 +273,9 @@ tr:hover .tblView {
     @include py(3);
 }
 
+.setBox {
+  min-width: 180px;
+}
 .avatar {
     border-radius: 50rem;
     position: absolute;

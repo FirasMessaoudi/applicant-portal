@@ -112,14 +112,22 @@
     "confirm_password_mismatch": "كلمة المرور وتأكيد كلمة المرور غير متطابقتان",
     "full_name_En": "الاسم بالكامل بالانجليزيه",
     "full_name_Ar": "الاسم بالكامل بالعربيه",
-    "identity_number": "رقم الهوية"
+    "identity_number": "رقم الهوية",
+    "main": "الرئيسية"
   },
   "header": {
     "welcome": "مرحبا",
     "change_password": "تغيير كلمة المرور",
     "my_profile": "ملفي الشخصي",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "settings": "الإعدادات"
   },
+  "settings": {
+    "ritual-type": "نوع الشعيرة",
+    "season": "الموسم",
+    "settings": "الإعدادات"
+  },
+
   "home": {
     "title": "الصفحة الرئيسية",
     "period": "الفترة",

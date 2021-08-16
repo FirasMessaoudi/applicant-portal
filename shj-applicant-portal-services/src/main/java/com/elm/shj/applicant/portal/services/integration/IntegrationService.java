@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.services.integration;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,9 @@ public class IntegrationService {
     private final String MARITAL_STATUS_LOOKUP_URL = "/ws/marital-status/list";
     private final String COUNTRIES_LOOKUP_URL = "/ws/country/list";
     private final String HEALTH_SPECIAL_NEEDS_LOOKUP_URL = "/ws/health-special-needs/list";
+    private final String RITUAL_SEASON_URL = "/ws/find/ritual-seasons";
+    private final String RITUAL_LITE_URL = "/ws/find/ritual-lite";
+    private final String RITUAL_LITE_LATEST_URL = "/ws/find/ritual-lite/latest";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -42,6 +46,8 @@ public class IntegrationService {
     private String username;
     @Value("${integration.access.password}")
     private String password;
+
+    private final ObjectMapper mapper;
 
     /**
      * Call an integration web service, authenticate first to get the token then do the actual call using the generated token.
@@ -168,5 +174,56 @@ public class IntegrationService {
             return Collections.emptyList();
         }
         return wsResponse.getBody();
+    }
+
+    /**
+     * Load ritual season by uin from command portal.
+     *
+     * @return
+     */
+    public List<Integer> loadRitualSeasonByUin(String uin) {
+        WsResponse<List<Integer>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(RITUAL_SEASON_URL + "/" + uin, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+
+    }
+
+    /**
+     * Load ritual lite by uin and season from command portal.
+     *
+     * @return
+     */
+    public List<ApplicantRitualLiteDto> loadApplicantRitualByUinAndSeasons(String uin, int season) {
+        WsResponse<List<ApplicantRitualLiteDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(RITUAL_LITE_URL + "/" + uin + "/" + season, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+
+    }
+
+    /**
+     * Load latest ritual lite by uin from command portal.
+     *
+     * @return
+     */
+    public ApplicantRitualLiteDto loadApplicantRitualLatestByUin(String uin) {
+        WsResponse<String> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(RITUAL_LITE_LATEST_URL + "/" + uin, HttpMethod.GET, null);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return null;
+        }
+        return mapper.convertValue(wsResponse.getBody(),ApplicantRitualLiteDto.class);
+
     }
 }

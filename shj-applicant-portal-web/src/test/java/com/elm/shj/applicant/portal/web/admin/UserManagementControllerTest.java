@@ -338,14 +338,14 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         String url = Navigation.API_USERS + "/ritual-seasons";
 
         List<Integer> seasons = Arrays.asList(1442);
-        when(userService.findApplicantRitualSeasons(any(), any())).thenReturn(seasons);
+        when(userService.findApplicantRitualSeasons(any())).thenReturn(seasons);
 
         mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(seasons.size())))
                 .andExpect(jsonPath("$[0]", is(1442)));
 
 
-        verify(userService, times(1)).findApplicantRitualSeasons(any(), any());
+        verify(userService, times(1)).findApplicantRitualSeasons(any());
 
     }
 
@@ -355,14 +355,14 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
 
         ApplicantRitualLiteDto applicantRitualLiteDto = new ApplicantRitualLiteDto();
         List<ApplicantRitualLiteDto> applicantRitualLiteDtos = Arrays.asList(applicantRitualLiteDto);
-        when(userService.findApplicantRitualByUinAndSeasons(any(), any(), any())).thenReturn(applicantRitualLiteDtos);
+        when(userService.findApplicantRitualByUinAndSeasons(any(), any())).thenReturn(applicantRitualLiteDtos);
 
         mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", is(applicantRitualLiteDtos.size())))
                 .andExpect(jsonPath("$[0].hijriSeason", is(applicantRitualLiteDto.getHijriSeason())));
 
 
-        verify(userService, times(1)).findApplicantRitualByUinAndSeasons(any(), any(), any());
+        verify(userService, times(1)).findApplicantRitualByUinAndSeasons(any(), any());
 
     }
 

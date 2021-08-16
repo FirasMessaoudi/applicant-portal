@@ -22,4 +22,9 @@ export const APP_ROUTES: Routes = [
     path: 'hajj-journey',
     loadChildren: () => import('@pages/hajj-timeline/hajj-timeline.module').then(m => m.HajjTimelineModule)
   }
+  ,
+  {
+    path: 'settings',
+    loadChildren: () => import('@pages/settings/settings.module').then(m => m.SettingsModule)
+  }
 ];
