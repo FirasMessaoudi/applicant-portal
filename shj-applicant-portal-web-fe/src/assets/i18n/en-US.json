@@ -113,14 +113,21 @@
     "select-year": "Select year",
     "select-month": "Select month",
     "previous-month": "Previous month",
-    "next-month": "Next month"
+    "next-month": "Next month",
+    "main": "Main"
   },
 
   "header": {
     "welcome": "Welcome",
     "change_password": "Change Password",
     "my_profile": "My Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "settings": "Settings"
+  },
+  "settings": {
+    "ritual-type": "Ritual type",
+    "season": "Season",
+    "settings": "Settings"
   },
 
   "home": {

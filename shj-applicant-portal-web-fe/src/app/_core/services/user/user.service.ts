@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams} from '@angular/common/http';
 import {map} from 'rxjs/operators';
-import {Observable, of} from 'rxjs';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError} from "rxjs/internal/operators";
 import {ChangePasswordCmd, User} from '@shared/model';
 import {Role} from '@shared/model/role.model';
 import {UserStatus} from "@model/user-status.model";
+import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -15,8 +16,17 @@ export const DEFAULT_MAX_USER_AGE = 16;
 @Injectable()
 export class UserService {
 
+
+  public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>({});
   constructor(private http: HttpClient) {
+    this.selectedApplicantRitual.asObservable();
   }
+
+  public changeSelectedApplicantRitual(selectedApplicantRitual: any) {
+    this.selectedApplicantRitual.next(selectedApplicantRitual);
+
+  }
+
 
   /**
    * Lists all users.
@@ -199,5 +209,17 @@ export class UserService {
           return of(error);
         }
       }));
+  }
+
+  getApplicantSeason(): Observable<number []> {
+    return this.http.get<number []>('/core/api/users/ritual-seasons');
+  }
+
+  getApplicantRitualLiteBySeason(season : number): Observable<ApplicantRitualLite []> {
+    return this.http.get<ApplicantRitualLite []>('/core/api/users/ritual-lite/'+season);
+  }
+
+  getLatestApplicantRitualLite(): Observable<ApplicantRitualLite> {
+    return this.http.get<ApplicantRitualLite>('/core/api/users/ritual-lite/latest');
   }
 }

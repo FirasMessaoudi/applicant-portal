@@ -1,0 +1,131 @@
+<nav aria-label="breadcrumb" class="pt-2">
+  <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
+    <li class="breadcrumb-item active" aria-current="page ">{{'general.main' | translate}}</li>
+    <li class="breadcrumb-item active" aria-current="page "></li>
+  </ol>
+</nav>
+
+<div class="content__wrapper">
+  <div class="title__Page">
+    <h3 class="sectionTitle">
+      {{'settings.settings' | translate}}
+    </h3>
+  </div>
+
+  <form>
+    <div class="form-row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="align-items-end d-flex input-group">
+            <div class="d-flex flex-grow-1">
+              <div class="w-50 mr-1" role="group">
+                <label for="inputEmail4">{{ "settings.season" | translate }}</label>
+
+                <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event.target.value)" [disabled]="!wantEdit">
+                  <option [value]="season" *ngFor="let season of seasons" [selected]="season==selectedSeason">{{season}}</option>
+                </select>
+
+              </div>
+              <div class="w-50" role="group">
+                <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
+
+                <select id="inputEmail4" class="custom-select" (change)="onApplicantRitualChange($event.target.value)" [disabled]="!wantEdit">
+                  <option [value]="ar.id" *ngFor="let ar of applicantRituals" [selected]="ar.id == selectedApplicantRitual.id">
+                    {{
+                    ar?.typeCode
+                      ? lookupService().localizedLabel(
+                      ritualTypes,
+                      ar?.typeCode
+                      )
+                      : ""
+                    }}
+                    - {{ar?.dateStartHijri | monthDayHijriFormat}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل" *ngIf="!wantEdit" (click)="editRitual()">
+                <svg-icon styleClass="fa-w-20" icon="edit" ></svg-icon>
+              </button>
+              <button class="btn btn-success" type="button" ngbTooltip="حفظ" *ngIf="wantEdit" (click)="saveSelectedRitual()">
+                <svg-icon styleClass="fa-w-18" icon="save" ></svg-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputEmail4">اللغة</label>
+          <div class="input-group flex-grow-1 mb-3">
+            <div class="setBox flex-grow-1" role="group">
+              <select class="custom-select" disabled>
+                <option value="العربية" selected>العربية</option>
+                <option value="English">English</option>
+                <option value="Frinch">Frinch</option>
+                <option value="Frinch">اُردُو</option>
+                <option value="Frinch">germany</option>
+              </select>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل">
+                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputEmail4">الإيميل</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="" value="user2021@gmail.com" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل">
+                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputMobile4">الموبايل</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="" value="0096650505050" disabled>
+            <div class="input-group-append">
+              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل">
+                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="button" class="btn btn-block btn-outline-dcc-primary px-4 setBox" (click)="open(showDelete)">
+            <span>تغيير كلمة المرور</span>
+            <svg-icon styleClass="ml-3 mb-0 h5" icon="lock-alt"></svg-icon>
+          </button>
+        </div>
+      </div>
+      <div class="col-md-6 flex-center">
+        <svg-icon styleClass="fa-10x text-dcc-light" icon="cog"></svg-icon>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+<ng-template #showDelete let-modal>
+
+  <div class="modal-body">
+    <div class="flex-center-column my-3">
+      <svg-icon styleClass="text-dcc-primary-public fa-3x" icon="exclamation-triangle"></svg-icon>
+      هل أنت متأكد من أنك تريد تعديل الإعدادات؟
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-dcc-primary px-4 ml-3">حفظ التعديلات </button>
+    <button type="button" class="btn btn-light px-5">إلغاء</button>
+  </div>
+</ng-template>
+
+

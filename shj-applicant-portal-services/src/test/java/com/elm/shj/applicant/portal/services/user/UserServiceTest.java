@@ -392,7 +392,7 @@ public class UserServiceTest {
         ResponseEntity responseEntity = new ResponseEntity<List<Integer>>((List<Integer>) null, HttpStatus.BAD_REQUEST);
         when(restTemplate.exchange(Matchers.anyString(),
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
-        List<Integer> seasonList = serviceToTest.findApplicantRitualSeasons(TEST_UIN.toString(), restTemplate);
+        List<Integer> seasonList = serviceToTest.findApplicantRitualSeasons(TEST_UIN.toString());
         assertNotNull(seasonList);
         assertEquals(0, seasonList.size());
     }
@@ -402,7 +402,7 @@ public class UserServiceTest {
         ResponseEntity responseEntity = new ResponseEntity<List<Integer>>(Arrays.asList(1442), HttpStatus.OK);
         when(restTemplate.exchange(Matchers.anyString(),
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
-        List<Integer> seasonList = serviceToTest.findApplicantRitualSeasons(TEST_UIN.toString(), restTemplate);
+        List<Integer> seasonList = serviceToTest.findApplicantRitualSeasons(TEST_UIN.toString());
         assertNotNull(seasonList);
         assertEquals(1, seasonList.size());
         assertEquals(1442, seasonList.get(0));
@@ -416,7 +416,7 @@ public class UserServiceTest {
         when(restTemplate.exchange(Matchers.anyString(),
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
 
-        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442, restTemplate);
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442);
         assertNotNull(applicantRitualLiteDtos);
         assertEquals(1, applicantRitualLiteDtos.size());
 
@@ -431,7 +431,7 @@ public class UserServiceTest {
         when(restTemplate.exchange(Matchers.anyString(),
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.any(ParameterizedTypeReference.class))).thenReturn(responseEntity);
 
-        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442, restTemplate);
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442);
         assertNotNull(applicantRitualLiteDtos);
         assertEquals(0, applicantRitualLiteDtos.size());
 

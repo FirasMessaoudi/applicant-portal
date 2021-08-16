@@ -7,7 +7,7 @@ import {finalize} from "rxjs/operators";
 import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
-import {RegisterService} from "@core/services";
+import {RegisterService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
 
 @Component({
@@ -40,7 +40,8 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     private registerService: RegisterService,
     private location: Location,
     private toastr: ToastService,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private userService: UserService) {
   }
 
   get currentLanguage(): string {
@@ -99,7 +100,8 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           console.log('redirect to / page');
           clearInterval(this.timerInterval);
-          this.router.navigate(['/'], {replaceUrl: true});
+          this.getLatestApplicantRitualLite();
+
         }
       }, error => {
         console.log(error);
@@ -180,5 +182,24 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       }
     }, 1000);
+  }
+
+  getLatestApplicantRitualLite() {
+
+    localStorage.removeItem("selectedSeason");
+    localStorage.removeItem("selectedApplicantRitual");
+
+      this.userService.getLatestApplicantRitualLite().subscribe(applicantRitual => {
+
+        if (applicantRitual) {
+
+          localStorage.setItem('selectedSeason', JSON.stringify(applicantRitual?.hijriSeason));
+          localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
+        }
+        this.router.navigate(['/'], {replaceUrl: true});
+      }, error=>{
+        this.router.navigate(['/'], {replaceUrl: true});
+      });
+
   }
 }

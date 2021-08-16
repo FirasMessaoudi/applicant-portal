@@ -25,6 +25,7 @@ import {DccCommonsNgPipesModule} from '@dcc-commons-ng/pipes';
 import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-datepicker/hijri-gregorian-datepicker.module";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import { GoogleMapsModule } from '@angular/google-maps'
+import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format.pipe";
 
 
 @NgModule({
@@ -35,8 +36,9 @@ import { GoogleMapsModule } from '@angular/google-maps'
     NgbdDatepickerIslamicumalqura,
     DateFormatPipe,
     HijriFormatPipe,
+    MonthDayHijriFormatPipe,
     IbanStatusPipe
-     
+
   ],
   imports: [
     CommonModule,
@@ -50,7 +52,7 @@ import { GoogleMapsModule } from '@angular/google-maps'
     NgMultiSelectDropDownModule,
     GoogleMapsModule
   ],
-  providers: [DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, NgxCaptchaModule],
+  providers: [DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule],
   exports: [
     NgbdDatepickerIslamicumalqura,
     AccordionModule,
@@ -64,12 +66,13 @@ import { GoogleMapsModule } from '@angular/google-maps'
     ToastsContainer,
     DateFormatPipe,
     HijriFormatPipe,
+    MonthDayHijriFormatPipe,
     DatePipe,
     IbanStatusPipe,
     DccCommonsNgPipesModule,
     NgMultiSelectDropDownModule,
     HijriGregorianDatepickerModule,
-    GoogleMapsModule 
+    GoogleMapsModule
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,

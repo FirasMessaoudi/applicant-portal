@@ -10,6 +10,7 @@ import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -58,6 +58,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final MessageSource messageSource;
     private final SmsGatewayService smsGatewayService;
     private final EmailService emailService;
+    private final IntegrationService integrationService;
 
     /**
      * Finds all non deleted users.
@@ -403,56 +404,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         }
     }
 
-    public List<Integer> findApplicantRitualSeasons(String uin, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/find/ritual-seasons/" + uin;
-
-
-        HttpEntity<String> request = new HttpEntity<>(preCallAdmin());
-        ResponseEntity<List<Integer>> response = null;
-        try {
-            response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    request,
-                    new ParameterizedTypeReference<List<Integer>>() {
-                    }
-            );
-        } catch (HttpStatusCodeException e) {
-            return new ArrayList<>();
-        }
-
-        if (response != null && response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            System.out.println("Request Failed");
-            return new ArrayList<>();
-        }
+    public List<Integer> findApplicantRitualSeasons(String uin) {
+        return integrationService.loadRitualSeasonByUin(uin);
     }
 
-    public List<ApplicantRitualLiteDto> findApplicantRitualByUinAndSeasons(String uin, int season, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/find/ritual-lite/" + uin + "/" + season;
-
-
-        HttpEntity<String> request = new HttpEntity<>(preCallAdmin());
-        ResponseEntity<List<ApplicantRitualLiteDto>> response = null;
-        try {
-            response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    request,
-                    new ParameterizedTypeReference<List<ApplicantRitualLiteDto>>() {
-                    }
-            );
-        } catch (HttpStatusCodeException e) {
-            return new ArrayList<>();
-        }
-
-        if (response != null && response.getStatusCode() == HttpStatus.OK) {
-            return response.getBody();
-        } else {
-            System.out.println("Request Failed");
-            return new ArrayList<>();
-        }
+    public List<ApplicantRitualLiteDto> findApplicantRitualByUinAndSeasons(String uin, int season) {
+        return integrationService.loadApplicantRitualByUinAndSeasons(uin, season);
     }
 
     public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
@@ -488,5 +445,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
 
+    public ApplicantRitualLiteDto findApplicantRitualLatestByUin(String uin) {
+        return integrationService.loadApplicantRitualLatestByUin(uin);
+    }
 }
 

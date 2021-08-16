@@ -151,18 +151,29 @@ public class UserManagementController {
     public List<Integer> findApplicantRitualSeasonsByUin() {
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
-        return userService.findApplicantRitualSeasons(loggedInUserUin, restTemplateConfig.restTemplate());
+        return userService.findApplicantRitualSeasons(loggedInUserUin);
 
     }
 
     /**
      * get user ritual lite by seasons and uin
      */
-    @GetMapping("/ritual-lite/season/{season}")
+    @GetMapping("/ritual-lite/{season}")
     public List<ApplicantRitualLiteDto> findApplicantRitualByUinAndSeasons(@PathVariable int season) {
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
-        return userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season, restTemplateConfig.restTemplate());
+        return userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season);
+
+    }
+
+    /**
+     * get user latest ritual lite by uin
+     */
+    @GetMapping("/ritual-lite/latest")
+    public ApplicantRitualLiteDto findApplicantRitualByUinAndSeasons() {
+        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
+        return userService.findApplicantRitualLatestByUin(loggedInUserUin);
 
     }
 

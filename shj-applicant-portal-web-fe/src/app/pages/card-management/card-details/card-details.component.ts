@@ -4,13 +4,14 @@ import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
 import {PackageCatering} from "@model/package-catering.model";
 import {ActivatedRoute, Router} from "@angular/router";
-import {CardService} from "@core/services";
+import {CardService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
 import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {CountryLookup} from "@model/country-lookup.model";
 import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {Language} from "@model/enum/language.enum";
+import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 
 @Component({
   selector: 'app-card-details',
@@ -32,6 +33,8 @@ export class CardDetailsComponent implements OnInit {
   maritalStatuses: Lookup[] = [{"id":1,"code":"SINGLE","lang":"ar","label":"أعزب"},{"id":2,"code":"SINGLE","lang":"en","label":"Single"},{"id":3,"code":"MARRIED","lang":"ar","label":"متزوج"},{"id":4,"code":"MARRIED","lang":"en","label":"Married"},{"id":5,"code":"WIDOWED","lang":"ar","label":"أرمل"},{"id":6,"code":"WIDOWED","lang":"en","label":"Widowed"},{"id":7,"code":"DIVORCED","lang":"ar","label":"مطلق"},{"id":8,"code":"DIVORCED","lang":"en","label":"Divorced"}];
   languageNativeName = Language;
 
+  selectedApplicantRitual: ApplicantRitualLite;
+
   activeId = 1;
   tabsHeader = [
     "card-management.main_details",
@@ -47,12 +50,20 @@ export class CardDetailsComponent implements OnInit {
               private cardService: CardService,
               private translate: TranslateService,
               private i18nService: I18nService,
-              private lookupsService: LookupService
+              private lookupsService: LookupService,
+              private  userService: UserService
   ) {
   }
 
 
   ngOnInit(): void {
+
+    this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual=>{
+      this.selectedApplicantRitual =selectedApplicantRitual;
+    });
+
+    this.selectedApplicantRitual =JSON.parse(localStorage.getItem('selectedApplicantRitual'));
+
     // this.loadLookups();
     this.cardService.findMainProfile().subscribe(data => {
       if (data) {
