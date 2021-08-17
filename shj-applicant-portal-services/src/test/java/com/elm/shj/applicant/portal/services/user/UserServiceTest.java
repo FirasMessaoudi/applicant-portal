@@ -373,7 +373,7 @@ public class UserServiceTest {
         ResponseEntity responseEntity = new ResponseEntity<ApplicantMainDataDto>((ApplicantMainDataDto) null, HttpStatus.BAD_REQUEST);
         when(restTemplate.exchange(Matchers.anyString(),
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.<Class<ApplicantMainDataDto>>any())).thenReturn(responseEntity);
-        Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), restTemplate);
+        Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), 2);
         assertFalse(applicantMainDataDto.isPresent());
     }
 
@@ -383,7 +383,7 @@ public class UserServiceTest {
         ResponseEntity responseEntity = new ResponseEntity<ApplicantMainDataDto>(dto, HttpStatus.OK);
         when(restTemplate.exchange(Matchers.anyString(),
                 Matchers.any(HttpMethod.class), Matchers.<HttpEntity<?>>any(), Matchers.<Class<ApplicantMainDataDto>>any())).thenReturn(responseEntity);
-        Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), restTemplate);
+        Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), 2);
         assertTrue(applicantMainDataDto.isPresent());
     }
 

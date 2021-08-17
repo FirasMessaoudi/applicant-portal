@@ -20,12 +20,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -380,28 +381,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return smsSent || emailSent;
     }
 
-    public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/find/main-data/" + uin;
-
-        HttpEntity<String> request = new HttpEntity<>(preCallAdmin());
-        ResponseEntity<ApplicantMainDataDto> response = null;
-        try {
-            response = restTemplate.exchange(
-                    url,
-                    HttpMethod.GET,
-                    request,
-                    ApplicantMainDataDto.class
-            );
-        } catch (HttpStatusCodeException e) {
-            return Optional.empty();
-        }
-
-        if (response != null && response.getStatusCode() == HttpStatus.OK) {
-            return Optional.of(response.getBody());
-        } else {
-            System.out.println("Request Failed");
-            return Optional.empty();
-        }
+    public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long ritualId) {
+        return Optional.of(integrationService.loadUserMainData(uin ,ritualId));
     }
 
     public List<Integer> findApplicantRitualSeasons(String uin) {

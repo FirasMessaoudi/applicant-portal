@@ -19,10 +19,10 @@
   <div class="row cardBox">
     <div class="col-12 col-md-4 order-md-1 order-1 order-md-0">
       <div class="col-form-label text-center text-md-left">
-        {{applicant?.fullNameAr }}
+        {{applicant?.fullNameAr || '---' }}
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        {{applicant?.fullNameEn }}
+        {{applicant?.fullNameEn || '---'}}
       </div>
     </div>
 
@@ -31,7 +31,7 @@
         {{ "card-management.applicant_id" | translate }}
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        {{applicant?.uin }}
+        {{applicant?.uin || '---'}}
       </div>
     </div>
 
@@ -40,7 +40,7 @@
         {{ "card-management.card_number" | translate }}
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        {{applicant?.cardReferenceNumber }} {{applicant?.cardStatusCode?.label}}
+        {{applicant?.cardReferenceNumber || '---'}} {{applicant?.cardStatusCode?.label}}
       </div>
     </div>
 
@@ -82,7 +82,7 @@
                 "card-management.applicant_original_name" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.fullNameOrigin
+                applicant?.fullNameOrigin || '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -113,7 +113,7 @@
                   ritualTypes,
                   applicant?.ritualTypeCode
                   )
-                  : ""
+                  :  '---'
                 }}</span>
             </div>
 
@@ -138,7 +138,7 @@
                   countries,
                   applicant?.nationalityCode?.toUpperCase()
                   )
-                  : ""
+                  : '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -146,7 +146,7 @@
                 "card-management.passport_number" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.passportNumber
+                applicant?.passportNumber || '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -159,7 +159,7 @@
                   maritalStatuses,
                   applicant?.maritalStatusCode?.toUpperCase()
                   )
-                  : ""
+                  : '---'
                 }}</span>
             </div>
             <div *ngIf="applicant?.idNumberOriginal" class="form-group col">
@@ -167,12 +167,12 @@
                 "card-management.applicant_original_id" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.idNumberOriginal
+                applicant?.idNumberOriginal || '---'
                 }}</span>
             </div>
             <div *ngIf="applicant?.idNumber" class="form-group col">
               <label class="col-form-label">{{'general.nin_or_iqama' | translate}}</label>
-              <span class="form-control-plaintext ">{{applicant?.idNumber}}</span>
+              <span class="form-control-plaintext ">{{applicant?.idNumber || '---'}}</span>
             </div>
 
             <div class="form-group col">
@@ -182,6 +182,7 @@
                   <span *ngFor="let lang of applicant?.contacts[0]?.languageList.split(','); let lastItem = last;">
                     {{languageNativeName[lang.trim().toUpperCase()]}}<span *ngIf="!lastItem">-</span></span>
                   </span>
+              <span *ngIf="applicant?.contacts?.length == 0">---</span>
             </div>
           </div>
         </section>
@@ -202,7 +203,7 @@
                   countries,
                   applicant?.contacts[0]?.countryCode?.toUpperCase()
                   )
-                  : ""
+                  : "---"
                 }}</span>
             </div>
             <div class="form-group col">
@@ -210,7 +211,7 @@
                 "card-management.city" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.cityName
+                applicant?.contacts[0]?.cityName || '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -218,7 +219,7 @@
                 "card-management.district" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.districtName
+                applicant?.contacts[0]?.districtName || '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -226,7 +227,7 @@
                 "card-management.street" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.streetName
+                applicant?.contacts[0]?.streetName || '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -234,7 +235,7 @@
                 "card-management.building_number" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.buildingNumber
+                applicant?.contacts[0]?.buildingNumber || '---'
                 }}</span>
             </div>
             <div class="form-group col">
@@ -242,7 +243,7 @@
                 "card-management.postal_code" | translate
                 }}</label>
               <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.postalCode
+                applicant?.contacts[0]?.postalCode || '---'
                 }}</span>
             </div>
           </div>

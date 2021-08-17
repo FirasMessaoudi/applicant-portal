@@ -43,8 +43,8 @@ export class CardService {
    *
    * @return {Observable<ApplicantMainData>} The card identified by cardId.
    */
-  findMainProfile(): Observable<ApplicantMainData> {
-    return this.http.get<any>('/core/api/users/main-data').pipe(
+  findMainProfile(ritualId): Observable<ApplicantMainData> {
+    return this.http.get<any>('/core/api/users/main-data/'+ritualId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
