@@ -2565,7 +2565,7 @@ export class CardDetailsComponent implements OnInit {
       }
     });
 
-    this.cardService.findHealthDetails(18111).subscribe(data => {
+    this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
       if (data) {
         this.healthDetails = data;
       } else {
