@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -41,43 +43,45 @@ public class IntegrationService {
     private final String RITUAL_LITE_LATEST_URL = "/ws/find/ritual-lite/latest";
     private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final WebClient webClient;
+    private final RestTemplate restTemplate;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
     @Value("${integration.access.username}")
-    private String username;
+    private String integrationAccessUsername;
     @Value("${integration.access.password}")
-    private String password;
+    private String integrationAccessPassword;
 
     private final ObjectMapper mapper;
 
     /**
      * Call an integration web service, authenticate first to get the token then do the actual call using the generated token.
      *
-     * @param serviceRelativeUrl relative url of service to be called
-     * @param httpMethod         HttpMethod of the service to be called
-     * @param bodyToSend         body to send in the call, it can be null
-     * @param <T>                the return type contained in the WsResponse
+     * @param serviceRelativeUrl    relative url of service to be called
+     * @param httpMethod            HttpMethod of the service to be called
+     * @param bodyToSend            body to send in the call, it can be null
+     * @param responseTypeReference the return type contained in the WsResponse
+     * @param <B>                   Request body type
+     * @param <R>                   Response body type
      * @return WsResponse which contains status and body
      * @throws WsAuthenticationException thrown in case of failed authentication
      */
-    private <T> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, T bodyToSend) throws WsAuthenticationException {
+    private <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
+                                                ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
-                .body(BodyInserters.fromValue(LoginRequestVo.builder().username(username).password(password).build()))
+                .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
         if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
             // cannot authenticate, throw an exception
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
             // TODO: check available spring security exception to be reused instead.
         }
-
         // check if no body
         if (bodyToSend == null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
-                    .retrieve().bodyToMono(WsResponse.class).block();
+                    .retrieve().bodyToMono(responseTypeReference).block();
         }
-
         return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
-                .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(WsResponse.class).block();
+                .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
     }
 
     /**
@@ -88,13 +92,13 @@ public class IntegrationService {
     public List<RitualTypeLookupDto> loadRitualTypes() {
         WsResponse<List<RitualTypeLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(RITUAL_TYPES_LOOKUP_URL, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(RITUAL_TYPES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<RitualTypeLookupDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();
-
     }
 
     /**
@@ -105,7 +109,8 @@ public class IntegrationService {
     public List<CardStatusLookupDto> loadCardStatuses() {
         WsResponse<List<CardStatusLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CARD_STATUSES_LOOKUP_URL, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(CARD_STATUSES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CardStatusLookupDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -121,7 +126,8 @@ public class IntegrationService {
     public List<RelativeRelationshipLookupDto> loadRelativeRelationships() {
         WsResponse<List<RelativeRelationshipLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(RELATIVE_RELATIONSHIPS_LOOKUP_URL, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(RELATIVE_RELATIONSHIPS_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<RelativeRelationshipLookupDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -137,7 +143,8 @@ public class IntegrationService {
     public List<MaritalStatusLookupDto> loadMaritalStatuses() {
         WsResponse<List<MaritalStatusLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(MARITAL_STATUS_LOOKUP_URL, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(MARITAL_STATUS_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<MaritalStatusLookupDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -153,7 +160,8 @@ public class IntegrationService {
     public List<CountryLookupDto> loadCountries() {
         WsResponse<List<CountryLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(COUNTRIES_LOOKUP_URL, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(COUNTRIES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CountryLookupDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -169,7 +177,8 @@ public class IntegrationService {
     public List<HealthSpecialNeedsTypeLookupDto> loadSpecialNeedsTypes() {
         WsResponse<List<HealthSpecialNeedsTypeLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(HEALTH_SPECIAL_NEEDS_LOOKUP_URL, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(HEALTH_SPECIAL_NEEDS_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<HealthSpecialNeedsTypeLookupDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -185,7 +194,8 @@ public class IntegrationService {
     public List<Integer> loadRitualSeasonByUin(String uin) {
         WsResponse<List<Integer>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(RITUAL_SEASON_URL + "/" + uin, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(RITUAL_SEASON_URL + "/" + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<Integer>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -202,7 +212,8 @@ public class IntegrationService {
     public List<ApplicantRitualLiteDto> loadApplicantRitualByUinAndSeasons(String uin, int season) {
         WsResponse<List<ApplicantRitualLiteDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(RITUAL_LITE_URL + "/" + uin + "/" + season, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(RITUAL_LITE_URL + "/" + uin + "/" + season, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantRitualLiteDto>>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
@@ -217,26 +228,26 @@ public class IntegrationService {
      * @return
      */
     public ApplicantRitualLiteDto loadApplicantRitualLatestByUin(String uin) {
-        WsResponse<String> wsResponse = null;
+        WsResponse<ApplicantRitualLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(RITUAL_LITE_LATEST_URL + "/" + uin, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(RITUAL_LITE_LATEST_URL + "/" + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantRitualLiteDto>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return null;
         }
-        return mapper.convertValue(wsResponse.getBody(),ApplicantRitualLiteDto.class);
-
+        return wsResponse.getBody();
     }
 
     public ApplicantHealthLiteDto loadApplicantHealthDetails(String uin, Long ritualId) {
-        WsResponse<String> wsResponse = null;
+        WsResponse<ApplicantHealthLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_HEALTH_DETAILS_URL +"/" + uin + "/" + ritualId, HttpMethod.GET, null);
+            wsResponse = callIntegrationWs(APPLICANT_HEALTH_DETAILS_URL +"/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantHealthLiteDto>>() {});
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load applicant health details.", e);
             return null;
         }
-        return mapper.convertValue(wsResponse.getBody(),ApplicantHealthLiteDto.class);
-
+        return wsResponse.getBody();
     }
 }
