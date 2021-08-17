@@ -181,9 +181,8 @@ public class UserManagementController {
      * get user health details by uin and ritual ID
      */
     @GetMapping("/health/{ritualId}")
-    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId) {
-        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
+    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
 
     }
