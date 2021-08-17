@@ -423,20 +423,6 @@ public class UserManagementController {
     }
 
     /**
-     * Deletes the user by his ID
-     *
-     * @param userId the user id for to load details
-     * @return the {@link ResponseEntity} with status
-     */
-    @PostMapping("/delete/{userId}")
-    @RolesAllowed(AuthorityConstants.DELETE_USER)
-    public ResponseEntity<String> deleteUser(@PathVariable long userId) {
-        log.debug("Handler for {}", "delete user");
-        userService.deleteUser(userId);
-        return ResponseEntity.ok(StringUtils.EMPTY);
-    }
-
-    /**
      * Activate inactive user
      *
      * @param userId
