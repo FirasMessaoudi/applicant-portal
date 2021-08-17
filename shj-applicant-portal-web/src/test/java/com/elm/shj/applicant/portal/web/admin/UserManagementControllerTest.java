@@ -3,8 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.admin;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
-import com.elm.shj.applicant.portal.services.dto.UpdateContactsCmd;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import org.apache.commons.lang3.time.DateUtils;

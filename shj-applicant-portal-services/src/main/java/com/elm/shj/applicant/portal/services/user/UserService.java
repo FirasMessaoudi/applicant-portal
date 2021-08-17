@@ -64,6 +64,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final EmailService emailService;
     private final IntegrationService integrationService;
     ObjectMapper mapper = new ObjectMapper();
+
     /**
      * Finds all non deleted users.
      *
@@ -385,7 +386,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long ritualId) {
-        return Optional.of(integrationService.loadUserMainData(uin ,ritualId));
+        return Optional.of(integrationService.loadUserMainData(uin, ritualId));
     }
 
     public List<Integer> findApplicantRitualSeasons(String uin) {
@@ -442,6 +443,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
 
     }
+
     private HttpHeaders preCallAdmin() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("CALLER-TYPE", "WEB-SERVICE");
@@ -456,6 +458,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.loadApplicantHealthDetails(uin, ritualId);
+    }
+
+    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(String uin, Long ritualId) {
+        return integrationService.loadApplicantCardDetails(uin, ritualId);
     }
 }
 
