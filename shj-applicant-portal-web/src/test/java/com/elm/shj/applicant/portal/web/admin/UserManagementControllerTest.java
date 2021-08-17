@@ -3,7 +3,8 @@
  */
 package com.elm.shj.applicant.portal.web.admin;
 
-import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
+import com.elm.shj.applicant.portal.services.dto.UpdateContactsCmd;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import org.apache.commons.lang3.time.DateUtils;
@@ -119,7 +120,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
     public void test_update_user_contacts_not_found_exception() throws Exception {
         String url = Navigation.API_USERS + "/contacts";
         UpdateContactsCmd userContacts = new UpdateContactsCmd();
-        userContacts.setUin(TEST_UIN);
+
         userContacts.setCountryCode(TEST_COUNTRY_CODE);
         userContacts.setEmail(TEST_EMAIL);
         userContacts.setMobileNumber(TEST_MOBILE);
@@ -136,7 +137,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
     public void test_update_user_contacts_not_found() throws Exception {
         String url = Navigation.API_USERS + "/contacts";
         UpdateContactsCmd userContacts = new UpdateContactsCmd();
-        userContacts.setUin(TEST_WRONG_UIN);
+
         userContacts.setCountryCode(TEST_COUNTRY_CODE);
         userContacts.setEmail(TEST_EMAIL);
         userContacts.setMobileNumber(TEST_MOBILE);
@@ -153,20 +154,20 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         String url = Navigation.API_USERS + "/contacts";
         UpdateContactsCmd userContacts = new UpdateContactsCmd();
         UserDto user = new UserDto();
-        userContacts.setUin(TEST_UIN);
+
         userContacts.setCountryCode(TEST_COUNTRY_CODE);
         userContacts.setEmail(TEST_EMAIL);
         userContacts.setMobileNumber(TEST_MOBILE);
         userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
         when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
-        when(userService.updateUserInAdminPortal(any(), any())).thenReturn(new ApplicantLiteDto());
+        when(userService.updateUserInAdminPortal(any())).thenReturn(new ApplicantLiteDto());
         when(userService.save(any())).thenReturn(user);
 
         mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(userContacts)).with(csrf()))
                 .andDo(print()).andExpect(status().isOk());
         verify(userService, times(1)).findByUin(anyLong());
-        verify(userService, times(1)).updateUserInAdminPortal(any(), any());
+        verify(userService, times(1)).updateUserInAdminPortal(any());
         verify(userService, times(1)).save(any());
 
     }
@@ -176,13 +177,13 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         String url = Navigation.API_USERS + "/contacts";
         UpdateContactsCmd userContacts = new UpdateContactsCmd();
         UserDto user = new UserDto();
-        userContacts.setUin(TEST_UIN);
+
         userContacts.setCountryCode(TEST_COUNTRY_CODE);
         userContacts.setEmail(TEST_EMAIL);
         userContacts.setMobileNumber(TEST_MOBILE);
         userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
         when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
-        when(userService.updateUserInAdminPortal(any(), any())).thenReturn(null);
+        when(userService.updateUserInAdminPortal(any())).thenReturn(null);
         when(userService.save(any())).thenReturn(user);
 
         mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)

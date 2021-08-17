@@ -7,6 +7,7 @@ import {ChangePasswordCmd, User} from '@shared/model';
 import {Role} from '@shared/model/role.model';
 import {UserStatus} from "@model/user-status.model";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
+import {UserContacts} from "@model/UserContacts.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -99,6 +100,25 @@ export class UserService {
    */
   saveOrUpdate(user: User): Observable<any> {
     return this.http.post<any>('/core/api/users/' + (user.id > 0 ? 'update' : 'create'), user).pipe(catchError((error: HttpErrorResponse) => {
+        if (error.hasOwnProperty('error')) {
+          return of(error.error);
+        } else {
+          console.error('An error happened while saving the user : ' + error);
+          return of(error);
+        }
+      })
+    );
+  }
+
+
+  /**
+   * Creates or updates user details in the server.
+   *
+   * @param user the user to save or update
+   * @return {Observable<User>} The saved or updated user.
+   */
+  updateUserContacts(userContacts: UserContacts): Observable<any> {
+    return this.http.put<any>('/core/api/users/contacts', userContacts).pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {
           return of(error.error);
         } else {

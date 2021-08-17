@@ -21,16 +21,20 @@
               <div class="w-50 mr-1" role="group">
                 <label for="inputEmail4">{{ "settings.season" | translate }}</label>
 
-                <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event.target.value)" [disabled]="!wantEdit">
-                  <option [value]="season" *ngFor="let season of seasons" [selected]="season==selectedSeason">{{season}}</option>
+                <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event.target.value)"
+                        [disabled]="!enableEditRitual">
+                  <option [value]="season" *ngFor="let season of seasons"
+                          [selected]="season==selectedSeason">{{season}}</option>
                 </select>
 
               </div>
               <div class="w-50" role="group">
                 <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
 
-                <select id="inputEmail4" class="custom-select" (change)="onApplicantRitualChange($event.target.value)" [disabled]="!wantEdit">
-                  <option [value]="ar.id" *ngFor="let ar of applicantRituals" [selected]="ar.id == selectedApplicantRitual.id">
+                <select id="inputEmail4" class="custom-select" (change)="onApplicantRitualChange($event.target.value)"
+                        [disabled]="!enableEditRitual">
+                  <option [value]="ar.id" *ngFor="let ar of applicantRituals"
+                          [selected]="ar.id == selectedApplicantRitual.id">
                     {{
                     ar?.typeCode
                       ? lookupService().localizedLabel(
@@ -45,11 +49,13 @@
               </div>
             </div>
             <div class="input-group-append">
-              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل" *ngIf="!wantEdit" (click)="editRitual()">
-                <svg-icon styleClass="fa-w-20" icon="edit" ></svg-icon>
+              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل" *ngIf="!enableEditRitual"
+                      (click)="editRitual()">
+                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
               </button>
-              <button class="btn btn-success" type="button" ngbTooltip="حفظ" *ngIf="wantEdit" (click)="saveSelectedRitual()">
-                <svg-icon styleClass="fa-w-18" icon="save" ></svg-icon>
+              <button class="btn btn-success" type="button" ngbTooltip="حفظ" *ngIf="enableEditRitual"
+                      (click)="saveSelectedRitual()">
+                <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
               </button>
             </div>
           </div>
@@ -74,30 +80,78 @@
             </div>
           </div>
         </div>
+        <form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
+          <div class="form-group">
+            <div class="align-items-end d-flex input-group">
+              <div class="d-flex flex-grow-1">
+                <div class="w-50 mr-1" role="group">
+                  <label>   {{"general.email"|translate}} </label>
+                  <div class="input-group mb-3">
 
-        <div class="form-group">
-          <label for="inputEmail4">الإيميل</label>
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="" value="user2021@gmail.com" disabled>
-            <div class="input-group-append">
-              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل">
-                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-              </button>
+                    <input type="text" class="form-control"
+                           formControlName="email" maxlength="50"
+                           [class.is-invalid]="f.email.invalid && f.email.touched"/>
+                    <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+                      <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
+                      <div
+                        *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="w-50" role="group">
+                  <ng-template #rt let-r="result" let-t="term">
+                    <ngb-highlight [result]="r.dial_code" [term]="t"></ngb-highlight>
+                    <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}}"></span>
+                  </ng-template>
+                  <label> {{"general.mobile_number"|translate}}</label>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="" formControlName="mobileNumber"
+                           maxlength="30"
+                           onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                           min="0" step="1"
+                           [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched">
+                    <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">
+                      <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode}} flag-icon-selected"></span>
+                      <input id="typeahead-template" type="text" class="form-control arrow_icon" [ngbTypeahead]="search"
+
+                             [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
+                             [class.is-invalid]="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"
+                             formControlName="countryPhonePrefix" (selectItem)="selectedItem($event)"
+                             (focus)="onFocus($event)"
+                             #instance="ngbTypeahead"/>
+                    </div>
+                    <div
+                      *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched) || (f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched)"
+                      class="text-danger">
+                      <div
+                        *ngIf="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"> {{'general.field_validation_required' | translate}} </div>
+                      <div
+                        *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
+                      <div
+                        *ngIf="f.mobileNumber.errors?.pattern">{{'general.field_validation_pattern' | translate}}</div>
+                      <div
+                        *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="input-group-append">
+                <button class="btn btn-outline-gray-300" type="button" ngbTooltip="{{'general.btn_edit'|translate}}"
+                        *ngIf="contactsForm.disabled" (click)="setContactsEnabled()">
+                  <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
+                </button>
+
+                <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
+                        *ngIf="!contactsForm.disabled" (click)="onSubmit()">
+                  <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </form>
 
-        <div class="form-group">
-          <label for="inputMobile4">الموبايل</label>
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="" value="0096650505050" disabled>
-            <div class="input-group-append">
-              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل">
-                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-              </button>
-            </div>
-          </div>
-        </div>
 
         <div class="form-group">
           <button type="button" class="btn btn-block btn-outline-dcc-primary px-4 setBox" (click)="open(showDelete)">
@@ -123,7 +177,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-dcc-primary px-4 ml-3">حفظ التعديلات </button>
+    <button type="button" class="btn btn-dcc-primary px-4 ml-3">حفظ التعديلات</button>
     <button type="button" class="btn btn-light px-5">إلغاء</button>
   </div>
 </ng-template>

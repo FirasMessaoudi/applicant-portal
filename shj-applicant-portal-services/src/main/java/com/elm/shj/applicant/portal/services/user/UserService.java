@@ -11,6 +11,9 @@ import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +21,16 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.util.*;
@@ -60,7 +63,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final SmsGatewayService smsGatewayService;
     private final EmailService emailService;
     private final IntegrationService integrationService;
-
+    ObjectMapper mapper = new ObjectMapper();
     /**
      * Finds all non deleted users.
      *
@@ -393,31 +396,52 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadApplicantRitualByUinAndSeasons(uin, season);
     }
 
-    public ApplicantLiteDto verify(ValidateApplicantCmd command, RestTemplate restTemplate) {
-        final String url = adminPortalUrl + "/applicants/verify";
 
-        HttpEntity<String> request = new HttpEntity<>(command.toString(), preCallAdmin());
+    /**
+     * verify user in  command portal.
+     * * @param ValidateApplicantCmd (uin,dateOfBirthGregorian,dateOfBirthHijri )
+     *
+     * @return applicantLiteDto
+     */
+    public ApplicantLiteDto verify(ValidateApplicantCmd command) {
+        WsResponse<ApplicantLiteDto> wsResponse = null;
+        final String url = "/ws/verify";
         try {
-            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
+            wsResponse = integrationService.callIntegrationWs(url, HttpMethod.POST, command, new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {
+            });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to verify applicant.", e);
+            return null;
+        } catch (Exception ex) {
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * update user in  command portal.
+     * * @param UpdateApplicantCmd (uin,email,mobileNumber,countryCode,dateOfBirthHijri )
+     *
+     * @return applicantLiteDto
+     */
+    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd) {
+
+        WsResponse<ApplicantLiteDto> wsResponse = null;
+        final String url = "/ws/update";
+        try {
+            wsResponse = integrationService.callIntegrationWs(url, HttpMethod.POST, applicantCmd, new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {
+            });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant.", e);
+            return null;
         } catch (Exception ex) {
             return null;
         }
 
-    }
+        return wsResponse.getBody();
 
-    public ApplicantLiteDto updateUserInAdminPortal(UpdateApplicantCmd applicantCmd, RestTemplate restTemplate) {
-
-        final String url = adminPortalUrl + "/applicants/update";
-        HttpEntity<String> request = new HttpEntity<>(applicantCmd.toString(), preCallAdmin());
-        try {
-            return restTemplate.postForObject(url, request, ApplicantLiteDto.class);
-        } catch (Exception ex) {
-            return null;
-        }
 
     }
-
-
     private HttpHeaders preCallAdmin() {
         HttpHeaders headers = new HttpHeaders();
         headers.set("CALLER-TYPE", "WEB-SERVICE");

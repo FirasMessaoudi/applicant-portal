@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit {
   showSuccessPage: boolean = false;
   originalEmail: any;
   originalMobileNo: any;
+  originalCountryCode: any;
   SAUDI_MOBILE_NUMBER_REGEX: RegExp = new RegExp("^(009665|9665|\\+9665|05|5)([0-9]{8})$");
   isSaudiNumber: boolean;
   @ViewChild('reCaptchaEl')
@@ -198,7 +199,7 @@ export class RegisterComponent implements OnInit {
         } else {
 
           let updateAdminRequired = this.originalMobileNo != this.registerForm.controls['mobileNumber'].value ||
-            this.originalEmail != this.registerForm.controls['email'].value;
+            this.originalEmail != this.registerForm.controls['email'].value || this.originalCountryCode != this.selectedCountryCode.toUpperCase();
 
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
@@ -285,9 +286,8 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         this.isApplicantVerified = true;
         this.originalMobileNo = applicantMobileNumber
-
-
         this.originalEmail = this.user.email;
+        this.originalCountryCode = this.selectedCountryCode.toUpperCase();
         this.registerForm.markAsUntouched();
       } else {
         this.isApplicantVerified = false;

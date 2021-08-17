@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -44,7 +43,6 @@ public class IntegrationService {
     private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
     private final WebClient webClient;
-    private final RestTemplate restTemplate;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
     @Value("${integration.access.username}")
@@ -66,8 +64,8 @@ public class IntegrationService {
      * @return WsResponse which contains status and body
      * @throws WsAuthenticationException thrown in case of failed authentication
      */
-    private <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
-                                                ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
+    public <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
+                                               ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();

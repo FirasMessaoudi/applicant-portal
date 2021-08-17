@@ -369,18 +369,19 @@ public class UserManagementController {
      * @return the updated user contacts
      */
     @PutMapping("/contacts")
-    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts) {
+    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         UserDto databaseUser = null;
         try {
-            databaseUser = userService.findByUin(userContacts.getUin()).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + userContacts.getUin()));
+            databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
         } catch (Exception e) {
             log.error("Error while find user in  updating user contacts.", e);
             return ResponseEntity.notFound().build();
         }
 
-        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(userContacts.getUin()), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri());
-        ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd, restTemplateConfig.restTemplate());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri());
+        ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
         if (returnedApplicant == null)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 

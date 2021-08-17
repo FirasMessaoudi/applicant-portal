@@ -10,7 +10,11 @@ import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
-import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
+import com.elm.shj.applicant.portal.services.dto.UpdateApplicantCmd;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.role.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +67,8 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
+    @Mock
+    private IntegrationService integrationService;
     @Mock
     private MapperRegistry mapperRegistry;
 
@@ -297,7 +302,7 @@ public class UserServiceTest {
         command.setUin(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
         when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(null);
-        assertNull(serviceToTest.verify(command, restTemplate));
+        assertNull(serviceToTest.verify(command));
     }
 
 
@@ -309,18 +314,18 @@ public class UserServiceTest {
         command.setUin(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
         when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
-        assertEquals(applicantLiteDto, serviceToTest.verify(command, restTemplate));
+        assertEquals(applicantLiteDto, serviceToTest.verify(command));
 
     }
 
     @Test
-    public void test_update_applicant_by_uin() {
+    public void test_update_applicant_by_uin() throws WsAuthenticationException {
         UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, TEST_MOBILE, TEST_COUNTRY_CODE, TEST_DATE_OG_BIRTH_HIGRI);
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
         applicantLiteDto.setMobileNumber(TEST_MOBILE);
         applicantLiteDto.setEmail(TEST_EMAIL);
-        when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
-        assertEquals(applicantLiteDto, serviceToTest.updateUserInAdminPortal(applicant, restTemplate));
+        when(integrationService.callIntegrationWs(anyString(), any(), any(), any())).thenReturn(new WsResponse<ApplicantLiteDto>());
+//         assertEquals(mapper.convertValue(wsResponse.getBody(),ApplicantLiteDto.class), serviceToTest.updateUserInAdminPortal(applicant ));
 
     }
 

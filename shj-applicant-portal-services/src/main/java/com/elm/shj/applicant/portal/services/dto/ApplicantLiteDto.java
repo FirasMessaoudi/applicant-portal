@@ -3,8 +3,9 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,10 +17,11 @@ import java.util.Date;
  * @since 1.1.0
  */
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class ApplicantLiteDto implements Serializable {
 
-    private static final long serialVersionUID = 2708176152525069666L;
+    private static final long serialVersionUID = -1755136674160473725L;
 
     private Date dateOfBirthGregorian;
     private Long dateOfBirthHijri;

@@ -83,7 +83,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.of(new UserDto()));
         mockMvc.perform(post(Navigation.API_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().is(USER_ALREADY_REGISTERED_RESPONSE_CODE));
-        verify(userService, times(0)).verify(eq(command), any());
+        verify(userService, times(0)).verify(eq(command));
     }
 
     @Test
@@ -91,7 +91,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
         applicant.setUin("1234567898");
 
-        when(userService.verify(any(), any())).thenReturn(null);
+        when(userService.verify(any())).thenReturn(null);
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
         mockMvc.perform(post(Navigation.API_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().is(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE));
@@ -102,11 +102,11 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
 
         when(userService.createUser(any())).thenReturn(new UserDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
-        when(userService.updateUserInAdminPortal(any(), any())).thenReturn(new ApplicantLiteDto());
+        when(userService.updateUserInAdminPortal(any())).thenReturn(new ApplicantLiteDto());
 
         mockMvc.perform(post(Navigation.API_REGISTRATION + "?uadmin=true").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());
-        verify(userService, times(1)).updateUserInAdminPortal(any(), any());
+        verify(userService, times(1)).updateUserInAdminPortal(any());
         verify(userService, times(1)).createUser(user);
     }
 
@@ -115,7 +115,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
         applicant.setUin("1234567898");
 
-        when(userService.verify(any(), any())).thenReturn(new ApplicantLiteDto());
+        when(userService.verify(any())).thenReturn(new ApplicantLiteDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
         mockMvc.perform(post(Navigation.API_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().isOk());

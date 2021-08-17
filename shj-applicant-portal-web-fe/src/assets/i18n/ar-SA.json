@@ -37,6 +37,7 @@
     "dialog_add_success_text": "تمت الاضافة بنجاح",
     "dialog_add_title": "إنشاء",
     "dialog_edit_success_text": "تم تعديل البيانات بنجاح",
+    "dialog_edit_user_success_text": "تم تعديل البيانات بنجاح",
     "dialog_edit_title": "تعديل",
     "dialog_form_error_text": "عذرا، ولكن حدثت أخطاء في النموذج الذي أرسلته",
     "dialog_delete_success_text": "تم حذف البيانات بنجاح",

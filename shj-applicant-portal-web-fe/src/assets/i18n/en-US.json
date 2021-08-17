@@ -38,6 +38,7 @@
     "dialog_add_success_text": "Item has been successfully added",
     "dialog_add_title": "Create",
     "dialog_edit_success_text": "Item has been successfully updated",
+    "dialog_edit_user_success_text": "User contacts has been successfully updated",
     "dialog_edit_title": "Update",
     "dialog_form_error_text": "Sorry, but there were error(s) found with the form you submitted",
     "dialog_delete_success_text": "Item has been successfully deleted",
