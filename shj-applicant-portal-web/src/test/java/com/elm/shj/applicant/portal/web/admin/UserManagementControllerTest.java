@@ -124,36 +124,21 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         userContacts.setEmail(TEST_EMAIL);
         userContacts.setMobileNumber(TEST_MOBILE);
         userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
-        when(userService.findByUin(anyInt()))
+        when(userService.findByUin(anyLong()))
                 .thenThrow(UsernameNotFoundException.class);
-        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(userContacts)).with(csrf()))
                 .andDo(print()).andExpect(status().isNotFound());
 
     }
 
-    @Test
-    public void test_update_user_contacts_not_found() throws Exception {
-        String url = Navigation.API_USERS + "/contacts";
-        UpdateContactsCmd userContacts = new UpdateContactsCmd();
 
-        userContacts.setCountryCode(TEST_COUNTRY_CODE);
-        userContacts.setEmail(TEST_EMAIL);
-        userContacts.setMobileNumber(TEST_MOBILE);
-        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
-
-        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(objectToJson(userContacts)).with(csrf()))
-                .andDo(print()).andExpect(status().isNotFound());
-
-    }
 
     @Test
     public void test_update_user_contacts_success() throws Exception {
         String url = Navigation.API_USERS + "/contacts";
         UpdateContactsCmd userContacts = new UpdateContactsCmd();
         UserDto user = new UserDto();
-
         userContacts.setCountryCode(TEST_COUNTRY_CODE);
         userContacts.setEmail(TEST_EMAIL);
         userContacts.setMobileNumber(TEST_MOBILE);
@@ -162,10 +147,10 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         when(userService.updateUserInAdminPortal(any())).thenReturn(new ApplicantLiteDto());
         when(userService.save(any())).thenReturn(user);
 
-        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(userContacts)).with(csrf()))
                 .andDo(print()).andExpect(status().isOk());
-        verify(userService, times(1)).findByUin(anyLong());
+
         verify(userService, times(1)).updateUserInAdminPortal(any());
         verify(userService, times(1)).save(any());
 
@@ -185,7 +170,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         when(userService.updateUserInAdminPortal(any())).thenReturn(null);
         when(userService.save(any())).thenReturn(user);
 
-        mockMvc.perform(put(url).contentType(MediaType.APPLICATION_JSON_UTF8)
+        mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(userContacts)).with(csrf()))
                 .andDo(print()).andExpect(status().isInternalServerError());
     }
