@@ -134,6 +134,7 @@ public class UserManagementController {
     }
 
     /**
+     *
      * get user main data by uin and ritualId
      */
     @GetMapping("/main-data/{ritualId}")
