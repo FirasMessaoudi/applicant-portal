@@ -7,6 +7,7 @@ import {I18nService} from "@dcc-commons-ng/services";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ApplicantRitualCard} from "@model/applicant-ritual-card";
 import {CountryLookup} from "@model/country-lookup.model";
+import {Lookup} from "@model/lookup.model";
 
 @Component({
   selector: 'app-badge',
@@ -18,6 +19,7 @@ export class BadgeComponent implements OnInit {
   selectedApplicantRitual: ApplicantRitualLite;
   cardDetails: ApplicantRitualCard;
   countries: CountryLookup[] = [];
+  ritualTypes: Lookup[] = [];
   url: any = 'assets/images/default-avatar.svg';
 
   constructor(private toastr: ToastService,
@@ -51,9 +53,16 @@ export class BadgeComponent implements OnInit {
     this.cardService.findCountries().subscribe(result => {
       this.countries = result;
     });
+    this.cardService.findRitualTypes().subscribe(result => {
+      this.ritualTypes = result;
+    });
   }
 
-  getCountryLabel(nationalityCode: string, lang: string) {
-    return this.countries.find(country => nationalityCode === country.code  && lang.toUpperCase() === country.lang.toUpperCase()).label;
+  lookupService(): LookupService {
+    return this.lookupsService;
+  }
+
+  getLookupLabel(data: any[], code: string, lang: string) {
+    return data.find(country => code === country.code  && lang.toUpperCase() === country.lang.toUpperCase()).label;
   }
 }

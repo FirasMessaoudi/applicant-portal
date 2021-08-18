@@ -1,6 +1,23 @@
 <div class="badge Elm-fontb">
+
+  <!--Hajj Program -->
+  <div class="my-3 py-2 badge_hajj_Program d-flex">
+    <div class="flex-grow-1 text-center text-white">
+      <h3 class="h5">النطاق</h3>
+      <h3 class="h5">Zone</h3>
+    </div>
+  </div>
+
+  <!-- Hajj Ritual Type and Season -->
+  <div class="my 3">
+    <h1
+      class="h4 badge_hajj_name">{{cardDetails ? getLookupLabel(ritualTypes, cardDetails?.ritualType, 'ar'): '---'}}</h1>
+    <h1 class="h4 badge_hajj_name">{{(cardDetails?.hijriSeason | arabicNumber)}}</h1>
+  </div>
+
   <!--Hajj Avatar-->
   <div class="badge_hajj_avatar">
+
     <!--Todo replace it with hajj avatar-->
     <img height="150" width="150"
          [src]="
@@ -20,51 +37,60 @@
 
   <!-- Hajj Country-->
   <div class="my-3">
-    <h2 class="h6 badage_hajj_country d-bolck">{{getCountryLabel(cardDetails?.nationalityCode, 'ar')}}</h2>
-    <h2 class="h6 badage_hajj_country d-bolck">{{getCountryLabel(cardDetails?.nationalityCode, 'en')}}</h2>
+    <h2
+      class="h6 badge_hajj_country d-block">{{cardDetails ? getLookupLabel(countries, cardDetails?.nationalityCode, 'ar') : '---'}}</h2>
+    <h2
+      class="h6 badge_hajj_country d-block">{{cardDetails ? getLookupLabel(countries, cardDetails?.nationalityCode, 'en') : '---'}}</h2>
   </div>
 
-  <!--Hajj Program -->
-  <div class="my-3 py-2 badage_hajj_Program d-flex">
-    <div class="flex-grow-1 text-center text-white">
-      <h3 class="h6 mb-0">رقم</h3>
-      <h3 class="h5">البرنامج</h3>
-      <small>Program Number</small>
+  <!--Hajj Details -->
+  <div class="badge_hajj_details d-flex justify-content-between">
+    <div class="flex-grow-1 badge_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
+      <div class="text-left flex-grow-1 px-1 py-2">
+        <h3 class="h6 primary-badge-color">المخيم</h3>
+        <h3 class="h6 primary-badge-color">Camp</h3>
+      </div>
+      <div class="badage_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
+        <h3 class="h4">{{cardDetails?.campCode}}</h3>
+      </div>
     </div>
-    <div class="flex-grow-1 text-center text-white">
-      <h3 class="display-4 font-weight-bold Elm-fontb">D</h3>
+    <div class="flex-grow-1 badge_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
+      <div class="text-left flex-grow-1 px-1 py-2">
+        <h3 class="h6 primary-badge-color">المجموعة</h3>
+        <h3 class="h6 primary-badge-color">Group</h3>
+      </div>
+      <div class="badage_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
+        <h3 class="h4">{{cardDetails?.groupCode}}</h3>
+      </div>
+    </div>
+    <div class="flex-grow-1 badge_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
+      <div class="text-left flex-grow-1 px-1 py-2">
+        <h3 class="h6 primary-badge-color">الوحدة</h3>
+        <h3 class="h6 primary-badge-color">Unit</h3>
+      </div>
+      <div class="badge_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
+        <h3 class="h4">{{cardDetails?.unitCode}}</h3>
+      </div>
     </div>
   </div>
 
   <!--Hajj Details -->
-  <div class="badage_hajj_details d-flex justify-content-between">
-    <div class="flex-grow-1 badage_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
+  <div class="badge_hajj_details d-flex justify-content-between">
+    <div class="flex-grow-1 badge_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
       <div class="text-left flex-grow-1 px-1 py-2">
-        <h3 class="h6 mb-0">رقم</h3>
-        <h3 class="h6 primary-badge-color">الفوج</h3>
-        <small class="primary-badge-color text-right">Tafweej Number</small>
-      </div>
-      <div class="badage_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
-        <h3 class="h4">DO</h3>
-      </div>
-    </div>
-    <div class="flex-grow-1 badage_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
-      <div class="text-left flex-grow-1 px-1 py-2">
-        <h3 class="h6 mb-0">رقم</h3>
         <h3 class="h6 primary-badge-color">الحافلة</h3>
-        <small class="primary-badge-color text-right">Bus Number</small>
+        <h3 class="h6 primary-badge-color">Bus</h3>
       </div>
       <div class="badage_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
-        <h3 class="h4">DO</h3>
+        <h3 class="h4">{{cardDetails?.busNumber}}</h3>
       </div>
     </div>
-    <div class="flex-grow-1 badage_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
+    <div class="flex-grow-1 badge_hajj_details_card p-1 d-flex align-items-stretch justify-content-between">
       <div class="text-left flex-grow-1 px-1 py-2">
-        <h3 class="h6 mb-0">رقم</h3>
         <h3 class="h6 primary-badge-color">المقعد</h3>
-        <small class="primary-badge-color text-right">Seat Number</small>
+        <h3 class="h6 primary-badge-color">Seat</h3>
       </div>
-      <div class="badage_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
+      <div class="badge_hajj_details_card_Number flex-grow-1 px-2 d-flex align-items-center justify-content-center">
         <h3 class="h4">{{cardDetails?.seatNumber}}</h3>
       </div>
     </div>

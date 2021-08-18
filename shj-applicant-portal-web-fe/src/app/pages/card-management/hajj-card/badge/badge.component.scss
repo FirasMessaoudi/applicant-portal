@@ -3,7 +3,7 @@ $primary-badge-color: hsl(93, 50%, 50%);
     width: 490px;
     height: 660px;
     border: 1px solid #787878;
-    padding-top: 120px;
+    padding-top: 10px;
     padding-right: 40px;
     padding-left: 40px;
     .badge_hajj_avatar {
@@ -13,17 +13,17 @@ $primary-badge-color: hsl(93, 50%, 50%);
         overflow: hidden;
     }
     .badge_hajj_name,
-    .badage_hajj_country {
+    .badge_hajj_country {
         color: #787878;
     }
-    .badage_hajj_Program {
+    .badge_hajj_Program {
         background-color: $primary-badge-color;
         border-radius: 8px;
     }
-    .badage_hajj_Program {
-        font-family: "Elm-font";
+    .badge_hajj_Program {
+      font-family: "Elm-fontb", sans-serif;
     }
-    .badage_hajj_details_card {
+    .badge_hajj_details_card {
         border: 1px solid #e3e2e2;
         border-radius: 8px;
         display: flex;
@@ -37,7 +37,7 @@ $primary-badge-color: hsl(93, 50%, 50%);
         h3.primary-badge-color {
             color: $primary-badge-color;
         }
-        .badage_hajj_details_card_Number {
+        .badge_hajj_details_card_Number {
             border-right: 1px solid #e3e2e2;
         }
     }
