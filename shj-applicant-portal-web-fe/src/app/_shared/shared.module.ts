@@ -26,6 +26,7 @@ import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-da
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import { GoogleMapsModule } from '@angular/google-maps'
 import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format.pipe";
+import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format
     DateFormatPipe,
     HijriFormatPipe,
     MonthDayHijriFormatPipe,
-    IbanStatusPipe
+    IbanStatusPipe,
+    ArabicNumberPipe
 
   ],
   imports: [
@@ -69,6 +71,7 @@ import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format
     MonthDayHijriFormatPipe,
     DatePipe,
     IbanStatusPipe,
+    ArabicNumberPipe,
     DccCommonsNgPipesModule,
     NgMultiSelectDropDownModule,
     HijriGregorianDatepickerModule,
