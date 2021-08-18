@@ -8,7 +8,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.BodyInserter;
@@ -29,14 +28,6 @@ import static org.mockito.Mockito.when;
  */
 @ExtendWith(MockitoExtension.class)
 public class IntegrationServiceTest {
-
-
-    private final String COMMAND_INTEGRATION_AUTH_URL = "/ws/auth";
-    private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
-
-    @Value("${admin.portal.url}")
-    private String commandIntegrationUrl;
-
 
     @InjectMocks
     private IntegrationService serviceToTest;
