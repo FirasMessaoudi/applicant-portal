@@ -9,7 +9,6 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenFilter;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import com.elm.shj.applicant.portal.web.security.otp.OtpAuthenticationProvider;
-import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,8 +60,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String HEADER_WRITER_PATTERN = "/*";
     // any URL does not require authentication should be added to this array
-    private static final String[] PUBLIC_URLS = {"/api/integration/auth", "/api/auth/login", "/api/users/contacts","/api/auth/otp", "/api/users/reset-password",
-            "/api/register", "/api/register/otp/validate", "/api/register/otp", "/api/register/verify", "/index.html", "/error",
+    private static final String[] PUBLIC_URLS = {"/api/integration/auth", "/api/auth/login", "/api/auth/otp", "/api/users/reset-password",
+            "/api/register", "/api/register/otp", "/api/register/verify", "/index.html", "/error",
             "/api-docs", "/swagger-ui.html", "/swagger-ui/**"};
     // URLs that will be ignored by spring security should be added to this array
     private static final String[] IGNORED_URLS = {"/assets/**", "/cpm-error/**", "/*.png", "/*.jpg", "/*.jpeg",

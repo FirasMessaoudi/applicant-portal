@@ -24,9 +24,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -441,12 +439,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return wsResponse.getBody();
 
 
-    }
-    private HttpHeaders preCallAdmin() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("CALLER-TYPE", "WEB-SERVICE");
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return headers;
     }
 
 

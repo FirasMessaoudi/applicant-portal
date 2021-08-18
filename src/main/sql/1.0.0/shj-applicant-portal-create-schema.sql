@@ -86,8 +86,7 @@ ALTER TABLE sha_portal.sha_user DROP COLUMN token;
 GO
 ALTER TABLE sha_portal.sha_user
     ADD token_expiry_date smalldatetime NULL;
-GO
-USE sha_portal
+
 ALTER TABLE sha_portal.sha_user
 ALTER
 COLUMN mobile_number nvarchar(30);
@@ -95,8 +94,7 @@ COLUMN mobile_number nvarchar(30);
 ALTER TABLE sha_portal.sha_user
     ADD country_phone_prefix nvarchar(10);
 GO
-USE
-sha_portal
+
 
 GO
 drop table if exists sha_portal.sha_audit_event_data;
