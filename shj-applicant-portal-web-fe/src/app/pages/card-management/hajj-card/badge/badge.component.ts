@@ -6,6 +6,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ApplicantRitualCard} from "@model/applicant-ritual-card";
+import {CountryLookup} from "@model/country-lookup.model";
 
 @Component({
   selector: 'app-badge',
@@ -16,6 +17,7 @@ export class BadgeComponent implements OnInit {
 
   selectedApplicantRitual: ApplicantRitualLite;
   cardDetails: ApplicantRitualCard;
+  countries: CountryLookup[] = [];
   url: any = 'assets/images/default-avatar.svg';
 
   constructor(private toastr: ToastService,
@@ -27,6 +29,7 @@ export class BadgeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadLookups();
 
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
@@ -44,4 +47,13 @@ export class BadgeComponent implements OnInit {
     });
   }
 
+  loadLookups() {
+    this.cardService.findCountries().subscribe(result => {
+      this.countries = result;
+    });
+  }
+
+  getCountryLabel(nationalityCode: string, lang: string) {
+    return this.countries.find(country => nationalityCode === country.code  && lang.toUpperCase() === country.lang.toUpperCase()).label;
+  }
 }

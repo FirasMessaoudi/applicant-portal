@@ -1,3 +1,5 @@
+import {Lookup} from "@model/lookup.model";
+
 export class ApplicantRitualCard {
   hamlahPackageCode: string;
   tafweejCode: string;
@@ -13,4 +15,5 @@ export class ApplicantRitualCard {
   photo: string;
   leaderName: string;
   leaderMobile: string;
+  nationalityCode: string;
 }
