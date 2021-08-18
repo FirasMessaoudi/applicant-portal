@@ -51,7 +51,6 @@ public class IntegrationService {
     @Value("${integration.access.password}")
     private String integrationAccessPassword;
 
-    private final ObjectMapper mapper;
 
     /**
      * Call an integration web service, authenticate first to get the token then do the actual call using the generated token.

@@ -386,7 +386,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long ritualId) {
-        return Optional.of(integrationService.loadUserMainData(uin, ritualId));
+        return Optional.ofNullable(integrationService.loadUserMainData(uin, ritualId));
     }
 
     public List<Integer> findApplicantRitualSeasons(String uin) {

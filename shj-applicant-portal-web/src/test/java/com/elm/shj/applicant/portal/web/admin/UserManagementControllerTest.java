@@ -366,6 +366,22 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
 
     }
 
+    @Test
+    public void test_find_applicant_main_data_by_uin_and_ritualId_success() throws Exception {
+        String url = Navigation.API_USERS + "/main-data/3";
+
+        ApplicantMainDataDto applicantMainDataDto = new ApplicantMainDataDto();
+        applicantMainDataDto.setUin("12345");
+        when(userService.findUserMainDataByUin(any(String.class), any(Long.class))).thenReturn(Optional.of(applicantMainDataDto));
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.uin", is(applicantMainDataDto.getUin())));
+
+        verify(userService, times(1)).findUserMainDataByUin(any(String.class), any(Long.class));
+
+    }
+
+
 
     /**
      * Utility method to initiate users list
