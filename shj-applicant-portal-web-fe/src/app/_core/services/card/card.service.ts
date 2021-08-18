@@ -7,6 +7,7 @@ import {Lookup} from "@model/lookup.model";
 import {CountryLookup} from "@model/country-lookup.model";
 import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {ApplicantHealth} from "@model/applicant-health.model";
+import {ApplicantRitualCard} from "@model/applicant-ritual-card";
 
 @Injectable({
   providedIn: 'root'
@@ -61,6 +62,22 @@ export class CardService {
    */
   findHealthDetails(ritualId: number): Observable<ApplicantHealth> {
     return this.http.get<any>('/core/api/users/health/' + ritualId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
+
+  /**
+   * Finds user card details
+   *
+   * @return {Observable<ApplicantRitualCard>}
+   */
+  findCardDetails(ritualId: number): Observable<ApplicantRitualCard> {
+    return this.http.get<any>('/core/api/users/details/' + ritualId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);

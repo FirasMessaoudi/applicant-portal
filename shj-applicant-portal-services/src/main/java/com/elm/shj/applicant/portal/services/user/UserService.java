@@ -24,7 +24,9 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -62,6 +64,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final EmailService emailService;
     private final IntegrationService integrationService;
     ObjectMapper mapper = new ObjectMapper();
+
     /**
      * Finds all non deleted users.
      *
@@ -383,7 +386,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long ritualId) {
-        return Optional.of(integrationService.loadUserMainData(uin ,ritualId));
+        return Optional.of(integrationService.loadUserMainData(uin, ritualId));
     }
 
     public List<Integer> findApplicantRitualSeasons(String uin) {
@@ -448,6 +451,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.loadApplicantHealthDetails(uin, ritualId);
+    }
+
+    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(String uin, Long ritualId) {
+        return integrationService.loadApplicantCardDetails(uin, ritualId);
     }
 }
 

@@ -178,12 +178,26 @@ public class UserManagementController {
 
     /**
      * get user health details by uin and ritual ID
+     *
+     * @param ritualId the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
      */
     @GetMapping("/health/{ritualId}")
     public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+    }
 
+    /**
+     * get user card details by his uin and ritual ID
+     *
+     * @param ritualId the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/details/{ritualId}")
+    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
     }
 
     /**

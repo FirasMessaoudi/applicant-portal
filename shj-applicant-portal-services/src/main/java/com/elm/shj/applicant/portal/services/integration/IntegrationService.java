@@ -42,6 +42,7 @@ public class IntegrationService {
     private final String RITUAL_LITE_LATEST_URL = "/ws/find/ritual-lite/latest";
     private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
+    private final String CARD_DETAILS_URL = "/ws/details";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -268,6 +269,23 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load applicant main data details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load user card details by uin and ritual ID from command portal.
+     *
+     * @return
+     */
+    public ApplicantRitualCardLiteDto loadApplicantCardDetails(String uin, Long ritualId) {
+        WsResponse<ApplicantRitualCardLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CARD_DETAILS_URL +"/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantRitualCardLiteDto>>() {});
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load applicant card details.", e);
             return null;
         }
         return wsResponse.getBody();
