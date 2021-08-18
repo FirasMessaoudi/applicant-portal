@@ -64,7 +64,8 @@ public class UserServiceTest {
     private IntegrationService integrationService;
     @Mock
     private MapperRegistry mapperRegistry;
-
+    @Mock
+    WsResponse<ApplicantLiteDto> wsResponse;
     @Mock
     private UserDtoMapper userDtoMapper;
 
@@ -290,23 +291,29 @@ public class UserServiceTest {
     }
 
     @Test
-    public void test_verify_applicant_uin_notFound() {
+    public void test_verify_applicant_uin_notFound() throws WsAuthenticationException {
         ValidateApplicantCmd command = new ValidateApplicantCmd();
         command.setUin(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
-        when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(null);
+        WsResponse wsResponse = new WsResponse();
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.FAILURE);
+        wsResponse.setBody(null);
+        when(integrationService.callIntegrationWs(contains("/ws/verify"), eq(HttpMethod.POST), any(), any())).thenReturn(wsResponse);
         assertNull(serviceToTest.verify(command));
     }
 
 
     @Test
-    public void test_verify_uin_applicant_uin_exist() {
+    public void test_verify_uin_applicant_uin_exist() throws WsAuthenticationException {
         ValidateApplicantCmd command = new ValidateApplicantCmd();
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
         applicantLiteDto.setMobileNumber(String.valueOf(TEST_MOBILE));
         command.setUin(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
-        when(restTemplate.postForObject(anyString(), any(), any())).thenReturn(applicantLiteDto);
+        WsResponse wsResponse = new WsResponse();
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS);
+        wsResponse.setBody(applicantLiteDto);
+        when(integrationService.callIntegrationWs(contains("/ws/verify"), eq(HttpMethod.POST), any(), any())).thenReturn(wsResponse);
         assertEquals(applicantLiteDto, serviceToTest.verify(command));
 
     }
@@ -317,8 +324,11 @@ public class UserServiceTest {
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
         applicantLiteDto.setMobileNumber(TEST_MOBILE);
         applicantLiteDto.setEmail(TEST_EMAIL);
-        when(integrationService.callIntegrationWs(anyString(), any(), any(), any())).thenReturn(new WsResponse<ApplicantLiteDto>());
-//         assertEquals(mapper.convertValue(wsResponse.getBody(),ApplicantLiteDto.class), serviceToTest.updateUserInAdminPortal(applicant ));
+        WsResponse wsResponse = new WsResponse();
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS);
+        wsResponse.setBody(applicantLiteDto);
+        when(integrationService.callIntegrationWs(contains("/ws/update"), eq(HttpMethod.POST), any(), any())).thenReturn(wsResponse);
+        assertEquals(wsResponse.getBody(), serviceToTest.updateUserInAdminPortal(applicant));
 
     }
 

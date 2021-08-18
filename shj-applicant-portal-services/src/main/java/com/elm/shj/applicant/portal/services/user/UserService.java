@@ -444,13 +444,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     }
 
-    private HttpHeaders preCallAdmin() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("CALLER-TYPE", "WEB-SERVICE");
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return headers;
-    }
-
 
     public ApplicantRitualLiteDto findApplicantRitualLatestByUin(String uin) {
         return integrationService.loadApplicantRitualLatestByUin(uin);
