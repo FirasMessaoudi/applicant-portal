@@ -110,10 +110,10 @@
               <span class="form-control-plaintext">{{
                 applicant?.ritualTypeCode
                   ? lookupService().localizedLabel(
-                  ritualTypes,
-                  applicant?.ritualTypeCode
+                    ritualTypes,
+                    applicant?.ritualTypeCode
                   )
-                  :  '---'
+                  : '---'
                 }}</span>
             </div>
 
@@ -135,8 +135,8 @@
               <span class="form-control-plaintext">{{
                 applicant?.nationalityCode
                   ? lookupService().localizedLabel(
-                  countries,
-                  applicant?.nationalityCode?.toUpperCase()
+                    countries,
+                    applicant?.nationalityCode?.toUpperCase()
                   )
                   : '---'
                 }}</span>
@@ -156,8 +156,8 @@
               <span class="form-control-plaintext">{{
                 applicant?.maritalStatusCode
                   ? lookupService().localizedLabel(
-                  maritalStatuses,
-                  applicant?.maritalStatusCode?.toUpperCase()
+                    maritalStatuses,
+                    applicant?.maritalStatusCode?.toUpperCase()
                   )
                   : '---'
                 }}</span>
@@ -200,8 +200,8 @@
               <span class="form-control-plaintext">{{
                 applicant?.contacts[0]?.countryCode
                   ? lookupService().localizedLabel(
-                  countries,
-                  applicant?.contacts[0]?.countryCode?.toUpperCase()
+                    countries,
+                    applicant?.contacts[0]?.countryCode?.toUpperCase()
                   )
                   : "---"
                 }}</span>
@@ -557,8 +557,8 @@
                   {{
                   need.specialNeedTypeCode
                     ? lookupService().localizedLabel(
-                    healthSpecialNeeds,
-                    need.specialNeedTypeCode
+                      healthSpecialNeeds,
+                      need.specialNeedTypeCode
                     )
                     : ""
                   }}<span *ngIf="!lastItem">-</span></span>
