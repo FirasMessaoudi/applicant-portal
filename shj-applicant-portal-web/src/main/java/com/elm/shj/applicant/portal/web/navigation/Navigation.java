@@ -26,9 +26,7 @@ public class Navigation {
     // Registration
     public static final String API_REGISTRATION = "/api/register";
     // Integration web service call
-    public static final String API_INTEGRATION_WS = "/api/integration/ws";
-    // Integration authentication
-    public static final String API_INTEGRATION_AUTH = "/api/integration/auth";
+    public static final String API_INTEGRATION = "/api/ws";
 
     private Navigation() {
         // private constructor to prevent construction

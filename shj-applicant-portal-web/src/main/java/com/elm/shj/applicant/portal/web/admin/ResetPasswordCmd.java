@@ -3,7 +3,6 @@
  */
 package com.elm.shj.applicant.portal.web.admin;
 
-import com.elm.dcc.foundation.commons.validation.NinOrIqama;
 import lombok.Data;
 
 import javax.validation.constraints.Past;
