@@ -1,6 +1,5 @@
-import {Lookup} from "@model/lookup.model";
-
 export class ApplicantRitualCard {
+  ritualType: string;
   hamlahPackageCode: string;
   tafweejCode: string;
   zoneCode: string;

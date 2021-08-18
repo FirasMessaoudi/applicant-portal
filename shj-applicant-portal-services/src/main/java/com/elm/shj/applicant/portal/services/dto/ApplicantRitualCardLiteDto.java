@@ -22,6 +22,7 @@ public class ApplicantRitualCardLiteDto implements Serializable {
 
     private static final long serialVersionUID = -1461632558480493838L;
 
+    private String ritualType;
     private String hamlahPackageCode;
     private String tafweejCode;
     private String zoneCode;
