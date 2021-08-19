@@ -24,9 +24,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -53,7 +51,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
     public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset User Password إعادة تعيين كلمة السر";
     private static final long APPLICANT_ROLE_ID = 1L;
-
+    private static final String DEFFAULT_HISTORY_PASSWORD = "$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK";
 
     @Value("${admin.portal.url}")
     private String adminPortalUrl;
@@ -63,6 +61,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private final SmsGatewayService smsGatewayService;
     private final EmailService emailService;
     private final IntegrationService integrationService;
+    private final PasswordHistoryService passwordHistoryService;
     ObjectMapper mapper = new ObjectMapper();
 
     /**
@@ -253,6 +252,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         user.setUserRoles(userRoles);
         // save user information
         UserDto savedUser = save(user);
+        passwordHistoryService.addUserPasswordHistory(savedUser.getId(), DEFFAULT_HISTORY_PASSWORD);
         // user created successfully, send SMS notification which contains the temporary password
         boolean smsSent = notifyRegisteredUser(savedUser);
         log.debug("SMS notification status: {}", smsSent);

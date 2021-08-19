@@ -46,6 +46,7 @@
     "dialog_delete_title": "Delete",
     "dialog_error_text": "Sorry! Something went wrong. Please try again.",
     "dialog_error_title": "Error",
+    "dialog_edit_contacts_error_text": "User contacts not updated. Please try again.",
     "dialog_file_upload_error_text": "Cannot upload avatar, file maybe infected.",
     "dialog_file_upload_success_text": "Avatar has been successfully updated",
     "table_emtpy_text": "No Results Found",
@@ -128,7 +129,8 @@
   "settings": {
     "ritual-type": "Ritual type",
     "season": "Season",
-    "settings": "Settings"
+    "settings": "Settings",
+    "edit-contacts": "Edit Contacts"
   },
 
   "home": {

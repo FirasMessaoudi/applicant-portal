@@ -12,14 +12,14 @@ import {RegisterService} from "@core/services/register/register.service";
 import {DateType} from "@shared/modules/hijri-gregorian-datepicker/datepicker/consts";
 import {HijriGregorianDatepickerComponent} from "@shared/modules/hijri-gregorian-datepicker/datepicker/hijri-gregorian-datepicker.component";
 import {DateFormatterService} from "@shared/modules/hijri-gregorian-datepicker/datepicker/date-formatter.service";
-import {DEFAULT_MAX_USER_AGE} from "@core/services";
+import {CardService, DEFAULT_MAX_USER_AGE} from "@core/services";
 import {DccValidators} from "@shared/validators";
 import {DatePipe, Location} from "@angular/common";
 import {User} from "@shared/model";
+import {debounceTime, map, tap} from 'rxjs/operators';
 
-import {Observable, OperatorFunction} from 'rxjs';
-import {debounceTime, map} from 'rxjs/operators';
-import {COUNTRY} from "@model/enum/country_code";
+import {Observable} from 'rxjs';
+import {CountryLookup} from "@model/country-lookup.model";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -63,9 +63,8 @@ export class RegisterComponent implements OnInit {
   selectedDateType: any;
   dateStructGreg: any;
   applicantCountry: any;
-  COUNTRY = COUNTRY;
-  selectedCountryCode = "ae";
-  formattedCountryDial: any;
+  countries: CountryLookup[] = [];
+  selectedCountryCode = "SA";
 
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
@@ -76,6 +75,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private registerService: RegisterService,
+    private cardService: CardService,
     private toastr: ToastService,
     private translate: TranslateService,
     private dateFormatterService: DateFormatterService,
@@ -88,15 +88,15 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  search: OperatorFunction<string, readonly { dial_code, name, code}[]> = (text$: Observable<string>) =>
+  search: (text$: Observable<string>) => Observable<CountryLookup[]> = (text$: Observable<string>) =>
     text$.pipe(
       debounceTime(200),
-      map(term => term === '' ? this.COUNTRY
+      map(term => term === '' ? this.countries
         // : this.statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-        : this.COUNTRY.filter(v => v.dial_code.toLowerCase().indexOf(term.toLowerCase()) > -1))
+        : this.countries.filter(v => ("+" + v.countryPhonePrefix).toLowerCase().indexOf(term.toLowerCase()) > -1))
     )
 
-  formatter = (x: { dial_code: string}) => x.dial_code;
+  formatter = (x: { countryPhonePrefix: string }) => x.countryPhonePrefix;
 
   public onFocus(e: Event): void {
     e.stopPropagation();
@@ -107,7 +107,7 @@ export class RegisterComponent implements OnInit {
   }
 
   selectedItem($event) {
-    this.registerForm.controls["countryPhonePrefix"].setValue($event.item.dial_code);
+    this.registerForm.controls["countryPhonePrefix"].setValue($event.item.countryPhonePrefix);
     this.selectedCountryCode = $event.item.code.toLowerCase();
   }
 
@@ -120,7 +120,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.loadLookups();
     // calendar default;
     let toDayGregorian = this.dateFormatterService.todayGregorian();
     let toDayHijri = this.dateFormatterService.todayHijri();
@@ -159,7 +159,6 @@ export class RegisterComponent implements OnInit {
       month: new Date().getMonth() + 1,
       day: new Date().getDate()
     };
-
 
   }
 
@@ -204,14 +203,9 @@ export class RegisterComponent implements OnInit {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
-
-          let reg1 = /\+/gi;
-          // Use of String replace() Method
-          let currentPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value;
-          this.formattedCountryDial = currentPhonePrefix.dial_code?.replace(reg1, "00");
           this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
           this.user.countryCode = this.selectedCountryCode.toUpperCase();
-          this.user.countryPhonePrefix = this.formattedCountryDial;
+          this.user.countryPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value.countryPhonePrefix;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.authenticationService.updateOtpSubject({
@@ -234,19 +228,35 @@ export class RegisterComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       uin: ['', [Validators.required]],
-      fullNameEn: [''],
-      fullNameAr: [''],
+      fullNameEn: {disabled: true},
+      fullNameAr: {disabled: true},
       dateOfBirthGregorian: ['', Validators.required],
       dateOfBirthHijri: ['', Validators.required],
-      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
+      mobileNumber: [''],
       email: ['', [DccValidators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       recaptcha: [''],
-      countryPhonePrefix: [{dial_code: ''}, [Validators.required]]
+      countryPhonePrefix: [{countryPhonePrefix: ''}, [Validators.required]]
     }, {validator: this.passwordMatchValidator});
 
+    this.registerForm.get('countryPhonePrefix').valueChanges.subscribe(
+      value => this.setMobileNumberValidation(value)
+    );
+  }
 
+  setMobileNumberValidation(prefix: string): void {
+    const mobileNumberControl = this.registerForm.get('mobileNumber');
+    if (prefix === '966') {
+      console.log("prefix ok");
+      mobileNumberControl.setValidators(Validators.required)
+      mobileNumberControl.setValidators(Validators.maxLength(8));
+    } else {
+      mobileNumberControl.clearValidators();
+      mobileNumberControl.setValidators(Validators.required)
+      mobileNumberControl.setValidators(Validators.maxLength(15));
+    }
+    mobileNumberControl.updateValueAndValidity();
   }
 
   passwordMatchValidator(frm: FormGroup) {
@@ -257,7 +267,8 @@ export class RegisterComponent implements OnInit {
   verifyApplicant() {
     this.isApplicantVerified = false;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
-      if (response) {
+      if (response && !this.checkNullProperties(response)) {
+        console.log(response);
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
         this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
@@ -267,21 +278,14 @@ export class RegisterComponent implements OnInit {
         this.isSaudiNumber = this.SAUDI_MOBILE_NUMBER_REGEX.test(this.user.mobileNumber);
 
         if (this.isSaudiNumber) {
-          this.applicantCountry = COUNTRY.filter(function (c) {
-            return "SA" == c.code;
-          });
+          this.applicantCountry = this.countries.filter(c => "SA" === c.code && 'EN' === c.lang.toUpperCase());
         } else {
-          this.applicantCountry = COUNTRY.filter(function (c) {
-            return response.countryCode.toUpperCase() == c.code;
-          });
+          this.applicantCountry = this.countries.filter(c => response.countryCode?.toUpperCase() === c.code && 'EN' === c.lang.toUpperCase());
         }
-        this.selectedCountryCode = this.applicantCountry[0].code.toLowerCase();
-        this.registerForm.controls["countryPhonePrefix"].setValue({dial_code: this.applicantCountry[0].dial_code});
-        let reg1 = /\+/gi;
-        let reg2 = /\-/gi;
+        this.selectedCountryCode = this.applicantCountry[0]?.code?.toLowerCase();
+        this.registerForm.controls["countryPhonePrefix"].setValue({countryPhonePrefix: this.applicantCountry[0]?.countryPhonePrefix});
         // Use of String replace() Method
-        this.formattedCountryDial = this.applicantCountry[0].dial_code.replace(reg1, "00").replace(reg2, "");
-        let applicantMobileNumber = this.user.mobileNumber.length > 10 ? this.user.mobileNumber.substring(this.formattedCountryDial.length)
+        let applicantMobileNumber = this.user.mobileNumber.length > 10 ? this.user.mobileNumber.substring(this.applicantCountry[0]?.countryPhonePrefix.length)
           : (this.user.mobileNumber.length == 10 ? this.user.mobileNumber.substring(1) : this.user.mobileNumber);
         this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         this.isApplicantVerified = true;
@@ -335,6 +339,33 @@ export class RegisterComponent implements OnInit {
       this.registerForm.controls.dateOfBirthGregorian.setErrors({'required': true})
       this.registerForm.controls.dateOfBirthGregorian.markAsTouched({onlySelf: true});
     }
+  }
+
+  loadLookups() {
+    this.cardService.findCountries().subscribe(result => this.countries = this.removeDuplicates(result, 'code'));
+  }
+
+  checkNullProperties(obj: any) {
+    for (let key in obj) {
+      if (obj[key] !== null)
+        return false;
+    }
+    return true;
+  }
+
+  removeDuplicates(originalArray, prop) {
+    let i;
+    const newArray = [];
+    const lookupObject = {};
+
+    for (i in originalArray) {
+      lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    for (i in lookupObject) {
+      newArray.push(lookupObject[i]);
+    }
+    return newArray;
   }
 
 

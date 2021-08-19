@@ -107,5 +107,19 @@ export class HeaderComponent implements OnInit {
   lookupService(): LookupService {
     return this.lookupsService;
   }
+  focusOutDropdown(){
+    const userMenuLink = document.getElementById('userMenuLink');
+    if(userMenuLink.getAttribute("aria-expanded")){
+      userMenuLink.setAttribute("aria-expanded","false")
+      document.getElementById('dropdown-menu').classList.remove("show");
+    }
+  }
 
+  focusInDropdown(){
+    const userMenuLink = document.getElementById('userMenuLink');
+    if(userMenuLink.getAttribute("aria-expanded")=="false"){
+      userMenuLink.setAttribute("aria-expanded","true")
+      document.getElementById('dropdown-menu').classList.add("show");
+    }
+}
 }

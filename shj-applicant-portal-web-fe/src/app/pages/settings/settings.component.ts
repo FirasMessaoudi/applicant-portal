@@ -12,6 +12,8 @@ import {COUNTRY} from "@model/enum/country_code";
 import {Observable, OperatorFunction} from "rxjs";
 import {debounceTime, map} from "rxjs/operators";
 import {UserContacts} from "@model/UserContacts.model";
+import {Router} from "@angular/router";
+import {User} from "@shared/model";
 
 import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 
@@ -52,7 +54,8 @@ export class SettingsComponent implements OnInit {
               private formBuilder: FormBuilder,
               private translate: TranslateService,
               private authenticationService: AuthenticationService,
-              private lookupsService: LookupService) {
+              private lookupsService: LookupService,
+              private router: Router) {
   }
 
   open(content) {
@@ -245,23 +248,29 @@ export class SettingsComponent implements OnInit {
       this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value;
       this.formattedCountryDial = this.contactsForm.controls['countryPhonePrefix'].value.dial_code.replace(reg1, "00").replace(reg2, "");
       this.userContacts.countryPhonePrefix = this.formattedCountryDial;
-      this.userService.updateUserContacts(this.userContacts).subscribe(updatedUser => {
-        if (!updatedUser) {
-          this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
-        } else if (updatedUser && (updatedUser.hasOwnProperty("errors") && updatedUser.errors)) {
-          Object.keys(this.contactsForm.controls).forEach(field => {
-            console.log("looking for validation errors for : " + field);
-            if (updatedUser.errors[field]) {
-              const control = this.contactsForm.get(field);
-              control.setErrors({invalid: updatedUser.errors[field].replace(/\{/, '').replace(/\}/, '')});
-              control.markAsTouched({onlySelf: true});
-            }
-          });
+
+
+      this.userService.generateOTPForEditContact(this.userContacts).subscribe(response => {
+        if (!response) {
+          this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("general.dialog_edit_title"));
         } else {
-          this.contactsForm.disable();
-          this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
+          let user: User = new User();
+
+          user.otpExpiryMinutes = response.otpExpiryMinutes;
+          user.maskedMobileNumber = response.mobileNumber;
+
+          this.authenticationService.updateOtpSubject({
+            user: user,
+            actionType: "/edit/contacts",
+            editContacts: this.userContacts
+          });
+
+          this.router.navigate(['/edit/contacts/otp'], {replaceUrl: true});
+
+
         }
-      });
+      })
+
     } else {
       this.contactsForm.disable();
     }
