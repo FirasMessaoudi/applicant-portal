@@ -8,12 +8,14 @@ import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.config.RestTemplateConfig;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
+import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
@@ -72,6 +74,7 @@ public class UserManagementController {
     private static final String PWRD_CONTAINS_USERNAME_ERROR_MESSAGE_KEY = "{dcc.commons.validation.constraints.password-contains-username}";
     private static final String CHANGE_PWRD_METHOD_NAME = "changeUserPassword";
     public static final String RECAPTCHA_TOKEN_NAME = "grt";
+    private static final int INVALID_OTP_RESPONSE_CODE = 562;
 
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -79,6 +82,7 @@ public class UserManagementController {
     private final JwtTokenService jwtTokenService;
     private final RecaptchaService recaptchaService;
     private final RestTemplateConfig restTemplateConfig;
+    private final OtpService otpService;
 
 
     /**
@@ -134,7 +138,6 @@ public class UserManagementController {
     }
 
     /**
-     *
      * get user main data by uin and ritualId
      */
     @GetMapping("/main-data/{ritualId}")
@@ -180,7 +183,7 @@ public class UserManagementController {
     /**
      * get user health details by uin and ritual ID
      *
-     * @param ritualId the ID of the selected applicant's ritual
+     * @param ritualId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
     @GetMapping("/health/{ritualId}")
@@ -192,7 +195,7 @@ public class UserManagementController {
     /**
      * get user card details by his uin and ritual ID
      *
-     * @param ritualId the ID of the selected applicant's ritual
+     * @param ritualId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
     @GetMapping("/details/{ritualId}")
@@ -384,9 +387,13 @@ public class UserManagementController {
      * @return the updated user contacts
      */
     @PutMapping("/contacts")
-    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
+    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, @RequestParam String pin, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+
+        if (!otpService.validateOtp(loggedInUserUin, pin)) {
+            return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
+        }
         UserDto databaseUser = null;
         try {
             databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
@@ -414,6 +421,21 @@ public class UserManagementController {
         }
         returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
         return ResponseEntity.ok(Objects.requireNonNull(returnedApplicant));
+    }
+
+    @PostMapping("/otp")
+    public ResponseEntity<OtpToken> otpRegistration(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication, HttpServletRequest request) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+
+        String mobileNumber = userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber();
+        String otp = otpService.createOtp(loggedInUserUin, mobileNumber);
+        log.debug("###################### OTP for [{}] : {} in edit contacts", loggedInUserUin, otp);
+        String maskedMobileNumber = mobileNumber == null ? null : mobileNumber.replaceAll("\\b\\d+(\\d{3})", "*******$1");
+        String maskedEmail = userContacts.getEmail() == null ? null : userContacts.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");
+        // return the Otp Token
+        OtpToken token = new OtpToken(true, otpService.getOtpExpiryMinutes(), loggedInUserUin, null, null, maskedMobileNumber, maskedEmail);
+
+        return ResponseEntity.ok(token);
     }
 
     /**

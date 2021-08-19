@@ -14,6 +14,7 @@ import {AuthenticationGuard} from "@core/guards/authentication.guard";
 import {PUBLIC_ROUTES} from "@core/routes/public-routes";
 import {CARD_MANAGEMENT_ROUTES} from "@core/routes/card-management-routes";
 import {LANDING_ROUTES} from "@core/routes/landing-routes";
+import {OTP_PRIVATE_ROUTES} from "@core/routes/otp-private-routes";
 
 const routes: Routes = [
 
@@ -52,6 +53,12 @@ const routes: Routes = [
     path: '',
     component: DccLayoutLandingComponent,
     children: LANDING_ROUTES
+  },
+  {
+    path: '',
+    component: LoginLayoutComponent,
+    canActivate: [AuthenticationGuard],
+    children: OTP_PRIVATE_ROUTES
   },
   {
     path: '**',

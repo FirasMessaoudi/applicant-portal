@@ -58,11 +58,7 @@ export class BadgeComponent implements OnInit {
     });
   }
 
-  lookupService(): LookupService {
-    return this.lookupsService;
-  }
-
-  getLookupLabel(data: any[], code: string, lang: string) {
-    return data.find(country => code === country.code  && lang.toUpperCase() === country.lang.toUpperCase()).label;
+  getLookupLabel(data: any[], code: string, lang: string): string {
+    return data.find(country => code === country.code  && lang.toUpperCase() === country.lang.toUpperCase())?.label;
   }
 }

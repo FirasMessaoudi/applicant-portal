@@ -117,16 +117,21 @@ export class UserService {
    * @param user the user to save or update
    * @return {Observable<User>} The saved or updated user.
    */
-  updateUserContacts(userContacts: UserContacts): Observable<any> {
-    return this.http.put<any>('/core/api/users/contacts', userContacts).pipe(catchError((error: HttpErrorResponse) => {
+  updateUserContacts(userContacts: UserContacts, pin :String): Observable<any> {
+    return this.http.put<any>('/core/api/users/contacts?pin=' + pin, userContacts);
+
+  }
+
+  generateOTPForEditContact(userContacts: UserContacts): Observable<any> {
+
+    return this.http.post<any>('/core/api/users/otp', userContacts)
+      .pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {
           return of(error.error);
         } else {
-          console.error('An error happened while saving the user : ' + error);
           return of(error);
         }
-      })
-    );
+      }));
   }
 
   /**
