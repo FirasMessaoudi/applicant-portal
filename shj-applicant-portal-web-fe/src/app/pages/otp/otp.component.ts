@@ -65,9 +65,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title"):'';
-      this.otpTitle = this.previousUrl == "/register" ? this.translate.instant("register.header_title"):'';
-      this.otpTitle = this.previousUrl == "/edit/contacts" ? this.translate.instant("settings.edit-contacts"):'';
+      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title"):this.otpTitle;
+      this.otpTitle = this.previousUrl == "/register" ? this.translate.instant("register.header_title"):this.otpTitle;
+      this.otpTitle = this.previousUrl == "/edit/contacts" ? this.translate.instant("settings.edit-contacts"):this.otpTitle;
       this.otpData = data.user;
       this.updateAdminRequired = data.updateAdmin;
       this.startTimer(data.user?.otpExpiryMinutes);
