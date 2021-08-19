@@ -96,11 +96,11 @@
         <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label> {{"general.full_name_En"|translate}} </label>
-            <input type="text" class="form-control" formControlName="fullNameEn"/>
+            <input type="text" class="form-control" formControlName="fullNameEn" [attr.disabled]="true"/>
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <label>{{"general.full_name_Ar"|translate}} </label>
-            <input type="text" class="form-control" formControlName="fullNameAr"/>
+            <input type="text" class="form-control" formControlName="fullNameAr" [attr.disabled]="true"/>
           </div>
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
             <ng-template #rt let-r="result" let-t="term">
@@ -110,9 +110,7 @@
             <label> {{"general.mobile_number"|translate}}</label>
             <div dir="rtl" class="input-group">
               <input type="number" class="form-control" formControlName="mobileNumber" maxlength="16"
-                     onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57
-                     && this.value.length < 8"
-                     min="0" step="1"
+                     onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57"
                      [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched"/>
               <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">
                 <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode}} flag-icon-selected"></span>
