@@ -43,8 +43,8 @@
         <!--- PROFILE & SETTING-->
         <div class="nav-right">
             <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
-                <li class="dropdown flex-center">
-                    <a class="nav-link d-flex align-items-center dropdown-toggle noArrow" tittle="معلوماتي" href="javascript:void(0)" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <li class="dropdown flex-center"   (focusout)="focusOutDropdown()" (focus)="focusInDropdown()">
+                    <a class="nav-link d-flex align-items-center dropdown-toggle noArrow"  tittle="معلوماتي" href="javascript:void(0)" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
                         <div class="mx-3">
                             <h6 class="text-dcc-primary m-0">
@@ -67,7 +67,7 @@
                             </small>
                         </div>
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="userMenuLink">
+                    <div class="dropdown-menu" id="dropdown-menu"  aria-labelledby="userMenuLink">
                         <a class="dropdown-item" (click)="viewCurrentUserProfile()" href="javascript:void(0)" routerLinkActive="router-link-active">
               {{ "header.my_profile" | translate }}
             </a>
