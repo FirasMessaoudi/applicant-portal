@@ -11,7 +11,7 @@
   <!-- Hajj Ritual Type and Season -->
   <div class="my 3">
     <h1
-      class="h4 badge_hajj_name">{{cardDetails ? getLookupLabel(ritualTypes, cardDetails?.ritualType, 'ar'): '---'}}</h1>
+      class="h4 badge_hajj_name">{{cardDetails?.ritualType ? getLookupLabel(ritualTypes, cardDetails?.ritualType, 'ar'): '---'}}</h1>
     <h1 class="h4 badge_hajj_name">{{(cardDetails?.hijriSeason | arabicNumber)}}</h1>
   </div>
 
@@ -38,9 +38,9 @@
   <!-- Hajj Country-->
   <div class="my-3">
     <h2
-      class="h6 badge_hajj_country d-block">{{cardDetails ? getLookupLabel(countries, cardDetails?.nationalityCode, 'ar') : '---'}}</h2>
+      class="h6 badge_hajj_country d-block">{{cardDetails?.nationalityCode ? getLookupLabel(countries, cardDetails?.nationalityCode, 'ar') : '---'}}</h2>
     <h2
-      class="h6 badge_hajj_country d-block">{{cardDetails ? getLookupLabel(countries, cardDetails?.nationalityCode, 'en') : '---'}}</h2>
+      class="h6 badge_hajj_country d-block">{{cardDetails?.nationalityCode ? getLookupLabel(countries, cardDetails?.nationalityCode, 'en') : '---'}}</h2>
   </div>
 
   <!--Hajj Details -->
