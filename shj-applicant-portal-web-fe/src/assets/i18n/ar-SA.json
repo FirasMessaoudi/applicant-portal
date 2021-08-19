@@ -42,6 +42,7 @@
     "dialog_form_error_text": "عذرا، ولكن حدثت أخطاء في النموذج الذي أرسلته",
     "dialog_delete_success_text": "تم حذف البيانات بنجاح",
     "dialog_delete_confirm_text": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+    "dialog_edit_contacts_error_text": "لم يتم تعديل جهات الاتصال. يرجى المحاولة مرة أخرى.",
     "dialog_delete_title": "حذف",
     "dialog_error_text": "عذرا! حدث خطأ. يرجى المحاولة مرة أخرى.",
     "dialog_error_title": "خطأ",
@@ -126,7 +127,8 @@
   "settings": {
     "ritual-type": "نوع الشعيرة",
     "season": "الموسم",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "edit-contacts": "تعديل جهات الاتصال"
   },
 
   "home": {
