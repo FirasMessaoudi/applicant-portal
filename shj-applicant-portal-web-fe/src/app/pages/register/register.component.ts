@@ -16,9 +16,9 @@ import {CardService, DEFAULT_MAX_USER_AGE} from "@core/services";
 import {DccValidators} from "@shared/validators";
 import {DatePipe, Location} from "@angular/common";
 import {User} from "@shared/model";
+import {debounceTime, map, tap} from 'rxjs/operators';
 
 import {Observable} from 'rxjs';
-import {debounceTime, map} from 'rxjs/operators';
 import {CountryLookup} from "@model/country-lookup.model";
 
 @Component({
@@ -64,8 +64,7 @@ export class RegisterComponent implements OnInit {
   dateStructGreg: any;
   applicantCountry: any;
   countries: CountryLookup[] = [];
-  selectedCountryCode = "ae";
-  formattedCountryDial: any;
+  selectedCountryCode = "SA";
 
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
@@ -161,7 +160,6 @@ export class RegisterComponent implements OnInit {
       day: new Date().getDate()
     };
 
-
   }
 
   // convenience getter for easy access to form fields
@@ -205,14 +203,9 @@ export class RegisterComponent implements OnInit {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
-
-          let reg1 = /\+/gi;
-          // Use of String replace() Method
-          let currentPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value;
-          this.formattedCountryDial = currentPhonePrefix.countryPhonePrefix?.replace(reg1, "00");
           this.user.mobileNumber = this.registerForm.controls.mobileNumber.value;
           this.user.countryCode = this.selectedCountryCode.toUpperCase();
-          this.user.countryPhonePrefix = this.formattedCountryDial;
+          this.user.countryPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value.countryPhonePrefix;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.authenticationService.updateOtpSubject({
@@ -239,7 +232,7 @@ export class RegisterComponent implements OnInit {
       fullNameAr: {disabled: true},
       dateOfBirthGregorian: ['', Validators.required],
       dateOfBirthHijri: ['', Validators.required],
-      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
+      mobileNumber: [''],
       email: ['', [DccValidators.email, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
@@ -247,7 +240,23 @@ export class RegisterComponent implements OnInit {
       countryPhonePrefix: [{countryPhonePrefix: ''}, [Validators.required]]
     }, {validator: this.passwordMatchValidator});
 
+    this.registerForm.get('countryPhonePrefix').valueChanges.subscribe(
+      value => this.setMobileNumberValidation(value)
+    );
+  }
 
+  setMobileNumberValidation(prefix: string): void {
+    const mobileNumberControl = this.registerForm.get('mobileNumber');
+    if (prefix === '966') {
+      console.log("prefix ok");
+      mobileNumberControl.setValidators(Validators.required)
+      mobileNumberControl.setValidators(Validators.maxLength(8));
+    } else {
+      mobileNumberControl.clearValidators();
+      mobileNumberControl.setValidators(Validators.required)
+      mobileNumberControl.setValidators(Validators.maxLength(15));
+    }
+    mobileNumberControl.updateValueAndValidity();
   }
 
   passwordMatchValidator(frm: FormGroup) {
@@ -258,7 +267,8 @@ export class RegisterComponent implements OnInit {
   verifyApplicant() {
     this.isApplicantVerified = false;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
-      if (response) {
+      if (response && !this.checkNullProperties(response)) {
+        console.log(response);
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
         this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
@@ -270,15 +280,12 @@ export class RegisterComponent implements OnInit {
         if (this.isSaudiNumber) {
           this.applicantCountry = this.countries.filter(c => "SA" === c.code && 'EN' === c.lang.toUpperCase());
         } else {
-          this.applicantCountry = this.countries.filter(c => response.countryCode.toUpperCase() === c.code && 'EN' === c.lang.toUpperCase());
+          this.applicantCountry = this.countries.filter(c => response.countryCode?.toUpperCase() === c.code && 'EN' === c.lang.toUpperCase());
         }
-        this.selectedCountryCode = this.applicantCountry[0].code.toLowerCase();
-        this.registerForm.controls["countryPhonePrefix"].setValue({countryPhonePrefix: this.applicantCountry[0].countryPhonePrefix});
-        let reg1 = /\+/gi;
-        let reg2 = /\-/gi;
+        this.selectedCountryCode = this.applicantCountry[0]?.code?.toLowerCase();
+        this.registerForm.controls["countryPhonePrefix"].setValue({countryPhonePrefix: this.applicantCountry[0]?.countryPhonePrefix});
         // Use of String replace() Method
-        this.formattedCountryDial = this.applicantCountry[0].countryPhonePrefix.replace(reg1, "00").replace(reg2, "");
-        let applicantMobileNumber = this.user.mobileNumber.length > 10 ? this.user.mobileNumber.substring(this.formattedCountryDial.length)
+        let applicantMobileNumber = this.user.mobileNumber.length > 10 ? this.user.mobileNumber.substring(this.applicantCountry[0]?.countryPhonePrefix.length)
           : (this.user.mobileNumber.length == 10 ? this.user.mobileNumber.substring(1) : this.user.mobileNumber);
         this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         this.isApplicantVerified = true;
@@ -336,6 +343,14 @@ export class RegisterComponent implements OnInit {
 
   loadLookups() {
     this.cardService.findCountries().subscribe(result => this.countries = this.removeDuplicates(result, 'code'));
+  }
+
+  checkNullProperties(obj: any) {
+    for (let key in obj) {
+      if (obj[key] !== null)
+        return false;
+    }
+    return true;
   }
 
   removeDuplicates(originalArray, prop) {
