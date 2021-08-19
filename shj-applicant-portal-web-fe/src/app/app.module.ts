@@ -7,6 +7,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {environment} from 'environments/environment';
 import {SharedModule} from "@shared/shared.module";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {SharedModule} from "@shared/shared.module";
     AppRoutingModule,
     CoreModule,
     ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production}),
-    SharedModule
+    SharedModule,
+    BrowserAnimationsModule
   ],
   exports: [],
   providers: [],

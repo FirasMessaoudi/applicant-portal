@@ -22,6 +22,7 @@ import {LOGIN_URL, PUBLIC_URL_PATTERNS} from "@core/guards/authentication.guard"
 import {TranslateModule} from "@ngx-translate/core";
 import {LookupService} from "@core/utilities/lookup.service";
 
+
 @NgModule({
   declarations: [
     ...layout.layout,

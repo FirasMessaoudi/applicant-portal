@@ -6,12 +6,14 @@ import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
 import {DccValidators} from "@shared/validators";
 import {COUNTRY} from "@model/enum/country_code";
 import {Observable, OperatorFunction} from "rxjs";
 import {debounceTime, map} from "rxjs/operators";
 import {UserContacts} from "@model/UserContacts.model";
+
+import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-settings',
@@ -19,6 +21,12 @@ import {UserContacts} from "@model/UserContacts.model";
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
+
+  separateDialCode = false;
+	SearchCountryField = SearchCountryField;
+	CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
+
   closeResult = '';
 
   seasons: number [] = [];
