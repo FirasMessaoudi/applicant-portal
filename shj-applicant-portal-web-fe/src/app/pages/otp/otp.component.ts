@@ -9,6 +9,7 @@ import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
 import {RegisterService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
+import {UserContacts} from "@model/UserContacts.model";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -29,6 +30,8 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   otpTitle: string;
   previousUrl: string;
   updateAdminRequired: boolean;
+  editContacts: UserContacts;
+  currentPageUrl:string;
   @ViewChildren('formRow') rows: any;
 
   constructor(
@@ -53,17 +56,23 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    this.currentPageUrl= this.router.url;
+
     this.createForm();
     this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
       this.previousUrl = data.actionType;
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title") : this.translate.instant("register.header_title");
+      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title"):'';
+      this.otpTitle = this.previousUrl == "/register" ? this.translate.instant("register.header_title"):'';
+      this.otpTitle = this.previousUrl == "/edit/contacts" ? this.translate.instant("settings.edit-contacts"):'';
       this.otpData = data.user;
       this.updateAdminRequired = data.updateAdmin;
       this.startTimer(data.user?.otpExpiryMinutes);
-      this.mask = this.otpData.maskedMobileNumber;
+      this.mask = this.otpData.maskedMobileNumber
+      this.editContacts=data.editContacts;
     });
   }
 
@@ -112,7 +121,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           this.rows._results[0].nativeElement.focus();
         });
       });
-    } else {
+    } else if (this.previousUrl == "/register"){
       this.registerService.validateOtpThenRegister(this.otpData, this.updateAdminRequired, pin)
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
@@ -136,6 +145,26 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
       });
+    }else if (this.previousUrl == "/edit/contacts" && this.currentPageUrl=="/edit/contacts/otp"){
+      this.userService.updateUserContacts(this.editContacts, pin).pipe(finalize(() => {
+        this.otpForm.markAsPristine();
+        this.loading = false;
+      })).subscribe(response=>{
+        this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
+        this.router.navigate(['/settings'], {replaceUrl: true});
+      }, error=>{
+        if(error.status === 562){
+          Object.keys(this.otpForm.controls).forEach(field => {
+            this.otpForm.get(field).setValue(null);
+            this.rows._results[0].nativeElement.focus();
+          });
+        }else {
+          this.toastr.error(this.translate.instant("general.dialog_edit_contacts_error_text"), this.translate.instant("settings.edit-contacts"));
+          this.router.navigate(['/settings'], {replaceUrl: true});
+
+        }
+
+      })
     }
   }
 
