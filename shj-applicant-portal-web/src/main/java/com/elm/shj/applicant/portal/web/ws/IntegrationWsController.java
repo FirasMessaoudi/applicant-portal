@@ -31,12 +31,12 @@ import java.util.Optional;
  * @author ahmad flaifel
  * @since 1.0.0
  */
-@CrossOrigin(
-        origins = "*",
-        maxAge = 3600,
-        exposedHeaders = {"Authorization", JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.TOKEN_COOKIE_NAME},
-        allowCredentials = "true"
-)
+//@CrossOrigin(
+//        origins = "*",
+//        maxAge = 3600,
+//        exposedHeaders = {"Authorization", JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.TOKEN_COOKIE_NAME},
+//        allowCredentials = "true"
+//)
 @Slf4j
 @RestController
 @RequestMapping(Navigation.API_INTEGRATION)
