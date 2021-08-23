@@ -76,7 +76,8 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.of(new UserDto()));
 
         mockMvc.perform(post(Navigation.API_INTEGRATION_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().is(560));
+                .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.error", is(WsError.EWsError.ALREADY_REGISTERED.getCode())));
 
     }
 
@@ -89,7 +90,8 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
         when(userService.verify(any())).thenReturn(null);
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
         mockMvc.perform(post(Navigation.API_INTEGRATION_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().is(561));
+                .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.error", is(WsError.EWsError.NOT_FOUND_IN_ADMIN.getCode())));
     }
 
     @Test

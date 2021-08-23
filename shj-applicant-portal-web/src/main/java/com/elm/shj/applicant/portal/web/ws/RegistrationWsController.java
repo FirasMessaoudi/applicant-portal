@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -43,25 +42,28 @@ public class RegistrationWsController {
     private final UserService userService;
     private final OtpService otpService;
 
-    public static final String UPDATE_ADMIN_TOKEN_NAME = "uadmin";
 
     @PostMapping("/verify")
     public ResponseEntity<WsResponse<?>> verify(@RequestBody ValidateApplicantCmd command) {
         Optional<UserDto> userInApplicantPortal = userService.findByUin(Long.parseLong(command.getUin()));
         if (userInApplicantPortal.isPresent()) {
 
-            return ResponseEntity.status(WsResponse.EWsResponseStatus.ALREADY_REGISTERED.getCode()).body(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.ALREADY_REGISTERED).body("User is already register").build());
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.ALREADY_REGISTERED.getCode()).referenceNumber(command.getUin()).build()).build());
 
         }
 
         ApplicantLiteDto userFromAdminPortal = userService.verify(command);
         if (userFromAdminPortal == null) {
-            return ResponseEntity.status(WsResponse.EWsResponseStatus.NOT_FOUND_IN_ADMIN.getCode()).body(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.NOT_FOUND_IN_ADMIN).body("User Not found").build());
+
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.NOT_FOUND_IN_ADMIN.getCode()).referenceNumber(command.getUin()).build()).build());
+
         }
         return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS).body(userFromAdminPortal).build());
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(userFromAdminPortal).build());
 
     }
 
@@ -79,22 +81,24 @@ public class RegistrationWsController {
         OtpToken token = new OtpToken(true, otpService.getOtpExpiryMinutes(), user.getUin(), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail);
 
         return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS).body(token).build());
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(token).build());
 
     }
 
-    @PostMapping
-    public ResponseEntity<WsResponse<?>> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
+    @PostMapping("/{needToUpdate}")
+    public ResponseEntity<WsResponse<?>> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @PathVariable("needToUpdate") boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
 
         if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
 
-            return ResponseEntity.status(WsResponse.EWsResponseStatus.INVALID_OTP.getCode()).body(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.INVALID_OTP).body(null).build());
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.INVALID_OTP.getCode()).referenceNumber(user.getUin()+"").build()).build());
         }
         Optional<UserDto> userInApplicantPortal = userService.findByUin(user.getUin());
         if (userInApplicantPortal.isPresent()) {
-            return ResponseEntity.status(WsResponse.EWsResponseStatus.ALREADY_REGISTERED.getCode()).body(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.ALREADY_REGISTERED).body("User is already register").build());
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.ALREADY_REGISTERED.getCode()).build()).build());
 
         }
         if (needToUpdateInAdminPortal) {
@@ -102,8 +106,9 @@ public class RegistrationWsController {
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
             if (returnedApplicant == null)
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                        WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE).body(null).build());
+                return ResponseEntity.ok(
+                        WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                                .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(user.getUin()+"").build()).build());
 
         }
 
@@ -111,7 +116,7 @@ public class RegistrationWsController {
         UserDto createdUser = userService.createUser(user);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
         return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS).body(createdUser).build());
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(createdUser).build());
     }
 
 

@@ -17,7 +17,7 @@ import lombok.Data;
 public class WsResponse<T> {
 
     public enum EWsResponseStatus {
-        SUCCESS(0), FAILURE(1), ALREADY_REGISTERED(560), NOT_FOUND_IN_ADMIN(561),INVALID_OTP(562);
+        SUCCESS(0), FAILURE(1);
 
         int code;
 
@@ -30,6 +30,6 @@ public class WsResponse<T> {
         }
     }
 
-    private EWsResponseStatus status = EWsResponseStatus.SUCCESS;
+    private int status = EWsResponseStatus.SUCCESS.getCode();
     private T body;
 }

@@ -31,6 +31,9 @@ public class Navigation {
     // Integration registration web service call
     public static final String API_INTEGRATION_REGISTRATION = "/api/ws/register";
 
+    // Users
+    public static final String API_INTEGRATION_USERS = "/api/ws/users";
+
     private Navigation() {
         // private constructor to prevent construction
     }
