@@ -16,7 +16,7 @@ export class RegisterService {
   }
 
   validateOtpThenRegister(user: User, needToUpdateInAdminPortal: boolean, pin: string): Observable<any> {
-    return this.http.post('/core/api/register?uadmin=' + needToUpdateInAdminPortal + '&pin=' + pin, user);
+    return this.http.post('/core/api/register/' + needToUpdateInAdminPortal + '/?pin=' + pin, user);
   }
 
   generateOTPForRegistration(user: User, recaptchaToken: string): Observable<any> {

@@ -17,7 +17,7 @@
     <div class="form-row">
       <div class="col-lg-6">
         <div class="d-flex form-group">
-          
+
           <div class="col-5 col-md-6 p-0 mr-1" role="group">
             <label for="inputEmail4">{{ "settings.season" | translate }}</label>
 
@@ -80,15 +80,15 @@
             </div>
           </div>
         </div>
-        
+
         <form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="form-group">
-          
-            <div class="d-flex">
+
+          <div class="d-flex">
                 <div class="col-5 col-md-6 p-0 mr-1" role="group">
                   <label>   {{"general.email"|translate}} </label>
                   <div class="input-group">
 
-                    <input type="text" class="form-control"
+                    <input type="email" class="form-control"
                            formControlName="email" maxlength="50"
                            [class.is-invalid]="f.email.invalid && f.email.touched"/>
                     <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
@@ -149,24 +149,24 @@
                       <div
                         *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
                     </div>
-                  
 
-                  <div class="input-group-append">
+
+                    <div class="input-group-append">
                     <button class="btn btn-outline-gray-300" type="button" ngbTooltip="{{'general.btn_edit'|translate}}"
                             *ngIf="contactsForm.disabled" (click)="setContactsEnabled()">
                       <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
                     </button>
-    
-                    <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
+
+                      <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
                             *ngIf="!contactsForm.disabled" (click)="onSubmit()">
                       <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
                     </button>
                   </div>
                   </div>
-                  
+
                 </div>
             </div>
-          
+
         </form>
 
 

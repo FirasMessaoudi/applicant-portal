@@ -60,7 +60,7 @@ public class IntegrationWsController {
         String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
         if (callerType == null || !callerType.equals(JwtTokenService.WEB_SERVICE_CALLER_TYPE)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE).body("Access denied").build());
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body("Access denied").build());
         }
 
         JwtToken authentication;
@@ -69,12 +69,12 @@ public class IntegrationWsController {
                     .authenticate(new UsernamePasswordAuthenticationToken(credentials.get("username"), credentials.get("password")));
         } catch (RecaptchaException rex) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE).body("Multiple failed login attempts").build());
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body("Multiple failed login attempts").build());
         }
 
         jwtTokenService.attachTokenCookie(response, authentication);
 
-        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS).body(authentication.getToken()).build());
+        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(authentication.getToken()).build());
     }
 
     /**
@@ -85,23 +85,8 @@ public class IntegrationWsController {
     public ResponseEntity<WsResponse<?>> logout(HttpServletResponse response) {
         log.debug("Logout request handler from third party");
         // get the token and invalidate it
-        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS).build());
+        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).build());
     }
 
-    /**
-     * Resets the user password
-     *
-     * @return the found user or <code>null</code>
-     */
-    @PostMapping("/reset-password")
-    public ResponseEntity<WsResponse<?>> resetUserPassword(@RequestBody @Valid ResetPasswordCmd command) {
-        Optional<UserDto> user = userService.findByUin(command.getIdNumber());
-
-        if (!user.isPresent()) {
-            log.error("User not found for {} uin and ");
-        }
-
-        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS).build());
-    }
 
 }
