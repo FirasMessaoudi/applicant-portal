@@ -97,6 +97,13 @@ GO
 
 
 GO
+ALTER TABLE sha_portal.sha_user
+    ADD country_code nvarchar(10);
+GO
+
+
+
+GO
 drop table if exists sha_portal.sha_audit_event_data;
 drop table if exists sha_portal.sha_audit_event;
 GO
