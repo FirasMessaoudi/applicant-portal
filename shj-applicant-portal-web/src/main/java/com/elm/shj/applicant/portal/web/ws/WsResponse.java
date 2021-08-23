@@ -30,6 +30,6 @@ public class WsResponse<T> {
         }
     }
 
-    private EWsResponseStatus status = EWsResponseStatus.SUCCESS;
+    private int status = EWsResponseStatus.SUCCESS.getCode();
     private T body;
 }

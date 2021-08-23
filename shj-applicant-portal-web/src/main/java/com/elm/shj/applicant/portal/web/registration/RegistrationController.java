@@ -41,7 +41,6 @@ import java.util.Optional;
 public class RegistrationController {
 
     public static final String RECAPTCHA_TOKEN_NAME = "grt";
-    public static final String UPDATE_ADMIN_TOKEN_NAME = "uadmin";
     private final RecaptchaService recaptchaService;
     private final UserService userService;
     private final OtpService otpService;
@@ -50,8 +49,8 @@ public class RegistrationController {
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
 
 
-    @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam(UPDATE_ADMIN_TOKEN_NAME) boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
+    @PostMapping("/{needToUpdate}")
+    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @PathVariable("needToUpdate") boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
 
         if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
             return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
