@@ -4,8 +4,6 @@
 package com.elm.shj.applicant.portal.web.security.jwt;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
-import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
-import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
@@ -13,7 +11,6 @@ import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,9 +18,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -93,7 +88,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         // save user login info
         userService.updateUserLoginInfo(user.getId(), jwtTokenService.retrieveExpirationDateFromToken(token).orElse(new Date()));
 
-        return new JwtToken(token, authentication, AuthorityUtils.createAuthorityList(grantedAuthorities.toArray(new String[]{})), passwordExpiredFlag, user.getFullNameEn(), user.getFullNameAr(), user.getId(), user.getUserRoles());
+        return new JwtToken(token, authentication, AuthorityUtils.createAuthorityList(grantedAuthorities.toArray(new String[]{})), passwordExpiredFlag, user.getFullNameEn(), user.getFullNameAr(), user.getId(), user.getUserRoles(), user.getPreferredLanguage());
     }
 
     /**

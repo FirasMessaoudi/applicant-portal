@@ -92,7 +92,7 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(new JwtToken(null, ((UsernamePasswordAuthenticationToken) authentication.getPrincipal()).getName(),
                 authentication.getAuthorities(), authentication.isPasswordExpired(), authentication.getFirstName(),
-                authentication.getLastName(), authentication.getId(), authentication.getUserRoles()));
+                authentication.getLastName(), authentication.getId(), authentication.getUserRoles(), authentication.getPreferredLanguage()));
     }
 
 

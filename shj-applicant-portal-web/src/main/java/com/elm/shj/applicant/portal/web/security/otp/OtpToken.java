@@ -19,6 +19,7 @@ public class OtpToken extends UsernamePasswordAuthenticationToken {
     private String mobileNumber;
     private int otpExpiryMinutes;
 
+
     public OtpToken(boolean otpRequired, int otpExpiryMinutes, final Object principal, String firstName, String lastName, String mobileNumber, String email) {
         super(principal, null);
         this.otpRequired = otpRequired;
@@ -28,6 +29,7 @@ public class OtpToken extends UsernamePasswordAuthenticationToken {
         this.mobileNumber = mobileNumber;
         this.email = email;
     }
+
 
     public boolean isOtpRequired() {
         return otpRequired;
@@ -48,6 +50,7 @@ public class OtpToken extends UsernamePasswordAuthenticationToken {
     public String getMobileNumber() {
         return mobileNumber;
     }
+
 
     public int getOtpExpiryMinutes() {
         return otpExpiryMinutes;

@@ -43,48 +43,33 @@
         <!--- PROFILE & SETTING-->
         <div class="nav-right">
             <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
-                <li class="dropdown flex-center"   (focusout)="focusOutDropdown()" (focus)="focusInDropdown()">
-                    <a class="nav-link d-flex align-items-center dropdown-toggle noArrow"  tittle="معلوماتي" href="javascript:void(0)" id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
-                        <div class="mx-3">
-                            <h6 class="text-dcc-primary m-0">
-                                {{ currentUser?.firstName }} {{ currentUser?.lastName }}
-                            </h6>
-                            <small class="text-black-50">
-                              <div> {{ "settings.season" | translate }}
-                               {{selectedApplicantRitual?.hijriSeason}}
-                              </div>
-                              <div>
-                                {{
-                                selectedApplicantRitual?.typeCode
-                                  ? lookupService().localizedLabel(
-                                  ritualTypes,
-                                  selectedApplicantRitual?.typeCode
-                                  )
-                                  : ""
-                                }}
-                                {{selectedApplicantRitual?.dateStartHijri | monthDayHijriFormat}}</div>
-                            </small>
-                        </div>
-                    </a>
-                    <div class="dropdown-menu" id="dropdown-menu"  aria-labelledby="userMenuLink">
-                        <a class="dropdown-item" (click)="viewCurrentUserProfile()" href="javascript:void(0)" routerLinkActive="router-link-active">
-              {{ "header.my_profile" | translate }}
-            </a>
-                        <a class="dropdown-item" [routerLink]="['/change-password']" routerLinkActive="router-link-active">
-              {{ "header.change_password" | translate }}
-            </a>
-                        <div class="dropdown-divider"></div>
-                        <ng-container>
-                            <a class="dropdown-item" href="javascript:void(0)" *ngIf="currentLanguage.startsWith('en')" (click)="setLanguage('ar-SA')">
-                                <span>عربي</span>
-                            </a>
-                            <a class="dropdown-item" href="javascript:void(0)" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
-                                <span>English</span>
-                            </a>
-                        </ng-container>
-                    </div>
-                </li>
+              <li class=" flex-center">
+                <a class="nav-link d-flex align-items-center  noArrow" tittle="معلوماتي" href="javascript:void(0)"
+                   id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
+                  <div class="mx-3">
+                    <h6 class="text-dcc-primary m-0">
+                      {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+                    </h6>
+                    <small class="text-black-50">
+                      <div> {{ "settings.season" | translate }}
+                        {{selectedApplicantRitual?.hijriSeason}}
+                      </div>
+                      <div>
+                        {{
+                        selectedApplicantRitual?.typeCode
+                          ? lookupService().localizedLabel(
+                          ritualTypes,
+                          selectedApplicantRitual?.typeCode
+                          )
+                          : ""
+                        }}
+                        {{selectedApplicantRitual?.dateStartHijri | monthDayHijriFormat}}</div>
+                    </small>
+                  </div>
+                </a>
+
+              </li>
 <!--                <li class="position-relative">-->
 <!--                    <a class="nav-link" href="javascript:void(0)" ngbTooltip="">-->
 <!--                        <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>-->

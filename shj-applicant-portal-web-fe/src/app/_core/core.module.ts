@@ -26,7 +26,7 @@ import {LookupService} from "@core/utilities/lookup.service";
 @NgModule({
   declarations: [
     ...layout.layout,
-  
+
   ],
   imports: [
     CommonModule,

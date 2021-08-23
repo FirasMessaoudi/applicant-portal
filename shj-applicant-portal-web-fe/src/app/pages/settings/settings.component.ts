@@ -6,7 +6,7 @@ import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
-import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DccValidators} from "@shared/validators";
 import {COUNTRY} from "@model/enum/country_code";
 import {Observable, OperatorFunction} from "rxjs";
@@ -15,7 +15,8 @@ import {UserContacts} from "@model/UserContacts.model";
 import {Router} from "@angular/router";
 import {User} from "@shared/model";
 
-import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
+import {CountryISO, PhoneNumberFormat, SearchCountryField} from 'ngx-intl-tel-input';
+import {I18nService} from "@dcc-commons-ng/services";
 
 @Component({
   selector: 'app-settings',
@@ -25,8 +26,8 @@ import { SearchCountryField, CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-
 export class SettingsComponent implements OnInit {
 
   separateDialCode = false;
-	SearchCountryField = SearchCountryField;
-	CountryISO = CountryISO;
+  SearchCountryField = SearchCountryField;
+  CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
 
   closeResult = '';
@@ -37,6 +38,8 @@ export class SettingsComponent implements OnInit {
   selectedApplicantRitual: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
   enableEditRitual = false;
+  enableEditLanguage = true;
+  selectedLanguage = "";
   contactsForm: FormGroup;
   originalEmail: any;
   originalMobileNo: any;
@@ -50,6 +53,7 @@ export class SettingsComponent implements OnInit {
   constructor(private modalService: NgbModal,
               private userService: UserService,
               private cardService: CardService,
+              private i18nService: I18nService,
               private toastr: ToastService,
               private formBuilder: FormBuilder,
               private translate: TranslateService,
@@ -77,7 +81,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.find(this.authenticationService.currentUser.id).subscribe(data => {
+    this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
       if (data && data.id) {
 
         this.contactsForm.disable();
@@ -128,6 +132,30 @@ export class SettingsComponent implements OnInit {
       const inputEvent: Event = new Event('input');
       e.target.dispatchEvent(inputEvent);
     }, 0);
+  }
+
+  get currentLanguage(): string {
+    return this.i18nService.language;
+  }
+
+  setLanguage(language: string) {
+    this.i18nService.language = language;
+  }
+
+  updateUserLanguage() {
+    this.enableEditLanguage = true;
+    this.setLanguage(this.selectedLanguage);
+    this.userService.updatePreferredLang(this.selectedLanguage.startsWith('ar') ? "ar" : "en").subscribe(response => {
+      if (response && response.errors) {
+        this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
+
+      } else {
+        this.toastr.success(this.translate.instant("general.dialog_edit_success_text"), this.translate.instant("general.dialog_edit_title"));
+
+      }
+
+    });
+
   }
 
   private createForm() {

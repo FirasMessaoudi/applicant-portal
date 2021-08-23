@@ -116,7 +116,8 @@
     "select-month": "Select month",
     "previous-month": "Previous month",
     "next-month": "Next month",
-    "main": "Main"
+    "main": "Main",
+    "language": "language"
   },
 
   "header": {
