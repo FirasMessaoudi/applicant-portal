@@ -387,7 +387,6 @@ public class UserManagementController {
      * @return success if update done
      */
     @PutMapping("/language/{lang}")
-    @RolesAllowed(AuthorityConstants.EDIT_USER)
     public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, Authentication authentication) {
         log.debug("Handler for {}", "Update User preferred language");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
