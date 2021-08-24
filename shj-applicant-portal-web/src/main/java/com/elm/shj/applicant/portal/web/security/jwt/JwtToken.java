@@ -28,6 +28,7 @@ public class JwtToken extends UsernamePasswordAuthenticationToken {
     private String firstName;
     private String lastName;
     private long id;
+    private String preferredLanguage;
 
     public JwtToken(final String token, final Object principal,
                     final Collection<? extends GrantedAuthority> grantedAuthorities,
@@ -42,7 +43,7 @@ public class JwtToken extends UsernamePasswordAuthenticationToken {
                     final Collection<? extends GrantedAuthority> grantedAuthorities,
                     boolean passwordExpired, String firstName, String lastName, long id, final Set<UserRoleDto> userRoles) {
         super(principal, token, grantedAuthorities);
-        this.authorities = (Collection<GrantedAuthority>)grantedAuthorities;
+        this.authorities = (Collection<GrantedAuthority>) grantedAuthorities;
         this.token = token;
         this.passwordExpired = passwordExpired;
         this.userRoles = userRoles;
@@ -51,6 +52,22 @@ public class JwtToken extends UsernamePasswordAuthenticationToken {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
+    }
+
+    public JwtToken(final String token, final Object principal,
+                    final Collection<? extends GrantedAuthority> grantedAuthorities,
+                    boolean passwordExpired, String firstName, String lastName, long id, final Set<UserRoleDto> userRoles, String preferredLanguage) {
+        super(principal, token, grantedAuthorities);
+        this.authorities = (Collection<GrantedAuthority>) grantedAuthorities;
+        this.token = token;
+        this.passwordExpired = passwordExpired;
+        this.userRoles = userRoles;
+        // TODO: check why this line of code is needed.
+        this.userRoles.forEach(userRoleDto -> userRoleDto.getRole().setRoleAuthorities(null));
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+        this.preferredLanguage = preferredLanguage;
     }
 
     public void setToken(String token) {
@@ -85,6 +102,10 @@ public class JwtToken extends UsernamePasswordAuthenticationToken {
 
     public long getId() {
         return id;
+    }
+
+    public String getPreferredLanguage() {
+        return preferredLanguage;
     }
 
     @Override

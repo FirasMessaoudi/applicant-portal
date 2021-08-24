@@ -16,7 +16,7 @@ import {CardService, DEFAULT_MAX_USER_AGE} from "@core/services";
 import {DccValidators} from "@shared/validators";
 import {DatePipe, Location} from "@angular/common";
 import {User} from "@shared/model";
-import {debounceTime, map, tap} from 'rxjs/operators';
+import {debounceTime, map} from 'rxjs/operators';
 
 import {Observable} from 'rxjs';
 import {CountryLookup} from "@model/country-lookup.model";
@@ -208,6 +208,7 @@ export class RegisterComponent implements OnInit {
           this.user.countryPhonePrefix = this.registerForm.controls['countryPhonePrefix'].value.countryPhonePrefix;
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
+          this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
           this.authenticationService.updateOtpSubject({
             user: this.user,
             actionType: "/register",

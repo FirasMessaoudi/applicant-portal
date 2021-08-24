@@ -110,6 +110,23 @@ export class UserService {
     );
   }
 
+  /**
+   *   updates user preferred language.
+   *
+   * @param user the user to save or update
+   * @return {Observable<User>} The saved or updated user.
+   */
+  updatePreferredLang(lang: string): Observable<any> {
+    return this.http.put<any>('/core/api/users/language/' + lang, null).pipe(catchError((error: HttpErrorResponse) => {
+        if (error.hasOwnProperty('error')) {
+          return of(error.error);
+        } else {
+          console.error('An error happened while updating the user  language: ' + error);
+          return of(error);
+        }
+      })
+    );
+  }
 
   /**
    * Creates or updates user details in the server.
@@ -117,7 +134,7 @@ export class UserService {
    * @param user the user to save or update
    * @return {Observable<User>} The saved or updated user.
    */
-  updateUserContacts(userContacts: UserContacts, pin :String): Observable<any> {
+  updateUserContacts(userContacts: UserContacts, pin: String): Observable<any> {
     return this.http.put<any>('/core/api/users/contacts?pin=' + pin, userContacts);
 
   }

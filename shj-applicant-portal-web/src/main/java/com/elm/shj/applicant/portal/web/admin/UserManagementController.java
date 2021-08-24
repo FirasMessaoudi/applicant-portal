@@ -383,6 +383,34 @@ public class UserManagementController {
     /**
      * Updates and existing user
      *
+     * @param lang the preferred language to update user with
+     * @return success if update done
+     */
+    @PutMapping("/language/{lang}")
+    public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, Authentication authentication) {
+        log.debug("Handler for {}", "Update User preferred language");
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        UserDto databaseUser = null;
+        try {
+            databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
+        } catch (Exception e) {
+            log.error("Error while find user in  updating user preferred language.", e);
+            return ResponseEntity.notFound().build();
+        }
+        // sets form fields to database user instance
+        databaseUser.setPreferredLanguage(lang);
+        try {
+            userService.save(databaseUser);
+        } catch (Exception e) {
+            log.error("Error while updating user contacts.", e);
+            return ResponseEntity.of(Optional.empty());
+        }
+        return ResponseEntity.ok(null);
+    }
+
+    /**
+     * Updates and existing user
+     *
      * @param userContacts the user contacts info to update
      * @return the updated user contacts
      */
