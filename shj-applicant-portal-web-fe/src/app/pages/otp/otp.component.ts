@@ -194,7 +194,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goBack() {
     clearInterval(this.timerInterval);
-    this.router.navigate([this.previousUrl]);
+    this.router.navigate(['/settings']);
   }
 
   startTimer(durationMinutes) {

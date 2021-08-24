@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
 import {AuthenticationService, UserService} from "@core/services";
 import {ChangePasswordCmd} from "@shared/model";
+import {Location} from '@angular/common'
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {I18nService} from "@dcc-commons-ng/services";
 import {TranslateService} from "@ngx-translate/core";
@@ -21,6 +22,7 @@ export class ChangePasswordComponent implements OnInit {
               private i18nService: I18nService,
               private formBuilder: FormBuilder,
               private userService: UserService,
+              private location: Location,
               private authenticationService: AuthenticationService,
               private translate: TranslateService,
               private toastr: ToastService) { }
@@ -79,5 +81,8 @@ export class ChangePasswordComponent implements OnInit {
   logout() {
     this.authenticationService.logout();
     this.router.navigate(['/login']);
+  }
+  goBack() {
+    this.location.back();
   }
 }
