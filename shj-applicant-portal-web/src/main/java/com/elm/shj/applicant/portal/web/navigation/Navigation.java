@@ -34,6 +34,9 @@ public class Navigation {
     // Users
     public static final String API_INTEGRATION_USERS = "/api/ws/users";
 
+    // Integration Authentication
+    public static final String API_INTEGRATION_AUTH = "/api/ws/auth";
+
     private Navigation() {
         // private constructor to prevent construction
     }

@@ -61,7 +61,7 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
         when(userService.verify(any())).thenReturn(new ApplicantLiteDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
 
-        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_UTF8).header(JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.TOKEN_COOKIE_NAME)
+        mockMvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_UTF8).header(JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.WEB_SERVICE_CALLER_TYPE)
                 .content(objectToJson(command)).with(csrf()))
                 .andDo(print()).andExpect(status().isOk());
 

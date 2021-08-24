@@ -9,6 +9,9 @@ import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
+import com.elm.shj.applicant.portal.web.error.ExceededNumberOfTriesException;
+import com.elm.shj.applicant.portal.web.error.UserNotFoundException;
+import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -27,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * Custom Authentication Provider to construct and OtpToken with a fresh generated pin
@@ -56,28 +60,51 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(noRollbackFor = {BadCredentialsException.class, RecaptchaException.class})
+    @Transactional(noRollbackFor = {BadCredentialsException.class, RecaptchaException.class, ExceededNumberOfTriesException.class, UserNotFoundException.class})
     public Authentication authenticate(final Authentication authentication) {
         log.debug("starting authentication process");
+
+        boolean isFromWebService = false;
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+
+        String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
+        if (callerType != null && callerType.equals(JwtTokenService.WEB_SERVICE_CALLER_TYPE)) {
+            isFromWebService = true;
+        }
+
+
         long idNumber = Long.parseLong(authentication.getName());
         String password = (String) authentication.getCredentials();
 
-        UserDto user = userService.findByUin(idNumber).orElseThrow(() ->
+        Optional<UserDto> userDtoOptional = userService.findByUin(idNumber);
+
+        if (!userDtoOptional.isPresent()) {
+            if (isFromWebService) {
+                throw new UserNotFoundException(String.valueOf(idNumber));
+            } else {
                 // throw RecaptchaException to prevent DOS attack in case of idNumberStr is not exist
-                new RecaptchaException("idNumber not found."));
+                throw new RecaptchaException("idNumber not found.");
+            }
+        }
+
+        UserDto user = userDtoOptional.get();
         // check if user is active
         if (!user.isActivated()) {
             log.info("User {} is deactivated.", user.getNin());
             throw new BadCredentialsException("invalid credentials.");
         }
 
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = requestAttributes.getRequest();
 
         if (!BCrypt.checkpw(password, user.getPasswordHash())) {
             userService.updateLoginTries(user);
             if (user.getNumberOfTries() >= allowedFailedLogins) {
-                throw new RecaptchaException("Requires captcha.");
+                if (isFromWebService) {
+                    throw new ExceededNumberOfTriesException(String.valueOf(idNumber));
+                } else {
+                    throw new RecaptchaException("Requires captcha.");
+                }
+
             }
             log.debug("wrong password.");
             throw new BadCredentialsException("invalid credentials.");
@@ -85,19 +112,23 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
 
         // Check captcha
         if (user.getNumberOfTries() > allowedFailedLogins) {
-            String recaptchaResponse = request.getParameter(RECAPTCHA_RESPONSE_PARAM_NAME);
-            if (StringUtils.isBlank(recaptchaResponse)) {
-                throw new RecaptchaException("Invalid captcha.");
-            }
-            RecaptchaInfo recaptchaInfo;
-            try {
-                recaptchaInfo = recaptchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
-            } catch (IllegalArgumentException e) {
-                throw new RecaptchaException("Invalid character in captcha response.");
-            }
-            if (recaptchaInfo == null || !recaptchaInfo.isSuccess()) {
-                userService.updateLoginTries(user);
-                throw new RecaptchaException("Invalid captcha.");
+            if (!isFromWebService) {
+                String recaptchaResponse = request.getParameter(RECAPTCHA_RESPONSE_PARAM_NAME);
+                if (StringUtils.isBlank(recaptchaResponse)) {
+                    throw new RecaptchaException("Invalid captcha.");
+                }
+                RecaptchaInfo recaptchaInfo;
+                try {
+                    recaptchaInfo = recaptchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
+                } catch (IllegalArgumentException e) {
+                    throw new RecaptchaException("Invalid character in captcha response.");
+                }
+                if (recaptchaInfo == null || !recaptchaInfo.isSuccess()) {
+                    userService.updateLoginTries(user);
+                    throw new RecaptchaException("Invalid captcha.");
+                }
+            } else {
+                throw new ExceededNumberOfTriesException(String.valueOf(idNumber));
             }
         }
 

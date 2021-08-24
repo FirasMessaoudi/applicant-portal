@@ -29,8 +29,6 @@ import javax.servlet.http.HttpServletResponse;
 @RestControllerAdvice
 public class JwtTokenCookieAdvice implements ResponseBodyAdvice<Object> {
 
-    private static final String JWT_HEADER_NAME = "X-SEC-TK";
-    private static final String JWT_EXPIRY_HEADER_NAME = "X-SEC-EXP";
 
     @Autowired
     private JwtTokenService jwtTokenService;
@@ -52,11 +50,14 @@ public class JwtTokenCookieAdvice implements ResponseBodyAdvice<Object> {
         Device device = DeviceUtils.getCurrentDevice(request);
         String refreshedToken = jwtTokenService.refreshToken(response, SecurityContextHolder.getContext().getAuthentication(), device, true);
 
+        String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
+
         // attach expiry date to the response to be used to handle idle time from client side
         int refreshedTokenExpiryInMillis = jwtTokenService.refreshTokenExpiry(response, refreshedToken);
-        if (device != null && (device.isMobile() || device.isTablet())) {
-            response.setHeader(JWT_HEADER_NAME, refreshedToken);
-            response.setIntHeader(JWT_EXPIRY_HEADER_NAME, refreshedTokenExpiryInMillis);
+        if ((device != null && (device.isMobile() || device.isTablet()))
+                || (callerType != null && callerType.equals(JwtTokenService.WEB_SERVICE_CALLER_TYPE))) {
+            response.setHeader(JwtTokenService.JWT_HEADER_NAME, refreshedToken);
+            response.setIntHeader(JwtTokenService.JWT_EXPIRY_HEADER_NAME, refreshedTokenExpiryInMillis);
         }
         return body;
     }

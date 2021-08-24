@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String HEADER_WRITER_PATTERN = "/*";
     // any URL does not require authentication should be added to this array
-    private static final String[] PUBLIC_URLS = {"/api/ws/auth", "/api/ws/register/**", "/api/ws/users/reset-password", "/api/auth/login", "/api/auth/otp", "/api/users/reset-password",
+    private static final String[] PUBLIC_URLS = {"/api/ws/auth","/api/ws/auth/login", "/api/ws/auth/otp", "/api/ws/register/**", "/api/ws/users/reset-password", "/api/auth/login", "/api/auth/otp", "/api/users/reset-password",
             "/api/register/**", "/api/lookup/country/list", "/index.html", "/error", "/api-docs", "/swagger-ui.html", "/swagger-ui/**"};
     // URLs that will be ignored by spring security should be added to this array
     private static final String[] IGNORED_URLS = {"/assets/**", "/cpm-error/**", "/*.png", "/*.jpg", "/*.jpeg",

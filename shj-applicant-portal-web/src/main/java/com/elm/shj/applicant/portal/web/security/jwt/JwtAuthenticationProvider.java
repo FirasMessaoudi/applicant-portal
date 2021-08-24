@@ -4,16 +4,14 @@
 package com.elm.shj.applicant.portal.web.security.jwt;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
-import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
-import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
+import com.elm.shj.applicant.portal.web.error.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -21,9 +19,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -61,13 +57,30 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Invalid OTP");
         }
 
-        long idNumber = Long.parseLong(authentication.getName());
+        boolean isFromWebService = false;
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
-        UserDto user = userService.findByUin(idNumber).orElseThrow(() ->
+        String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
+        if (callerType != null && callerType.equals(JwtTokenService.WEB_SERVICE_CALLER_TYPE)) {
+            isFromWebService = true;
+        }
+
+
+        long idNumber = Long.parseLong(authentication.getName());
+
+        Optional<UserDto> userDtoOptional = userService.findByUin(idNumber);
+
+        if (!userDtoOptional.isPresent()) {
+            if (isFromWebService) {
+                throw new UserNotFoundException(String.valueOf(idNumber));
+            } else {
                 // throw RecaptchaException to prevent DOS attack in case of idNumberStr is not exist
-                new RecaptchaException("idNumber not found."));
+                new RecaptchaException("idNumber not found.");
+            }
+        }
+
+        UserDto user = userDtoOptional.get();
 
         // check if the password expired
         boolean passwordExpiredFlag = true;

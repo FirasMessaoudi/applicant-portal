@@ -43,6 +43,9 @@ public class JwtTokenService {
     public static final String CALLER_TYPE_HEADER_NAME = "CALLER-TYPE";
     public static final String WEB_SERVICE_CALLER_TYPE = "WEB-SERVICE";
 
+    public static final String JWT_HEADER_NAME = "X-SEC-TK";
+    public static final String JWT_EXPIRY_HEADER_NAME = "X-SEC-EXP";
+
     private static final String ISSUER = "com.elm.dcc";
     private static final String AUTHORITIES_CLAIM_NAME = "authorities";
     private static final String USER_ID_CLAIM_NAME = "user.id";
