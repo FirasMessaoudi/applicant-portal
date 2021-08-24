@@ -116,6 +116,19 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
     }
 
     @Test
+    public void test_update_user_language_success() throws Exception {
+        String url = Navigation.API_USERS + "/language/en";
+        UserDto user = new UserDto();
+        when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
+        when(userService.save(any())).thenReturn(user);
+        mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
+                .with(csrf()))
+                .andDo(print()).andExpect(status().isOk());
+        verify(userService, times(1)).save(any());
+
+    }
+
+    @Test
     public void test_update_user_contacts_not_found_exception() throws Exception {
         String url = Navigation.API_USERS + "/contacts";
         UpdateContactsCmd userContacts = new UpdateContactsCmd();
