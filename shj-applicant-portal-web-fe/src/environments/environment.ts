@@ -9,11 +9,11 @@ import {env} from './.env';
 export const environment = {
   production: false,
   dev: true,
-  mock: true,
+  mock: false,
   recaptchaSiteKey: '6LdzHFQUAAAAAKbbaojHVswZvdHgPuzC71VCIUlb',
   invisibleRecaptchaSiteKey: '6Le30G0UAAAAAM3Kwdf4V_feWJ-zD7OFAjxqO3Vo',
   version: env.npm_package_version + '-dev',
-  backendMappings: [{mapping:'/core', url:'http://localhost:8080/shj-applicant/'}],
+  backendMappings: [{mapping: '/core', url: 'http://localhost:8080/shj-applicant/'}],
   websocketConnection: [{url: ''}],
   defaultLanguage: 'ar-SA',
   termsAndConditionsUrl: '',
