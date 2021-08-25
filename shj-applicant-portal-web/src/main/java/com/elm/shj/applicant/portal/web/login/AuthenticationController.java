@@ -4,6 +4,8 @@
 package com.elm.shj.applicant.portal.web.login;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
+import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
@@ -12,6 +14,7 @@ import com.elm.shj.applicant.portal.web.security.otp.OtpAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +45,8 @@ import java.util.Map;
 public class AuthenticationController {
 
     public static final int INVALID_RECAPTCHA_RESPONSE_CODE = 555;
+    private static final int USER_IS_NOT_ACTIVE_RESPONSE_CODE = 557;
+    private static final int USER_ALREADY_LOGGED_IN_RESPONSE_CODE = 556;
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final OtpAuthenticationProvider otpAuthenticationProvider;
@@ -64,8 +69,15 @@ public class AuthenticationController {
         try {
             authentication = (OtpToken) otpAuthenticationProvider
                     .authenticate(new UsernamePasswordAuthenticationToken(idNumber, credentials.get("password")));
+
         } catch (RecaptchaException rex) {
             return ResponseEntity.status(INVALID_RECAPTCHA_RESPONSE_CODE).body(null);
+        } catch (ResourceNotFoundException rex) {
+            return ResponseEntity.status(INVALID_RECAPTCHA_RESPONSE_CODE).body(null);
+        } catch (DeactivatedUserException due) {
+            return ResponseEntity.status(USER_IS_NOT_ACTIVE_RESPONSE_CODE).body(null);
+        } catch (UserAlreadyLoggedInException uaEX) {
+            return ResponseEntity.status(USER_ALREADY_LOGGED_IN_RESPONSE_CODE).body(null);
         }
 
         return ResponseEntity.ok(authentication);
@@ -85,6 +97,8 @@ public class AuthenticationController {
                     .authenticate(new UsernamePasswordAuthenticationToken(credentials.get("idNumber"), credentials.get("otp")));
         } catch (RecaptchaException rex) {
             return ResponseEntity.status(INVALID_RECAPTCHA_RESPONSE_CODE).body(null);
+        } catch (ResourceNotFoundException rex) {
+            return ResponseEntity.status(INVALID_RECAPTCHA_RESPONSE_CODE).body(null);
         }
 
         jwtTokenService.attachTokenCookie(response, authentication);
@@ -94,8 +108,6 @@ public class AuthenticationController {
                 authentication.getAuthorities(), authentication.isPasswordExpired(), authentication.getFirstName(),
                 authentication.getLastName(), authentication.getId(), authentication.getUserRoles(), authentication.getPreferredLanguage()));
     }
-
-
 
 
     /**

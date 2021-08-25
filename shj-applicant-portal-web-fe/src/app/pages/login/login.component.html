@@ -17,7 +17,9 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
         <div class="alert alert-danger" [hidden]="!error || loading">
-            {{ "login.invalid_uin_or_password" | translate }}
+            <span *ngIf="error?.status == 500 || error?.status == 555">{{'login.invalid_uin_or_password' | translate }}</span>
+            <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
+            <span *ngIf="error?.status == 557">{{'login.user_is_deactivated' | translate }}</span>
         </div>
         <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
             {{ "login.header_title" | translate }}

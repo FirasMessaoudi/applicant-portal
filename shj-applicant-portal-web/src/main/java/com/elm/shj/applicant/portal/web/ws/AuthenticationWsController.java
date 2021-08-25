@@ -1,7 +1,8 @@
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.web.error.ExceededNumberOfTriesException;
-import com.elm.shj.applicant.portal.web.error.UserNotFoundException;
+import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
+import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
@@ -10,6 +11,7 @@ import com.elm.shj.applicant.portal.web.security.otp.OtpAuthenticationProvider;
 import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -121,9 +123,9 @@ public class AuthenticationWsController {
     }
 
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<WsResponse<?>> handleUserNotFoundException(
-            UserNotFoundException ex) {
+            ResourceNotFoundException ex) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_FOUND.getCode()).referenceNumber(ex.getMessage()).build()).build());
@@ -137,12 +139,28 @@ public class AuthenticationWsController {
                         .body(WsError.builder().error(WsError.EWsError.BAD_CREDENTIALS.getCode()).referenceNumber(ex.getMessage()).build()).build());
     }
 
-    @ExceptionHandler(ExceededNumberOfTriesException.class)
-    public ResponseEntity<WsResponse<?>> handleExceededNumberOfTriesException(
-            ExceededNumberOfTriesException ex) {
+    @ExceptionHandler(RecaptchaException.class)
+    public ResponseEntity<WsResponse<?>> handleRecaptchaException(
+            RecaptchaException ex) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(WsError.EWsError.EXCEEDED_NUMBER_OF_TRIES.getCode()).referenceNumber(ex.getMessage()).build()).build());
+    }
+
+    @ExceptionHandler(DeactivatedUserException.class)
+    public ResponseEntity<WsResponse<?>> handleDeactivatedUserException(
+            DeactivatedUserException ex) {
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                        .body(WsError.builder().error(WsError.EWsError.USER_IS_NOT_ACTIVE.getCode()).referenceNumber(ex.getMessage()).build()).build());
+    }
+
+    @ExceptionHandler(UserAlreadyLoggedInException.class)
+    public ResponseEntity<WsResponse<?>> handleUserAlreadyLoggedInException(
+            UserAlreadyLoggedInException ex) {
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                        .body(WsError.builder().error(WsError.EWsError.USER_ALREADY_LOGGED_IN.getCode()).referenceNumber(ex.getMessage()).build()).build());
     }
 
 }
