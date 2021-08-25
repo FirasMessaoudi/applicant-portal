@@ -5,15 +5,12 @@ import { SettingsComponent } from './settings.component';
 import {TranslateModule} from "@ngx-translate/core";
 import {SharedModule} from "@shared/shared.module";
 
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
-
 @NgModule({
   imports: [
     CommonModule,
     SettingsRoutingModule,
     TranslateModule,
-    SharedModule,
-    NgxIntlTelInputModule
+    SharedModule
   ],
   declarations: [SettingsComponent]
 })

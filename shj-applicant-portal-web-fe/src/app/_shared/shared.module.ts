@@ -27,6 +27,7 @@ import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
 import { GoogleMapsModule } from '@angular/google-maps'
 import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format.pipe";
 import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
+import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
 
 
 @NgModule({
@@ -40,7 +41,6 @@ import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
     MonthDayHijriFormatPipe,
     IbanStatusPipe,
     ArabicNumberPipe
-
   ],
   imports: [
     CommonModule,
@@ -52,7 +52,8 @@ import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
     NgxCaptchaModule,
     HijriGregorianDatepickerModule,
     NgMultiSelectDropDownModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    NgxIntlTelInputModule
   ],
   providers: [DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule],
   exports: [
@@ -75,7 +76,8 @@ import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
     DccCommonsNgPipesModule,
     NgMultiSelectDropDownModule,
     HijriGregorianDatepickerModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    NgxIntlTelInputModule
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,

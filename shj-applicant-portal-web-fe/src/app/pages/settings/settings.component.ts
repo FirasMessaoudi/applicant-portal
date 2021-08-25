@@ -11,8 +11,7 @@ import {DccValidators} from "@shared/validators";
 import {UserContacts} from "@model/UserContacts.model";
 import {Router} from "@angular/router";
 import {User} from "@shared/model";
-
-import {CountryISO, PhoneNumberFormat, SearchCountryField} from 'ngx-intl-tel-input';
+import {CountryISO} from 'ngx-intl-tel-input';
 import {I18nService} from "@dcc-commons-ng/services";
 
 @Component({
@@ -21,9 +20,6 @@ import {I18nService} from "@dcc-commons-ng/services";
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-
-  SearchCountryField = SearchCountryField;
-  CountryISO = CountryISO;
 
   closeResult = '';
 
