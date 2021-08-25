@@ -63,6 +63,8 @@ export class RegisterComponent implements OnInit {
   countries: CountryLookup[] = [];
   selectedCountryCode = "SA";
 
+  SAUDI_COUNTRY_CODE = "SA";
+
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
   constructor(
@@ -156,8 +158,9 @@ export class RegisterComponent implements OnInit {
 
     let reg1 = / /g;
     let reg2 = /\+/gi;
-    let mobileNumber = this.registerForm.controls['mobileNumber'].value.number.replace(reg1, "");
+    let reg3 = /\-/gi;
 
+    let mobileNumber = this.registerForm.controls['mobileNumber'].value.number.replace(reg1, "").replace(reg3, "");
     this.registerForm.controls['mobileNumber'].setValue(mobileNumber);
 
     console.log(this.registerForm.value);
@@ -184,9 +187,9 @@ export class RegisterComponent implements OnInit {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
-          this.user.mobileNumber = this.registerForm.controls.mobileNumber.value.number.replace(reg1, "");
+          this.user.mobileNumber = this.registerForm.controls.mobileNumber.value.number.replace(reg1, "").replace(reg3, "");
           this.user.countryCode = this.registerForm.controls.mobileNumber.value.countryCode;
-          this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "");
+          this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
@@ -196,11 +199,8 @@ export class RegisterComponent implements OnInit {
             updateAdmin: updateAdminRequired
           });
           this.router.navigate(['/otp'], {replaceUrl: true});
-
         }
-
       }
-
     });
 
 
@@ -231,13 +231,20 @@ export class RegisterComponent implements OnInit {
     this.isApplicantVerified = false;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
       if (response && !this.checkNullProperties(response)) {
-        console.log(response);
         this.user = response;
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
         this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
         this.registerForm.controls['email'].setValue(this.user.email);
+
         this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
-        this.selectedCountryCode = response.countryCode?.toLowerCase();
+        let applicantMobileNumber = this.registerForm.controls['mobileNumber'];
+        console.log(applicantMobileNumber.value);
+
+        if (response.hasLocalMobileNumber) {
+          this.selectedCountryCode = this.SAUDI_COUNTRY_CODE.toLowerCase();
+        } else {
+          this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
+        }
 
         // this.registerForm.controls["countryPhonePrefix"].setValue({countryPhonePrefix: this.applicantCountry[0]?.countryPhonePrefix});
         // Use of String replace() Method
