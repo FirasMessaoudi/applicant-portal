@@ -103,7 +103,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         clearInterval(this.timerInterval);
         // login successful if there's a jwt token in the response
         this.authenticationService.updateSubject(user);
-        this.setLanguage(user.preferredLanguage.startsWith('ar') ? 'ar-SA' : 'en-US');
+        this.setLanguage(user.preferredLanguage?.startsWith('ar') ? 'ar-SA' : 'en-US');
         if (user.passwordExpired) {
           console.log('redirect to change password page');
           this.router.navigate(['/change-password'], {replaceUrl: true});
