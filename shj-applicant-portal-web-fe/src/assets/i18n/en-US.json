@@ -234,7 +234,9 @@
     "invalid_uin_or_password":"Invalid smart id number or password!",
     "otp_remaining_time": "Remaining time:",
     "otp_text": "Please enter the code that have been sent to the mobile number you have registered with",
-    "invalid_otp":"Invalid OTP! Please try again..."
+    "invalid_otp":"Invalid OTP! Please try again...",
+    "user_already_logged_in": "User is already logged in",
+    "user_is_deactivated": "User is not active"
   },
 
   "register": {

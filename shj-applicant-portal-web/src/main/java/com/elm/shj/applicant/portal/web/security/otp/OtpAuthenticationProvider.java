@@ -9,12 +9,12 @@ import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
-import com.elm.shj.applicant.portal.web.error.ExceededNumberOfTriesException;
-import com.elm.shj.applicant.portal.web.error.UserNotFoundException;
-import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
+import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
+import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * Custom Authentication Provider to construct and OtpToken with a fresh generated pin
@@ -60,51 +59,30 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
      * {@inheritDoc}
      */
     @Override
-    @Transactional(noRollbackFor = {BadCredentialsException.class, RecaptchaException.class, ExceededNumberOfTriesException.class, UserNotFoundException.class})
+    @Transactional(noRollbackFor = {BadCredentialsException.class, RecaptchaException.class
+            , ResourceNotFoundException.class, DeactivatedUserException.class, UserAlreadyLoggedInException.class})
     public Authentication authenticate(final Authentication authentication) {
         log.debug("starting authentication process");
 
-        boolean isFromWebService = false;
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
-
-        String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
-        if (callerType != null && callerType.equals(JwtTokenService.WEB_SERVICE_CALLER_TYPE)) {
-            isFromWebService = true;
-        }
-
 
         long idNumber = Long.parseLong(authentication.getName());
         String password = (String) authentication.getCredentials();
 
-        Optional<UserDto> userDtoOptional = userService.findByUin(idNumber);
+        UserDto user = userService.findByUin(idNumber).orElseThrow(() -> new ResourceNotFoundException("idNumber not found."));
 
-        if (!userDtoOptional.isPresent()) {
-            if (isFromWebService) {
-                throw new UserNotFoundException(String.valueOf(idNumber));
-            } else {
-                // throw RecaptchaException to prevent DOS attack in case of idNumberStr is not exist
-                throw new RecaptchaException("idNumber not found.");
-            }
-        }
-
-        UserDto user = userDtoOptional.get();
         // check if user is active
         if (!user.isActivated()) {
             log.info("User {} is deactivated.", user.getNin());
-            throw new BadCredentialsException("invalid credentials.");
+            throw new DeactivatedUserException("User is not active.");
         }
 
 
         if (!BCrypt.checkpw(password, user.getPasswordHash())) {
             userService.updateLoginTries(user);
             if (user.getNumberOfTries() >= allowedFailedLogins) {
-                if (isFromWebService) {
-                    throw new ExceededNumberOfTriesException(String.valueOf(idNumber));
-                } else {
-                    throw new RecaptchaException("Requires captcha.");
-                }
-
+                throw new RecaptchaException(String.valueOf(idNumber));
             }
             log.debug("wrong password.");
             throw new BadCredentialsException("invalid credentials.");
@@ -112,24 +90,22 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
 
         // Check captcha
         if (user.getNumberOfTries() > allowedFailedLogins) {
-            if (!isFromWebService) {
-                String recaptchaResponse = request.getParameter(RECAPTCHA_RESPONSE_PARAM_NAME);
-                if (StringUtils.isBlank(recaptchaResponse)) {
-                    throw new RecaptchaException("Invalid captcha.");
-                }
-                RecaptchaInfo recaptchaInfo;
-                try {
-                    recaptchaInfo = recaptchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
-                } catch (IllegalArgumentException e) {
-                    throw new RecaptchaException("Invalid character in captcha response.");
-                }
-                if (recaptchaInfo == null || !recaptchaInfo.isSuccess()) {
-                    userService.updateLoginTries(user);
-                    throw new RecaptchaException("Invalid captcha.");
-                }
-            } else {
-                throw new ExceededNumberOfTriesException(String.valueOf(idNumber));
+
+            String recaptchaResponse = request.getParameter(RECAPTCHA_RESPONSE_PARAM_NAME);
+            if (StringUtils.isBlank(recaptchaResponse)) {
+                throw new RecaptchaException(String.valueOf(idNumber));
             }
+            RecaptchaInfo recaptchaInfo;
+            try {
+                recaptchaInfo = recaptchaService.verifyRecaptcha(request.getRemoteAddr(), recaptchaResponse);
+            } catch (IllegalArgumentException e) {
+                throw new RecaptchaException("Invalid character in captcha response.");
+            }
+            if (recaptchaInfo == null || !recaptchaInfo.isSuccess()) {
+                userService.updateLoginTries(user);
+                throw new RecaptchaException("Invalid captcha.");
+            }
+
         }
 
         // check if user is already logged in if simultaneous login flag is disabled
@@ -139,7 +115,7 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
                 LocalDateTime oldTokenExpiryDateTime = oldTokenExpiryDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
                 if (oldTokenExpiryDateTime.isAfter(LocalDateTime.now())) {
                     // old token is still active, simultaneous login is not allowed
-                    throw new BadCredentialsException("User is already logged in");
+                    throw new UserAlreadyLoggedInException("User is already logged in");
                 }
             }
         }

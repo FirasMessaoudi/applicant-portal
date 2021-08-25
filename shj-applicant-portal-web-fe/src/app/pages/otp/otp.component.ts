@@ -67,7 +67,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title"):this.otpTitle;
       this.otpTitle = this.previousUrl == "/register" ? this.translate.instant("register.header_title"):this.otpTitle;
-      this.otpTitle = this.previousUrl == "/edit/contacts" ? this.translate.instant("settings.edit-contacts"):this.otpTitle;
+      this.otpTitle = this.previousUrl == "/settings" ? this.translate.instant("settings.edit-contacts"):this.otpTitle;
       this.otpData = data.user;
       this.updateAdminRequired = data.updateAdmin;
       this.startTimer(data.user?.otpExpiryMinutes);
@@ -146,7 +146,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
       });
-    }else if (this.previousUrl == "/edit/contacts" && this.currentPageUrl=="/edit/contacts/otp"){
+    }else if (this.previousUrl == "/settings" && this.currentPageUrl=="/edit/contacts/otp"){
       this.userService.updateUserContacts(this.editContacts, pin).pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
@@ -194,9 +194,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goBack() {
     clearInterval(this.timerInterval);
-    if (this.currentPageUrl=="/edit/contacts/otp"){
-    this.router.navigate(['/settings']);}
-    else{this.router.navigate([this.previousUrl]);}
+    this.router.navigate([this.previousUrl]);
   }
 
   startTimer(durationMinutes) {
