@@ -194,7 +194,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goBack() {
     clearInterval(this.timerInterval);
-    this.router.navigate(['/settings']);
+    if (this.currentPageUrl=="/edit/contacts/otp"){
+    this.router.navigate(['/settings']);}
+    else{this.router.navigate([this.previousUrl]);}
   }
 
   startTimer(durationMinutes) {
