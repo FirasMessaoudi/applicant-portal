@@ -462,5 +462,16 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
 
         return user;
     }
+    @Test
+    public void test_find_user_contacts() throws Exception {
+        int userIdToView = 2;
+        String url = Navigation.API_USERS + "/find/contacts/" + userIdToView;
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(userIdToView)));
+
+        verify(userService, times(1)).findUserContacts(userIdToView);
+    }
+
 
 }
