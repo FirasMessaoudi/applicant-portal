@@ -1,4 +1,3 @@
-
 <nav aria-label="breadcrumb" class="pt-2">
   <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
     <li class="breadcrumb-item active" aria-current="page ">{{'general.main' | translate}}</li>
@@ -39,8 +38,8 @@
                   {{
                   ar?.typeCode
                     ? lookupService().localizedLabel(
-                    ritualTypes,
-                    ar?.typeCode
+                      ritualTypes,
+                      ar?.typeCode
                     )
                     : ""
                   }}
@@ -90,88 +89,65 @@
         <form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="form-group">
 
           <div class="d-flex">
-                <div class="col-5 col-md-6 p-0 mr-1" role="group">
-                  <label>   {{"general.email"|translate}} </label>
-                  <div class="input-group">
+            <div class="col-5 col-md-6 p-0 mr-1" role="group">
+              <label>   {{"general.email"|translate}} </label>
+              <div class="input-group">
 
-                    <input type="email" class="form-control"
-                           formControlName="email" maxlength="50"
-                           [class.is-invalid]="f.email.invalid && f.email.touched"/>
-                    <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
-                      <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
-                      <div
-                        *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
-                    </div>
-                  </div>
+                <input type="email" class="form-control"
+                       formControlName="email" maxlength="50"
+                       [class.is-invalid]="f.email.invalid && f.email.touched"/>
+                <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+                  <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
+                  <div
+                    *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
                 </div>
-                <div class="col-7 col-md-6 p-0" role="group">
-                  <ng-template #rt let-r="result" let-t="term">
-                    <ngb-highlight [result]="r.dial_code" [term]="t"></ngb-highlight>
-                    <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}}"></span>
-                  </ng-template>
-                  <label> {{"general.mobile_number"|translate}}</label>
-                  <div class="input-group flex-nowrap">
-
-                    <ngx-intl-tel-input
-                      [cssClass]="'form-control'"
-                      [preferredCountries]="[CountryISO.SaudiArabia, CountryISO.Tunisia, CountryISO.Egypt]"
-                      [enableAutoCountrySelect]="false"
-                      [enablePlaceholder]="true"
-                      [searchCountryFlag]="true"
-                      [searchCountryField]="[SearchCountryField.Iso2, SearchCountryField.Name]"
-                      [selectFirstCountry]="false"
-                      [selectedCountryISO]="CountryISO.SaudiArabia"
-                      [maxLength]="15"
-                      [phoneValidation]="true"
-                      name="phone"
-                      formControlName="phone"
-                    ></ngx-intl-tel-input>
-
-
-                    <!-- <input type="text" class="form-control" placeholder="" formControlName="mobileNumber"
-                           maxlength="30"
-                           onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
-                           min="0" step="1"
-                           [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched">
-                    <div class="input-group-append col-4 col-md-3 px-0 country_code_flag">
-                      <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode}} flag-icon-selected"></span>
-                      <input id="typeahead-template" type="text" class="form-control arrow_icon" [ngbTypeahead]="search"
-
-                             [resultTemplate]="rt" [inputFormatter]="formatter" [resultFormatter]="formatter"
-                             [class.is-invalid]="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"
-                             formControlName="countryPhonePrefix" (selectItem)="selectedItem($event)"
-                             (focus)="onFocus($event)"
-                             #instance="ngbTypeahead"/>
-                    </div> -->
-                    <div
-                      *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched) || (f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched)"
-                      class="text-danger">
-                      <div
-                        *ngIf="f.countryPhonePrefix.invalid && f.countryPhonePrefix.touched"> {{'general.field_validation_required' | translate}} </div>
-                      <div
-                        *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
-                      <div
-                        *ngIf="f.mobileNumber.errors?.pattern">{{'general.field_validation_pattern' | translate}}</div>
-                      <div
-                        *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
-                    </div>
-
-
-                    <div class="input-group-append">
-                    <button class="btn btn-outline-gray-300" type="button" ngbTooltip="{{'general.btn_edit'|translate}}"
-                            *ngIf="contactsForm.disabled" (click)="setContactsEnabled()">
-                      <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-                    </button>
-
-                      <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
-                            *ngIf="!contactsForm.disabled" (click)="onSubmit()">
-                      <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-                    </button>
-                  </div>
-                  </div>
-
-                </div>
+              </div>
             </div>
+            <div class="col-7 col-md-6 p-0" role="group">
+              <ng-template #rt let-r="result" let-t="term">
+                <ngb-highlight [result]="r.dial_code" [term]="t"></ngb-highlight>
+                <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}}"></span>
+              </ng-template>
+              <label> {{"general.mobile_number"|translate}}</label>
+              <div class="input-group flex-nowrap">
+
+                <ngx-intl-tel-input
+                  [cssClass]="'form-control'"
+                  [preferredCountries]="getPreferredCountries()"
+                  [enableAutoCountrySelect]="false"
+                  [searchCountryFlag]="true"
+                  [selectFirstCountry]="false"
+                  [selectedCountryISO]="originalCountryCode"
+                  [separateDialCode]="true"
+                  [maxLength]="15"
+                  formControlName="mobileNumber"
+                ></ngx-intl-tel-input>
+
+                <div class="input-group-append">
+                  <button class="btn btn-outline-gray-300" type="button" ngbTooltip="{{'general.btn_edit'|translate}}"
+                          *ngIf="contactsForm.disabled" (click)="setContactsEnabled()">
+                    <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
+                  </button>
+
+                  <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
+                          *ngIf="!contactsForm.disabled" (click)="onSubmit()">
+                    <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                  </button>
+                </div>
+              </div>
+              <div
+                *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
+                class="text-danger">
+                <div
+                  *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
+                <div
+                  *ngIf="f.mobileNumber.errors?.validatePhoneNumber">{{'general.field_validation_pattern' | translate}}</div>
+                <div
+                  *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
+              </div>
+
+            </div>
+          </div>
 
         </form>
 

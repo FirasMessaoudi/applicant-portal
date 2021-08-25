@@ -8,9 +8,6 @@ import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DccValidators} from "@shared/validators";
-import {COUNTRY} from "@model/enum/country_code";
-import {Observable, OperatorFunction} from "rxjs";
-import {debounceTime, map} from "rxjs/operators";
 import {UserContacts} from "@model/UserContacts.model";
 import {Router} from "@angular/router";
 import {User} from "@shared/model";
@@ -25,10 +22,8 @@ import {I18nService} from "@dcc-commons-ng/services";
 })
 export class SettingsComponent implements OnInit {
 
-  separateDialCode = false;
   SearchCountryField = SearchCountryField;
   CountryISO = CountryISO;
-  PhoneNumberFormat = PhoneNumberFormat;
 
   closeResult = '';
 
@@ -44,10 +39,8 @@ export class SettingsComponent implements OnInit {
   originalEmail: any;
   originalMobileNo: any;
   originalCountryCode: any;
-  userCountry: any;
-  COUNTRY = COUNTRY;
   userContacts: UserContacts = new UserContacts();
-  selectedCountryCode = "ae";
+  selectedCountryCode = "SA";
   formattedCountryDial: any;
 
   constructor(private modalService: NgbModal,
@@ -89,13 +82,7 @@ export class SettingsComponent implements OnInit {
         this.contactsForm.controls['mobileNumber'].setValue(data.mobileNumber);
         this.originalMobileNo = data.mobileNumber
         this.originalEmail = data.email;
-        this.originalCountryCode = data.countryCode.toUpperCase();
-
-        this.userCountry = COUNTRY.filter(function (c) {
-          return data.countryCode.toUpperCase() == c.code;
-        });
-        this.contactsForm.controls["countryPhonePrefix"].setValue({dial_code: this.userCountry[0].dial_code});
-
+        this.originalCountryCode = data.countryCode.toLowerCase();
         this.selectedCountryCode = data.countryCode.toLowerCase();
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
@@ -114,17 +101,6 @@ export class SettingsComponent implements OnInit {
     this.getRitualSeason();
     this.createForm();
   }
-
-
-  search: OperatorFunction<string, readonly { dial_code, name, code }[]> = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      map(term => term === '' ? this.COUNTRY
-        // : this.statesWithFlags.filter(v => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-        : this.COUNTRY.filter(v => v.dial_code.toLowerCase().indexOf(term.toLowerCase()) > -1))
-    )
-
-  formatter = (x: { dial_code: string }) => x.dial_code;
 
   public onFocus(e: Event): void {
     e.stopPropagation();
@@ -146,7 +122,7 @@ export class SettingsComponent implements OnInit {
     this.enableEditLanguage = true;
     if (this.selectedLanguage != "" && this.selectedLanguage != this.currentLanguage) {
       this.setLanguage(this.selectedLanguage);
-      this.userService.updatePreferredLang(this.selectedLanguage.startsWith('ar') ? "ar" : "en").subscribe(response => {
+      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en").subscribe(response => {
         if (response && response.errors) {
           this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
 
@@ -162,11 +138,9 @@ export class SettingsComponent implements OnInit {
   private createForm() {
 
     this.contactsForm = this.formBuilder.group({
-      mobileNumber: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(15)]],
-      email: ['', [DccValidators.email, Validators.required]],
-      countryPhonePrefix: [{dial_code: ''}, [Validators.required]]
+      mobileNumber: ['', Validators.required],
+      email: ['', [DccValidators.email, Validators.required]]
     });
-
 
   }
 
@@ -175,7 +149,7 @@ export class SettingsComponent implements OnInit {
       console.log('seasons', seasons);
       this.seasons = seasons;
       if (this.seasons.length > 0) {
-        console.log("this.selectedSeasonvv", this.selectedSeason)
+        console.log("this.selectedSeason", this.selectedSeason)
         if (this.selectedSeason == null) {
           this.selectedSeason = this.seasons[0];
         }
@@ -225,13 +199,8 @@ export class SettingsComponent implements OnInit {
 
   changeSelectedApplicantRitual(applicantRitual: ApplicantRitualLite) {
     this.selectedApplicantRitual = applicantRitual;
-
   }
 
-  selectedItem($event) {
-    this.contactsForm.controls["countryPhonePrefix"].setValue($event.item.dial_code);
-    this.selectedCountryCode = $event.item.code.toLowerCase();
-  }
 
   onApplicantRitualChange(applicantRitualId: number) {
     let curSelected = this.applicantRituals.filter(ar => ar.id == applicantRitualId)[0];
@@ -255,6 +224,12 @@ export class SettingsComponent implements OnInit {
 
   }
 
+  getPreferredCountries(): Array<any> {
+    const preferredCountries = [CountryISO.SaudiArabia, this.originalCountryCode];
+    const uniqueCountrySet = new Set(preferredCountries);
+    return [...uniqueCountrySet];
+  }
+
   onSubmit() {
     // trigger all validations
     Object.keys(this.contactsForm.controls).forEach(field => {
@@ -264,20 +239,23 @@ export class SettingsComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.contactsForm.invalid) {
+
+      console.log(this.contactsForm.controls['mobileNumber'].errors);
       return;
     }
 
-    if (this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value ||
-      this.originalEmail != this.contactsForm.controls['email'].value || this.originalCountryCode != this.selectedCountryCode.toUpperCase()) {
+    if (this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.number ||
+      this.originalEmail != this.contactsForm.controls['email'].value || this.originalCountryCode != this.contactsForm.controls['mobileNumber'].value.countryCode.toUpperCase()) {
 
-      let reg1 = /\+/gi;
-      let reg2 = /\-/gi;
-      this.userContacts.countryCode = this.selectedCountryCode.toUpperCase();
+      let reg1 = / /g;
+      let reg2 = /\+/gi;
+      this.userContacts.countryCode = this.contactsForm.controls['mobileNumber'].value.countryCode.toUpperCase();
       this.userContacts.email = this.contactsForm.controls['email'].value;
-      this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value;
-      this.formattedCountryDial = this.contactsForm.controls['countryPhonePrefix'].value.dial_code.replace(reg1, "00").replace(reg2, "");
+      this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value.number.replace(reg1, "");
+      this.formattedCountryDial = this.contactsForm.controls['mobileNumber'].value.dialCode.replace(reg2, "");
       this.userContacts.countryPhonePrefix = this.formattedCountryDial;
 
+      console.log(this.userContacts);
 
       this.userService.generateOTPForEditContact(this.userContacts).subscribe(response => {
         if (!response) {
