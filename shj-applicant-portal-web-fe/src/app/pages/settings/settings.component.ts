@@ -290,7 +290,7 @@ export class SettingsComponent implements OnInit {
 
           this.authenticationService.updateOtpSubject({
             user: user,
-            actionType: "/edit/contacts",
+            actionType: "/settings",
             editContacts: this.userContacts
           });
 
