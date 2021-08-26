@@ -1,8 +1,6 @@
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.services.dto.AuthorityConstants;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
@@ -15,8 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -144,6 +144,25 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(CHANGE_PASSWORD_SUCCESS_MSG).build());
 
+    }
+
+    /**
+     * get user main data by uin and ritualId
+     */
+    @GetMapping("/main-data/{ritualId}")
+    public ApplicantMainDataDto findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findUserMainDataByUin(loggedInUserUin, ritualId).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
+
+    }
+
+    /**
+     * get user health details by uin and ritual ID
+     */
+    @GetMapping("/health/{ritualId}")
+    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
     }
 
     private ResponseEntity<WsResponse<?>> generateFailResponse(WsError.EWsError errorCode, String reference) {

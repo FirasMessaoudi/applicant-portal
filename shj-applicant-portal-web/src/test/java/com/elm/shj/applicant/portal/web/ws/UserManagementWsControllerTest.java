@@ -1,5 +1,6 @@
 package com.elm.shj.applicant.portal.web.ws;
 
+import com.elm.shj.applicant.portal.services.dto.ApplicantMainDataDto;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
@@ -18,6 +19,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -168,6 +170,21 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
                 .andExpect(status().isOk()).andExpect(jsonPath("$.status", is(WsResponse.EWsResponseStatus.SUCCESS.getCode())));
 
         verify(userService, times(1)).updateUserPassword(eq(Long.parseLong(TEST_USER_NIN)), anyString());
+    }
+
+    @Test
+    public void test_find_applicant_main_data_by_uin_and_ritualId_success() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/main-data/1234567897";
+        ApplicantMainDataDto applicantMainDataDto = new ApplicantMainDataDto();
+        applicantMainDataDto.setUin("1234567897");
+        when(userService.findUserMainDataByUin(any(String.class), any(Long.class))).thenReturn(Optional.of(applicantMainDataDto));
+        mockMvc.perform(get(url)
+                        .cookie(tokenCookie).with(csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.uin").value((applicantMainDataDto.getUin())));
+        verify(userService, times(1)).findUserMainDataByUin(any(String.class), any(Long.class));
+
     }
 
 }
