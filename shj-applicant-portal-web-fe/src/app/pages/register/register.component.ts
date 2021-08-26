@@ -14,7 +14,7 @@ import {HijriGregorianDatepickerComponent} from "@shared/modules/hijri-gregorian
 import {DateFormatterService} from "@shared/modules/hijri-gregorian-datepicker/datepicker/date-formatter.service";
 import {CardService, DEFAULT_MAX_USER_AGE} from "@core/services";
 import {DccValidators} from "@shared/validators";
-import {DatePipe, Location} from "@angular/common";
+import {DatePipe} from "@angular/common";
 import {User} from "@shared/model";
 import {CountryISO} from 'ngx-intl-tel-input';
 import {CountryLookup} from "@model/country-lookup.model";
@@ -95,6 +95,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadLookups();
     // calendar default;
     let toDayGregorian = this.dateFormatterService.todayGregorian();
     let toDayHijri = this.dateFormatterService.todayHijri();
@@ -163,7 +164,6 @@ export class RegisterComponent implements OnInit {
     let mobileNumber = this.registerForm.controls['mobileNumber'].value.number.replace(reg1, "").replace(reg3, "");
     this.registerForm.controls['mobileNumber'].setValue(mobileNumber);
 
-    console.log(this.registerForm.value);
     this.registerService.generateOTPForRegistration(this.registerForm.value, this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (!response) {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
@@ -226,6 +226,11 @@ export class RegisterComponent implements OnInit {
     return frm.controls['password'].value === frm.controls['confirmPassword'].value ? null : {'mismatch': true};
   }
 
+  loadLookups() {
+    this.cardService.findCountries().subscribe(result => {
+      this.countries = result;
+    });
+  }
 
   verifyApplicant() {
     this.isApplicantVerified = false;
@@ -235,28 +240,26 @@ export class RegisterComponent implements OnInit {
         this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
         this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
         this.registerForm.controls['email'].setValue(this.user.email);
-
         this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
-        let applicantMobileNumber = this.registerForm.controls['mobileNumber'];
-        console.log(applicantMobileNumber.value);
 
+        let applicantMobileNumber;
         if (response.hasLocalMobileNumber) {
           this.selectedCountryCode = this.SAUDI_COUNTRY_CODE.toLowerCase();
+          applicantMobileNumber = this.user.mobileNumber.substring(this.user.mobileNumber.length - 9);
+          this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         } else {
           this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
+          let dialCode = this.countries.find(c => this.selectedCountryCode.toLowerCase() === c.code.toLowerCase())?.countryPhonePrefix;
+          applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
+          this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         }
 
-        // this.registerForm.controls["countryPhonePrefix"].setValue({countryPhonePrefix: this.applicantCountry[0]?.countryPhonePrefix});
-        // Use of String replace() Method
-        /*        let applicantMobileNumber = this.user.mobileNumber.length > 10 ? this.user.mobileNumber.substring(this.applicantCountry[0]?.countryPhonePrefix.length)
-                  : (this.user.mobileNumber.length == 10 ? this.user.mobileNumber.substring(1) : this.user.mobileNumber);*/
-        /*   this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);*/
-
         this.isApplicantVerified = true;
-        // this.originalMobileNo = applicantMobileNumber;
+        this.originalMobileNo = applicantMobileNumber;
         this.originalEmail = this.user.email;
         this.originalCountryCode = this.selectedCountryCode;
         this.registerForm.markAsUntouched();
+
       } else {
         this.isApplicantVerified = false;
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
@@ -318,7 +321,6 @@ export class RegisterComponent implements OnInit {
     const uniqueCountrySet = new Set(preferredCountries);
     return [...uniqueCountrySet];
   }
-
 
   goBack() {
     this.router.navigate(['/login'])
