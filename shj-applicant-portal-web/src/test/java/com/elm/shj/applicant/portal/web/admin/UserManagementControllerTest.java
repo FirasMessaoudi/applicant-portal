@@ -45,6 +45,8 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
     private static final Long TEST_UIN = 50208700000027L;
     private static final Long TEST_WRONG_UIN = 1234567899L;
     private static final String TEST_MOBILE = "555359285";
+    private static final int TEST_USER_CONTACT = 2;
+    private static final int TEST_USER_CONTACT_NOT_EXIST=2222;
     private List<UserDto> users;
 
 
@@ -463,15 +465,21 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
         return user;
     }
     @Test
-    public void test_find_user_contacts() throws Exception {
-        int userIdToView = 2;
-        String url = Navigation.API_USERS + "/find/contacts/" + userIdToView;
+    public void test_find_user_contacts_success() throws Exception {
+        String url = Navigation.API_USERS + "/find/contacts/" + TEST_USER_CONTACT;
         mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(userIdToView)));
+                .andExpect(jsonPath("id", is(TEST_USER_CONTACT)));
 
-        verify(userService, times(1)).findUserContacts(userIdToView);
+        verify(userService, times(1)).findOne((long)TEST_USER_CONTACT);
     }
+    @Test
+    public void test_find_user_contacts_does_not_exist() throws Exception {
+        String url = Navigation.API_USERS + "/find/contacts/" + TEST_USER_CONTACT_NOT_EXIST;
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$").doesNotExist());
 
+        verify(userService, times(1)).findOne((long) TEST_USER_CONTACT_NOT_EXIST);
+    }
 
 }
