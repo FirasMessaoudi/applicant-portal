@@ -535,10 +535,9 @@ public class UserManagementController {
      * @return the contacts of the user
      */
     @GetMapping("/find/contacts/{userId}")
-    @RolesAllowed(AuthorityConstants.EDIT_USER)
-    public UpdateContactsCmd findUserContacts(@PathVariable long userId) {
-        log.debug("Handler for {}", "Find User contacts");
-        return userService.findUserContacts(userId).orElseThrow(() -> new UsernameNotFoundException("No user found with id " + userId));
+    public UserDto findUserContacts(@PathVariable long userId) {
+        log.debug("Handler for {}", "Find User");
+        return maskUserInfo(userService.findOne(userId));
     }
 
 

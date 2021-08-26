@@ -456,22 +456,5 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.loadApplicantCardDetails(uin, ritualId);
     }
-    /**
-     * Finds a user contacts by his id
-     *
-     * @param id the id of the user to find
-     * @return the contacts of the user or empty structure
-     */
-    public Optional<UpdateContactsCmd> findUserContacts(long id){
-        Optional<JpaUser> jpaUser = userRepository.findById(id);
-        if(jpaUser.isPresent()){
-            UpdateContactsCmd contacts = new UpdateContactsCmd();
-            contacts.setEmail(jpaUser.get().getEmail());
-            contacts.setMobileNumber(jpaUser.get().getMobileNumber());
-            return Optional.of(contacts);
-        }
-        return  Optional.empty();
-
-    }
 }
 
