@@ -11,8 +11,7 @@ import {DccValidators} from "@shared/validators";
 import {UserContacts} from "@model/UserContacts.model";
 import {Router} from "@angular/router";
 import {User} from "@shared/model";
-
-import {CountryISO, PhoneNumberFormat, SearchCountryField} from 'ngx-intl-tel-input';
+import {CountryISO} from 'ngx-intl-tel-input';
 import {I18nService} from "@dcc-commons-ng/services";
 
 @Component({
@@ -21,9 +20,6 @@ import {I18nService} from "@dcc-commons-ng/services";
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-
-  SearchCountryField = SearchCountryField;
-  CountryISO = CountryISO;
 
   closeResult = '';
 
@@ -249,9 +245,11 @@ export class SettingsComponent implements OnInit {
 
       let reg1 = / /g;
       let reg2 = /\+/gi;
+      let reg3 = /\-/gi;
+
       this.userContacts.countryCode = this.contactsForm.controls['mobileNumber'].value.countryCode.toUpperCase();
       this.userContacts.email = this.contactsForm.controls['email'].value;
-      this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value.number.replace(reg1, "");
+      this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value.number.replace(reg1, "").replace(reg3, "");
       this.formattedCountryDial = this.contactsForm.controls['mobileNumber'].value.dialCode.replace(reg2, "");
       this.userContacts.countryPhonePrefix = this.formattedCountryDial;
 
@@ -271,10 +269,7 @@ export class SettingsComponent implements OnInit {
             actionType: "/settings",
             editContacts: this.userContacts
           });
-
           this.router.navigate(['/edit/contacts/otp'], {replaceUrl: true});
-
-
         }
       })
 
