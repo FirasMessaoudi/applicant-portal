@@ -151,6 +151,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.otpForm.markAsPristine();
         this.loading = false;
       })).subscribe(response=>{
+        clearInterval(this.timerInterval);
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
         this.router.navigate(['/settings'], {replaceUrl: true});
       }, error=>{
@@ -160,6 +161,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
             this.rows._results[0].nativeElement.focus();
           });
         }else {
+          clearInterval(this.timerInterval);
           this.toastr.error(this.translate.instant("general.dialog_edit_contacts_error_text"), this.translate.instant("settings.edit-contacts"));
           this.router.navigate(['/settings'], {replaceUrl: true});
 
