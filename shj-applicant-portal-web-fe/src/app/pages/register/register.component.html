@@ -17,7 +17,7 @@
     <img class="my-4" src="assets/images/logo.png" alt="logo"/>
   </div>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
+  <form [formGroup]="registerForm" class="login-box__wrapper">
     <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
       {{ "register.header_title" | translate }}
 
@@ -210,7 +210,7 @@
         </a>
 
         <button [ngClass]="{ 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }"
-                class="btn btn-dcc-primary w_full">
+                class="btn btn-dcc-primary w_full" (click)="register()">
           {{"general.register_user"|translate}}
         </button>
       </div>

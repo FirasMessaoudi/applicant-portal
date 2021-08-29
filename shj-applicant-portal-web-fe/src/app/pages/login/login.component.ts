@@ -119,6 +119,11 @@ export class LoginComponent implements OnInit {
     console.log('captcha is ready');
   }
 
+  refreshRegisterData() {
+    this.authenticationService.updateOtpSubject({});
+  }
+
+
   onCaptchaSuccess(captchaResponse: string): void {
     console.log(captchaResponse);
   }

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
@@ -18,13 +18,14 @@ import {DatePipe} from "@angular/common";
 import {User} from "@shared/model";
 import {CountryISO} from 'ngx-intl-tel-input';
 import {CountryLookup} from "@model/country-lookup.model";
+import {Subscription} from "rxjs";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
   templateUrl: 'register.component.html',
   styleUrls: ['register.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   model: NgbDateStruct;
   isValid: boolean = true;
@@ -42,7 +43,7 @@ export class RegisterComponent implements OnInit {
   originalEmail: any;
   originalMobileNo: any;
   originalCountryCode: any;
-
+  otpDataSubscription: Subscription;
   @ViewChild('reCaptchaEl')
   captchaElem: InvisibleReCaptchaComponent;
 
@@ -59,6 +60,7 @@ export class RegisterComponent implements OnInit {
   dateString: string;
   selectedDateType: any;
   dateStructGreg: any;
+  dateStructHijri: any;
   applicantCountry: any;
   countries: CountryLookup[] = [];
   countryList: Array<string>;
@@ -137,7 +139,26 @@ export class RegisterComponent implements OnInit {
       month: new Date().getMonth() + 1,
       day: new Date().getDate()
     };
+    this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
+      if (data.user && data.user.uin) {
+        this.isApplicantVerified = true;
+        let dateStruct = JSON.parse(localStorage.getItem('DATE_STRUCT'));
+        this.dateString = this.dateFormatterService.toString(dateStruct);
+        this.selectedDateOfBirth = dateStruct;
+        if (data.user.dateOfBirthGregorian) {
+          this.selectedDateType = DateType.Gregorian;
+          this.registerForm.controls['dateOfBirthGregorian'].setValue(this.dateFormatterService.toDate(dateStruct));
+          this.dateString = this.dateFormatterService.toString(this.dateFormatterService.toHijri(dateStruct));
 
+          this.registerForm.controls['dateOfBirthHijri'].setValue(this.dateString.split('/').reverse().join(''));
+
+        }
+        this.user = data.user;
+        this.registerForm.controls['uin'].setValue(this.user.uin);
+        this.selectedCountryCode = this.user.countryCode.toLowerCase();
+        this.fillRegistrationForm();
+      }
+    });
   }
 
   // convenience getter for easy access to form fields
@@ -145,7 +166,7 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.controls;
   }
 
-  onSubmit() {
+  register() {
 
     // trigger all validations
     Object.keys(this.registerForm.controls).forEach(field => {
@@ -192,6 +213,7 @@ export class RegisterComponent implements OnInit {
           this.user.countryCode = this.registerForm.controls.mobileNumber.value.countryCode;
           this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
+          this.user.dateOfBirthHijri = this.registerForm.controls.dateOfBirthHijri.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
           this.authenticationService.updateOtpSubject({
@@ -239,11 +261,7 @@ export class RegisterComponent implements OnInit {
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
       if (response) {
         this.user = response;
-        this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
-        this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
-        this.registerForm.controls['email'].setValue(this.user.email);
-        this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
-
+        this.fillRegistrationForm();
         let applicantMobileNumber;
         if (response.hasLocalMobileNumber) {
           this.selectedCountryCode = this.SAUDI_COUNTRY_CODE.toLowerCase();
@@ -258,8 +276,6 @@ export class RegisterComponent implements OnInit {
 
         this.isApplicantVerified = true;
         this.originalMobileNo = applicantMobileNumber;
-        this.originalEmail = this.user.email;
-        this.originalCountryCode = this.selectedCountryCode;
         this.registerForm.markAsUntouched();
 
       } else {
@@ -297,12 +313,22 @@ export class RegisterComponent implements OnInit {
 
   onDateOfBirthChange(event) {
     if (event) {
-      let dateStruct = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.dateFormatterService.toHijri(event) : this.dateFormatterService.toGregorian(event);
-      this.dateStructGreg = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? event : this.dateFormatterService.toGregorian(event);
-      let dateStructHijri = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.dateFormatterService.toHijri(event) : event;
+      let dateStruct;
+      if (this.dateOfBirthPicker.selectedDateType == DateType.Gregorian) {
+        this.dateStructGreg = event;
+        this.dateStructHijri = this.dateFormatterService.toHijri(event);
+        dateStruct = this.dateFormatterService.toHijri(event);
+        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
+      } else {
+        this.dateStructGreg = this.dateFormatterService.toGregorian(event);
+        this.dateStructHijri = event;
+        dateStruct = this.dateFormatterService.toGregorian(event);
+        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
+      }
+
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.registerForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(this.dateStructGreg));
-      this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(dateStructHijri).split('/').reverse().join(''));
+      this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(this.dateStructHijri).split('/').reverse().join(''));
     } else if (event == null) {
       this.dateString = '';
       this.registerForm.controls.dateOfBirthGregorian.setErrors({'required': true})
@@ -316,7 +342,22 @@ export class RegisterComponent implements OnInit {
     return [...uniqueCountrySet];
   }
 
+
   goBack() {
     this.router.navigate(['/login'])
   }
+
+  fillRegistrationForm() {
+    this.registerForm.controls['fullNameEn'].setValue(this.user.fullNameEn);
+    this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
+    this.registerForm.controls['email'].setValue(this.user.email);
+    this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
+    this.originalEmail = this.user.email;
+    this.originalCountryCode = this.selectedCountryCode;
+  }
+
+  ngOnDestroy() {
+    this.otpDataSubscription.unsubscribe();
+  }
+
 }
