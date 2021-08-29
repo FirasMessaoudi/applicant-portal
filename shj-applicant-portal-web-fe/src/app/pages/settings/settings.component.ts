@@ -188,8 +188,8 @@ export class SettingsComponent implements OnInit {
     return this.contactsForm?.controls;
   }
 
-  onSeasonChange(selectedSeason: number) {
-    this.selectedSeason = selectedSeason;
+  onSeasonChange(event) {
+    this.selectedSeason = event.target.value;
     this.getApplicantRitualLiteBySeason(false);
   }
 
@@ -198,8 +198,8 @@ export class SettingsComponent implements OnInit {
   }
 
 
-  onApplicantRitualChange(applicantRitualId: number) {
-    let curSelected = this.applicantRituals.filter(ar => ar.id == applicantRitualId)[0];
+  onApplicantRitualChange(event) {
+    let curSelected = this.applicantRituals.filter(ar => ar.id == event.target.value)[0];
     this.changeSelectedApplicantRitual(curSelected);
   }
 

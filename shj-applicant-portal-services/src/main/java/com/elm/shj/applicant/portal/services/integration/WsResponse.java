@@ -18,6 +18,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class WsResponse<T> implements Serializable {
 
+    private static final long serialVersionUID = -8577435158782277864L;
+
     public enum EWsResponseStatus {
         SUCCESS(0), FAILURE(1);
 

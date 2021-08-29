@@ -416,7 +416,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } catch (Exception ex) {
             return null;
         }
-        return wsResponse.getBody();
+        if (WsResponse.EWsResponseStatus.FAILURE.equals(wsResponse.getStatus())) {
+            return null;
+        } else {
+            return wsResponse.getBody();
+        }
     }
 
     /**
@@ -438,10 +442,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } catch (Exception ex) {
             return null;
         }
-
-        return wsResponse.getBody();
-
-
+        if (WsResponse.EWsResponseStatus.FAILURE.equals(wsResponse.getStatus())) {
+            return null;
+        } else {
+            return wsResponse.getBody();
+        }
     }
 
 
