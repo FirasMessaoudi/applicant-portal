@@ -24,13 +24,13 @@
                   بياناتي
                 </a>
                             </li>
-                            <li routerLinkActive="active">
-                                <a (click)="isActive = false" class="py-2 d-block h6" [routerLink]="['/hajj-rituals']">
+                            <li routerLinkActive="disable">
+                                <a (click)="isActive = false" class="py-2 d-block h6 isDisabled" [routerLink]="routerDisabled ? null : ['/hajj-rituals']">
                   برنامجي
                 </a>
                             </li>
-                            <li routerLinkActive="active">
-                                <a (click)="isActive = false" class="py-2 d-block h6" routerLink="/hajj-journey/list">الجدول الزمني
+                            <li routerLinkActive="disable">
+                                <a (click)="isActive = false" class="py-2 d-block h6 isDisabled" [routerLink]="routerDisabled ? null : ['/hajj-journey/list']">الجدول الزمني
                 </a>
                             </li>
                         </ul>
