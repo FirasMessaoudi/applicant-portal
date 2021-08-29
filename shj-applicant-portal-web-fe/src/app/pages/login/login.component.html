@@ -156,7 +156,8 @@
     </div>
 
     <div class="form-group mt-6 mb-0">
-      <a routerLink="/register" class="btn btn-outline-dcc-primary btn-block">
+      <a routerLink="/register" (click)="authenticationService.updateOtpSubject({ })"
+         class="btn btn-outline-dcc-primary btn-block">
         {{ "login.btn_new_registration" | translate }}
       </a>
     </div>
