@@ -63,6 +63,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   dateStructHijri: any;
   applicantCountry: any;
   countries: CountryLookup[] = [];
+  countryList: Array<string>;
   selectedCountryCode = "SA";
 
   SAUDI_COUNTRY_CODE = "SA";
@@ -251,13 +252,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   loadLookups() {
     this.cardService.findCountries().subscribe(result => {
       this.countries = result;
+
     });
   }
 
   verifyApplicant() {
     this.isApplicantVerified = false;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
-      if (response && !this.checkNullProperties(response)) {
+      if (response) {
         this.user = response;
         this.fillRegistrationForm();
         let applicantMobileNumber;
@@ -267,7 +269,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         } else {
           this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
-          let dialCode = this.countries.find(c => this.selectedCountryCode.toLowerCase() === c.code.toLowerCase())?.countryPhonePrefix;
+          let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase()).countryPhonePrefix;
           applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
           this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         }
@@ -332,14 +334,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.registerForm.controls.dateOfBirthGregorian.setErrors({'required': true})
       this.registerForm.controls.dateOfBirthGregorian.markAsTouched({onlySelf: true});
     }
-  }
-
-  checkNullProperties(obj: any) {
-    for (let key in obj) {
-      if (obj[key] !== null)
-        return false;
-    }
-    return true;
   }
 
   getPreferredCountries(): Array<any> {

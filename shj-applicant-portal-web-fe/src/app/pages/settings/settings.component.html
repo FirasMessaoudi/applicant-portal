@@ -20,7 +20,7 @@
           <div class="col-5 col-md-6 p-0 mr-1" role="group">
             <label for="inputEmail4">{{ "settings.season" | translate }}</label>
 
-            <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event.target.value)"
+            <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event)"
                     [disabled]="!enableEditRitual">
               <option [value]="season" *ngFor="let season of seasons"
                       [selected]="season==selectedSeason">{{season}}</option>
@@ -31,7 +31,7 @@
             <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
 
             <div class="input-group flex-nowrap">
-              <select id="inputEmail4" class="custom-select" (change)="onApplicantRitualChange($event.target.value)"
+              <select id="inputApplicantRitual" class="custom-select" (change)="onApplicantRitualChange($event)"
                       [disabled]="!enableEditRitual">
                 <option [value]="ar.id" *ngFor="let ar of applicantRituals"
                         [selected]="ar.id == selectedApplicantRitual.id">
