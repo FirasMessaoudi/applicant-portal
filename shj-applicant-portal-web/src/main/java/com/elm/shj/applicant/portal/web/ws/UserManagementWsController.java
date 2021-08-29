@@ -1,6 +1,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
@@ -11,6 +12,7 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -19,12 +21,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -47,12 +51,13 @@ public class UserManagementWsController {
 
     public static final String RESET_PASSWORD_SUCCESS_MSG = "Reset password successfully";
     public static final String CHANGE_PASSWORD_SUCCESS_MSG = "Change password successfully";
-
+    private static final int INVALID_OTP_RESPONSE_CODE = 562;
 
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
+    private final OtpService otpService;
 
     /**
      * Resets the user password
@@ -150,25 +155,85 @@ public class UserManagementWsController {
      * get user main data by uin and ritualId
      */
     @GetMapping("/main-data/{ritualId}")
-    public ApplicantMainDataDto findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findUserMainDataByUin(loggedInUserUin, ritualId).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
+        Optional<ApplicantMainDataDto> applicantMainDataDto = userService.findUserMainDataByUin(loggedInUserUin, ritualId);
+        if (!applicantMainDataDto.isPresent()){
+            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
+        }
 
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantMainDataDto.get()).build());
     }
 
     /**
      * get user health details by uin and ritual ID
      */
     @GetMapping("/health/{ritualId}")
-    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        Optional<ApplicantHealthLiteDto> applicantHealthDetails = userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        if (!applicantHealthDetails.isPresent()){
+            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
+        }
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantHealthDetails.get()).build());
     }
 
     private ResponseEntity<WsResponse<?>> generateFailResponse(WsError.EWsError errorCode, String reference) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(errorCode.getCode()).referenceNumber(reference).build()).build());
+    }
+
+    /**
+     * update user loggedin contacts
+     */
+    @PutMapping("/contacts")
+    public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, @RequestParam String pin, Authentication authentication) {
+        log.debug("Handler for {}", "Update User Contacts");
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+
+        if (!otpService.validateOtp(loggedInUserUin, pin)) {
+            return generateFailResponse(WsError.EWsError.INVALID_OTP, pin);
+        }
+        UserDto databaseUser = null;
+        try {
+            databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
+        } catch (Exception e) {
+            log.error("Error while find user in  updating user contacts.", e);
+            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
+        }
+
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri());
+        ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
+        if (returnedApplicant == null)
+            return generateFailResponse(WsError.EWsError.NOT_FOUND_IN_ADMIN, loggedInUserUin);
+
+
+        // sets form fields to database user instance
+        databaseUser.setEmail(userContacts.getEmail());
+        databaseUser.setMobileNumber(userContacts.getMobileNumber());
+        databaseUser.setCountryPhonePrefix(userContacts.getCountryPhonePrefix());
+        databaseUser.setCountryCode(userContacts.getCountryCode());
+        try {
+            userService.save(databaseUser);
+        } catch (Exception e) {
+            log.error("Error while updating user contacts.", e);
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                                    .body(WsError.builder().error(WsError.EWsError.UPDATE_USER_ERROR.getCode())
+                                    .referenceNumber(String.valueOf(databaseUser.getUin()))
+                                    .build()).build());
+
+                    //ResponseEntity.of(Optional.empty());
+        }
+        returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(returnedApplicant).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

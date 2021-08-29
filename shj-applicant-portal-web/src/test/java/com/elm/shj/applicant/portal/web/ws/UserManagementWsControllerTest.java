@@ -1,7 +1,10 @@
 package com.elm.shj.applicant.portal.web.ws;
 
+import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantMainDataDto;
+import com.elm.shj.applicant.portal.services.dto.UpdateContactsCmd;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
+import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
@@ -9,18 +12,19 @@ import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.elm.shj.applicant.portal.web.ws.WsError.EWsError.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +33,11 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
 
     private UserDto user;
     private static final String TEST_UIN = "502087000000";
+    private static final Long TEST_WRONG_UIN = 1234567899L;
+    private static final String TEST_EMAIL = "app@elm.sa";
+    private static final String TEST_COUNTRY_CODE = "SA";
+    private static final String TEST_COUNTRY_PHONE_PREFIX = "+966";
+    private static final String TEST_MOBILE = "555359285";
 
     @Override
     public void setUp() throws Exception {
@@ -174,17 +183,71 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
 
     @Test
     public void test_find_applicant_main_data_by_uin_and_ritualId_success() throws Exception {
-        String url = Navigation.API_INTEGRATION_USERS + "/main-data/1234567897";
+        String url = Navigation.API_INTEGRATION_USERS + "/main-data/" + TEST_UIN;
         ApplicantMainDataDto applicantMainDataDto = new ApplicantMainDataDto();
-        applicantMainDataDto.setUin("1234567897");
+        applicantMainDataDto.setUin(TEST_UIN);
         when(userService.findUserMainDataByUin(any(String.class), any(Long.class))).thenReturn(Optional.of(applicantMainDataDto));
         mockMvc.perform(get(url)
                         .cookie(tokenCookie).with(csrf())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.uin").value((applicantMainDataDto.getUin())));
+                        .accept(MediaType.APPLICATION_JSON)).andDo(print())
+                        .andExpect(status().isOk())
+                        .andExpect(jsonPath("$.body.uin").value((applicantMainDataDto.getUin())));
         verify(userService, times(1)).findUserMainDataByUin(any(String.class), any(Long.class));
 
+    }
+
+    @Test
+    public void test_find_applicant_main_data_by_uin_and_ritualId_fail() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/main-data/" + TEST_WRONG_UIN;
+        mockMvc.perform(get(url)
+                        .cookie(tokenCookie).with(csrf())
+                        .accept(MediaType.APPLICATION_JSON))
+                        .andExpect(jsonPath("$.body.uin").doesNotExist());
+        verify(userService, times(1)).findUserMainDataByUin(any(String.class), any(Long.class));
+
+    }
+
+    @Test
+    public void test_update_user_contacts_success() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/contacts";
+        UpdateContactsCmd userContacts = new UpdateContactsCmd();
+        UserDto user = new UserDto();
+        userContacts.setCountryCode(TEST_COUNTRY_CODE);
+        userContacts.setEmail(TEST_EMAIL);
+        userContacts.setMobileNumber(TEST_MOBILE);
+        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
+        when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
+        when(userService.updateUserInAdminPortal(any())).thenReturn(new ApplicantLiteDto());
+        when(userService.save(any())).thenReturn(user);
+
+        mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON)
+                        .content(objectToJson(userContacts)).with(csrf()))
+                        .andDo(print()).andExpect(status().isOk());
+
+        verify(otpService, times(2)).validateOtp(anyString(), anyString());
+        verify(userService, times(1)).updateUserInAdminPortal(any());
+        verify(userService, times(1)).save(any());
+
+    }
+
+    @Test
+    public void test_update_user_contacts_fail_update_admin() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/contacts";
+        UpdateContactsCmd userContacts = new UpdateContactsCmd();
+        UserDto user = new UserDto();
+
+        userContacts.setCountryCode(TEST_COUNTRY_CODE);
+        userContacts.setEmail(TEST_EMAIL);
+        userContacts.setMobileNumber(TEST_MOBILE);
+        userContacts.setCountryPhonePrefix(TEST_COUNTRY_PHONE_PREFIX);
+        when(userService.findByUin(anyLong())).thenReturn(Optional.of(user));
+        when(userService.updateUserInAdminPortal(any())).thenReturn(null);
+        when(userService.save(any())).thenReturn(user);
+
+        mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
+                        .content(objectToJson(userContacts)).with(csrf()))
+                .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.body.error")
+                        .value(NOT_FOUND_IN_ADMIN.getCode()));
     }
 
 }
