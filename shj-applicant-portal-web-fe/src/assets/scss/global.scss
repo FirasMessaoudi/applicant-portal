@@ -36,6 +36,12 @@ dl {
 .hidden {
     display: none;
 }
+#phone:disabled {
+  color: #6c757d !important;
+  background-color: #d8d8d8 !important;
+  font-weight: unset !important;
+}
+
 
 
 /* Layout ..............................................................................*/

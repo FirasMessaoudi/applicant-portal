@@ -189,7 +189,7 @@ public class UserManagementController {
     @GetMapping("/health/{ritualId}")
     public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId).get();
     }
 
     /**

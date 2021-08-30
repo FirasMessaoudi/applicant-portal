@@ -416,7 +416,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } catch (Exception ex) {
             return null;
         }
-        return wsResponse.getBody();
+        if (WsResponse.EWsResponseStatus.FAILURE.equals(wsResponse.getStatus())) {
+            return null;
+        } else {
+            return wsResponse.getBody();
+        }
     }
 
     /**
@@ -438,10 +442,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } catch (Exception ex) {
             return null;
         }
-
-        return wsResponse.getBody();
-
-
+        if (WsResponse.EWsResponseStatus.FAILURE.equals(wsResponse.getStatus())) {
+            return null;
+        } else {
+            return wsResponse.getBody();
+        }
     }
 
 
@@ -449,8 +454,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadApplicantRitualLatestByUin(uin);
     }
 
-    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(String uin, Long ritualId) {
-        return integrationService.loadApplicantHealthDetails(uin, ritualId);
+    public Optional<ApplicantHealthLiteDto> findApplicantHealthDetailsByUinAndRitualId(String uin, Long ritualId) {
+        return Optional.ofNullable(integrationService.loadApplicantHealthDetails(uin, ritualId));
     }
 
     public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(String uin, Long ritualId) {

@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   showNavbar = false;
   isActive: boolean;
   public isMenuCollapsed = false;
-
+  routerDisabled = true;
   selectedApplicantRitual: ApplicantRitualLite;
 
   ritualTypes: Lookup[] =[];

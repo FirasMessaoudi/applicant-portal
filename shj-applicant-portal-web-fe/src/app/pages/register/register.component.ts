@@ -259,7 +259,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
-      if (response && !this.checkNullProperties(response)) {
+      if (response) {
         this.user = response;
         this.fillRegistrationForm();
         let applicantMobileNumber;
@@ -269,7 +269,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         } else {
           this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
-          let dialCode = this.countries.find(c => this.selectedCountryCode.toLowerCase() === c.code.toLowerCase())?.countryPhonePrefix;
+          let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase()).countryPhonePrefix;
           applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
           this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         }
@@ -336,16 +336,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  checkNullProperties(obj: any) {
-    for (let key in obj) {
-      if (obj[key] !== null)
-        return false;
-    }
-    return true;
-  }
-
   getPreferredCountries(): Array<any> {
-    const preferredCountries = [CountryISO.SaudiArabia, this.originalCountryCode];
+    const preferredCountries = [CountryISO.SaudiArabia, this.originalCountryCode?.toLowerCase()];
     const uniqueCountrySet = new Set(preferredCountries);
     return [...uniqueCountrySet];
   }

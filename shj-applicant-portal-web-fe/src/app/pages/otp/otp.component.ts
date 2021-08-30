@@ -111,6 +111,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('redirect to / page');
           clearInterval(this.timerInterval);
           this.getLatestApplicantRitualLite();
+          this.router.navigate(['/'], {replaceUrl: true});
 
         }
       }, error => {
@@ -151,6 +152,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.otpForm.markAsPristine();
         this.loading = false;
       })).subscribe(response=>{
+        clearInterval(this.timerInterval);
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
         this.router.navigate(['/settings'], {replaceUrl: true});
       }, error=>{
@@ -160,6 +162,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
             this.rows._results[0].nativeElement.focus();
           });
         }else {
+          clearInterval(this.timerInterval);
           this.toastr.error(this.translate.instant("general.dialog_edit_contacts_error_text"), this.translate.instant("settings.edit-contacts"));
           this.router.navigate(['/settings'], {replaceUrl: true});
 
@@ -225,10 +228,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
           localStorage.setItem('selectedSeason', JSON.stringify(applicantRitual?.hijriSeason));
           localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
+          this.userService.changeSelectedApplicantRitual(applicantRitual);
         }
-        this.router.navigate(['/'], {replaceUrl: true});
-      }, error=>{
-        this.router.navigate(['/'], {replaceUrl: true});
+
       });
 
   }

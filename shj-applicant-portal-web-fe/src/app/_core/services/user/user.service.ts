@@ -18,7 +18,7 @@ export const DEFAULT_MAX_USER_AGE = 16;
 export class UserService {
 
 
-  public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) {
     this.selectedApplicantRitual.asObservable();
   }
