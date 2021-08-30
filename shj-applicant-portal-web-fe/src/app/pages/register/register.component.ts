@@ -63,7 +63,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   dateStructHijri: any;
   applicantCountry: any;
   countries: CountryLookup[] = [];
-  countryList: Array<string>;
   selectedCountryCode = "SA";
 
   SAUDI_COUNTRY_CODE = "SA";
@@ -337,7 +336,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   getPreferredCountries(): Array<any> {
-    const preferredCountries = [CountryISO.SaudiArabia, this.originalCountryCode];
+    const preferredCountries = [CountryISO.SaudiArabia, this.originalCountryCode?.toLowerCase()];
     const uniqueCountrySet = new Set(preferredCountries);
     return [...uniqueCountrySet];
   }
