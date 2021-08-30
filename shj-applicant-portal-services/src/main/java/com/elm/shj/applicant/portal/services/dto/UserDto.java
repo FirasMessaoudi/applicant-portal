@@ -43,11 +43,9 @@ public class UserDto implements Serializable {
     private String email;
 
     @NotBlank(groups = {CreateUserValidationGroup.class})
-    @Length(max = 100, min = 1)
     @OnlyCharacters(min = 6, max = 150, arabic = true)
     private String fullNameAr;
     private String gender;
-    @Length(max = 100, min = 0)
     @OnlyCharacters(min = 10, max = 150, allowEmpty = false)
     private String fullNameEn;
     private Date lastLoginDate;
