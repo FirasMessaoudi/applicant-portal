@@ -111,6 +111,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('redirect to / page');
           clearInterval(this.timerInterval);
           this.getLatestApplicantRitualLite();
+          this.router.navigate(['/'], {replaceUrl: true});
 
         }
       }, error => {
@@ -227,10 +228,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
           localStorage.setItem('selectedSeason', JSON.stringify(applicantRitual?.hijriSeason));
           localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
+          this.userService.changeSelectedApplicantRitual(applicantRitual);
         }
-        this.router.navigate(['/'], {replaceUrl: true});
-      }, error=>{
-        this.router.navigate(['/'], {replaceUrl: true});
+
       });
 
   }
