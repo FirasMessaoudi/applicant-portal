@@ -4,7 +4,12 @@
     <li class="breadcrumb-item active" aria-current="page "></li>
   </ol>
 </nav>
-<div class="content__wrapper">
+<div *ngIf="loading" class="preloader">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+<div *ngIf="!loading" class="content__wrapper">
   <div class="title__Page">
     <h3 class="sectionTitle">
       {{ "card-management.my_profile" | translate }}
