@@ -62,28 +62,14 @@ export class CardDetailsComponent implements OnInit {
 
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
+      this.loadUserDetails();
     });
 
     this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
 
     this.loadLookups();
-    this.cardService.findMainProfile(this.selectedApplicantRitual.id).subscribe(data => {
-      if (data) {
-        this.applicant = data;
-      } else {
-        this.toastr.error(this.translate.instant('general.route_item_not_found'),
-          this.translate.instant('general.dialog_error_title'));
-      }
-    });
 
-    this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
-      if (data) {
-        this.healthDetails = data;
-      } else {
-        this.toastr.error(this.translate.instant('general.route_item_not_found'),
-          this.translate.instant('general.dialog_error_title'));
-      }
-    });
+    this.loadUserDetails();
 
     //TODO: dummy data
     this.hamlahPackage = {
@@ -117,6 +103,28 @@ export class CardDetailsComponent implements OnInit {
         "vehicleNumber": "ب ح ج 259"
       }]
     };
+  }
+
+  loadUserDetails(){
+    if(this.selectedApplicantRitual) {
+      this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
+        if (data) {
+          this.applicant = data;
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
+      });
+
+      this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+        if (data) {
+          this.healthDetails = data;
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
+      });
+    }
   }
 
   loadLookups() {
