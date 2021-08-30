@@ -364,7 +364,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.otpDataSubscription.unsubscribe();
-    this.loading = true;
   }
 
 }
