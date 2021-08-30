@@ -3,11 +3,11 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import com.elm.dcc.foundation.commons.validation.CharactersOnly;
 import com.elm.dcc.foundation.commons.validation.Password;
 import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.dcc.foundation.commons.validation.Unique;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
+import com.elm.shj.applicant.portal.services.data.validators.OnlyCharacters;
 import com.google.common.base.MoreObjects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,11 +44,11 @@ public class UserDto implements Serializable {
 
     @NotBlank(groups = {CreateUserValidationGroup.class})
     @Length(max = 100, min = 1)
-    @CharactersOnly
+    @OnlyCharacters(min = 6, max = 150, arabic = true)
     private String fullNameAr;
     private String gender;
     @Length(max = 100, min = 0)
-    @CharactersOnly
+    @OnlyCharacters(min = 10, max = 150, allowEmpty = false)
     private String fullNameEn;
     private Date lastLoginDate;
     @NotNull
@@ -78,7 +78,6 @@ public class UserDto implements Serializable {
     private Date creationDate;
     private Set<UserRoleDto> userRoles;
     private Date tokenExpiryDate;
-
 
 
     @Override
