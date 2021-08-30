@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   SAUDI_COUNTRY_CODE = "SA";
 
+
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
   constructor(
@@ -256,10 +257,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   verifyApplicant() {
+
+    this.loading = true;
     this.isApplicantVerified = false;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
+
       if (response) {
         this.user = response;
+        console.log('user : ', this.user);
         this.fillRegistrationForm();
         let applicantMobileNumber;
         if (response.hasLocalMobileNumber) {
@@ -281,6 +286,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.isApplicantVerified = false;
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
       }
+      this.loading = false;
     }, error => {
       console.log(error);
       this.registerForm.markAsUntouched();
@@ -294,6 +300,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       } else {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
       }
+      this.loading = false
     });
   }
 
@@ -357,6 +364,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.otpDataSubscription.unsubscribe();
+    this.loading = true;
   }
 
 }
