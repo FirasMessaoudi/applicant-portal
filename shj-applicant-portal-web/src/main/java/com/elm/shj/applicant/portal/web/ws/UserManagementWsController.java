@@ -263,6 +263,19 @@ public class UserManagementWsController {
                         .body(applicantRitualLites).build());
     }
 
+    /**
+     * get user latest ritual lite by uin
+     */
+    @GetMapping("/ritual-lite/latest")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualByUinAndSeasons(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualLiteDto ritualLiteDto = userService.findApplicantRitualLatestByUin(loggedInUserUin);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(ritualLiteDto).build());
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<WsResponse<?>> handleBadCredentialsException(
             BadCredentialsException ex) {

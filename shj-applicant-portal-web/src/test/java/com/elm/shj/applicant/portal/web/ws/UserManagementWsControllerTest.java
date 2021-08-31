@@ -304,4 +304,34 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
 
     }
 
+
+    @Test
+    public void test_find_applicant_ritual_latest_by_uin_success() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/ritual-lite/latest";
+
+        ApplicantRitualLiteDto applicantRitualLiteDto = new ApplicantRitualLiteDto();
+        when(userService.findApplicantRitualLatestByUin(any(String.class))).thenReturn(applicantRitualLiteDto);
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.hijriSeason", is(applicantRitualLiteDto.getHijriSeason())));
+
+
+        verify(userService, times(1)).findApplicantRitualLatestByUin(any(String.class));
+
+    }
+
+    @Test
+    public void test_find_applicant_ritual_latest_by_uin_not_found() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/ritual-lite/latest";
+
+        when(userService.findApplicantRitualLatestByUin(any(String.class))).thenReturn(null);
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body").isEmpty());
+
+
+        verify(userService, times(1)).findApplicantRitualLatestByUin(any(String.class));
+
+    }
+
 }
