@@ -1,10 +1,6 @@
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantMainDataDto;
-import com.elm.shj.applicant.portal.services.dto.UpdateContactsCmd;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
@@ -12,14 +8,12 @@ import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
-import static com.elm.shj.applicant.portal.web.ws.WsError.EWsError.*;
+import static com.elm.shj.applicant.portal.web.ws.WsError.EWsError.NOT_FOUND_IN_ADMIN;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -188,10 +182,10 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
         applicantMainDataDto.setUin(TEST_UIN);
         when(userService.findUserMainDataByUin(any(String.class), any(Long.class))).thenReturn(Optional.of(applicantMainDataDto));
         mockMvc.perform(get(url)
-                        .cookie(tokenCookie).with(csrf())
-                        .accept(MediaType.APPLICATION_JSON)).andDo(print())
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$.body.uin").value((applicantMainDataDto.getUin())));
+                .cookie(tokenCookie).with(csrf())
+                .accept(MediaType.APPLICATION_JSON)).andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.uin").value((applicantMainDataDto.getUin())));
         verify(userService, times(1)).findUserMainDataByUin(any(String.class), any(Long.class));
 
     }
@@ -200,9 +194,9 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
     public void test_find_applicant_main_data_by_uin_and_ritualId_fail() throws Exception {
         String url = Navigation.API_INTEGRATION_USERS + "/main-data/" + TEST_WRONG_UIN;
         mockMvc.perform(get(url)
-                        .cookie(tokenCookie).with(csrf())
-                        .accept(MediaType.APPLICATION_JSON))
-                        .andExpect(jsonPath("$.body.uin").doesNotExist());
+                .cookie(tokenCookie).with(csrf())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.body.uin").doesNotExist());
         verify(userService, times(1)).findUserMainDataByUin(any(String.class), any(Long.class));
 
     }
@@ -221,8 +215,8 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
         when(userService.save(any())).thenReturn(user);
 
         mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON)
-                        .content(objectToJson(userContacts)).with(csrf()))
-                        .andDo(print()).andExpect(status().isOk());
+                .content(objectToJson(userContacts)).with(csrf()))
+                .andDo(print()).andExpect(status().isOk());
 
         verify(otpService, times(2)).validateOtp(anyString(), anyString());
         verify(userService, times(1)).updateUserInAdminPortal(any());
@@ -245,9 +239,69 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
         when(userService.save(any())).thenReturn(user);
 
         mockMvc.perform(put(url).cookie(tokenCookie).contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .content(objectToJson(userContacts)).with(csrf()))
+                .content(objectToJson(userContacts)).with(csrf()))
                 .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.body.error")
-                        .value(NOT_FOUND_IN_ADMIN.getCode()));
+                .value(NOT_FOUND_IN_ADMIN.getCode()));
+    }
+
+    @Test
+    public void test_find_applicant_ritual_seasons_by_uin_success() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/ritual-seasons";
+
+        List<Integer> seasons = Arrays.asList(1442);
+        when(userService.findApplicantRitualSeasons(any())).thenReturn(seasons);
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.length()", is(seasons.size())))
+                .andExpect(jsonPath("$.body[0]", is(1442)));
+
+
+        verify(userService, times(1)).findApplicantRitualSeasons(any());
+
+    }
+
+    @Test
+    public void test_find_applicant_ritual_seasons_by_uin_empty() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/ritual-seasons";
+
+        when(userService.findApplicantRitualSeasons(any())).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.length()", is(0)));
+
+
+        verify(userService, times(1)).findApplicantRitualSeasons(any());
+
+    }
+
+    @Test
+    public void test_find_applicant_ritual_by_uin_and_season_success() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/ritual-lite/1442";
+
+        ApplicantRitualLiteDto applicantRitualLiteDto = new ApplicantRitualLiteDto();
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = Arrays.asList(applicantRitualLiteDto);
+        when(userService.findApplicantRitualByUinAndSeasons(any(String.class), any(Integer.class))).thenReturn(applicantRitualLiteDtos);
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.length()", is(applicantRitualLiteDtos.size())))
+                .andExpect(jsonPath("$.body[0].hijriSeason", is(applicantRitualLiteDto.getHijriSeason())));
+
+
+        verify(userService, times(1)).findApplicantRitualByUinAndSeasons(any(String.class), any(Integer.class));
+
+    }
+
+    @Test
+    public void test_find_applicant_ritual_by_uin_and_season_empty() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/ritual-lite/1442";
+
+        when(userService.findApplicantRitualByUinAndSeasons(any(String.class), any(Integer.class))).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.length()", is(0)));
+
+        verify(userService, times(1)).findApplicantRitualByUinAndSeasons(any(String.class), any(Integer.class));
+
     }
 
 }
