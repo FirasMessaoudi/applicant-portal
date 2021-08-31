@@ -47,6 +47,7 @@ public class RegistrationController {
     private static final int USER_ALREADY_REGISTERED_RESPONSE_CODE = 560;
     private static final int USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE = 561;
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
+    private static final int UPDATE_FAILED_IN_ADMIN_PORTAL = 563;
 
 
     @PostMapping("/{needToUpdate}")
@@ -63,8 +64,10 @@ public class RegistrationController {
             UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
-            if (returnedApplicant == null)
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            if (returnedApplicant == null) {
+                log.debug("Update failed in admin portal for applicant with Uin {}", user.getUin());
+                return ResponseEntity.status(UPDATE_FAILED_IN_ADMIN_PORTAL).build();
+            }
         }
 
 
