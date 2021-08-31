@@ -212,7 +212,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.user.countryCode = this.registerForm.controls.mobileNumber.value.countryCode;
           this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
-          this.user.dateOfBirthHijri = this.registerForm.controls.dateOfBirthHijri.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
           this.authenticationService.updateOtpSubject({
@@ -318,14 +317,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.dateStructGreg = event;
         this.dateStructHijri = this.dateFormatterService.toHijri(event);
         dateStruct = this.dateFormatterService.toHijri(event);
-        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
+
       } else {
         this.dateStructGreg = this.dateFormatterService.toGregorian(event);
         this.dateStructHijri = event;
         dateStruct = this.dateFormatterService.toGregorian(event);
-        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
+
       }
 
+      localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.registerForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(this.dateStructGreg));
       this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(this.dateStructHijri).split('/').reverse().join(''));
