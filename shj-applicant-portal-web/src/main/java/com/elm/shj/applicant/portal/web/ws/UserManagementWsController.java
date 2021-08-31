@@ -50,7 +50,6 @@ public class UserManagementWsController {
 
     public static final String RESET_PASSWORD_SUCCESS_MSG = "Reset password successfully";
     public static final String CHANGE_PASSWORD_SUCCESS_MSG = "Change password successfully";
-    private static final int INVALID_OTP_RESPONSE_CODE = 562;
 
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -160,7 +159,6 @@ public class UserManagementWsController {
         if (!applicantMainDataDto.isPresent()) {
             return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
         }
-
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantMainDataDto.get()).build());
@@ -226,8 +224,6 @@ public class UserManagementWsController {
                             .body(WsError.builder().error(WsError.EWsError.UPDATE_USER_ERROR.getCode())
                                     .referenceNumber(String.valueOf(databaseUser.getUin()))
                                     .build()).build());
-
-            //ResponseEntity.of(Optional.empty());
         }
         returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
         return ResponseEntity.ok(
