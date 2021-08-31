@@ -253,7 +253,8 @@
     "applicant_not_found": " Cannot register no record match the entry please check the input values",
     "user_already_registered": "Applicant already registered please you can login or request reset password",
     "registered_successfully": "user has been registered successfully",
-    "email_will_be_sent": "an email will be sent to you to confirm your registration"
+    "email_will_be_sent": "an email will be sent to you to confirm your registration",
+    "update_user_failed_in_admin_portal": "An error occurred while trying to store your data. Please contact the admin"
   },
 
   "change-password": {
@@ -269,7 +270,7 @@
     "title": "Forgot Password",
     "btn_reset_password": "Reset Password",
     "btn_back_to_login": "Back to Login",
-    "success_text": "The temporary password sent to your mobile number please reset password after login ",
+    "success_text": "The temporary password sent to your mobile number please reset password after login",
     "invalid_uin_or_birthdate": "Invalid smart id number or birthdate!"
   },
 

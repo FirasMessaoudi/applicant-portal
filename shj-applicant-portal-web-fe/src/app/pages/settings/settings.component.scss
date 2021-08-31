@@ -71,3 +71,8 @@ ngb-typeahead-window.dropdown-menu {
     }
   }
 }
+.form-control:disabled {
+  color: #6c757d !important;
+  background-color: #d8d8d8 !important;
+  font-weight: unset !important;
+}

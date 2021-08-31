@@ -31,7 +31,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   previousUrl: string;
   updateAdminRequired: boolean;
   editContacts: UserContacts;
-  currentPageUrl:string;
+  currentPageUrl: string;
   @ViewChildren('formRow') rows: any;
 
   constructor(
@@ -57,7 +57,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
 
-    this.currentPageUrl= this.router.url;
+    this.currentPageUrl = this.router.url;
 
     this.createForm();
     this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
@@ -65,14 +65,14 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!data.user || !data.user.otpExpiryMinutes) {
         this.goBack();
       }
-      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title"):this.otpTitle;
-      this.otpTitle = this.previousUrl == "/register" ? this.translate.instant("register.header_title"):this.otpTitle;
-      this.otpTitle = this.previousUrl == "/settings" ? this.translate.instant("settings.edit-contacts"):this.otpTitle;
+      this.otpTitle = this.previousUrl == "/login" ? this.translate.instant("login.header_title") : this.otpTitle;
+      this.otpTitle = this.previousUrl == "/register" ? this.translate.instant("register.header_title") : this.otpTitle;
+      this.otpTitle = this.previousUrl == "/settings" ? this.translate.instant("settings.edit-contacts") : this.otpTitle;
       this.otpData = data.user;
       this.updateAdminRequired = data.updateAdmin;
       this.startTimer(data.user?.otpExpiryMinutes);
       this.mask = this.otpData.maskedMobileNumber
-      this.editContacts=data.editContacts;
+      this.editContacts = data.editContacts;
     });
   }
 
@@ -123,7 +123,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           this.rows._results[0].nativeElement.focus();
         });
       });
-    } else if (this.previousUrl == "/register"){
+    } else if (this.previousUrl == "/register") {
       this.registerService.validateOtpThenRegister(this.otpData, this.updateAdminRequired, pin)
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
@@ -142,32 +142,35 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
             this.otpForm.get(field).setValue(null);
             this.rows._results[0].nativeElement.focus();
           });
+        } else if (error.status == 563) {
+          //TO REFORMULATE AND TRANSLATE TOASTER TITLE AND MESSAGE
+          clearInterval(this.timerInterval);
+          this.toastr.error(this.translate.instant("register.update_user_failed_in_admin_portal"), this.translate.instant("register.header_title"));
+          this.router.navigate(['/'], {replaceUrl: true});
         } else {
           this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
         }
 
       });
-    }else if (this.previousUrl == "/settings" && this.currentPageUrl=="/edit/contacts/otp"){
+    } else if ((this.previousUrl == "/settings") && this.currentPageUrl == "/edit/contacts/otp") {
       this.userService.updateUserContacts(this.editContacts, pin).pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
-      })).subscribe(response=>{
+      })).subscribe(response => {
         clearInterval(this.timerInterval);
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
         this.router.navigate(['/settings'], {replaceUrl: true});
-      }, error=>{
-        if(error.status === 562){
+      }, error => {
+        if (error.status === 562) {
           Object.keys(this.otpForm.controls).forEach(field => {
             this.otpForm.get(field).setValue(null);
             this.rows._results[0].nativeElement.focus();
           });
-        }else {
+        } else {
           clearInterval(this.timerInterval);
           this.toastr.error(this.translate.instant("general.dialog_edit_contacts_error_text"), this.translate.instant("settings.edit-contacts"));
           this.router.navigate(['/settings'], {replaceUrl: true});
-
         }
-
       })
     }
   }
@@ -222,16 +225,16 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.removeItem("selectedSeason");
     localStorage.removeItem("selectedApplicantRitual");
 
-      this.userService.getLatestApplicantRitualLite().subscribe(applicantRitual => {
+    this.userService.getLatestApplicantRitualLite().subscribe(applicantRitual => {
 
-        if (applicantRitual) {
+      if (applicantRitual) {
 
-          localStorage.setItem('selectedSeason', JSON.stringify(applicantRitual?.hijriSeason));
-          localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
-          this.userService.changeSelectedApplicantRitual(applicantRitual);
-        }
+        localStorage.setItem('selectedSeason', JSON.stringify(applicantRitual?.hijriSeason));
+        localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
+        this.userService.changeSelectedApplicantRitual(applicantRitual);
+      }
 
-      });
+    });
 
   }
 }
