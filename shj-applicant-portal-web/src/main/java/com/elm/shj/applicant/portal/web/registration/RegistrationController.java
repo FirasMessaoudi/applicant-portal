@@ -64,9 +64,10 @@ public class RegistrationController {
             UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
-            if (returnedApplicant == null)
+            if (returnedApplicant == null) {
                 log.debug("Update failed in admin portal for applicant with Uin {}", user.getUin());
                 return ResponseEntity.status(UPDATE_FAILED_IN_ADMIN_PORTAL).build();
+            }
         }
 
 

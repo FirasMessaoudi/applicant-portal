@@ -143,9 +143,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
             this.rows._results[0].nativeElement.focus();
           });
         } else if (error.status == 563) {
-          //TO REFORMULATE AND TRANSLATE TOASTER TITLE AND MESSAGE
+          //TODO REFORMULATE AND TRANSLATE TOASTER TITLE AND MESSAGE
           clearInterval(this.timerInterval);
-          this.toastr.error(this.translate.instant("register.update_user_failed_in_admin_portal"), this.translate.instant("register.header_title"));
+          this.toastr.warning(this.translate.instant("register.update_user_failed_in_admin_portal"), this.translate.instant("register.header_title"));
           this.router.navigate(['/'], {replaceUrl: true});
         } else {
           this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
