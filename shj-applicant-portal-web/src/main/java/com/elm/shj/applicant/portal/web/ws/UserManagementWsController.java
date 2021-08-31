@@ -12,7 +12,6 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -28,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Objects;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -40,7 +39,7 @@ import java.util.Optional;
 @CrossOrigin(
         originPatterns = "*",
         maxAge = 3600,
-        exposedHeaders = {"Authorization", JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.TOKEN_COOKIE_NAME},
+        exposedHeaders = {"Authorization", JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.JWT_HEADER_NAME},
         allowCredentials = "true"
 )
 @Slf4j
@@ -158,7 +157,7 @@ public class UserManagementWsController {
     public ResponseEntity<WsResponse<?>> findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         Optional<ApplicantMainDataDto> applicantMainDataDto = userService.findUserMainDataByUin(loggedInUserUin, ritualId);
-        if (!applicantMainDataDto.isPresent()){
+        if (!applicantMainDataDto.isPresent()) {
             return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
         }
 
@@ -174,7 +173,7 @@ public class UserManagementWsController {
     public ResponseEntity<WsResponse<?>> findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         Optional<ApplicantHealthLiteDto> applicantHealthDetails = userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
-        if (!applicantHealthDetails.isPresent()){
+        if (!applicantHealthDetails.isPresent()) {
             return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
         }
         return ResponseEntity.ok(
@@ -224,16 +223,44 @@ public class UserManagementWsController {
             log.error("Error while updating user contacts.", e);
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                                    .body(WsError.builder().error(WsError.EWsError.UPDATE_USER_ERROR.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.UPDATE_USER_ERROR.getCode())
                                     .referenceNumber(String.valueOf(databaseUser.getUin()))
                                     .build()).build());
 
-                    //ResponseEntity.of(Optional.empty());
+            //ResponseEntity.of(Optional.empty());
         }
         returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(returnedApplicant).build());
+    }
+
+
+    /**
+     * get user ritual seasons by uin
+     */
+    @GetMapping("/ritual-seasons")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualSeasonsByUin(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<Integer> seasons = userService.findApplicantRitualSeasons(loggedInUserUin);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(seasons).build());
+    }
+
+    /**
+     * get user ritual lite by seasons and uin
+     */
+    @GetMapping("/ritual-lite/{season}")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualByUinAndSeasons(Authentication authentication, @PathVariable int season) {
+
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<ApplicantRitualLiteDto> applicantRitualLites = userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantRitualLites).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
