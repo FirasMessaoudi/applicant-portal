@@ -6,18 +6,18 @@
 </nav>
 
 <div class="content__wrapper">
-  <div class="title__Page">
+  <div class="title__Page mx-n3">
     <h3 class="sectionTitle">
       {{'settings.settings' | translate}}
+      <svg-icon styleClass="text-gray-300" icon="cog"></svg-icon>
     </h3>
   </div>
 
-  <form>
-    <div class="form-row">
-      <div class="col-lg-6">
-        <div class="d-flex form-group">
+  <form class="d-inline-block">
 
-          <div class="col-5 col-md-6 p-0 mr-1" role="group">
+        <div class="row form-group">
+
+          <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
             <label for="inputEmail4">{{ "settings.season" | translate }}</label>
 
             <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event)"
@@ -27,7 +27,7 @@
             </select>
 
           </div>
-          <div class="col-7 col-md-6 p-0" role="group">
+          <div class="col-md-7 px-0" role="group">
             <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
 
             <div class="input-group flex-nowrap">
@@ -47,11 +47,11 @@
                 </option>
               </select>
               <div class="input-group-append">
-                <button class="btn btn-outline-gray-300" type="button" ngbTooltip="تعديل" *ngIf="!enableEditRitual"
+                <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="تعديل" *ngIf="!enableEditRitual" placement="top"
                         (click)="editRitual()">
                   <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
                 </button>
-                <button class="btn btn-success" type="button" ngbTooltip="حفظ" *ngIf="enableEditRitual"
+                <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="حفظ" *ngIf="enableEditRitual" placement="top"
                         (click)="saveSelectedRitual()">
                   <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
                 </button>
@@ -60,36 +60,37 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="inputEmail4">{{'general.language'|translate}}</label>
-          <div class="input-group flex-grow-1 mb-3">
-            <div class="setBox flex-grow-1 mr-1" role="group">
-              <select class="custom-select" [disabled]="enableEditLanguage"
-                      (change)="selectedLanguage=$event.target.value">
-                <option value="ar-SA" [selected]="currentLanguage.startsWith('ar')">العربية</option>
-                <option value="en-US" [selected]="currentLanguage.startsWith('en')">English</option>
-              </select>
-            </div>
-            <div class="input-group-append">
-
-              <button class="btn btn-outline-gray-300" type="button" ngbTooltip="{{'general.btn_edit'|translate}}"
-                      *ngIf="enableEditLanguage"
-                      (click)="enableEditLanguage=false">
-                <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-              </button>
-              <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
-                      *ngIf="!enableEditLanguage"
-                      (click)="updateUserLanguage()">
-                <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-              </button>
+        <div class="row form-group">
+          <div class="col-12 px-0">
+            <label for="inputEmail4">{{'general.language'|translate}}</label>
+            <div class="input-group flex-grow-1">
+              <div class="setBox flex-grow-1" role="group">
+                <select class="custom-select" [disabled]="enableEditLanguage"
+                        (change)="selectedLanguage=$event.target.value">
+                  <option value="ar-SA" [selected]="currentLanguage.startsWith('ar')">العربية</option>
+                  <option value="en-US" [selected]="currentLanguage.startsWith('en')">English</option>
+                </select>
+              </div>
+              <div class="input-group-append">
+  
+                <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_edit'|translate}}" placement="top"
+                        *ngIf="enableEditLanguage"
+                        (click)="enableEditLanguage=false">
+                  <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
+                </button>
+                <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_save'|translate}}" placement="top"
+                        *ngIf="!enableEditLanguage"
+                        (click)="updateUserLanguage()">
+                  <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        <form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="form-group">
+        <form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="row form-group">
 
-          <div class="d-flex">
-            <div class="col-5 col-md-6 p-0 mr-1" role="group">
+            <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
               <label>   {{"general.email"|translate}} </label>
               <div class="input-group">
 
@@ -103,7 +104,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-7 col-md-6 p-0" role="group">
+            <div class="col-md-7 px-0" role="group">
               <ng-template #rt let-r="result" let-t="term">
                 <ngb-highlight [result]="r.dial_code" [term]="t"></ngb-highlight>
                 <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}}"></span>
@@ -124,18 +125,18 @@
                 ></ngx-intl-tel-input>
 
                 <div class="input-group-append">
-                  <button class="btn btn-outline-gray-300" type="button" ngbTooltip="{{'general.btn_edit'|translate}}"
+                  <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_edit'|translate}}" placement="top"
                           *ngIf="contactsForm.disabled" (click)="setContactsEnabled()">
                     <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
                   </button>
 
-                  <button class="btn btn-success" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
+                  <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_save'|translate}}" placement="top"
                           *ngIf="!contactsForm.disabled" (click)="onSubmit()">
                     <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
                   </button>
                 </div>
               </div>
-              <div
+              <small
                 *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
                 class="text-danger">
                 <div
@@ -144,15 +145,15 @@
                   *ngIf="f.mobileNumber.errors?.validatePhoneNumber">{{'general.field_validation_pattern' | translate}}</div>
                 <div
                   *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
-              </div>
+              </small>
 
             </div>
-          </div>
 
         </form>
 
+        <hr class="mx-n3 mb-4">
 
-        <div class="form-group">
+        <div class="row form-group">
 
           <a class="btn btn-block btn-outline-dcc-primary px-4 setBox" [routerLink]="['/change-password']"
              routerLinkActive="router-link-active">
@@ -160,11 +161,8 @@
             <svg-icon styleClass="ml-3 mb-0 h5" icon="lock-alt"></svg-icon>
           </a>
         </div>
-      </div>
-      <div class="col-lg-6 flex-center">
-        <svg-icon styleClass="fa-10x text-dcc-light" icon="cog"></svg-icon>
-      </div>
-    </div>
+      
+    
   </form>
 
 </div>

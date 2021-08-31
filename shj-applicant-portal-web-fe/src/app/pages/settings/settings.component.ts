@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {AuthenticationService, CardService, UserService} from "@core/services";
@@ -19,8 +19,7 @@ import {I18nService} from "@dcc-commons-ng/services";
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit {
-
+export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   closeResult = '';
 
   seasons: number [] = [];
@@ -276,6 +275,14 @@ export class SettingsComponent implements OnInit {
     } else {
       this.contactsForm.disable();
     }
+  }
+
+  ngAfterViewInit() {
+    document.querySelector('body').classList.add('settings');
+  }
+
+  ngOnDestroy() {
+    document.querySelector('body').classList.remove('settings');
   }
 
 }
