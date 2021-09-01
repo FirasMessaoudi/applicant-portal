@@ -213,7 +213,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.user.countryCode = this.registerForm.controls.mobileNumber.value.countryCode;
           this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
-          this.user.dateOfBirthHijri = this.registerForm.controls.dateOfBirthHijri.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
           this.authenticationService.updateOtpSubject({
@@ -260,11 +259,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.isApplicantVerified = false;
-    this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
-
+    let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
+    let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
+    this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
       if (response) {
         this.user = response;
-        console.log('user : ', this.user);
         this.fillRegistrationForm();
         let applicantMobileNumber;
         if (response.hasLocalMobileNumber) {
@@ -324,14 +323,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.dateStructGreg = event;
         this.dateStructHijri = this.dateFormatterService.toHijri(event);
         dateStruct = this.dateFormatterService.toHijri(event);
-        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
+
       } else {
         this.dateStructGreg = this.dateFormatterService.toGregorian(event);
         this.dateStructHijri = event;
         dateStruct = this.dateFormatterService.toGregorian(event);
-        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
+
       }
 
+      localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.registerForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(this.dateStructGreg));
       this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(this.dateStructHijri).split('/').reverse().join(''));
