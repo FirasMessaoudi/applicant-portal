@@ -19,7 +19,7 @@ import {ApplicantHealth} from "@model/applicant-health.model";
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.scss']
 })
-export class CardDetailsComponent implements OnInit,OnDestroy {
+export class CardDetailsComponent implements OnInit, OnDestroy {
 
   card: Card;
   applicant: ApplicantMainData;
@@ -27,16 +27,14 @@ export class CardDetailsComponent implements OnInit,OnDestroy {
   url: any = 'assets/images/default-avatar.svg';
   //TODO: to be deleted after wiring the backend to the frontend
   hamlahPackage: any;
-
+  loading = true
   ritualTypes: Lookup[] = [];
   relativeRelationships: Lookup[] = [];
   countries: CountryLookup[] = [];
   healthSpecialNeeds: Lookup[] = [];
   maritalStatuses: Lookup[] = [];
   languageNativeName = Language;
-
   selectedApplicantRitual: ApplicantRitualLite;
-
   activeId = 1;
   tabsHeader = [
     "card-management.main_details",
@@ -46,7 +44,8 @@ export class CardDetailsComponent implements OnInit,OnDestroy {
     "card-management.motawef_details"
   ]
 
-  loading = true
+
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastService,
@@ -71,10 +70,7 @@ export class CardDetailsComponent implements OnInit,OnDestroy {
     });
 
 
-
-
-
-    //TODO: dummy data
+    //TODO: dummy  data
     this.hamlahPackage = {
       "id": 1,
       "typeCode": {"id": 1, "code": null, "label": "VIP", "lang": null},
@@ -108,8 +104,8 @@ export class CardDetailsComponent implements OnInit,OnDestroy {
     };
   }
 
-  loadUserDetails(){
-    if(this.selectedApplicantRitual) {
+  loadUserDetails() {
+    if (this.selectedApplicantRitual) {
       this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
         if (data) {
           this.applicant = data;

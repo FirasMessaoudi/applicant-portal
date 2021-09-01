@@ -1,6 +1,5 @@
 <nav aria-label="breadcrumb" class="pt-2">
   <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
-    <!-- <li class="breadcrumb-item active" aria-current="page ">{{ "card-management.main" | translate }}</li> -->
     <li class="breadcrumb-item active" aria-current="page "></li>
   </ol>
 </nav>
@@ -15,7 +14,7 @@
       {{ "card-management.my_profile" | translate }}
       <!-- {{'card-management.card_details' | translate }} -->
     </h3>
-    <a class="btn btn-dcc-primary px-4" [routerLink]="['/cards/hajj-card/1']">
+    <a class="btn  btn-dcc-primary px-4" [routerLink]="['/cards/hajj-card/1']">
       <span>{{ "card-management.view_my_card" | translate }} </span>
       <svg-icon styleClass="ml-3 mb-0 h5" icon="id-card-light"></svg-icon>
     </a>
@@ -182,7 +181,6 @@
 
             <div class="form-group col">
               <label class="col-form-label">{{'card-management.applicant_languages' | translate}}</label>
-              <!--                <span class="form-control-plaintext ">{{card?.applicantRitual?.applicant?.contacts[0]?.languageList}}</span>-->
               <span class="form-control-plaintext">
                   <span *ngFor="let lang of applicant?.contacts[0]?.languageList.split(','); let lastItem = last;">
                     {{languageNativeName[lang.trim().toUpperCase()]}}<span *ngIf="!lastItem">-</span></span>
