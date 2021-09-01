@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   SAUDI_COUNTRY_CODE = "SA";
 
+
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
   constructor(
@@ -212,6 +213,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.user.countryCode = this.registerForm.controls.mobileNumber.value.countryCode;
           this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
+          this.user.dateOfBirthHijri = this.registerForm.controls.dateOfBirthHijri.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
           this.authenticationService.updateOtpSubject({
@@ -250,16 +252,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
   loadLookups() {
     this.cardService.findCountries().subscribe(result => {
       this.countries = result;
+
     });
   }
 
   verifyApplicant() {
+
+    this.loading = true;
     this.isApplicantVerified = false;
-    let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
-    let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
-    this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
+    this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd'), this.registerForm?.controls.dateOfBirthHijri.value).subscribe(response => {
+
       if (response) {
         this.user = response;
+        console.log('user : ', this.user);
         this.fillRegistrationForm();
         let applicantMobileNumber;
         if (response.hasLocalMobileNumber) {
@@ -281,6 +286,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.isApplicantVerified = false;
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
       }
+      this.loading = false;
     }, error => {
       console.log(error);
       this.registerForm.markAsUntouched();
@@ -294,6 +300,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       } else {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
       }
+      this.loading = false
     });
   }
 
@@ -317,15 +324,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.dateStructGreg = event;
         this.dateStructHijri = this.dateFormatterService.toHijri(event);
         dateStruct = this.dateFormatterService.toHijri(event);
-
+        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
       } else {
         this.dateStructGreg = this.dateFormatterService.toGregorian(event);
         this.dateStructHijri = event;
         dateStruct = this.dateFormatterService.toGregorian(event);
-
+        localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
       }
 
-      localStorage.setItem('DATE_STRUCT', JSON.stringify(this.dateStructGreg));
       this.dateString = this.dateFormatterService.toString(dateStruct);
       this.registerForm.controls.dateOfBirthGregorian.setValue(this.dateFormatterService.toDate(this.dateStructGreg));
       this.registerForm.controls.dateOfBirthHijri.setValue(this.dateFormatterService.toString(this.dateStructHijri).split('/').reverse().join(''));
