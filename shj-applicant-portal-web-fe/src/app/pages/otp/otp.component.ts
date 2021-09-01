@@ -24,6 +24,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   error: string;
   otpForm: FormGroup;
   loading = false;
+  isSubmit = false;
   timerContent: string = '';
   timerInterval: any;
   formInputs = ['input1', 'input2', 'input3', 'input4'];
@@ -98,6 +99,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
+          this.isSubmit=false
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
@@ -128,6 +130,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
+          this.isSubmit=false
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
@@ -157,6 +160,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userService.updateUserContacts(this.editContacts).pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
+        this.isSubmit=false
       })).subscribe(response => {
         clearInterval(this.timerInterval);
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
@@ -194,8 +198,11 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     if (pos > -1 && pos < this.formInputs.length) {
       this.rows._results[pos].nativeElement.focus();
     }
-    if (this.otpForm.valid) {
-      this.onSubmit();
+    if (this.isSubmit == false) {
+      if (this.otpForm.valid) {
+        this.isSubmit = true;
+        this.onSubmit();
+      }
     }
   }
 
