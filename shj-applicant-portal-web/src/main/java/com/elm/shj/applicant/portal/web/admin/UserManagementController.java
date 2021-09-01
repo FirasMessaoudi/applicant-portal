@@ -415,11 +415,11 @@ public class UserManagementController {
      * @return the updated user contacts
      */
     @PutMapping("/contacts")
-    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, @RequestParam String pin, Authentication authentication) {
+    public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
 
-        if (!otpService.validateOtp(loggedInUserUin, pin)) {
+        if (!otpService.validateOtp(loggedInUserUin, userContacts.getPin())) {
             return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
         }
         UserDto databaseUser = null;

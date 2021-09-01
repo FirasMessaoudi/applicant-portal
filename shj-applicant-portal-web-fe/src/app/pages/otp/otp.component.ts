@@ -153,7 +153,8 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
       });
     } else if ((this.previousUrl == "/settings") && this.currentPageUrl == "/edit/contacts/otp") {
-      this.userService.updateUserContacts(this.editContacts, pin).pipe(finalize(() => {
+      this.editContacts.pin=pin;
+      this.userService.updateUserContacts(this.editContacts).pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
       })).subscribe(response => {

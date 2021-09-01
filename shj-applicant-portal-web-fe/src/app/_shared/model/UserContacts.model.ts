@@ -3,4 +3,5 @@ export class UserContacts {
   mobileNumber: any;
   countryCode: string;
   countryPhonePrefix: string;
+  pin: string;
 }

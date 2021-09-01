@@ -189,12 +189,12 @@ public class UserManagementWsController {
      * update user loggedin contacts
      */
     @PutMapping("/contacts")
-    public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, @RequestParam String pin, Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
 
-        if (!otpService.validateOtp(loggedInUserUin, pin)) {
-            return generateFailResponse(WsError.EWsError.INVALID_OTP, pin);
+        if (!otpService.validateOtp(loggedInUserUin, userContacts.getPin())) {
+            return generateFailResponse(WsError.EWsError.INVALID_OTP, userContacts.getPin());
         }
         UserDto databaseUser = null;
         try {
