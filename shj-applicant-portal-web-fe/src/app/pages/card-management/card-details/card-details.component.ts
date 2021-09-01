@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Card} from "@model/card.model";
 import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
@@ -19,7 +19,7 @@ import {ApplicantHealth} from "@model/applicant-health.model";
   templateUrl: './card-details.component.html',
   styleUrls: ['./card-details.component.scss']
 })
-export class CardDetailsComponent implements OnInit {
+export class CardDetailsComponent implements OnInit, OnDestroy {
 
   card: Card;
   applicant: ApplicantMainData;
@@ -27,16 +27,14 @@ export class CardDetailsComponent implements OnInit {
   url: any = 'assets/images/default-avatar.svg';
   //TODO: to be deleted after wiring the backend to the frontend
   hamlahPackage: any;
-
+  loading = true
   ritualTypes: Lookup[] = [];
   relativeRelationships: Lookup[] = [];
   countries: CountryLookup[] = [];
   healthSpecialNeeds: Lookup[] = [];
   maritalStatuses: Lookup[] = [];
   languageNativeName = Language;
-
   selectedApplicantRitual: ApplicantRitualLite;
-
   activeId = 1;
   tabsHeader = [
     "card-management.main_details",
@@ -45,6 +43,8 @@ export class CardDetailsComponent implements OnInit {
     "card-management.tafweej_details",
     "card-management.motawef_details"
   ]
+
+
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -62,16 +62,15 @@ export class CardDetailsComponent implements OnInit {
 
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
+
+
+      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
+      this.loadLookups();
       this.loadUserDetails();
     });
 
-    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
 
-    this.loadLookups();
-
-    this.loadUserDetails();
-
-    //TODO: dummy data
+    //TODO: dummy  data
     this.hamlahPackage = {
       "id": 1,
       "typeCode": {"id": 1, "code": null, "label": "VIP", "lang": null},
@@ -105,8 +104,8 @@ export class CardDetailsComponent implements OnInit {
     };
   }
 
-  loadUserDetails(){
-    if(this.selectedApplicantRitual) {
+  loadUserDetails() {
+    if (this.selectedApplicantRitual) {
       this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
         if (data) {
           this.applicant = data;
@@ -114,6 +113,7 @@ export class CardDetailsComponent implements OnInit {
           this.toastr.error(this.translate.instant('general.route_item_not_found'),
             this.translate.instant('general.dialog_error_title'));
         }
+        this.loading = false;
       });
 
       this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
@@ -164,6 +164,10 @@ export class CardDetailsComponent implements OnInit {
       packageCaterings = packageCaterings.concat(housing.packageCaterings);
     });
     return packageCaterings;
+  }
+
+  ngOnDestroy(): void {
+    this.loading = true;
   }
 
 }

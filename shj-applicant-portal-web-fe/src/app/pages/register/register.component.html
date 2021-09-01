@@ -17,6 +17,7 @@
     <img class="my-4" src="assets/images/logo.png" alt="logo"/>
   </div>
 
+
   <form [formGroup]="registerForm" class="login-box__wrapper">
     <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
       {{ "register.header_title" | translate }}
@@ -91,7 +92,12 @@
     </div>
 
     <div class="mt-5">
-      <div
+      <div *ngIf="loading" class="preloader">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div *ngIf="!loading"
         [ngClass]="{ 'animated fadeInUp': isApplicantVerified, 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }">
         <div class="form-group form-row">
           <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
@@ -119,6 +125,7 @@
             </div>
 
             <div
+
               *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
               class="text-danger">
               <div *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
