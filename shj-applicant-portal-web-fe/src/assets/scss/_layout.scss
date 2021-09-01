@@ -205,6 +205,14 @@ span.notif {
         margin-top: 2rem !important;
     }
     min-height: calc(100vh - 206px);
+
+
+    .settings &{
+        box-shadow: $box-shadow-sm;
+        max-width: 500px;
+        min-height: auto;
+    }
+
 }
 
 .dot_bg {
@@ -249,3 +257,4 @@ body .btn-select{
   color: #3b7937;
   border: 0;
 }
+

@@ -134,6 +134,10 @@
     margin-left: inherit;
 }
 
+.input-group-append {
+    margin-right: -1px;
+}
+
 .breadcrumb-item {
     +.breadcrumb-item {
         padding-right: $breadcrumb-item-padding;

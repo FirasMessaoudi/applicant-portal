@@ -34,7 +34,7 @@ import java.util.Map;
 @CrossOrigin(
         originPatterns = "*",
         maxAge = 3600,
-        exposedHeaders = {"Authorization", JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.TOKEN_COOKIE_NAME},
+        exposedHeaders = {"Authorization", JwtTokenService.CALLER_TYPE_HEADER_NAME, JwtTokenService.JWT_HEADER_NAME},
         allowCredentials = "true"
 )
 @Slf4j

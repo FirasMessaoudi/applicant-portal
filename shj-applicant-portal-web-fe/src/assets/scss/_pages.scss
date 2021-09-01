@@ -2,6 +2,10 @@
     direction: ltr;
 }
 
+.tooltip {
+    pointer-events: none;
+  }
+  
 .text-light-gray {
     color: #ccc;
 }
