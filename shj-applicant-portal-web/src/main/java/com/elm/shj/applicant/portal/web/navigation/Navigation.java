@@ -20,7 +20,7 @@ public class Navigation {
     // Password Change
     public static final String API_USERS_CHANGE_PWRD = API_USERS + "/change-password";
 
-    // Password Change
+    // Logout
     public static final String API_AUTH_LOGOUT = API_AUTH + "/logout";
     // Password Reset
     public static final String API_USERS_RESET_PWRD = API_USERS + "/reset-password";
