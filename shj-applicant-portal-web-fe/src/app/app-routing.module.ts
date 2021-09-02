@@ -7,7 +7,7 @@ import {
   RegisterLayoutComponent
 } from '@core/_layout';
 import {APP_ROUTES} from '@core/routes/app-routes';
-import {LOGIN_ROUTES, REGISTER_ROUTES} from '@core/routes/auth-routes';
+import {LOGIN_ROUTES} from '@core/routes/auth-routes';
 
 import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
 import {AuthenticationGuard} from "@core/guards/authentication.guard";
@@ -28,10 +28,6 @@ const routes: Routes = [
     path: '',
     component: LoginLayoutComponent,
     children: LOGIN_ROUTES
-  },
-  {    path: '',
-      component: RegisterLayoutComponent,
-      children:REGISTER_ROUTES
   },
   {
     path: '',

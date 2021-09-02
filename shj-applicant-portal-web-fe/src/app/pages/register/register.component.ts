@@ -356,8 +356,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.originalCountryCode = this.selectedCountryCode;
   }
 
+  ngAfterViewInit() {
+    document.querySelector('body').classList.add('register');
+  }
+
   ngOnDestroy() {
     this.otpDataSubscription.unsubscribe();
+    document.querySelector('body').classList.remove('register');
   }
+
+
+  
+
 
 }

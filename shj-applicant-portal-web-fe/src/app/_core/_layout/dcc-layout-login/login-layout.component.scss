@@ -36,3 +36,35 @@
 .wrapper {
   height: 100vh !important;
 }
+
+
+.bg-svg {
+  background: #fff url("assets/images/login-bg.jpg") no-repeat bottom left;
+  background-size: cover;
+}
+
+.z-index {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+
+  @include make-col(11);
+
+  @include media-breakpoint-up(md) {
+      @include make-col(10);
+  }
+  @include media-breakpoint-up(lg) {
+      @include make-col(8);
+  }
+  @include media-breakpoint-up(xl) {
+      @include make-col(6);
+  }
+  @include media-breakpoint-up(xxl) {
+      @include make-col(5);
+  }
+  @include media-breakpoint-up(xxxl) {
+      @include make-col(4);
+  }
+}

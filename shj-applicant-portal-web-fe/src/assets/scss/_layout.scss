@@ -209,8 +209,27 @@ span.notif {
 
     .settings &{
         box-shadow: $box-shadow-sm;
-        max-width: 500px;
         min-height: auto;
+
+        @include media-breakpoint-down(lg) {
+            @include make-col(11);
+        }
+        @include media-breakpoint-up(md) {
+            @include make-col(9);
+        }
+        @include media-breakpoint-up(lg) {
+            @include make-col(7);
+        }
+        @include media-breakpoint-up(xl) {
+            @include make-col(6);
+        }
+        @include media-breakpoint-up(xxl) {
+            @include make-col(5);
+        }
+        @include media-breakpoint-up(xxxl) {
+            @include make-col(4);
+        }
+
     }
 
 }
