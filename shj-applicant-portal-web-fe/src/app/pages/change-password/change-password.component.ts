@@ -4,7 +4,6 @@ import {Router} from "@angular/router";
 import {AuthenticationService, UserService} from "@core/services";
 import {ChangePasswordCmd} from "@shared/model";
 import {Location} from '@angular/common'
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {I18nService} from "@dcc-commons-ng/services";
 import {TranslateService} from "@ngx-translate/core";
 import {ToastService} from "@shared/components/toast";
@@ -83,6 +82,10 @@ export class ChangePasswordComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   goBack() {
-    this.location.back();
+    if(this.authenticationService.userHasExpiredPassword()){
+      this.logout();
+    }else {
+      this.location.back();
+    }
   }
 }

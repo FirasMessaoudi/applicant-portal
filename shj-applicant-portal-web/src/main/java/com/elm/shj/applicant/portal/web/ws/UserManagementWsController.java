@@ -50,7 +50,6 @@ public class UserManagementWsController {
 
     public static final String RESET_PASSWORD_SUCCESS_MSG = "Reset password successfully";
     public static final String CHANGE_PASSWORD_SUCCESS_MSG = "Change password successfully";
-    private static final int INVALID_OTP_RESPONSE_CODE = 562;
 
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -160,7 +159,6 @@ public class UserManagementWsController {
         if (!applicantMainDataDto.isPresent()) {
             return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
         }
-
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantMainDataDto.get()).build());
@@ -191,12 +189,12 @@ public class UserManagementWsController {
      * update user loggedin contacts
      */
     @PutMapping("/contacts")
-    public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, @RequestParam String pin, Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
 
-        if (!otpService.validateOtp(loggedInUserUin, pin)) {
-            return generateFailResponse(WsError.EWsError.INVALID_OTP, pin);
+        if (!otpService.validateOtp(loggedInUserUin, userContacts.getPin())) {
+            return generateFailResponse(WsError.EWsError.INVALID_OTP, userContacts.getPin());
         }
         UserDto databaseUser = null;
         try {
@@ -226,8 +224,6 @@ public class UserManagementWsController {
                             .body(WsError.builder().error(WsError.EWsError.UPDATE_USER_ERROR.getCode())
                                     .referenceNumber(String.valueOf(databaseUser.getUin()))
                                     .build()).build());
-
-            //ResponseEntity.of(Optional.empty());
         }
         returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
         return ResponseEntity.ok(
@@ -261,6 +257,19 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantRitualLites).build());
+    }
+
+    /**
+     * get user latest ritual lite by uin
+     */
+    @GetMapping("/ritual-lite/latest")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualByUinAndSeasons(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualLiteDto ritualLiteDto = userService.findApplicantRitualLatestByUin(loggedInUserUin);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(ritualLiteDto).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

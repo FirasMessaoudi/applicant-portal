@@ -26,4 +26,6 @@ public class UpdateContactsCmd implements Serializable {
     @Length(max = 10)
     private String countryCode;
 
+    private String pin;
+
 }

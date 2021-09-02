@@ -76,3 +76,8 @@ ngb-typeahead-window.dropdown-menu {
   background-color: #d8d8d8 !important;
   font-weight: unset !important;
 }
+
+.custom-select:disabled {
+  color: #6c757d;
+  background-color: #d8d8d8 !important;
+}

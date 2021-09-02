@@ -67,6 +67,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   SAUDI_COUNTRY_CODE = "SA";
 
+
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
   constructor(
@@ -250,10 +251,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   loadLookups() {
     this.cardService.findCountries().subscribe(result => {
       this.countries = result;
+
     });
   }
 
   verifyApplicant() {
+
+    this.loading = true;
     this.isApplicantVerified = false;
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
@@ -281,6 +285,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.isApplicantVerified = false;
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
       }
+      this.loading = false;
     }, error => {
       console.log(error);
       this.registerForm.markAsUntouched();
@@ -294,6 +299,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       } else {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
       }
+      this.loading = false
     });
   }
 

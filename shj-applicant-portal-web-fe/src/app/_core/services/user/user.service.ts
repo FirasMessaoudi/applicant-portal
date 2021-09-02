@@ -8,6 +8,7 @@ import {Role} from '@shared/model/role.model';
 import {UserStatus} from "@model/user-status.model";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {UserContacts} from "@model/UserContacts.model";
+import {CookieService} from "ngx-cookie-service";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -19,7 +20,7 @@ export class UserService {
 
 
   public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private cookieService: CookieService) {
     this.selectedApplicantRitual.asObservable();
   }
 
@@ -134,8 +135,12 @@ export class UserService {
    * @param user the user to save or update
    * @return {Observable<User>} The saved or updated user.
    */
-  updateUserContacts(userContacts: UserContacts, pin: String): Observable<any> {
-    return this.http.put<any>('/core/api/users/contacts?pin=' + pin, userContacts);
+  updateUserContacts(userContacts: UserContacts): Observable<any> {
+
+    let headers = new HttpHeaders();
+    headers = headers.set('X-XSRF-TOKEN', this.cookieService.get("XSRF-TOKEN"));
+
+    return this.http.put<any>('/core/api/users/contacts' , userContacts,{'headers':headers});
 
   }
 

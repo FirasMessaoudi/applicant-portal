@@ -24,6 +24,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   error: string;
   otpForm: FormGroup;
   loading = false;
+  isSubmit = false;
   timerContent: string = '';
   timerInterval: any;
   formInputs = ['input1', 'input2', 'input3', 'input4'];
@@ -98,12 +99,12 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
+          this.isSubmit=false
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
         // login successful if there's a jwt token in the response
         this.authenticationService.updateSubject(user);
-        this.setLanguage(user.preferredLanguage?.startsWith('ar') ? 'ar-SA' : 'en-US');
         if (user.passwordExpired) {
           console.log('redirect to change password page');
           this.router.navigate(['/change-password'], {replaceUrl: true});
@@ -111,6 +112,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('redirect to / page');
           clearInterval(this.timerInterval);
           this.getLatestApplicantRitualLite();
+          this.setLanguage(user.preferredLanguage?.startsWith('ar') ? 'ar-SA' : 'en-US');
           this.router.navigate(['/'], {replaceUrl: true});
 
         }
@@ -128,6 +130,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
+          this.isSubmit=false
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
@@ -153,9 +156,11 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
       });
     } else if ((this.previousUrl == "/settings") && this.currentPageUrl == "/edit/contacts/otp") {
-      this.userService.updateUserContacts(this.editContacts, pin).pipe(finalize(() => {
+      this.editContacts.pin=pin;
+      this.userService.updateUserContacts(this.editContacts).pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
+        this.isSubmit=false
       })).subscribe(response => {
         clearInterval(this.timerInterval);
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
@@ -193,8 +198,11 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     if (pos > -1 && pos < this.formInputs.length) {
       this.rows._results[pos].nativeElement.focus();
     }
-    if (this.otpForm.valid) {
-      this.onSubmit();
+    if (this.isSubmit == false) {
+      if (this.otpForm.valid) {
+        this.isSubmit = true;
+        this.onSubmit();
+      }
     }
   }
 

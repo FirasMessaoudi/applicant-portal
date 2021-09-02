@@ -17,6 +17,7 @@
     <img class="my-4" src="assets/images/logo.png" alt="logo"/>
   </div>
 
+
   <form [formGroup]="registerForm" class="login-box__wrapper">
     <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
       {{ "register.header_title" | translate }}
@@ -90,17 +91,47 @@
       </div>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2">
-      
-        <ng-container *ngIf="isApplicantVerified">
-        
-            <div class="mb-3 col">
-              <label> {{"general.full_name_En"|translate}} </label>
-              <input type="text" class="form-control" formControlName="fullNameEn" [attr.disabled]="true"/>
+    <div class="mt-5">
+      <div *ngIf="loading" class="preloader">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div *ngIf="!loading"
+        [ngClass]="{ 'animated fadeInUp': isApplicantVerified, 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }">
+        <div class="form-group form-row">
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label> {{"general.full_name_En"|translate}} </label>
+            <input type="text" class="form-control" formControlName="fullNameEn" [attr.disabled]="true"/>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label>{{"general.full_name_Ar"|translate}} </label>
+            <input type="text" class="form-control" formControlName="fullNameAr" [attr.disabled]="true"/>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+            <label> {{"general.mobile_number"|translate}}</label>
+            <div class="input-group flex-nowrap">
+              <ngx-intl-tel-input
+                [cssClass]="'form-control'"
+                [preferredCountries]="getPreferredCountries()"
+                [enableAutoCountrySelect]="false"
+                [searchCountryFlag]="true"
+                [selectFirstCountry]="false"
+                [selectedCountryISO]="originalCountryCode"
+                [separateDialCode]="true"
+                [maxLength]="15"
+                formControlName="mobileNumber"
+              ></ngx-intl-tel-input>
             </div>
-            <div class="mb-3 col">
-              <label>{{"general.full_name_Ar"|translate}} </label>
-              <input type="text" class="form-control" formControlName="fullNameAr" [attr.disabled]="true"/>
+
+            <div
+
+              *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
+              class="text-danger">
+              <div *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
+              <div
+                *ngIf="f.mobileNumber.errors?.validatePhoneNumber">{{'general.field_validation_pattern' | translate}}</div>
+              <div *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
             </div>
             <div class="mb-3 col">
               <label>   {{"general.email"|translate}} </label>
