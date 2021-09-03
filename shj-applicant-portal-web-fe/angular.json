@@ -175,7 +175,6 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "port": 8060,
             "open": true,
             "browserTarget": "shj-applicant-portal:build:serve"
           },
