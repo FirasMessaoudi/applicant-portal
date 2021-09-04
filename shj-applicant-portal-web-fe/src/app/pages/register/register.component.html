@@ -92,9 +92,9 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-2">
-      
+
         <ng-container *ngIf="isApplicantVerified">
-        
+
             <div class="mb-3 col">
               <label> {{"general.full_name_En"|translate}} </label>
               <input type="text" class="form-control" formControlName="fullNameEn" [attr.disabled]="true"/>
@@ -128,7 +128,7 @@
                   formControlName="mobileNumber"
                 ></ngx-intl-tel-input>
               </div>
-  
+
               <div
                 *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
                 class="text-danger small">
@@ -143,7 +143,7 @@
               <label>{{"general.password"|translate}}</label>
               <input type="password" formControlName="password"
                      [ngClass]="{'is-invalid': f.password.errors && f.password.touched}" class="form-control"/>
-  
+
               <div *ngIf="f.password.errors && f.password.touched" class="text-danger small">
                 <div *ngIf="f.password.errors.required">
                   {{ "general.field_validation_required" | translate }}
@@ -163,8 +163,8 @@
                 </div>
               </div>
             </div>
-  
-            <div class="mb-3 col">
+
+          <div class="mb-3 col">
               <label>{{"general.confirm_password"|translate}}</label>
               <input type="password" formControlName="confirmPassword"
                      [ngClass]="{'is-invalid':  (f.confirmPassword.errors && f.confirmPassword.touched) ||
@@ -184,14 +184,14 @@
                   "general.field_validation_max_length" | translate: {maxLength: 16}
                   }}
                 </div>
-  
+
                 <div *ngIf="f.confirmPassword.errors.invalid">
                   {{ f.confirmPassword.errors["invalid"] | translate }}
                 </div>
-  
+
               </div>
-  
-              <div
+
+            <div
                 *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched ) &&!f.confirmPassword.errors?.required"
                 class="text-danger small">
                 {{"general.confirm_password_mismatch"|translate}}
@@ -199,8 +199,8 @@
             </div>
 
         </ng-container>
-      
-      
+
+
     </div>
     <div class="flex-center-between my-3">
       <a class="d-block w_full text-center text-md-left" (click)="goBack()" href="javascript:void(0);">
@@ -213,8 +213,8 @@
             {{"general.register_user"|translate}}
           </button>
       </ng-container>
-      
-      
+
+
     </div>
   </form>
 

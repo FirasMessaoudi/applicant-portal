@@ -62,14 +62,20 @@ export class ChangePasswordComponent implements OnInit {
     changePasswordCmd.newPasswordConfirm = this.changePasswordForm.controls['newPasswordConfirm'].value;
     this.userService.changePassword(changePasswordCmd).subscribe(response => {
       if (response && (response.hasOwnProperty("errors") && response.errors)) {
-          Object.keys(this.changePasswordForm.controls).forEach(field => {
-            console.log("looking for validation errors for : " + field);
-            if (response.errors[field]) {
-              const control = this.changePasswordForm.get(field);
-              control.setErrors({invalid: response.errors[field].replace(/\{/, '').replace(/\}/, '')});
-              control.markAsTouched({onlySelf: true});
-            }
-          });
+        Object.keys(this.changePasswordForm.controls).forEach(field => {
+          console.log("looking for validation errors for : " + field);
+          if (response.errors[field]) {
+            const control = this.changePasswordForm.get(field);
+            control.setErrors({invalid: response.errors[field].replace(/\{/, '').replace(/\}/, '')});
+            control.markAsTouched({onlySelf: true});
+          }
+        });
+
+        if (response.errors['general error']) {
+          this.toastr.warning(this.translate.instant('general.dialog_error_text'), this.translate.instant('change-password.title'));
+
+        }
+
       } else {
         this.toastr.success(this.translate.instant('change-password.success_text'), this.translate.instant('change-password.title'));
         this.logout();

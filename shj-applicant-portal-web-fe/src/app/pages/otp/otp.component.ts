@@ -166,6 +166,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
         this.router.navigate(['/settings'], {replaceUrl: true});
       }, error => {
+        this.error = error;
         if (error.status === 562) {
           Object.keys(this.otpForm.controls).forEach(field => {
             this.otpForm.get(field).setValue(null);
