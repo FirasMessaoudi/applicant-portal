@@ -72,7 +72,7 @@
                 </select>
               </div>
               <div class="input-group-append">
-  
+
                 <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_edit'|translate}}" placement="top"
                         *ngIf="enableEditLanguage"
                         (click)="enableEditLanguage=false">
@@ -88,17 +88,17 @@
           </div>
         </div>
 
-        <form [formGroup]="contactsForm" (ngSubmit)="onSubmit()" class="row form-group">
+        <form [formGroup]="contactsForm" class="row form-group">
 
-            <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
-              <label>   {{"general.email"|translate}} </label>
-              <div class="input-group">
+          <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
+            <label>   {{"general.email"|translate}} </label>
+            <div class="input-group">
 
-                <input type="email" class="form-control"
-                       formControlName="email" maxlength="50"
-                       [class.is-invalid]="f.email.invalid && f.email.touched"/>
-                <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
-                  <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
+              <input type="email" class="form-control"
+                     formControlName="email" maxlength="50"
+                     [class.is-invalid]="f.email.invalid && f.email.touched"/>
+              <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
                   <div
                     *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
                 </div>
@@ -161,8 +161,8 @@
             <svg-icon styleClass="ml-3 mb-0 h5" icon="lock-alt"></svg-icon>
           </a>
         </div>
-      
-    
+
+
   </form>
 
 </div>

@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, OnDestroy} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {AuthenticationService, CardService, UserService} from "@core/services";
@@ -238,9 +238,11 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(this.contactsForm.controls['mobileNumber'].errors);
       return;
     }
+    console.log(this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.number.replace(/\s/g, ""))
+    if (this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.number.replace(/\s/g, "") ||
+      this.originalEmail != this.contactsForm.controls['email'].value ||
+      this.originalCountryCode.toUpperCase() != this.contactsForm.controls['mobileNumber'].value.countryCode.toUpperCase()) {
 
-    if (this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.number ||
-      this.originalEmail != this.contactsForm.controls['email'].value || this.originalCountryCode != this.contactsForm.controls['mobileNumber'].value.countryCode.toUpperCase()) {
 
       let reg1 = / /g;
       let reg2 = /\+/gi;
