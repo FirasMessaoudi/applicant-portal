@@ -28,13 +28,17 @@ export class HeaderComponent implements OnInit {
 
   ritualTypes: Lookup[] =[];
 
+
+  selectedSeason: number;
+  enableEditRitual = false;
+
   constructor(
     private location: Location,
     public router: Router,
     private i18nService: I18nService,
     private authenticationService: AuthenticationService,
     private el: ElementRef,
-    private userService: UserService,
+    public userService: UserService,
     private cardService: CardService,
     private lookupsService: LookupService) {
   }
@@ -60,8 +64,12 @@ export class HeaderComponent implements OnInit {
       this.selectedApplicantRitual =selectedApplicantRitual;
     });
 
+    this.selectedSeason = JSON.parse((localStorage.getItem('selectedSeason')));
     this.selectedApplicantRitual =JSON.parse(localStorage.getItem('selectedApplicantRitual'));
 
+    if (this.userService.seasons.length <= 0) {
+      this.getRitualSeason();
+    }
 
   }
 
@@ -108,5 +116,70 @@ export class HeaderComponent implements OnInit {
     return this.lookupsService;
   }
 
+  getRitualSeason() {
+    this.userService.getApplicantSeason().subscribe(seasons => {
+      console.log('seasons', seasons);
+      this.userService.seasons = seasons;
+      if (this.userService.seasons.length > 0) {
+        console.log("this.selectedSeason", this.selectedSeason)
+        if (this.selectedSeason == null) {
+          this.selectedSeason = this.userService.seasons[0];
+        }
+
+        localStorage.setItem('selectedSeason', JSON.stringify(this.selectedSeason));
+        this.getApplicantRitualLiteBySeason(true);
+      }
+    })
+  }
+
+  getApplicantRitualLiteBySeason(firstCall: boolean) {
+
+    if (this.selectedSeason) {
+      this.userService.applicantRituals = [];
+      this.userService.getApplicantRitualLiteBySeason(this.selectedSeason).subscribe(applicantRituals => {
+        this.userService.applicantRituals = applicantRituals;
+        if (this.userService.applicantRituals.length > 0) {
+
+          if (firstCall == true && this.selectedApplicantRitual != null) {
+            let curSelected = this.userService.applicantRituals.filter(ar => ar.id === this.selectedApplicantRitual.id);
+            if (curSelected.length > 0) {
+              this.changeSelectedApplicantRitual(this.selectedApplicantRitual);
+            } else {
+              this.changeSelectedApplicantRitual(this.userService.applicantRituals[0]);
+            }
+          } else {
+            this.changeSelectedApplicantRitual(this.userService.applicantRituals[0]);
+          }
+        }
+      });
+    }
+  }
+
+  onSeasonChange(event) {
+    this.selectedSeason = event.target.value;
+    this.getApplicantRitualLiteBySeason(false);
+  }
+
+  changeSelectedApplicantRitual(applicantRitual: ApplicantRitualLite) {
+    this.selectedApplicantRitual = applicantRitual;
+  }
+
+
+  onApplicantRitualChange(event) {
+    let curSelected = this.userService.applicantRituals.filter(ar => ar.id == event.target.value)[0];
+    this.changeSelectedApplicantRitual(curSelected);
+  }
+
+  saveSelectedRitual() {
+    localStorage.setItem('selectedSeason', JSON.stringify(this.selectedSeason));
+    localStorage.setItem('selectedApplicantRitual', JSON.stringify(this.selectedApplicantRitual));
+    this.userService.changeSelectedApplicantRitual(this.selectedApplicantRitual);
+
+    this.enableEditRitual = false;
+  }
+
+  editRitual() {
+    this.enableEditRitual = true;
+  }
 
 }

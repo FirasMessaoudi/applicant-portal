@@ -20,6 +20,10 @@ export class UserService {
 
 
   public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+  seasons: number [] = [];
+  applicantRituals: ApplicantRitualLite [] = [];
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.selectedApplicantRitual.asObservable();
   }
