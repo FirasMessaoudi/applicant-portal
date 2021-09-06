@@ -2,13 +2,11 @@
     <!-- CONTENT (ROUTER OUTLET) -->
     <div class="bg-svg">
         <div class="row wrapper">
-            <div class="col-lg-3 col-xxl-3 flex-center"></div>
             <div class="flex-center-column flex-grow-1">
                 <div class="z-index" [@scaleAnimation]="o.isActivated ? o.activatedRoute : ''">
                     <router-outlet #o="outlet" (activate)="onActivate($event)"></router-outlet>
                 </div>
             </div>
-            <div class="col-lg-3 col-xxl-3 flex-center"></div>
         </div>
     </div>
 </div>

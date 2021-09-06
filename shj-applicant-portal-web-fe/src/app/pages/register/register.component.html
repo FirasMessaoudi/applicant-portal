@@ -23,9 +23,9 @@
       {{ "register.header_title" | translate }}
 
     </h1>
-    <div class="form-group form-row">
-      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-        <label>{{"register.smart_id_number"|translate}}<span class="text-danger px-1">*</span></label>
+    <div class="row row-cols-1 row-cols-md-2">
+      <div class="mb-3 col">
+        <label>{{"register.smart_id_number"|translate}}<span class="text-danger small px-1">*</span></label>
         <input id="uin" type="number" formControlName="uin" class="form-control" [readonly]="isApplicantVerified"
                onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 14"
                min="0" step="1" [class.is-invalid]="f.uin.invalid && f.uin.touched" maxlength="50"/>
@@ -34,8 +34,8 @@
           <div *ngIf="f.uin.errors.invalid">{{f.uin.errors['invalid'] | translate}}</div>
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-        <label>{{ "general.date_of_birth" | translate}}<span class="text-danger px-1">*</span></label>
+      <div class="mb-3 col">
+        <label>{{ "general.date_of_birth" | translate}}<span class="text-danger small px-1">*</span></label>
 
         <hijri-gregorian-datepicker
           [showLabel]="false"
@@ -68,7 +68,7 @@
                translate>{{f.dateOfBirthGregorian.errors['invalid']}}</div>
         </div>
       </div>
-      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+      <div class="mb-3 col d-none">
         <ngx-invisible-recaptcha
           #reCaptchaEl
           type="Image"
@@ -82,7 +82,7 @@
         </ngx-invisible-recaptcha>
       </div>
 
-      <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
+      <div class="mb-3 col">
         <button class="btn btn-outline-dcc-primary px-5 w_full"
                 [disabled]="!dateString || !f.uin.value ||isApplicantVerified"
                 (click)="verifyApplicant()">
@@ -92,9 +92,9 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-2">
-      
+
         <ng-container *ngIf="isApplicantVerified">
-        
+
             <div class="mb-3 col">
               <label> {{"general.full_name_En"|translate}} </label>
               <input type="text" class="form-control" formControlName="fullNameEn" [attr.disabled]="true"/>
@@ -103,94 +103,118 @@
               <label>{{"general.full_name_Ar"|translate}} </label>
               <input type="text" class="form-control" formControlName="fullNameAr" [attr.disabled]="true"/>
             </div>
-          </div>
-        </div>
+            <div class="mb-3 col">
+              <label>   {{"general.email"|translate}} </label>
+              <input type="text" class="form-control" formControlName="email" maxlength="50"
+                     [class.is-invalid]="f.email.invalid && f.email.touched"/>
+              <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+                <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
+                <div
+                  *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
+              </div>
+            </div>
+            <div class="mb-3 col">
+              <label> {{"general.mobile_number"|translate}}</label>
+              <div class="input-group flex-nowrap">
+                <ngx-intl-tel-input
+                  [cssClass]="'form-control'"
+                  [preferredCountries]="getPreferredCountries()"
+                  [enableAutoCountrySelect]="false"
+                  [searchCountryFlag]="true"
+                  [selectFirstCountry]="false"
+                  [selectedCountryISO]="selectedCountryCode"
+                  [separateDialCode]="true"
+                  [maxLength]="15"
+                  formControlName="mobileNumber"
+                ></ngx-intl-tel-input>
+              </div>
 
-        <div class="form-group form-row">
-          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-            <label>   {{"general.email"|translate}} </label>
-            <input type="text" class="form-control" formControlName="email" maxlength="50"
-                   [class.is-invalid]="f.email.invalid && f.email.touched"/>
-            <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
-              <div *ngIf="f.email.errors.required">{{'general.field_validation_required' | translate}}</div>
               <div
-                *ngIf="f.email.invalid &&!f.email.errors?.required">{{'general.field_validation_pattern' | translate}}</div>
-            </div>
-          </div>
-          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-            <label>{{"general.password"|translate}}</label>
-            <input type="password" formControlName="password"
-                   [ngClass]="{'is-invalid': f.password.errors && f.password.touched}" class="form-control"/>
-
-            <div *ngIf="f.password.errors && f.password.touched" class="text-danger">
-              <div *ngIf="f.password.errors.required">
-                {{ "general.field_validation_required" | translate }}
-              </div>
-              <div *ngIf="f.password.errors.minlength">
-                {{
-                "general.field_validation_min_length" | translate: {minLength: 8}
-                }}
-              </div>
-              <div *ngIf="f.password.errors.maxlength">
-                {{
-                "general.field_validation_max_length" | translate: {maxLength: 16}
-                }}
-              </div>
-              <div *ngIf="f.password.errors.invalid">
-                {{ f.password.errors["invalid"] | translate }}
+                *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
+                class="text-danger small">
+                <div *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}} </div>
+                <div
+                  *ngIf="f.mobileNumber.errors?.validatePhoneNumber">{{'general.field_validation_pattern' | translate}}</div>
+                <div *ngIf="f.mobileNumber.errors?.invalid">{{'general.field_validation_pattern' | translate}}</div>
               </div>
             </div>
-          </div>
 
+            <div class="mb-3 col">
+              <label>{{"general.password"|translate}}</label>
+              <input type="password" formControlName="password"
+                     [ngClass]="{'is-invalid': f.password.errors && f.password.touched}" class="form-control"/>
 
-          <div class="col-md-4 col-sm-12 mb-4 mb-md-0">
-            <label>{{"general.confirm_password"|translate}}</label>
-            <input type="password" formControlName="confirmPassword"
-                   [ngClass]="{'is-invalid':  (f.confirmPassword.errors && f.confirmPassword.touched) ||
-                        (registerForm.errors?.mismatch &&(f.password.dirty && f.confirmPassword.touched))}"
-                   class="form-control"/>
-            <div *ngIf="f.confirmPassword.errors && f.confirmPassword.touched" class="text-danger">
-              <div *ngIf="f.confirmPassword.errors.required">
-                {{ "general.field_validation_required" | translate }}
+              <div *ngIf="f.password.errors && f.password.touched" class="text-danger small">
+                <div *ngIf="f.password.errors.required">
+                  {{ "general.field_validation_required" | translate }}
+                </div>
+                <div *ngIf="f.password.errors.minlength">
+                  {{
+                  "general.field_validation_min_length" | translate: {minLength: 8}
+                  }}
+                </div>
+                <div *ngIf="f.password.errors.maxlength">
+                  {{
+                  "general.field_validation_max_length" | translate: {maxLength: 16}
+                  }}
+                </div>
+                <div *ngIf="f.password.errors.invalid">
+                  {{ f.password.errors["invalid"] | translate }}
+                </div>
               </div>
-              <div *ngIf="f.confirmPassword.errors.minlength">
-                {{
-                "general.field_validation_min_length" | translate: {minLength: 8}
-                }}
-              </div>
-              <div *ngIf="f.confirmPassword.errors.maxlength">
-                {{
-                "general.field_validation_max_length" | translate: {maxLength: 16}
-                }}
-              </div>
-
-              <div *ngIf="f.confirmPassword.errors.invalid">
-                {{ f.confirmPassword.errors["invalid"] | translate }}
-              </div>
-
             </div>
+
+          <div class="mb-3 col">
+              <label>{{"general.confirm_password"|translate}}</label>
+              <input type="password" formControlName="confirmPassword"
+                     [ngClass]="{'is-invalid':  (f.confirmPassword.errors && f.confirmPassword.touched) ||
+                          (registerForm.errors?.mismatch &&(f.password.dirty && f.confirmPassword.touched))}"
+                     class="form-control"/>
+              <div *ngIf="f.confirmPassword.errors && f.confirmPassword.touched" class="text-danger small">
+                <div *ngIf="f.confirmPassword.errors.required">
+                  {{ "general.field_validation_required" | translate }}
+                </div>
+                <div *ngIf="f.confirmPassword.errors.minlength">
+                  {{
+                  "general.field_validation_min_length" | translate: {minLength: 8}
+                  }}
+                </div>
+                <div *ngIf="f.confirmPassword.errors.maxlength">
+                  {{
+                  "general.field_validation_max_length" | translate: {maxLength: 16}
+                  }}
+                </div>
+
+                <div *ngIf="f.confirmPassword.errors.invalid">
+                  {{ f.confirmPassword.errors["invalid"] | translate }}
+                </div>
+
+              </div>
 
             <div
-              *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched ) &&!f.confirmPassword.errors?.required"
-              class="text-danger">
-              {{"general.confirm_password_mismatch"|translate}}
+                *ngIf=" registerForm.errors?.mismatch && (f.confirmPassword.touched ) &&!f.confirmPassword.errors?.required"
+                class="text-danger small">
+                {{"general.confirm_password_mismatch"|translate}}
+              </div>
             </div>
-          </div>
+
+        </ng-container>
 
 
-        </div>
-      </div>
-      <div class="d-flex flex-column-reverse flex-md-row justify-content-between my-3">
-        <a class="d-block w_full text-center text-md-left" (click)="goBack()" href="javascript:void(0);">
-          <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
-          <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
-        </a>
+    </div>
+    <div class="flex-center-between my-3">
+      <a class="d-block w_full text-center text-md-left" (click)="goBack()" href="javascript:void(0);">
+        <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
+        <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
+      </a>
 
-        <button [ngClass]="{ 'visibility_show': isApplicantVerified , 'visibility_hide': !isApplicantVerified }"
-                class="btn btn-dcc-primary w_full" (click)="register()">
-          {{"general.register_user"|translate}}
-        </button>
-      </div>
+      <ng-container *ngIf="isApplicantVerified">
+          <button class="btn btn-dcc-primary w_full" (click)="register()">
+            {{"general.register_user"|translate}}
+          </button>
+      </ng-container>
+
+
     </div>
   </form>
 

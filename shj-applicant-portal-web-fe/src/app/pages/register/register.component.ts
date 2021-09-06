@@ -273,6 +273,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
         } else {
           this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
           let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase()).countryPhonePrefix;
+          if (this.user.mobileNumber.startsWith('00')) {
+            console.log("starts with 00")
+            this.user.mobileNumber = this.user.mobileNumber.substring(2);
+          }
           applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
           this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
         }
@@ -362,8 +366,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.originalCountryCode = this.selectedCountryCode;
   }
 
+  ngAfterViewInit() {
+    document.querySelector('body').classList.add('register');
+  }
+
   ngOnDestroy() {
     this.otpDataSubscription.unsubscribe();
+    document.querySelector('body').classList.remove('register');
   }
+
+
+
+
 
 }

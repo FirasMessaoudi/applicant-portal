@@ -21,14 +21,18 @@ export const LOGIN_ROUTES: Routes = [
   {
     path: 'register-success',
     loadChildren: () => import('@pages/register/register-success/register-success.module').then(m => m.RegisterSuccessModule)
+  },
+  {
+    path: 'register',
+    loadChildren: () => import('@pages/register/register.module').then(m => m.RegisterModule)
   }
 ];
 
 
-export const REGISTER_ROUTES: Routes = [
+/* export const REGISTER_ROUTES: Routes = [
   {
     path: 'register',
     loadChildren: () => import('@pages/register/register.module').then(m => m.RegisterModule)
   }
 
-];
+]; */
