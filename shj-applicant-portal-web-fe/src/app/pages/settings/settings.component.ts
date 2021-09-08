@@ -1,8 +1,6 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {AuthenticationService, CardService, UserService} from "@core/services";
-import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
@@ -22,12 +20,7 @@ import {I18nService} from "@dcc-commons-ng/services";
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   closeResult = '';
 
-  seasons: number [] = [];
-  applicantRituals: ApplicantRitualLite [] = [];
-  selectedSeason: number;
-  selectedApplicantRitual: ApplicantRitualLite;
-  ritualTypes: Lookup[] = [];
-  enableEditRitual = false;
+
   enableEditLanguage = true;
   selectedLanguage = "";
   contactsForm: FormGroup;
@@ -86,14 +79,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    this.cardService.findRitualTypes().subscribe(result => {
-      this.ritualTypes = result;
-    });
 
-    this.selectedSeason = JSON.parse((localStorage.getItem('selectedSeason')));
-    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
-
-    this.getRitualSeason();
     this.createForm();
   }
 
@@ -139,44 +125,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  getRitualSeason() {
-    this.userService.getApplicantSeason().subscribe(seasons => {
-      console.log('seasons', seasons);
-      this.seasons = seasons;
-      if (this.seasons.length > 0) {
-        console.log("this.selectedSeason", this.selectedSeason)
-        if (this.selectedSeason == null) {
-          this.selectedSeason = this.seasons[0];
-        }
-
-        localStorage.setItem('selectedSeason', JSON.stringify(this.selectedSeason));
-        this.getApplicantRitualLiteBySeason(true);
-      }
-    })
-  }
-
-  getApplicantRitualLiteBySeason(firstCall: boolean) {
-
-    if (this.selectedSeason) {
-      this.applicantRituals = [];
-      this.userService.getApplicantRitualLiteBySeason(this.selectedSeason).subscribe(applicantRituals => {
-        this.applicantRituals = applicantRituals;
-        if (this.applicantRituals.length > 0) {
-
-          if (firstCall == true && this.selectedApplicantRitual != null) {
-            let curSelected = this.applicantRituals.filter(ar => ar.id === this.selectedApplicantRitual.id);
-            if (curSelected.length > 0) {
-              this.changeSelectedApplicantRitual(this.selectedApplicantRitual);
-            } else {
-              this.changeSelectedApplicantRitual(this.applicantRituals[0]);
-            }
-          } else {
-            this.changeSelectedApplicantRitual(this.applicantRituals[0]);
-          }
-        }
-      });
-    }
-  }
 
   lookupService(): LookupService {
     return this.lookupsService;
@@ -187,32 +135,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.contactsForm?.controls;
   }
 
-  onSeasonChange(event) {
-    this.selectedSeason = event.target.value;
-    this.getApplicantRitualLiteBySeason(false);
-  }
-
-  changeSelectedApplicantRitual(applicantRitual: ApplicantRitualLite) {
-    this.selectedApplicantRitual = applicantRitual;
-  }
-
-
-  onApplicantRitualChange(event) {
-    let curSelected = this.applicantRituals.filter(ar => ar.id == event.target.value)[0];
-    this.changeSelectedApplicantRitual(curSelected);
-  }
-
-  saveSelectedRitual() {
-    localStorage.setItem('selectedSeason', JSON.stringify(this.selectedSeason));
-    localStorage.setItem('selectedApplicantRitual', JSON.stringify(this.selectedApplicantRitual));
-    this.userService.changeSelectedApplicantRitual(this.selectedApplicantRitual);
-
-    this.enableEditRitual = false;
-  }
-
-  editRitual() {
-    this.enableEditRitual = true;
-  }
 
   setContactsEnabled() {
     this.contactsForm.enable();

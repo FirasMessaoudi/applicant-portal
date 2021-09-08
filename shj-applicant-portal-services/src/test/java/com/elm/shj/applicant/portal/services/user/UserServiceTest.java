@@ -28,9 +28,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -93,8 +95,17 @@ public class UserServiceTest {
     private final MockMultipartFile mockAvatar = new MockMultipartFile("fileData", "mock avatar", "text/plain", "mock content".getBytes());
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws IllegalAccessException {
         Mockito.lenient().when(mapperRegistry.mapperOf(UserDto.class, JpaUser.class)).thenReturn(userDtoMapper);
+
+        Field mapperRegistryField = ReflectionUtils.findField(serviceToTest.getClass(), "mapperRegistry");
+        Field repositoryField = ReflectionUtils.findField(serviceToTest.getClass(), "repository");
+
+        ReflectionUtils.makeAccessible(mapperRegistryField);
+        ReflectionUtils.makeAccessible(repositoryField);
+
+        mapperRegistryField.set(serviceToTest, mapperRegistry);
+        repositoryField.set(serviceToTest, userRepository);
     }
 
     @Test
@@ -136,7 +147,8 @@ public class UserServiceTest {
         JpaUser foundUser = new JpaUser();
         UserDto foundDto = new UserDto();
         Mockito.when(userRepository.findByNinAndDeletedFalseAndActivatedTrueAndUserRolesRoleDeletedFalseAndUserRolesRoleActivatedTrue(anyLong())).thenReturn(foundUser);
-        Mockito.when(userDtoMapper.fromEntity(any(), eq(mappingContext))).thenReturn(foundDto);
+        Mockito.when(userDtoMapper.fromEntity(any(), any())).thenReturn(foundDto);
+
         Optional<UserDto> user = serviceToTest.findByNin(anyLong());
         assertEquals(foundDto, user.get());
     }
@@ -146,7 +158,7 @@ public class UserServiceTest {
         JpaUser foundUser = new JpaUser();
         UserDto foundDto = new UserDto();
         Mockito.when(userRepository.findByUinAndDeletedFalseAndActivatedTrue(anyLong())).thenReturn(foundUser);
-        Mockito.when(userDtoMapper.fromEntity(any(), eq(mappingContext))).thenReturn(foundDto);
+        Mockito.when(userDtoMapper.fromEntity(any(), any())).thenReturn(foundDto);
         Optional<UserDto> user = serviceToTest.findByUin(anyLong());
         assertEquals(foundDto, user.get());
     }
@@ -380,7 +392,7 @@ public class UserServiceTest {
     @Test
     public void test_find_user_main_data_by_uin_notFound() {
 
-        when(integrationService.loadUserMainData(any(String.class),any(Long.class))).thenReturn(null);
+        when(integrationService.loadUserMainData(any(String.class), any(Long.class))).thenReturn(null);
         Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), 2);
         assertFalse(applicantMainDataDto.isPresent());
     }
@@ -388,7 +400,7 @@ public class UserServiceTest {
     @Test
     public void test_find_user_main_data_by_uin_found() {
         ApplicantMainDataDto dto = new ApplicantMainDataDto();
-        when(integrationService.loadUserMainData(any(String.class),any(Long.class))).thenReturn(dto);
+        when(integrationService.loadUserMainData(any(String.class), any(Long.class))).thenReturn(dto);
         Optional<ApplicantMainDataDto> applicantMainDataDto = serviceToTest.findUserMainDataByUin(TEST_UIN.toString(), 2);
         assertTrue(applicantMainDataDto.isPresent());
     }
@@ -415,9 +427,9 @@ public class UserServiceTest {
     @Test
     public void test_find_applicant_ritual_by_uin_and_seasons_found() {
 
-        when(integrationService.loadApplicantRitualByUinAndSeasons(any(String.class),any(Integer.class))).thenReturn(Arrays.asList(new ApplicantRitualLiteDto()));
+        when(integrationService.loadApplicantRitualByUinAndSeasons(any(String.class), any(Integer.class))).thenReturn(Arrays.asList(new ApplicantRitualLiteDto()));
 
-        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442);
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(), 1442);
         assertNotNull(applicantRitualLiteDtos);
         assertEquals(1, applicantRitualLiteDtos.size());
 
@@ -427,9 +439,9 @@ public class UserServiceTest {
     @Test
     public void test_find_applicant_ritual_by_uin_and_seasons_notFound() {
 
-        when(integrationService.loadApplicantRitualByUinAndSeasons(any(String.class),any(Integer.class))).thenReturn(null);
+        when(integrationService.loadApplicantRitualByUinAndSeasons(any(String.class), any(Integer.class))).thenReturn(null);
 
-        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(),1442);
+        List<ApplicantRitualLiteDto> applicantRitualLiteDtos = serviceToTest.findApplicantRitualByUinAndSeasons(TEST_UIN.toString(), 1442);
         assertNull(applicantRitualLiteDtos);
 
     }

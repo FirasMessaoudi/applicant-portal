@@ -16,56 +16,6 @@
   <form class="d-inline-block w-100">
 
         <div class="row form-group">
-
-          <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
-            <label for="inputEmail4">{{ "settings.season" | translate }}</label>
-
-            <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event)"
-                    [disabled]="!enableEditRitual">
-              <option [value]="season" *ngFor="let season of seasons"
-                      [selected]="season==selectedSeason">{{season}}</option>
-            </select>
-
-          </div>
-          <div class="col-md-7 px-0" role="group">
-            <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
-
-            <div class="input-group flex-nowrap">
-              <select id="inputApplicantRitual" class="custom-select" (change)="onApplicantRitualChange($event)"
-                      [disabled]="!enableEditRitual">
-                <option [value]="ar.id" *ngFor="let ar of applicantRituals"
-                        [selected]="ar.id == selectedApplicantRitual.id">
-                  {{
-                  ar?.typeCode
-                    ? lookupService().localizedLabel(
-                      ritualTypes,
-                      ar?.typeCode
-                    )
-                    : ""
-                  }}
-                  - {{ar?.dateStartHijri | monthDayHijriFormat}}
-                </option>
-              </select>
-              <div class="input-group-append">
-                <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="تعديل" *ngIf="!enableEditRitual" placement="top"
-                        (click)="editRitual()">
-                  <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-                </button>
-                <div *ngIf="enableEditRitual">
-                  <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="حفظ" placement="top"
-                          (click)="saveSelectedRitual()">
-                    <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-                  </button>
-                  <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="إلغاء" placement="top">
-                    <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row form-group">
           <div class="col-12 px-0">
             <label for="inputEmail4">{{'general.language'|translate}}</label>
             <div class="input-group flex-grow-1">
@@ -83,11 +33,15 @@
                         (click)="enableEditLanguage=false">
                   <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
                 </button>
-                <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_save'|translate}}" placement="top"
-                        *ngIf="!enableEditLanguage"
-                        (click)="updateUserLanguage()">
-                  <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-                </button>
+                <div *ngIf="!enableEditLanguage">
+                  <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_save'|translate}}" placement="top"
+                          (click)="updateUserLanguage()">
+                    <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                  </button>
+                  <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="إلغاء" placement="top">
+                    <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
