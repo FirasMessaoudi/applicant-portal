@@ -129,7 +129,8 @@
     "ritual-type": "نوع الشعيرة",
     "season": "الموسم",
     "settings": "الإعدادات",
-    "edit-contacts": "تعديل جهات الاتصال"
+    "edit-contacts": "تعديل جهات الاتصال",
+    "search_country_dialing_code": "ابحث عن البلد أو رمز الاتصال"
   },
 
   "home": {
