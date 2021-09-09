@@ -20,6 +20,10 @@ export class UserService {
 
 
   public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+  seasons: number [] = [];
+  applicantRituals: ApplicantRitualLite [] = [];
+
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.selectedApplicantRitual.asObservable();
   }
@@ -118,7 +122,9 @@ export class UserService {
    * @return {Observable<User>} The saved or updated user.
    */
   updatePreferredLang(lang: string): Observable<any> {
-    return this.http.put<any>('/core/api/users/language/' + lang, null).pipe(catchError((error: HttpErrorResponse) => {
+    let headers = new HttpHeaders();
+    headers = headers.set('X-XSRF-TOKEN', this.cookieService.get("XSRF-TOKEN"));
+    return this.http.put<any>('/core/api/users/language/' + lang, null, {'headers':headers}).pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {
           return of(error.error);
         } else {

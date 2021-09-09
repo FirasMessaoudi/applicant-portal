@@ -106,6 +106,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
   loadUserDetails() {
     if (this.selectedApplicantRitual) {
+      this.loading=true;
       this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
         if (data) {
           this.applicant = data;

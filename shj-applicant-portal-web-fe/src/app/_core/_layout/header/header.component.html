@@ -44,28 +44,90 @@
         <div class="nav-right">
             <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
               <li class=" flex-center">
-                <a class="nav-link d-flex align-items-center  noArrow" tittle="معلوماتي" href="javascript:void(0)"
+                <a class="nav-link d-flex align-items-top  noArrow" tittle="معلوماتي" href="javascript:void(0)"
                    id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
                   <div class="mx-3">
                     <h6 class="text-dcc-primary m-0">
                       {{ currentUser?.firstName }} {{ currentUser?.lastName }}
                     </h6>
-                    <small class="text-black-50">
-                      <div> {{ "settings.season" | translate }}
-                        {{selectedApplicantRitual?.hijriSeason}}
+
+                    <small class="text-black-50 mb-2" *ngIf="!enableEditRitual">
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div> {{ "settings.season" | translate }}
+                            {{selectedApplicantRitual?.hijriSeason}}
+                          </div>
+                          <div>
+                            {{
+                            selectedApplicantRitual?.typeCode
+                              ? lookupService().localizedLabel(
+                              ritualTypes,
+                              selectedApplicantRitual?.typeCode
+                              )
+                              : ""
+                            }}
+                            {{selectedApplicantRitual?.dateStartHijri | monthDayHijriFormat}}
+                          </div>
+                        </div>
+
+                        <div class="col-md-2">
+                          <button class="btn  shadow-none ml-1" type="button" ngbTooltip="تعديل"  placement="top"
+                                  (click)="editRitual()">
+                            <svg-icon styleClass="fa-w-16 h4" icon="edit"></svg-icon>
+                          </button>
+                        </div>
+
                       </div>
-                      <div>
-                        {{
-                        selectedApplicantRitual?.typeCode
-                          ? lookupService().localizedLabel(
-                          ritualTypes,
-                          selectedApplicantRitual?.typeCode
-                          )
-                          : ""
-                        }}
-                        {{selectedApplicantRitual?.dateStartHijri | monthDayHijriFormat}}</div>
                     </small>
+
+
+                    <small class="text-black-50 mb-2" *ngIf="enableEditRitual">
+
+                      <div class="row form-group m-0 mb-1 mt-1">
+
+                        <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
+                          <label for="inputEmail4">{{ "settings.season" | translate }}</label>
+
+                          <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event)"
+                                  [disabled]="!enableEditRitual">
+                            <option [value]="season" *ngFor="let season of userService.seasons"
+                                    [selected]="season==selectedSeason">{{season}}</option>
+                          </select>
+
+                        </div>
+                        <div class="col-md-7 px-0" role="group">
+                          <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
+
+                          <div class="input-group flex-nowrap">
+                            <select id="inputApplicantRitual" class="custom-select" (change)="onApplicantRitualChange($event)"
+                                    [disabled]="!enableEditRitual">
+                              <option [value]="ar.id" *ngFor="let ar of userService.applicantRituals"
+                                      [selected]="ar.id == selectedApplicantRitual.id">
+                                {{
+                                ar?.typeCode
+                                  ? lookupService().localizedLabel(
+                                  ritualTypes,
+                                  ar?.typeCode
+                                  )
+                                  : ""
+                                }}
+                                - {{ar?.dateStartHijri | monthDayHijriFormat}}
+                              </option>
+                            </select>
+                            <div class="input-group-append">
+
+                              <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="حفظ" *ngIf="enableEditRitual" placement="top"
+                                      (click)="saveSelectedRitual()">
+                                <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </small>
+
                   </div>
                 </a>
 

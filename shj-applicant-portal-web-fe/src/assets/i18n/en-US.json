@@ -131,7 +131,8 @@
     "ritual-type": "Ritual type",
     "season": "Season",
     "settings": "Settings",
-    "edit-contacts": "Edit Contacts"
+    "edit-contacts": "Edit Contacts",
+    "search_country_dialing_code": "Search country or dialing code"
   },
 
   "home": {
