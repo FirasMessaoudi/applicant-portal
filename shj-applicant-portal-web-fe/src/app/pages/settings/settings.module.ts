@@ -4,7 +4,6 @@ import {SettingsRoutingModule} from './settings-routing.module';
 import {SettingsComponent} from './settings.component';
 import {TranslateModule} from "@ngx-translate/core";
 import {SharedModule} from "@shared/shared.module";
-import {NgSelectModule} from "@ng-select/ng-select";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
@@ -12,7 +11,6 @@ import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
     CommonModule,
     SettingsRoutingModule,
     TranslateModule,
-    NgSelectModule,
     NgbDropdownModule,
     SharedModule
   ],
