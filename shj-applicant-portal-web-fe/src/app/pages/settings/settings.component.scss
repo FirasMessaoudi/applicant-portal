@@ -10,16 +10,7 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-.arrow_icon {
-  background: url(~assets/images/svg-icons/chevron-down-light.svg) no-repeat;
-  background-size: 18px 15px;
-  background-position: calc(100% - 5px) center;
-
-  direction: ltr;
-  font-weight: normal !important;
-}
-
-.country_code_flag {
+/*.country_code_flag {
   position: relative;
 
   .flag-icon {
@@ -41,12 +32,11 @@ input[type=number] {
     }
 
   }
-}
+}*/
+
 
 ngb-typeahead-window.dropdown-menu {
   min-width: 7.4rem;
-  max-height: 250px;
-  overflow: auto;
 
   button.dropdown-item.active, .dropdown-item:active {
     color: #212529;
@@ -71,6 +61,7 @@ ngb-typeahead-window.dropdown-menu {
     }
   }
 }
+
 .form-control:disabled {
   color: #6c757d !important;
   background-color: #d8d8d8 !important;

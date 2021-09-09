@@ -125,13 +125,17 @@
     "change_password": "Change Password",
     "my_profile": "My Profile",
     "logout": "Logout",
-    "settings": "Settings"
+    "settings": "Settings",
+    "my_dashboard": "My Dashboard",
+    "my_program": "My Program",
+    "ritual_schedule": "Ritual Schedule"
   },
   "settings": {
     "ritual-type": "Ritual type",
     "season": "Season",
     "settings": "Settings",
-    "edit-contacts": "Edit Contacts"
+    "edit-contacts": "Edit Contacts",
+    "search_country_dialing_code": "Search country or dialing code"
   },
 
   "home": {
