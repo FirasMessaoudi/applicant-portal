@@ -125,7 +125,10 @@
     "change_password": "Change Password",
     "my_profile": "My Profile",
     "logout": "Logout",
-    "settings": "Settings"
+    "settings": "Settings",
+    "my_dashboard": "My Dashboard",
+    "my_program": "My Program",
+    "ritual_schedule": "Ritual Schedule"
   },
   "settings": {
     "ritual-type": "Ritual type",

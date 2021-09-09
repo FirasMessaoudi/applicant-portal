@@ -123,7 +123,10 @@
     "change_password": "تغيير كلمة المرور",
     "my_profile": "ملفي الشخصي",
     "logout": "تسجيل الخروج",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "my_dashboard": "بياناتي",
+    "my_program": "برنامجي",
+    "ritual_schedule": "الجدول الزمني"
   },
   "settings": {
     "ritual-type": "نوع الشعيرة",
