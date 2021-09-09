@@ -36,14 +36,12 @@ input[type=number] {
 
 
 ngb-typeahead-window.dropdown-menu {
-  //min-width: 7.4rem;
-  max-height: 250px;
-  overflow: auto;
+  min-width: 7.4rem;
 
   button.dropdown-item.active, .dropdown-item:active {
-    //color: #212529;
+    color: #212529;
     text-decoration: none;
-    //background-color: #f7f4ef;
+    background-color: #f7f4ef;
   }
 
   [dir='rtl'] & {
@@ -54,13 +52,13 @@ ngb-typeahead-window.dropdown-menu {
   .dropdown-item {
     direction: ltr;
 
-/*    [dir='rtl'] & {
+    [dir='rtl'] & {
       padding-left: 35px;
     }
 
     [dir='ltr'] & {
       padding-left: 35px;
-    }*/
+    }
   }
 }
 

@@ -22,16 +22,11 @@ import {Lookup} from "@model/lookup.model";
 })
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   closeResult = '';
-
-  SAUDI_MOBILE_NUMBER_REGEX: RegExp = new RegExp("^(009665|9665|\\+9665|05|5)([0-9]{8})$");
-
   seasons: number [] = [];
   applicantRituals: ApplicantRitualLite [] = [];
   selectedSeason: number;
   selectedApplicantRitual: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
-  enableEditRitual = false;
-
   enableEditLanguage = true;
   selectedLanguage = "";
   contactsForm: FormGroup;
@@ -42,13 +37,10 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   countries: any;
   selectedCountryCode;
   selectedCountryPrefix: any;
-
   @ViewChild('instance')
   instance: NgbTypeahead;
-
   @ViewChild('elem')
   elem: ElementRef;
-
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
