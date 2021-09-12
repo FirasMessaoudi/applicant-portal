@@ -182,4 +182,8 @@ export class HeaderComponent implements OnInit {
     this.enableEditRitual = true;
   }
 
+  CancelEditRitual(){
+    this.enableEditRitual = false;
+  }
+
 }

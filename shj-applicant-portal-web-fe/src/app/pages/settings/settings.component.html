@@ -20,7 +20,7 @@
         <label for="inputEmail">{{'general.language'|translate}}</label>
         <div class="input-group flex-grow-1">
           <div class="setBox flex-grow-1" role="group">
-            <select class="custom-select" [disabled]="enableEditLanguage"
+            <select class="custom-select" [disabled]="!enableEditLanguage"
                     (change)="selectedLanguage=$event.target.value">
               <option value="ar-SA" [selected]="currentLanguage.startsWith('ar')">العربية</option>
               <option value="en-US" [selected]="currentLanguage.startsWith('en')">English</option>
@@ -30,17 +30,17 @@
 
             <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button"
                     ngbTooltip="{{'general.btn_edit'|translate}}" placement="top"
-                    *ngIf="enableEditLanguage"
-                    (click)="enableEditLanguage=false">
+                    *ngIf="!enableEditLanguage"
+                    (click)="enableEditLanguage=true">
               <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
             </button>
-            <div *ngIf="!enableEditLanguage">
+                  <div *ngIf="enableEditLanguage">
                   <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
                     placement="top"
-
                     (click)="updateUserLanguage()">
-              <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-            </button><button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="إلغاء" placement="top">
+                    <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                  </button>
+                  <button class="btn btn-outline-gray-300 shadow-none ml-1" (click)="cancelEditLanguage()" type="button" ngbTooltip="إلغاء" placement="top">
                     <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
                   </button>
                 </div>
@@ -112,6 +112,9 @@
                     placement="top"
                     *ngIf="!contactsForm.disabled" (click)="onSubmit()">
               <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+            </button>
+            <button class="btn btn-outline-gray-300 shadow-none ml-1" *ngIf="!contactsForm.disabled" (click)="setContactsDisabled()" type="button" ngbTooltip="إلغاء" placement="top">
+              <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
             </button>
           </div>
         </div>

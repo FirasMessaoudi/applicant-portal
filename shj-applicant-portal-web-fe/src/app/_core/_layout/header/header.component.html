@@ -71,6 +71,7 @@
                                   (click)="editRitual()">
                             <svg-icon styleClass="fa-w-16 h4" icon="edit"></svg-icon>
                           </button>
+
                         </div>
 
                       </div>
@@ -115,6 +116,9 @@
                               <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="حفظ" *ngIf="enableEditRitual" placement="top"
                                       (click)="saveSelectedRitual()">
                                 <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+                              </button>
+                              <button class="btn btn-outline-gray-300 shadow-none ml-1" (click)="CancelEditRitual()" type="button" ngbTooltip="إلغاء" placement="top">
+                                <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
                               </button>
                             </div>
                           </div>

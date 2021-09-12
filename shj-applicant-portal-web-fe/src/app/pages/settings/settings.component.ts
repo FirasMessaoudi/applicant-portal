@@ -27,7 +27,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedSeason: number;
   selectedApplicantRitual: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
-  enableEditLanguage = true;
+  enableEditLanguage = false;
   selectedLanguage = "";
   contactsForm: FormGroup;
   originalEmail: any;
@@ -122,6 +122,12 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       });
     }
+    this.enableEditLanguage = false;
+  }
+
+  cancelEditLanguage(){
+    this.enableEditLanguage = false;
+    console.log(this.enableEditLanguage);
   }
 
   private createForm() {
@@ -153,6 +159,10 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setContactsEnabled() {
     this.contactsForm.enable();
+  }
+
+  setContactsDisabled() {
+    this.contactsForm.disable();
   }
 
   onSubmit() {
