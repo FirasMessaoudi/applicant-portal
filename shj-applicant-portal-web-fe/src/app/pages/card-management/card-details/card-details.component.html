@@ -293,10 +293,10 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
-      <a class="d-none d-md-block isDisabled" ngbNavLink>{{
+      <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.hamlah_details" | translate
         }}</a>
-      <ng-template> <!-- add ngbNavContent directive in ng-template to activate this section -->
+      <ng-template ngbNavContent>
         <section>
           <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
             <div class="form-group col">
@@ -621,10 +621,10 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="4">
-      <a class="d-none d-md-block isDisabled" ngbNavLink>{{
+      <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.tafweej_details" | translate
         }}</a>
-      <ng-template> <!-- add ngbNavContent directive in ng-template to activate this section -->
+      <ng-template ngbNavContent>
         <section>
                     <span class="form-control-plaintext">{{ "card-management.tafweej_details" | translate }}
                       {{ "(رقم 257788)" }}</span
@@ -673,10 +673,10 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="5">
-      <a class="d-none d-md-block isDisabled" ngbNavLink>{{
+      <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.motawef_details" | translate
         }}</a>
-      <ng-template> <!-- add ngbNavContent directive in ng-template to activate this section -->
+      <ng-template ngbNavContent>
         <div class="table-responsive my-4">
           <table class="table table-striped table-hover">
             <thead>

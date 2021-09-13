@@ -23,10 +23,10 @@
                                 <a (click)="isActive = false" class="py-2 d-block h6" [routerLink]="['/cards/details/1']">{{ 'header.my_dashboard' | translate }}</a>
                             </li>
                             <li routerLinkActive="disable">
-                                <a (click)="isActive = false" class="py-2 d-block h6 isDisabled" [routerLink]="routerDisabled ? null : ['/hajj-rituals']">{{ 'header.my_program' | translate }}</a>
+                                <a (click)="isActive = false" class="py-2 d-block h6 " [routerLink]="['/hajj-rituals']">{{ 'header.my_program' | translate }}</a>
                             </li>
                             <li routerLinkActive="disable">
-                                <a (click)="isActive = false" class="py-2 d-block h6 isDisabled" [routerLink]="routerDisabled ? null : ['/hajj-journey/list']">{{ 'header.ritual_schedule' | translate }}</a>
+                                <a (click)="isActive = false" class="py-2 d-block h6 " [routerLink]="['/hajj-journey/list']">{{ 'header.ritual_schedule' | translate }}</a>
                             </li>
                         </ul>
                     </div>
