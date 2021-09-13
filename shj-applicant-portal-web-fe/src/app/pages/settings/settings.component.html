@@ -68,9 +68,9 @@
       <div class="col-md-7 px-0" role="group">
         <label> {{"general.mobile_number"|translate}}</label>
         <div class="input-group flex-nowrap">
-          <div ngbDropdown class="d-inline-block">
+          <div ngbDropdown class="d-inline-block w-100">
             <div class="input-group">
-              <button class="btn btn-outline-gray-300 shadow-none ml-1" id="dropdown1" ngbDropdownToggle
+              <button class="btn btn-outline-gray-300 shadow-none country-code-button" id="dropdown1" ngbDropdownToggle
                       (click)="openTypeahead()" [disabled]="!this.contactsForm.enabled">
                 <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode?.toLowerCase()}}"></span>
                 {{selectedCountryPrefix}}
@@ -86,7 +86,6 @@
                 </ng-template>
                 <input id="typeahead-template"
                        type="text"
-                       class="form-control"
                        placeholder="{{'settings.search_country_dialing_code' | translate }}"
                        [ngbTypeahead]="search"
                        [resultTemplate]="rt"
