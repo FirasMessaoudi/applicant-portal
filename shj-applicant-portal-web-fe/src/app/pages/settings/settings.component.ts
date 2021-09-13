@@ -127,7 +127,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   cancelEditLanguage(){
     this.enableEditLanguage = false;
-    console.log(this.enableEditLanguage);
+    this.selectedLanguage = this.currentLanguage;
   }
 
   private createForm() {
@@ -163,6 +163,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   setContactsDisabled() {
     this.contactsForm.disable();
+    this.contactsForm.controls['email'].setValue(this.originalEmail);
+    this.contactsForm.controls['mobileNumber'].setValue(this.originalMobileNo);
   }
 
   onSubmit() {
