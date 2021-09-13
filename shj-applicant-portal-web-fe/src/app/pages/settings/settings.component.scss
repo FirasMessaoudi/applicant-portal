@@ -34,7 +34,6 @@ input[type=number] {
   }
 }*/
 
-
 ngb-typeahead-window.dropdown-menu {
   min-width: 7.4rem;
 
@@ -71,4 +70,14 @@ ngb-typeahead-window.dropdown-menu {
 .custom-select:disabled {
   color: #6c757d;
   background-color: #d8d8d8 !important;
+}
+
+.country-code-button {
+  color: #000000;
+}
+
+.country-code-button:disabled {
+  color: #6c757d;
+  background-color: #d8d8d8;
+  opacity: 1;
 }
