@@ -174,7 +174,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         } else {
           clearInterval(this.timerInterval);
-          this.toastr.error(this.translate.instant("general.dialog_edit_contacts_error_text"), this.translate.instant("settings.edit-contacts"));
+          this.toastr.warning(this.translate.instant("general.dialog_edit_contacts_error_text"), this.translate.instant("settings.edit-contacts"));
           this.router.navigate(['/settings'], {replaceUrl: true});
         }
       })
