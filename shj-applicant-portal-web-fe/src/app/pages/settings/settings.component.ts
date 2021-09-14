@@ -37,6 +37,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   countries: any;
   selectedCountryCode;
   selectedCountryPrefix: any;
+  originalCountryPrefix: any;
   @ViewChild('instance')
   instance: NgbTypeahead;
   @ViewChild('elem')
@@ -87,6 +88,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.originalEmail = data.email;
         this.originalCountryCode = data.countryCode.toLowerCase();
         this.selectedCountryCode = data.countryCode.toLowerCase();
+        this.originalCountryPrefix = '+' + data.countryPhonePrefix;
         this.selectedCountryPrefix = '+' + data.countryPhonePrefix;
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
@@ -165,6 +167,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.contactsForm.disable();
     this.contactsForm.controls['email'].setValue(this.originalEmail);
     this.contactsForm.controls['mobileNumber'].setValue(this.originalMobileNo);
+    this.selectedCountryPrefix = this.originalCountryPrefix;
+    this.selectedCountryCode = this.originalCountryCode;
   }
 
   onSubmit() {
