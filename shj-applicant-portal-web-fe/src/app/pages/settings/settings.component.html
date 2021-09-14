@@ -68,7 +68,7 @@
       <div class="col-md-7 px-0" role="group">
         <label> {{"general.mobile_number"|translate}}</label>
         <div class="input-group flex-nowrap">
-          <div ngbDropdown class="d-inline-block w-100">
+          <div ngbDropdown #countryListDropdown="ngbDropdown" (openChange)="onOpenChange($event)" class="d-inline-block w-100">
             <div class="input-group">
               <button class="btn btn-outline-gray-300 shadow-none country-prefix-button" id="dropdown1" ngbDropdownToggle
                       (click)="openTypeahead()" [disabled]="!this.contactsForm.enabled">

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ModalDismissReasons, NgbModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbDropdown, NgbModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {AuthenticationService, CardService, UserService} from "@core/services";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ToastService} from "@shared/components/toast";
@@ -42,6 +42,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   instance: NgbTypeahead;
   @ViewChild('elem')
   elem: ElementRef;
+  @ViewChild('countryListDropdown')
+  countryListDropdown: NgbDropdown;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
@@ -127,7 +129,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.enableEditLanguage = false;
   }
 
-  cancelEditLanguage(){
+  cancelEditLanguage() {
     this.enableEditLanguage = false;
     this.selectedLanguage = this.currentLanguage;
   }
@@ -237,7 +239,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     // Dispatch event on input element that NgbTypeahead is bound to
     this.elem.nativeElement.dispatchEvent(new Event('input'));
     // Ensure input has focus so the user can start typing
-    this.elem.nativeElement.focus();
+    setTimeout(() => { // this will make the execution after the above boolean has changed
+      this.elem.nativeElement.focus();
+    }, 0);
   }
 
   search = (text$: Observable<string>) => {
@@ -255,7 +259,13 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
     $event.preventDefault();
     this.selectedCountryPrefix = $event.item.countryPhonePrefix;
     this.selectedCountryCode = $event.item.code.toLowerCase();
-    input.value = '';
+    this.countryListDropdown.close();
+  }
+
+  onOpenChange(event: boolean) {
+    if (!event) {
+      this.elem.nativeElement.value = '';
+    }
   }
 
 }
