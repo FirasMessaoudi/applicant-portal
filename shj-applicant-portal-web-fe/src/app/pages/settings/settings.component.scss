@@ -34,33 +34,6 @@ input[type=number] {
   }
 }*/
 
-ngb-typeahead-window.dropdown-menu {
-  min-width: 7.4rem;
-
-  button.dropdown-item.active, .dropdown-item:active {
-    color: #212529;
-    text-decoration: none;
-    background-color: #f7f4ef;
-  }
-
-  [dir='rtl'] & {
-    right: auto;
-    text-align: left !important;
-  }
-
-  .dropdown-item {
-    direction: ltr;
-
-    [dir='rtl'] & {
-      padding-left: 35px;
-    }
-
-    [dir='ltr'] & {
-      padding-left: 35px;
-    }
-  }
-}
-
 .form-control:disabled {
   color: #6c757d !important;
   background-color: #d8d8d8 !important;
@@ -72,11 +45,12 @@ ngb-typeahead-window.dropdown-menu {
   background-color: #d8d8d8 !important;
 }
 
-.country-code-button {
+.country-prefix-button {
   color: #000000;
+  border-right: none;
 }
 
-.country-code-button:disabled {
+.country-prefix-button:disabled {
   color: #6c757d;
   background-color: #d8d8d8;
   opacity: 1;
