@@ -292,177 +292,122 @@
         </section>
       </ng-template>
     </li>
-    <li [ngbNavItem]="2">
-      <a class="d-none d-md-block" ngbNavLink>{{
-        "card-management.hamlah_details" | translate
-        }}</a>
+    <li [ngbNavItem]="2" (click)="loadUserPackageDetails()">
+      <a ngbNavLink>{{'card-management.hamlah_details' | translate}}</a>
       <ng-template ngbNavContent>
         <section>
           <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.hamlah_number" | translate
-                }}</label>
-              <span class="form-control-plaintext">2578882</span>
+              <label class="col-form-label">{{'card-management.hamlah_number' | translate}}</label>
+              <span class="form-control-plaintext ">{{applicantPackage?.companyLite?.code}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.hamlah_name" | translate
-                }}</label>
-              <span class="form-control-plaintext">ٍسيف الإسلام</span>
+              <label class="col-form-label">{{'card-management.hamlah_name' | translate}}</label>
+              <span class="form-control-plaintext ">{{currentLanguage.startsWith("en")? applicantPackage?.companyLite?.labelEn : applicantPackage?.companyLite?.labelAr}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.hamlah_type" | translate
-                }}</label>
-              <span class="form-control-plaintext">ٍسيف الإسلام</span>
+              <label class="col-form-label">{{'card-management.hamlah_type' | translate}}</label>
+              <span class="form-control-plaintext ">{{applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.typeCode}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.hamlah_category" | translate
-                }}</label>
-              <span class="form-control-plaintext">ب</span>
+              <label class="col-form-label">{{'card-management.hamlah_category' | translate}}</label>
+              <span class="form-control-plaintext ">{{applicantPackage?.applicantPackageHousings[0]?.packageHousing?.categoryCode}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.hamlah_contact_number" | translate
-                }}</label>
-              <span class="form-control-plaintext">0598454754</span>
+              <label class="col-form-label">{{'card-management.hamlah_contact_number' | translate}}</label>
+              <span class="form-control-plaintext ">{{applicantPackage?.companyLite?.contactNumber}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.housing_included" | translate
-                }}</label>
-              <span class="form-control-plaintext">نعم</span>
+              <label class="col-form-label">{{'card-management.housing_included' | translate}}</label>
+              <span class="form-control-plaintext ">{{(applicantPackage?.applicantPackageHousings.length>0? 'card-management.yes' : 'card-management.no') | translate}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.transportation_included" | translate
-                }}</label>
-              <span class="form-control-plaintext">نعم</span>
+              <label class="col-form-label">{{'card-management.transportation_included' | translate}}</label>
+              <span class="form-control-plaintext ">{{(applicantPackage?.applicantPackageTransportations.length>0? 'card-management.yes' : 'card-management.no') | translate}}</span>
             </div>
             <div class="form-group col">
-              <label class="col-form-label">{{
-                "card-management.catering_included" | translate
-                }}</label>
-              <span class="form-control-plaintext">نعم</span>
+              <label class="col-form-label">{{'card-management.catering_included' | translate}}</label>
+              <span class="form-control-plaintext ">{{(applicantPackage?.applicantPackageCaterings.length>0? 'card-management.yes' : 'card-management.no') | translate}}</span>
             </div>
           </div>
         </section>
-        <hr class="my-4 w-100"/>
-        <section *ngIf="hamlahPackage?.packageHousings?.length">
-          0">
-          <span class="form-control-plaintext">{{
-            "card-management.housing_locations" | translate
-            }}</span>
+        <hr class="my-4 w-100">
+        <section *ngIf="applicantPackage?.applicantPackageHousings?.length > 0">
+          <span class="form-control-plaintext ">{{ 'card-management.housing_locations' | translate }}</span>
 
           <div class="table-responsive my-4">
             <table class="table table-striped table-hover">
               <thead>
               <tr>
-                <th scope="col">
-                  {{ "card-management.location_number" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.location_name" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.location_address" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.location_type" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.start_date" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.end_date" | translate }}
-                </th>
+                <th scope="col">{{'card-management.location_number' | translate}}</th>
+                <th scope="col">{{'card-management.location_name' | translate}}</th>
+                <th scope="col">{{'card-management.location_address' | translate}}</th>
+                <th scope="col">{{'card-management.location_type' | translate}}</th>
+                <th scope="col">{{'card-management.start_date' | translate}}</th>
+                <th scope="col">{{'card-management.end_date' | translate}}</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let housing of hamlahPackage?.packageHousings">
-                <td class="ltr">{{ housing.code }}</td>
-                <td class="ltr">{{ housing.labelAr }}</td>
-                <td class="ltr">{{ housing.addressAr }}</td>
-                <td class="ltr">{{ housing.type }}</td>
-                <td class="ltr">{{ housing.validityStart }}</td>
-                <td class="ltr">{{ housing.validityEnd }}</td>
+              <tr *ngFor="let housing of applicantPackage?.applicantPackageHousings">
+                <td class="">{{ housing?.packageHousing?.referenceNumber}} <span *ngIf="housing?.packageHousing?.default == true" class="border p-1 rounded bg-light text-dark">{{'card-management.main' | translate}}</span></td>
+                <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
+                <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
+                <td class="ltr">{{currentLanguage.startsWith("en")?  housing?.packageHousing?.housingZone?.nameEn : housing?.packageHousing?.housingZone?.nameAr}}</td>
+                <td class="ltr">{{ housing?.packageHousing?.validityStart | dateFormat}}</td>
+                <td class="ltr">{{ housing?.packageHousing?.validityEnd | dateFormat}}</td>
               </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <hr class="my-4 w-100"/>
-        <section>
-                    <span class="form-control-plaintext">{{
-                      "card-management.available_catering" | translate
-                      }}</span>
+        <hr class="my-4 w-100">
+        <section *ngIf="applicantPackage?.applicantPackageCaterings.length > 0">
+          <span class="form-control-plaintext ">{{ 'card-management.available_catering' | translate }}</span>
 
           <div class="table-responsive my-4">
             <table class="table table-striped table-hover">
               <thead>
               <tr>
-                <th scope="col">
-                  {{ "card-management.catering_type" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.catering_description" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.catering_location" | translate }}
-                </th>
+                <th scope="col">{{'card-management.catering_type' | translate}}</th>
+                <th scope="col">{{'card-management.catering_description' | translate}}</th>
+                <th scope="col">{{'card-management.catering_time' | translate}}</th>
+                <th scope="col">{{'card-management.catering_location' | translate}}</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="let catering of packageCaterings()">
-                <td class="ltr">{{ catering.type }}</td>
-                <td class="ltr">{{ catering.descriptionAr }}</td>
-                <td class="ltr">مزدلفة</td>
+              <tr *ngFor="let catering of applicantPackage?.applicantPackageCaterings">
+                <td class="ltr">{{ catering?.packageCatering?.type }}</td>
+                <td class="ltr">{{ currentLanguage.startsWith("en")? catering?.packageCatering?.descriptionEn : catering?.packageCatering?.descriptionAr }}</td>
+                <td class="ltr">{{ catering?.packageCatering?.mealTime }}:00</td>
+                <td class="ltr">{{currentLanguage.startsWith("en")? catering?.packageCatering?.packageHousing?.housingZone?.nameEn : catering?.packageCatering?.packageHousing?.housingZone?.nameAr}}</td>
               </tr>
               </tbody>
             </table>
           </div>
         </section>
 
-        <hr class="my-4 w-100"/>
-        <section *ngIf="hamlahPackage?.packageHousings?.length > 0">
-                    <span class="form-control-plaintext">{{
-                      "card-management.transportation_method" | translate
-                      }}</span>
+        <hr class="my-4 w-100">
+        <section *ngIf="card?.applicantPackageTransportations.length > 0">
+          <span class="form-control-plaintext ">{{ 'card-management.transportation_method' | translate }}</span>
 
           <div class="table-responsive my-4">
             <table class="table table-striped table-hover">
               <thead>
               <tr>
-                <th scope="col">
-                  {{ "card-management.transportation_type" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.transportation_time" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.from_location" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.to_location" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.vehicle_number" | translate }}
-                </th>
+                <th scope="col">{{'card-management.transportation_type' | translate}}</th>
+                <th scope="col">{{'card-management.transportation_time' | translate}}</th>
+                <th scope="col">{{'card-management.from_location' | translate}}</th>
+                <th scope="col">{{'card-management.to_location' | translate}}</th>
+                <th scope="col">{{'card-management.vehicle_number' | translate}}</th>
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="
-                    let transportation of hamlahPackage?.packageTransportations
-                  ">
-                <td class="ltr">{{ transportation.type }}</td>
-                <td class="ltr">
-                  {{ transportation.validityStart }}-{{ transportation.validityEnd }}
-                </td>
-                <td class="ltr">{{ transportation.locationFrom }}</td>
-                <td class="ltr">{{ transportation.locationTo }}</td>
+              <tr *ngFor="let transportation of applicantPackage?.applicantPackageTransportations">
+                <td class="ltr">{{ transportation?.packageTransportation?.typeCode }}</td>
+                <td class="ltr">{{ transportation?.packageTransportation?.validityStart | dateTimeFormat}} -- {{ transportation?.packageTransportation?.validityEnd | dateTimeFormat }}</td>
+                <td class="ltr">{{ currentLanguage.startsWith("en")? transportation?.packageTransportation?.locationFromNameEn : transportation?.packageTransportation?.locationFromNameAr}}</td>
+                <td class="ltr">{{ currentLanguage.startsWith("en")? transportation?.packageTransportation?.locationToNameEn : transportation?.packageTransportation?.locationToNameAr }}</td>
                 <td class="ltr">{{ transportation.vehicleNumber }}</td>
               </tr>
               </tbody>
@@ -471,6 +416,7 @@
         </section>
       </ng-template>
     </li>
+
     <li [ngbNavItem]="3">
       <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.health_details" | translate

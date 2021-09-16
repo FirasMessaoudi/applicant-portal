@@ -1,9 +1,12 @@
 export class PackageTransportation {
-  id: number;
-  type: string;
-  validityStart: any;
-  validityEnd: any;
-  locationFrom: string;
-  locationTo: string;
-  vehicleNumber: string;
+    id: number;
+    typeCode: string;
+    validityStart: any;
+    validityEnd: any;
+    locationFromNameAr: string;
+    locationFromNameEn: string;
+    locationToNameAr: string;
+    locationToNameEn: string;
+    ritualStepCode: string;
+    vehicleNumber: string;
 }

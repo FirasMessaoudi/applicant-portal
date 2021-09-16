@@ -1,15 +1,24 @@
 import {PackageCatering} from "@model/package-catering.model";
+import {HousingZone} from "@model/housing-zone.model";
+import {RitualPackage} from "@model/ritual-package.model";
 
 export class PackageHousing {
-  id: number;
-  type: string;
-  code: string;
-  labelAr: string;
-  labelEn: string;
-  validityStart: any;
-  validityEnd: any;
-  addressAr: string;
-  addressEn: string;
-  isDefault: boolean;
-  packageCaterings: PackageCatering[];
+    id: number;
+    type: string;
+    typeCode: string;
+    locationNameAr: string;
+    locationNameEn: string;
+    referenceNumber: string;
+    validityStart: Date;
+    validityEnd: Date;
+    addressAr: string;
+    addressEn: string;
+    default: boolean;
+    lat: String;
+    lng: string;
+
+    packageCaterings: PackageCatering[];
+    housingZone: HousingZone;
+    categoryCode: string;
+    ritualPackage: RitualPackage;
 }

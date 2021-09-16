@@ -205,6 +205,18 @@ public class UserManagementController {
     }
 
     /**
+     * get user package details by his uin and companyRitualSeasonId
+     *
+     * @param companyRitualSeasonId the ID of the selected applicant's company Ritual Season Id
+     * @param authentication        the authenticated user
+     */
+    @GetMapping("/package/details/{companyRitualSeasonId}")
+    public ApplicantPackageDetailsDto findApplicantPackageDetails(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantPackageDetails(loggedInUserUin, companyRitualSeasonId);
+    }
+
+    /**
      * Reset user password by admin as part of user management
      *
      * @param idNumber

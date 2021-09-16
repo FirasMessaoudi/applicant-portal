@@ -478,6 +478,7 @@
     "available_catering": "Catering",
     "catering_type": "Catering Type",
     "catering_description": "Catering Description",
+    "catering_time": "Catering Time",
     "catering_location": "Location",
     "transportation_method": "Transportation",
     "transportation_type": "Transportation Method",
@@ -502,7 +503,10 @@
     "hajj_identity":"identity Number",
     "main": "Main",
     "my_profile": "My profile",
-    "view_my_card": "View my card"
+    "view_my_card": "View my card",
+    "yes": "Yes",
+    "no": "No",
+    "main": "Main"
   },
   "printing-management": {
     "title": "Printing Management",
