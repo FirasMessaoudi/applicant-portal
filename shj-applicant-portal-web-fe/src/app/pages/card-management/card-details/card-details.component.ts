@@ -173,9 +173,11 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadLookups() {
-    this.cardService.findRitualTypes().subscribe(result => {
+
+   this.cardService.findRitualTypes().subscribe(result => {
       this.ritualTypes = result;
     });
+
     this.cardService.findRelativeRelationships().subscribe(result => {
       this.relativeRelationships = result;
     });

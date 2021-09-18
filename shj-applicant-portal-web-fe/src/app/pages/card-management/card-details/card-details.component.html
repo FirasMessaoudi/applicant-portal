@@ -580,34 +580,7 @@
         "card-management.motawef_details" | translate
         }}</a>
       <ng-template ngbNavContent>
-        <div class="table-responsive my-4">
-          <table class="table table-striped table-hover">
-            <thead>
-            <tr>
-              <th scope="col">
-                {{ "card-management.morshid_id" | translate }}
-              </th>
-              <th scope="col">
-                {{ "card-management.morshid_name" | translate }}
-              </th>
-              <th scope="col">
-                {{ "card-management.morshid_contact_number" | translate }}
-              </th>
-              <th scope="col">
-                {{ "card-management.morshid_title" | translate }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor = "let groupLeader of groupLeaders">
-              <td class="ltr">{{ groupLeader.idNumber }}</td>
-              <td class="ltr">{{ groupLeader.fullNameAr }}</td>
-              <td class="ltr">{{ groupLeader.mobileNumber }}</td>
-              <td class="ltr">{{ lookupService().localizedLabel(groupLeaderTitle, groupLeader?.titleCode)}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+          <app-group-leaders [applicantGroupLeaders]="groupLeaders" [groupLeadersTitle]="groupLeaderTitle" ] ></app-group-leaders>
       </ng-template>
     </li>
   </ul>
