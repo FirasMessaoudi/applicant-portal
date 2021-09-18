@@ -465,6 +465,7 @@
     "available_catering": "الوجبات المتوفرة",
     "catering_type": "نوع الوجبة",
     "catering_description": "وصف الوجبة",
+    "catering_time": "وقت الوجبة",
     "catering_location": "الموقع",
     "transportation_method": "وسائل النقل",
     "transportation_type": "نوع النقل",
@@ -490,8 +491,10 @@
     "card_number": "رقم البطاقة",
     "main": "الرئيسية",
     "my_profile": "بياناتي",
-    "view_my_card": "عرض بطاقتي"
-
+    "view_my_card": "عرض بطاقتي",
+    "yes": "نعم",
+    "no": "لا",
+    "main": "الاساسي"
   },
   "printing-management": {
     "title": "إدارة الطباعة",

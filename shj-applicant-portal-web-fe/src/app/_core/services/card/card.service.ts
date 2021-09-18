@@ -8,6 +8,7 @@ import {CountryLookup} from "@model/country-lookup.model";
 import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {ApplicantHealth} from "@model/applicant-health.model";
 import {ApplicantRitualCard} from "@model/applicant-ritual-card";
+import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
 
@@ -48,6 +49,18 @@ export class CardService {
    */
   findMainProfile(ritualId): Observable<ApplicantMainData> {
     return this.http.get<any>('/core/api/users/main-data/'+ritualId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
+
+
+  findPackageDetails(companyRitualSeasonId): Observable<ApplicantPackageDetails> {
+    return this.http.get<any>('/core/api/users/package/details/'+companyRitualSeasonId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);

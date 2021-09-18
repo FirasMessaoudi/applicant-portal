@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.services.integration;
 
 import com.elm.shj.applicant.portal.services.dto.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,7 @@ public class IntegrationService {
     private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
     private final String CARD_DETAILS_URL = "/ws/details";
+    private final String APPLICANT_PACKAGE_URL = "/ws//applicant/package";
     private final String COMPANY_RITUAL_STEP_LOOKUP_URL= "/ws/company_ritual_step_label/list";
     private final String APPLICANT_TAFWEEJ_DETAILS_URL="/ws/company-ritual-step";
     private final String APPLICANT_COMPANY_STAFF_DETAILS_URL="/ws/find/company-employees";
@@ -286,10 +286,29 @@ public class IntegrationService {
     public ApplicantRitualCardLiteDto loadApplicantCardDetails(String uin, Long ritualId) {
         WsResponse<ApplicantRitualCardLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CARD_DETAILS_URL +"/" + uin + "/" + ritualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<ApplicantRitualCardLiteDto>>() {});
+            wsResponse = callIntegrationWs(CARD_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantRitualCardLiteDto>>() {
+                    });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load applicant card details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load ritual types from command portal.
+     *
+     * @return
+     */
+    public ApplicantPackageDetailsDto loadApplicantPackageDetails(String uin, long companyRitualSeasonId) {
+        WsResponse<ApplicantPackageDetailsDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_PACKAGE_URL + "/" + uin + "/" + companyRitualSeasonId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantPackageDetailsDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
             return null;
         }
         return wsResponse.getBody();

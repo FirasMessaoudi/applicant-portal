@@ -13,6 +13,7 @@ import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {Language} from "@model/enum/language.enum";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {ApplicantHealth} from "@model/applicant-health.model";
+import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
 
@@ -31,6 +32,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   url: any = 'assets/images/default-avatar.svg';
   //TODO: to be deleted after wiring the backend to the frontend
   hamlahPackage: any;
+  applicantPackage: ApplicantPackageDetails =null;
   loading = true
   ritualTypes: Lookup[] = [];
   relativeRelationships: Lookup[] = [];
@@ -150,6 +152,23 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
+    }
+  }
+
+  loadUserPackageDetails() {
+    console.log("in applicantPackage ",);
+    if (this.applicantPackage == null) {
+      this.loading = true;
+      this.cardService.findPackageDetails(1).subscribe(data => {
+        if (data) {
+          this.applicantPackage = data;
+          console.log("applicantPackage ", this.applicantPackage);
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
+        this.loading = false;
+      });
     }
   }
 

@@ -462,6 +462,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadApplicantCardDetails(uin, ritualId);
     }
 
+    public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long companyRitualSeasonId) {
+        return integrationService.loadApplicantPackageDetails(uin, companyRitualSeasonId);
+
+    }
+
+
+
     public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(String uin, Long ritualId) {
        return  integrationService.loadApplicantTafweejDetails(uin, ritualId);
     }
