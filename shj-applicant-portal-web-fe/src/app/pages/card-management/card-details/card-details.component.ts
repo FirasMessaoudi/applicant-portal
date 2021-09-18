@@ -13,6 +13,8 @@ import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {Language} from "@model/enum/language.enum";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {ApplicantHealth} from "@model/applicant-health.model";
+import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
+import {GroupLeader} from "@model/group-leader.model";
 
 @Component({
   selector: 'app-card-details',
@@ -24,6 +26,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   card: Card;
   applicant: ApplicantMainData;
   healthDetails: ApplicantHealth;
+  tafweejDetails: CompanyRitualMainDataStep[];
+  groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
   //TODO: to be deleted after wiring the backend to the frontend
   hamlahPackage: any;
@@ -33,6 +37,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   countries: CountryLookup[] = [];
   healthSpecialNeeds: Lookup[] = [];
   maritalStatuses: Lookup[] = [];
+  ritualStepsLabels: Lookup[];
+  groupLeaderTitle: Lookup[];
   languageNativeName = Language;
   selectedApplicantRitual: ApplicantRitualLite;
   activeId = 1;
@@ -125,6 +131,25 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
             this.translate.instant('general.dialog_error_title'));
         }
       });
+
+      this.cardService.findTafweejDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+        if (data) {
+          this.tafweejDetails = data;
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
+      });
+
+      this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+        if (data) {
+          this.groupLeaders = data;
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
+      });
+
     }
   }
 
@@ -143,6 +168,12 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     });
     this.cardService.findMaritalStatuses().subscribe(result => {
       this.maritalStatuses = result;
+    });
+    this.cardService.findRitualStepsLabels().subscribe(result => {
+      this.ritualStepsLabels = result;
+    });
+    this.cardService.findGroupLeadersTitle().subscribe(result => {
+      this.groupLeaderTitle = result;
     });
   }
 

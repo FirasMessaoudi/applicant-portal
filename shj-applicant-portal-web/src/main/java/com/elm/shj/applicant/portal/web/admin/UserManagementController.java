@@ -540,5 +540,27 @@ public class UserManagementController {
         return maskUserInfo(userService.findOne(userId));
     }
 
+    /**
+     * get user Tafweej details by uin and ritual ID
+     *
+     * @param ritualId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/tafweej/{ritualId}")
+    public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+    }
 
+    /**
+     * get user Group Leaders details by uin and ritual ID
+     *
+     * @param ritualId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/company_staff/{ritualId}")
+    public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndSeasonId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, ritualId);
+    }
 }

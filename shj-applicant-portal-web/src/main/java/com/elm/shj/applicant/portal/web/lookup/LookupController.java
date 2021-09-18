@@ -9,6 +9,7 @@ import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,6 +94,28 @@ public class LookupController {
     public List<HealthSpecialNeedsTypeLookupDto> listHealthSpecialNeeds() {
         log.debug("list health special needs...");
         return lookupService.retrieveHealthSpecialNeedsTypes();
+    }
+
+    /**
+     * List Company Ritual Steps Label
+     *
+     * @return List Company Ritual Steps Label
+     */
+    @GetMapping("/company_ritual_step/list")
+    public List<CompanyRitualStepLookupDto> listCompanyRitualStepsLabel(Authentication authentication) {
+        log.debug("list company ritual step labels...");
+        return lookupService.retrieveCompanyRitualStepLookups();
+    }
+
+    /**
+     * List Company Staff Title Labels
+     *
+     * @return List Company Staff Title Labels
+     */
+    @GetMapping("/company_staff_title_label/list")
+    public List<CompanyStaffTitleLookupDto> listCompanyStaffTitleLabels(Authentication authentication) {
+        log.debug("list company staff title labels...");
+        return lookupService.retrieveCompanyStaffTitleLookups();
     }
 
 }

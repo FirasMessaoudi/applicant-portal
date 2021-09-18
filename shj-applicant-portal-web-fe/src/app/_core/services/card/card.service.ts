@@ -8,6 +8,8 @@ import {CountryLookup} from "@model/country-lookup.model";
 import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {ApplicantHealth} from "@model/applicant-health.model";
 import {ApplicantRitualCard} from "@model/applicant-ritual-card";
+import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
+import {GroupLeader} from "@model/group-leader.model";
 
 @Injectable({
   providedIn: 'root'
@@ -109,5 +111,42 @@ export class CardService {
 
   findMaritalStatuses(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/marital-status/list');
+  }
+
+  findRitualStepsLabels(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/company_ritual_step/list');
+  }
+
+  /**
+   * Finds user health details
+   *
+   * @return {Observable<ApplicantHealth>}
+   */
+  findTafweejDetails(ritualId: number): Observable<CompanyRitualMainDataStep[]> {
+    return this.http.get<any>('/core/api/users/tafweej/' + ritualId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+
+          return of(null);
+        }
+      )
+    );
+  }
+
+  findGroupLeadersDetails(ritualId: number):Observable<GroupLeader[]> {
+    return this.http.get<any>('/core/api/users/company_staff/' + ritualId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+
+          return of(null);
+        }
+      )
+    );
+  }
+
+  findGroupLeadersTitle() : Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/company_staff_title_label/list');
   }
 }

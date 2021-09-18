@@ -43,6 +43,11 @@ public class IntegrationService {
     private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
     private final String CARD_DETAILS_URL = "/ws/details";
+    private final String COMPANY_RITUAL_STEP_LOOKUP_URL= "/ws/company_ritual_step_label/list";
+    private final String APPLICANT_TAFWEEJ_DETAILS_URL="/ws/company-ritual-step";
+    private final String APPLICANT_COMPANY_STAFF_DETAILS_URL="/ws/find/company-employees";
+    private final String COMPANY_STAFF_TITLE_LOOKUP_URL= "/ws/company_staff_title_label/list";
+
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -286,6 +291,60 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load applicant card details.", e);
             return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<CompanyRitualStepLookupDto> loadRitualSteps() {
+        WsResponse<List<CompanyRitualStepLookupDto>> wsResponse = null;
+        try {
+
+            wsResponse = callIntegrationWs(COMPANY_RITUAL_STEP_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CompanyRitualStepLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<CompanyRitualStepMainDataDto> loadApplicantTafweejDetails(String uin, Long ritualId) {
+        WsResponse<List<CompanyRitualStepMainDataDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_TAFWEEJ_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CompanyRitualStepMainDataDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load applicant health details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<CompanyStaffDto> loadApplicantRelatedEmployeesDetails(String uin, Long ritualId) {
+        WsResponse<List<CompanyStaffDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_COMPANY_STAFF_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CompanyStaffDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load applicant health details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<CompanyStaffTitleLookupDto> loadCompanyStaffTitles() {
+        WsResponse<List<CompanyStaffTitleLookupDto>> wsResponse = null;
+        try {
+
+            wsResponse = callIntegrationWs(COMPANY_STAFF_TITLE_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CompanyStaffTitleLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
         }
         return wsResponse.getBody();
     }
