@@ -598,51 +598,8 @@
         "card-management.tafweej_details" | translate
         }}</a>
       <ng-template ngbNavContent>
-        <section>
-                    <span class="form-control-plaintext">{{ "card-management.tafweej_details" | translate }}
-                      {{ "(رقم 257788)" }}</span
-                    >
-
-          <div class="table-responsive my-4">
-            <table class="table table-striped table-hover">
-              <thead>
-              <tr>
-                <th scope="col">
-                  {{ "card-management.tafweej_step" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.from_location" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.to_location" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.start_date" | translate }}
-                </th>
-                <th scope="col">
-                  {{ "card-management.end_date" | translate }}
-                </th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td class="ltr">طواف الإفاضة</td>
-                <td class="ltr">موقع رمي الجمرات</td>
-                <td class="ltr">فندق دار الإيمان</td>
-                <td class="ltr">05-04-2021</td>
-                <td class="ltr">05-04-2021</td>
-              </tr>
-              <tr>
-                <td class="ltr">الوقوف في عرفات</td>
-                <td class="ltr">مخيم منى</td>
-                <td class="ltr">جبل عرفات</td>
-                <td class="ltr">04-04-2021</td>
-                <td class="ltr">04-04-2021</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
+        <app-tafweej-details [companyRitualSteps]="tafweejDetails"
+                             [ritualStepsLabels]="ritualStepsLabels"></app-tafweej-details>
       </ng-template>
     </li>
     <li [ngbNavItem]="5">
@@ -650,40 +607,7 @@
         "card-management.motawef_details" | translate
         }}</a>
       <ng-template ngbNavContent>
-        <div class="table-responsive my-4">
-          <table class="table table-striped table-hover">
-            <thead>
-            <tr>
-              <th scope="col">
-                {{ "card-management.morshid_id" | translate }}
-              </th>
-              <th scope="col">
-                {{ "card-management.morshid_name" | translate }}
-              </th>
-              <th scope="col">
-                {{ "card-management.morshid_contact_number" | translate }}
-              </th>
-              <th scope="col">
-                {{ "card-management.morshid_title" | translate }}
-              </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td class="ltr">{{ "1086541241" }}</td>
-              <td class="ltr">{{ "عبد العزير الشهراني" }}</td>
-              <td class="ltr">{{ "0554321546" }}</td>
-              <td class="ltr">{{ "مرشد عام" }}</td>
-            </tr>
-            <tr>
-              <td class="ltr">{{ "1086541241" }}</td>
-              <td class="ltr">{{ "محمد العنزي" }}</td>
-              <td class="ltr">{{ "0554321645" }}</td>
-              <td class="ltr">{{ "مراقب صحي" }}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
+          <app-group-leaders [applicantGroupLeaders]="groupLeaders" [groupLeadersTitle]="groupLeaderTitle" ] ></app-group-leaders>
       </ng-template>
     </li>
   </ul>

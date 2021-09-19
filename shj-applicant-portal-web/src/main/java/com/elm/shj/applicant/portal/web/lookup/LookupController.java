@@ -114,4 +114,26 @@ public class LookupController {
         return lookupService.retrievePackageTypes();
     }
 
+    /**
+     * List Company Ritual Steps Label
+     *
+     * @return List Company Ritual Steps Label
+     */
+    @GetMapping("/company_ritual_step/list")
+    public List<CompanyRitualStepLookupDto> listCompanyRitualStepsLabel(Authentication authentication) {
+        log.debug("list company ritual step labels...");
+        return lookupService.retrieveCompanyRitualStepLookups();
+    }
+
+    /**
+     * List Company Staff Title Labels
+     *
+     * @return List Company Staff Title Labels
+     */
+    @GetMapping("/company_staff_title_label/list")
+    public List<CompanyStaffTitleLookupDto> listCompanyStaffTitleLabels(Authentication authentication) {
+        log.debug("list company staff title labels...");
+        return lookupService.retrieveCompanyStaffTitleLookups();
+    }
+
 }

@@ -10,10 +10,11 @@ import {CardDetailsComponent} from './card-details.component';
 import {TranslateModule} from "@ngx-translate/core";
 import {SharedModule} from "@shared/shared.module";
 import {NgbCollapseModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
+import {GroupLeadersComponent} from "@pages/card-management/card-details/group-leaders/group-leaders.component";
 
 
 @NgModule({
-  declarations: [MainDetailsComponent, HamlahDetailsComponent, HealthDetailsComponent, TafweejDetailsComponent, CardDetailsComponent],
+  declarations: [MainDetailsComponent, HamlahDetailsComponent, HealthDetailsComponent, TafweejDetailsComponent, CardDetailsComponent, GroupLeadersComponent],
     imports: [
         CommonModule,
         CardDetailsRoutingModule,
