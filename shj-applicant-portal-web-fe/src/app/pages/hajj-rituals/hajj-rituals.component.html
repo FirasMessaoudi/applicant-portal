@@ -1,74 +1,78 @@
 <div class="full_view">
-    <nav aria-label="breadcrumb" class="pt-2">
-        <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
-            <li class="breadcrumb-item active" aria-current="page ">الرئيسية</li>
-            <li class="breadcrumb-item active" aria-current="page "></li>
-        </ol>
-    </nav>
+  <nav aria-label="breadcrumb" class="pt-2">
+    <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
+      <li class="breadcrumb-item active" aria-current="page">{{'general.main' | translate}}</li>
+      <li class="breadcrumb-item active" aria-current="page"></li>
+    </ol>
+  </nav>
 
-    <div class="title__Page justify-content-between flex-column flex-md-row mt-md-1 d-none d-md-flex">
-        <h3 class="sectionTitle">برنامجي</h3>
-        <div class="col-12 col-lg-2 col-md-3 mx-md-3 mt-md-0 mt-4 text-right">
-            <button class="btn btn-outline-dcc-primary px-4">
+  <div class="title__Page justify-content-between flex-column flex-md-row mt-md-1 d-none d-md-flex">
+    <h3 class="sectionTitle">{{'header.my_program' | translate}}</h3>
+    <div class="col-12 col-lg-2 col-md-3 mx-md-3 mt-md-0 mt-4 text-right">
+      <button class="btn btn-outline-dcc-primary px-4">
         <svg-icon styleClass="mr-2 mb-0 h5" icon="file-pdf-light"></svg-icon>
-        <span> تحميل</span>
+        <span>{{'general.btn_download' | translate}}</span>
       </button>
-        </div>
     </div>
+  </div>
 
-    <div class="row no-gutters">
-        <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
-            <div class="accordion-group row no-gutters">
-                <div class="accordion stargger-animation" id="accordionExample" *ngFor="let step of ritualsSteps" [ngClass]="{
+  <div class="row no-gutters">
+    <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
+      <div class="accordion-group row no-gutters">
+        <div class="accordion stargger-animation" id="accordionExample" *ngFor="let step of ritualsSteps" [ngClass]="{
             rituals_steps_hide: isMapZoomed && step.id != zoomedMarker,
             rituals_steps_show: isMapZoomed && step.id == zoomedMarker,
             rituals_steps_default: !isMapZoomed
           }">
-                    <div class="rituals_steps_card">
-                        <div class="rituals_steps_card_header" id="headingOne">
-                            <a class="collapsed" data-toggle="collapse" [href]="'#collapseRitualsStep' + step.id" aria-expanded="true" aria-controls="collapseOne" (click)="zoomMap(step.id)">
-                                <div class="rituals_steps_item d-flex pl-5 align-items-center">
-                                    <div class="rituals_steps_item_circle" [ngClass]="{
+          <div class="rituals_steps_card">
+            <div class="rituals_steps_card_header" id="headingOne">
+              <a class="collapsed" data-toggle="collapse" [href]="'#collapseRitualsStep' + step.id" aria-expanded="true"
+                 aria-controls="collapseOne" (click)="zoomMap(step.id)">
+                <div class="rituals_steps_item d-flex pl-5 align-items-center">
+                  <div class="rituals_steps_item_circle" [ngClass]="{
                       active_step: step.isActive,
                       done_step: step.isDone
                     }">
-                                        <svg-icon *ngIf="step.isDone" styleClass="mb-0 mt-2 h4 text-dcc-primary" icon="check-regular"></svg-icon>
-                                        <p *ngIf="!step.isDone" class="mb-0 h4" [ngClass]="{
+                    <svg-icon *ngIf="step.isDone" styleClass="mb-0 mt-2 h4 text-dcc-primary"
+                              icon="check-regular"></svg-icon>
+                    <p *ngIf="!step.isDone" class="mb-0 h4" [ngClass]="{
                         'text-white': step.isActive,
                         'text-dcc-primary': !step.isActive
                       }">
-                                            {{ step.id }}
-                                        </p>
-                                    </div>
-                                    <div class="mx-4 flex-fill">
-                                        <h4 class="h5 rituals_steps_title Elm-fontb">
-                                            {{ step.title }}
-                                        </h4>
-                                        <h5 class="h6 rituals_steps_date">{{ step.date }}</h5>
-                                    </div>
+                      {{ step.id }}
+                    </p>
+                  </div>
+                  <div class="mx-4 flex-fill">
+                    <h4 class="h5 rituals_steps_title Elm-fontb">
+                      {{ step.stepCode }}
+                    </h4>
+                    <!-- TODO CREATE AN ENUMERATION WITH HIJRI MONTH NAMES -->
+                    <h5 class="h6 rituals_steps_date">{{ step.day }} {{ step.month }}</h5>
+                  </div>
 
-                                    <div>
-                                        <span class="float-right arrow mx-md-3"></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                  <div>
+                    <span class="float-right arrow mx-md-3"></span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
 
-                    <div [id]="'collapseRitualsStep' + step.id" class="collapse rituals_steps_details" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body row">
-                            <div class="col-6 col-md-6 mb-3">
-                                <label class="col-form-label pb-1 light-primary d-flex align-items-center">
+          <div [id]="'collapseRitualsStep' + step.id" class="collapse rituals_steps_details"
+               aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body row">
+              <div class="col-6 col-md-6 mb-3">
+                <label class="col-form-label pb-1 light-primary d-flex align-items-center">
                   <svg-icon
                     styleClass="mr-2 mb-0 h5 mt-2  "
                     icon="map-marker-alt-solid"
                   ></svg-icon>
                   <span class="col-form-label px-md-1 pb-0"> اسم الموقع </span>
                 </label>
-                                <p class="pl-4">مخيم مزدلفة 1</p>
-                            </div>
-                            <div class="col-6 col-md-6 mb-3">
-                                <label class="col-form-label pb-1 light-primary d-flex align-items-center">
+                <p class="pl-4">مخيم مزدلفة 1</p>
+              </div>
+              <div class="col-6 col-md-6 mb-3">
+                <label class="col-form-label pb-1 light-primary d-flex align-items-center">
                   <svg-icon
                     styleClass="mr-2 mb-0 h5 mt-2 "
                     icon="bus-solid"
@@ -77,10 +81,10 @@
                     طريقة التنقل
                   </span>
                 </label>
-                                <p class="pl-4">باص مكيف</p>
-                            </div>
-                            <div class="col-6 col-md-6 mb-3">
-                                <label class="col-form-label pb-1 light-primary d-flex align-items-center">
+                <p class="pl-4">باص مكيف</p>
+              </div>
+              <div class="col-6 col-md-6 mb-3">
+                <label class="col-form-label pb-1 light-primary d-flex align-items-center">
                   <svg-icon
                     styleClass="mr-2 mb-0 h5 mt-2  "
                     icon="clock-solid"
@@ -89,62 +93,65 @@
                     وقت الانطلاق
                   </span>
                 </label>
-                                <p class="pl-4">06:00 مساء</p>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <ul class="">
-                                    <li class="">
-                                        يُستحب للحاج أن يصلي المغرب والعشاء عند وصوله إلى مزدلفة قبل حط الرحال جمعًا وقصرًا.
-                                    </li>
-                                    <li class="">النوم مبكرًا للتقوّي على أعمال يوم النحر.</li>
-                                    <li class="">
-                                        الوقوف بالمشعر الحرام بعد صلاة الفجر واستقبال القبلة وذكر الله تعالى.
-                                    </li>
-                                    <li class="">
-                                        من السنة أن يدعو الحاج ويكبِّر ويهلِّل حتى يُسفر جدًا،
-                                    </li>
-                                    <li class="">
-                                        ثم يفيض قبل طلوع الشمس كما فعل رسول الله صلى الله عليه وسلم
-                                    </li>
-                                    <li class="">الإسراع في بطن محسر إن تيسر ذلك.</li>
-                                </ul>
-                            </div>
-                            <div class="col-6 col-md-6 mt-md-3">
-                                <!--BACK BUTTON-->
-                                <a class="d-block" (click)="goBack()" href="javascript:void(0);">
-                                    <svg-icon styleClass=" flip" icon="arrow-right"></svg-icon>
-                                    <span class="mx-2 px-1">{{
+                <p class="pl-4">06:00 مساء</p>
+              </div>
+              <div class="col-12 mb-3">
+                <ul class="">
+                  <li class="">
+                    يُستحب للحاج أن يصلي المغرب والعشاء عند وصوله إلى مزدلفة قبل حط الرحال جمعًا وقصرًا.
+                  </li>
+                  <li class="">النوم مبكرًا للتقوّي على أعمال يوم النحر.</li>
+                  <li class="">
+                    الوقوف بالمشعر الحرام بعد صلاة الفجر واستقبال القبلة وذكر الله تعالى.
+                  </li>
+                  <li class="">
+                    من السنة أن يدعو الحاج ويكبِّر ويهلِّل حتى يُسفر جدًا،
+                  </li>
+                  <li class="">
+                    ثم يفيض قبل طلوع الشمس كما فعل رسول الله صلى الله عليه وسلم
+                  </li>
+                  <li class="">الإسراع في بطن محسر إن تيسر ذلك.</li>
+                </ul>
+              </div>
+              <div class="col-6 col-md-6 mt-md-3">
+                <!--BACK BUTTON-->
+                <a class="d-block" (click)="goBack()" href="javascript:void(0);">
+                  <svg-icon styleClass=" flip" icon="arrow-right"></svg-icon>
+                  <span class="mx-2 px-1">{{
                     "general.btn_back" | translate
-                  }}</span>
-                                </a>
-                            </div>
-                            <div class="col-6 col-md-6 mt-md-3">
-                                <a class="d-block text-right" *ngIf="!addedAlert" (click)="addedAlert = !addedAlert" href="javascript:void(0);">
-                                    <span class="mx-2 px-1">اضف للتنبيهات</span>
+                    }}</span>
+                </a>
+              </div>
+              <div class="col-6 col-md-6 mt-md-3">
+                <a class="d-block text-right" *ngIf="!addedAlert" (click)="addedAlert = !addedAlert"
+                   href="javascript:void(0);">
+                  <span class="mx-2 px-1">اضف للتنبيهات</span>
 
-                                    <svg-icon styleClass="flip" icon="bell-plus-light"></svg-icon>
-                                </a>
+                  <svg-icon styleClass="flip" icon="bell-plus-light"></svg-icon>
+                </a>
 
-                                <a class="d-block text-right" (click)="addedAlert = !addedAlert" *ngIf="addedAlert" href="javascript:void(0);">
-                                    <span class="mx-2 px-1">تم الاضافة للتنبيهات</span>
+                <a class="d-block text-right" (click)="addedAlert = !addedAlert" *ngIf="addedAlert"
+                   href="javascript:void(0);">
+                  <span class="mx-2 px-1">تم الاضافة للتنبيهات</span>
 
-                                    <svg-icon styleClass=" flip" icon="bell-on-solid"></svg-icon>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                  <svg-icon styleClass=" flip" icon="bell-on-solid"></svg-icon>
+                </a>
+              </div>
             </div>
+          </div>
         </div>
-        <div class="col-12 col-lg-8 order-1 order-lg-2 map-c">
-            <!--Start MAP-->
-
-            <div class="haj-map">
-                <google-map [width]="'100%'" [height]="'100%'" [options]="mapOptions">
-                    <map-marker *ngFor="let marker of markers" [title]="marker.title" [position]="marker.position" [options]="marker.options"></map-marker>
-                </google-map>
-            </div>
-            <!--End Map-->
-        </div>
+      </div>
     </div>
+    <div class="col-12 col-lg-8 order-1 order-lg-2 map-c">
+      <!--Start MAP-->
+
+      <div class="haj-map">
+        <google-map [width]="'100%'" [height]="'100%'" [options]="mapOptions">
+          <map-marker *ngFor="let marker of markers" [title]="marker.title" [position]="marker.position"
+                      [options]="marker.options"></map-marker>
+        </google-map>
+      </div>
+      <!--End Map-->
+    </div>
+  </div>
 </div>
