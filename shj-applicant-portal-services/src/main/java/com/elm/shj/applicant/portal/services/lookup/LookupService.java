@@ -39,6 +39,7 @@ public class LookupService {
 
     private List<CompanyRitualStepLookupDto> ritualSteps;
     private List<CompanyStaffTitleLookupDto> staffTitles;
+
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
     @SchedulerLock(name = "load-applicant-lookups-task")
@@ -51,6 +52,11 @@ public class LookupService {
         this.maritalStatuses = integrationService.loadMaritalStatuses();
         this.countries = integrationService.loadCountries();
         this.healthSpecialNeeds = integrationService.loadSpecialNeedsTypes();
+        this.ritualSteps = integrationService.loadRitualSteps();
+        this.staffTitles = integrationService.loadCompanyStaffTitles();
+        this.housingCategories = integrationService.loadHousingCategories();
+        this.housingTypes = integrationService.loadHousingTypes();
+        this.packageTypes = integrationService.loadPackageTypes();
     }
 
     public List<RitualTypeLookupDto> retrieveRitualTypes() {
