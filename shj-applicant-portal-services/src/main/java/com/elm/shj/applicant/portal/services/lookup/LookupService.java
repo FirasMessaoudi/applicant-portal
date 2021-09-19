@@ -33,6 +33,9 @@ public class LookupService {
     private List<MaritalStatusLookupDto> maritalStatuses;
     private List<CountryLookupDto> countries;
     private List<HealthSpecialNeedsTypeLookupDto> healthSpecialNeeds;
+    private List<HousingCategoryLookupDto> housingCategories;
+    private List<HousingTypeLookupDto> housingTypes;
+    private List<PackageTypeLookupDto> packageTypes;
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
@@ -46,6 +49,9 @@ public class LookupService {
         this.maritalStatuses = integrationService.loadMaritalStatuses();
         this.countries = integrationService.loadCountries();
         this.healthSpecialNeeds = integrationService.loadSpecialNeedsTypes();
+        this.housingCategories = integrationService.loadHousingCategories();
+        this.housingTypes = integrationService.loadHousingTypes();
+        this.packageTypes = integrationService.loadPackageTypes();
     }
 
     public List<RitualTypeLookupDto> retrieveRitualTypes() {
@@ -70,5 +76,17 @@ public class LookupService {
 
     public List<HealthSpecialNeedsTypeLookupDto> retrieveHealthSpecialNeedsTypes() {
         return this.healthSpecialNeeds;
+    }
+
+    public List<HousingCategoryLookupDto> retrieveHousingCategories() {
+        return this.housingCategories;
+    }
+
+    public List<HousingTypeLookupDto> retrieveHousingTypes() {
+        return this.housingTypes;
+    }
+
+    public List<PackageTypeLookupDto> retrievePackageTypes() {
+        return this.packageTypes;
     }
 }

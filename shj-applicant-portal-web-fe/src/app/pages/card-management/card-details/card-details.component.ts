@@ -31,6 +31,9 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   applicantPackage: ApplicantPackageDetails =null;
   loading = true
   ritualTypes: Lookup[] = [];
+  housingCategories: Lookup[];
+  housingTypes: Lookup[];
+  packageTypes: Lookup[];
   relativeRelationships: Lookup[] = [];
   countries: CountryLookup[] = [];
   healthSpecialNeeds: Lookup[] = [];
@@ -162,6 +165,18 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     });
     this.cardService.findMaritalStatuses().subscribe(result => {
       this.maritalStatuses = result;
+    });
+
+    this.cardService.findHousingTypes().subscribe(result => {
+      this.housingTypes = result;
+    });
+
+    this.cardService.findHousingCategories().subscribe(result => {
+      this.housingCategories = result;
+    });
+
+    this.cardService.findPackageTypes().subscribe(result => {
+      this.packageTypes = result;
     });
   }
 

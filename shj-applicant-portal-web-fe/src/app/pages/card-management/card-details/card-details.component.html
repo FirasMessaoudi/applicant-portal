@@ -307,11 +307,29 @@
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{'card-management.hamlah_type' | translate}}</label>
-              <span class="form-control-plaintext ">{{applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.typeCode}}</span>
+              <span class="form-control-plaintext ">
+                {{
+                applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.typeCode
+                  ? lookupService().localizedLabel(
+                  packageTypes,
+                  applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.typeCode
+                  )
+                  : ''
+                }}
+                </span>
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{'card-management.hamlah_category' | translate}}</label>
-              <span class="form-control-plaintext ">{{applicantPackage?.applicantPackageHousings[0]?.packageHousing?.categoryCode}}</span>
+              <span class="form-control-plaintext ">
+                {{
+                 applicantPackage?.applicantPackageHousings[0]?.packageHousing?.categoryCode
+                  ? lookupService().localizedLabel(
+                  housingCategories,
+                  applicantPackage?.applicantPackageHousings[0]?.packageHousing?.categoryCode
+                  )
+                  : '---'
+                }}
+                </span>
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{'card-management.hamlah_contact_number' | translate}}</label>
@@ -352,7 +370,16 @@
                 <td class="">{{ housing?.packageHousing?.referenceNumber}} <span *ngIf="housing?.packageHousing?.default == true" class="border p-1 rounded bg-light text-dark">{{'card-management.main' | translate}}</span></td>
                 <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
                 <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
-                <td class="ltr">{{currentLanguage.startsWith("en")?  housing?.packageHousing?.housingZone?.nameEn : housing?.packageHousing?.housingZone?.nameAr}}</td>
+                <td class="ltr">
+                  {{
+                  housing?.packageHousing?.typeCode
+                    ? lookupService().localizedLabel(
+                    housingTypes,
+                    housing?.packageHousing?.typeCode
+                    )
+                    : '---'
+                  }}
+                  </td>
                 <td class="ltr">{{ housing?.packageHousing?.validityStart | dateFormat}}</td>
                 <td class="ltr">{{ housing?.packageHousing?.validityEnd | dateFormat}}</td>
               </tr>
@@ -388,7 +415,7 @@
         </section>
 
         <hr class="my-4 w-100">
-        <section *ngIf="card?.applicantPackageTransportations.length > 0">
+        <section *ngIf="applicantPackage?.applicantPackageTransportations.length > 0">
           <span class="form-control-plaintext ">{{ 'card-management.transportation_method' | translate }}</span>
 
           <div class="table-responsive my-4">

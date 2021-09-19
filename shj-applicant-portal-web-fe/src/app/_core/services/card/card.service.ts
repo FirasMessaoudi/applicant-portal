@@ -123,4 +123,16 @@ export class CardService {
   findMaritalStatuses(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/marital-status/list');
   }
+
+  findHousingCategories(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/housing-category/list');
+  }
+
+  findHousingTypes(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/housing-type/list');
+  }
+
+  findPackageTypes(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/package-type/list');
+  }
 }

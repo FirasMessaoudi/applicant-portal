@@ -9,6 +9,7 @@ import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,6 +94,24 @@ public class LookupController {
     public List<HealthSpecialNeedsTypeLookupDto> listHealthSpecialNeeds() {
         log.debug("list health special needs...");
         return lookupService.retrieveHealthSpecialNeedsTypes();
+    }
+
+    @GetMapping("/housing-category/list")
+    public List<HousingCategoryLookupDto> listHousingCategories(Authentication authentication) {
+        log.debug("list housing category...");
+        return lookupService.retrieveHousingCategories();
+    }
+
+    @GetMapping("/housing-type/list")
+    public List<HousingTypeLookupDto> listHousingTypes(Authentication authentication) {
+        log.debug("list housing type...");
+        return lookupService.retrieveHousingTypes();
+    }
+
+    @GetMapping("/package-type/list")
+    public List<PackageTypeLookupDto> listPackageTypes(Authentication authentication) {
+        log.debug("list package type...");
+        return lookupService.retrievePackageTypes();
     }
 
 }

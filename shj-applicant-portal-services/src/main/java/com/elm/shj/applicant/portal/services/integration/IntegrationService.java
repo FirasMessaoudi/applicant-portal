@@ -43,6 +43,9 @@ public class IntegrationService {
     private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
     private final String CARD_DETAILS_URL = "/ws/details";
     private final String APPLICANT_PACKAGE_URL = "/ws//applicant/package";
+    private final String HOUSING_CATEGORY_LOOKUP_URL = "/ws/housing-category/list";
+    private final String HOUSING_TYPES_LOOKUP_URL = "/ws/housing-type/list";
+    private final String PACKAGE_TYPES_LOOKUP_URL = "/ws/package-type/list";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -305,6 +308,60 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load housing categories from command portal.
+     *
+     * @return
+     */
+    public List<HousingCategoryLookupDto> loadHousingCategories() {
+        WsResponse<List<HousingCategoryLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(HOUSING_CATEGORY_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<HousingCategoryLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load housing categories.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load housing types from command portal.
+     *
+     * @return
+     */
+    public List<HousingTypeLookupDto> loadHousingTypes() {
+        WsResponse<List<HousingTypeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(HOUSING_TYPES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<HousingTypeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load housing types.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load package types from command portal.
+     *
+     * @return
+     */
+    public List<PackageTypeLookupDto> loadPackageTypes() {
+        WsResponse<List<PackageTypeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(PACKAGE_TYPES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<PackageTypeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load package types.", e);
+            return Collections.emptyList();
         }
         return wsResponse.getBody();
     }
