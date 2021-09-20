@@ -48,7 +48,7 @@ export class CardService {
    * @return {Observable<ApplicantMainData>} The card identified by cardId.
    */
   findMainProfile(ritualId): Observable<ApplicantMainData> {
-    return this.http.get<any>('/core/api/users/main-data/'+ritualId).pipe(
+    return this.http.get<any>('/core/api/users/main-data/' + ritualId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -60,7 +60,7 @@ export class CardService {
 
 
   findPackageDetails(companyRitualSeasonId): Observable<ApplicantPackageDetails> {
-    return this.http.get<any>('/core/api/users/package/details/'+companyRitualSeasonId).pipe(
+    return this.http.get<any>('/core/api/users/package/details/' + companyRitualSeasonId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -163,7 +163,7 @@ export class CardService {
     );
   }
 
-  findGroupLeadersDetails(ritualId: number):Observable<GroupLeader[]> {
+  findGroupLeadersDetails(ritualId: number): Observable<GroupLeader[]> {
     return this.http.get<any>('/core/api/users/company_staff/' + ritualId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
@@ -175,7 +175,15 @@ export class CardService {
     );
   }
 
-  findGroupLeadersTitle() : Observable<Lookup[]> {
+  findGroupLeadersTitle(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/company_staff_title_label/list');
+  }
+
+  findHousingSites(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/housing-site/list');
+  }
+
+  findTransportationTypes(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/transportation-type/list');
   }
 }

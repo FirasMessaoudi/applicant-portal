@@ -50,7 +50,8 @@ public class IntegrationService {
     private final String APPLICANT_TAFWEEJ_DETAILS_URL="/ws/company-ritual-step";
     private final String APPLICANT_COMPANY_STAFF_DETAILS_URL="/ws/find/company-employees";
     private final String COMPANY_STAFF_TITLE_LOOKUP_URL= "/ws/company_staff_title_label/list";
-    private final String TRANSPORTATION_TYPE_LOOKUP_URL = "/ws/transportation-type/list";
+    private final String HOUSING_SITES_LOOKUP_URL = "/ws/housing-site/list";
+    private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -420,7 +421,21 @@ public class IntegrationService {
                     new ParameterizedTypeReference<WsResponse<List<CompanyStaffTitleLookupDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to load card statuses.", e);
+            log.error("Cannot authenticate to load company staff title,", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<HousingSiteLookupDto> loadHousingSites() {
+        WsResponse<List<HousingSiteLookupDto>> wsResponse = null;
+        try {
+
+            wsResponse = callIntegrationWs(HOUSING_SITES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<HousingSiteLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load housing sites.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();

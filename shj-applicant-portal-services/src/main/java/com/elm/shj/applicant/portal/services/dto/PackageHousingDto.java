@@ -27,6 +27,7 @@ public class PackageHousingDto implements Serializable {
     private static final long serialVersionUID = -2333926062779667053L;
     private long id;
     private String typeCode;
+    private String siteCode;
     private RitualPackageDto ritualPackage;
     private HousingZoneDto housingZone;
     private String referenceNumber;

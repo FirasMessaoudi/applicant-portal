@@ -508,7 +508,19 @@
     "view_my_card": "عرض بطاقتي",
     "yes": "نعم",
     "no": "لا",
-    "main": "الاساسي"
+    "main": "الاساسي",
+
+    "package_type": "نوع الباقة",
+    "camp_class":"فئة المخيم",
+    "company_number": "رقم الشركة",
+    "company_name": "اسم الشركة",
+    "company_contact_number": "رقم تواصل الشركة",
+    "location": "الموقع",
+    "from": "من",
+    "to" : "إلي",
+    "BREAKFAST": "فطار",
+    "LUNCH": "غداء",
+    "DINNER":"عشاء"
   },
   "program-management": {
     "transportation_type": "طريقة التنقل",

@@ -10,16 +10,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Dto class for the transportation type domain.
+ * Dto class for the housing site domain.
  *
  * @author Ahmed Elsayed
  * @since 1.0.0
  */
 @NoArgsConstructor
 @Data
-public class TransportationTypeLookupDto implements Serializable {
+public class HousingSiteLookupDto implements Serializable {
 
-    private static final long serialVersionUID = 4480800943995537857L;
+    private static final long serialVersionUID = 8978734576054249054L;
 
     private long id;
     private String code;

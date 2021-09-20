@@ -38,6 +38,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   housingCategories: Lookup[];
   housingTypes: Lookup[];
   packageTypes: Lookup[];
+  housingSites: Lookup[];
+  transportationTypes: Lookup[];
   relativeRelationships: Lookup[] = [];
   countries: CountryLookup[] = [];
   healthSpecialNeeds: Lookup[] = [];
@@ -210,6 +212,13 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     });
     this.cardService.findGroupLeadersTitle().subscribe(result => {
       this.groupLeaderTitle = result;
+    });
+    this.cardService.findHousingSites().subscribe(result => {
+      this.housingSites = result;
+    });
+
+    this.cardService.findTransportationTypes().subscribe(result => {
+      this.transportationTypes = result;
     });
   }
 
