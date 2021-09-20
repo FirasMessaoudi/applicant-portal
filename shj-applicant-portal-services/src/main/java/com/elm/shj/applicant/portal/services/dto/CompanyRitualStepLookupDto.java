@@ -25,5 +25,6 @@ public class CompanyRitualStepLookupDto implements Serializable {
     private String code;
     private String lang;
     private String label;
+    private String description;
     private Date creationDate;
 }

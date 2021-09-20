@@ -1,5 +1,5 @@
 {
-  "validation.constraints" : {
+  "validation.constraints": {
     "data-segment": {
       "missing": "Data Segment parameter is missing!",
       "not-found": "The requested Data Segment was not found!",
@@ -9,8 +9,7 @@
       "excel-only": "Only Excel files are accepted!"
     }
   },
-
-  "dcc.commons.validation.constraints":{
+  "dcc.commons.validation.constraints": {
     "nin": "Please enter a valid ID number",
     "unique": "The value you have entered is already in use",
     "password": "Password should be a combination of lower/upper/digit/special characters",
@@ -26,7 +25,6 @@
     "password-contains-username": "Password should not contains your username",
     "invalid": "The value you have entered is invalid"
   },
-
   "general": {
     "app_name": "Elm Product",
     "app_title": "Shaaer",
@@ -88,7 +86,7 @@
     "confirm_password": "Confirm Password",
     "register_user": "Register User",
     "field_pattern_not_matched": "Pattern does not match",
-    "search" : "search",
+    "search": "search",
     "nin": "NIN",
     "cal_hijri": "Hijri",
     "cal_greg": "Gregorian",
@@ -119,7 +117,6 @@
     "main": "Main",
     "language": "Language"
   },
-
   "header": {
     "welcome": "Welcome",
     "change_password": "Change Password",
@@ -137,7 +134,6 @@
     "edit-contacts": "Edit Contacts",
     "search_country_dialing_code": "Search country or dialing code"
   },
-
   "home": {
     "title": "Home",
     "period": "Period",
@@ -160,7 +156,6 @@
     "welcome": "Welcome to:",
     "legend": "Legend"
   },
-
   "role-management": {
     "title": "Role Management",
     "roles_list": "Roles List",
@@ -185,7 +180,6 @@
     "dialog_delete_success_text": "Role has been successfully deleted",
     "add_role_no_authorities_error": "At least one authority should be selected"
   },
-
   "user-management": {
     "title": "User Management",
     "users_list": "Users List",
@@ -226,23 +220,21 @@
     "dialog_reset_user_pass_confirm_text": "Are you sure you want to reset this user password?",
     "dialog_reset_user_pass_title": "Reset User Password"
   },
-
   "login": {
     "header_title": "Login",
-    "side_info" : "The DCC template aims to unify efforts and standardize the way we implement our products in ELM.\n          It can reduce efforts related to common project activities like project structure, technology stack, error handling strategy, coding standards, ...\n          In our last survey, effort saved can go up to 20% of the total project effort.",
+    "side_info": "The DCC template aims to unify efforts and standardize the way we implement our products in ELM.\n          It can reduce efforts related to common project activities like project structure, technology stack, error handling strategy, coding standards, ...\n          In our last survey, effort saved can go up to 20% of the total project effort.",
     "title": "Login",
     "btn_login": "Login",
     "btn_new_registration": "Don't have an account? Register now.",
     "btn_forgot_password": "Forgot Password",
-    "invalid_username_or_password":"Invalid username or password!",
-    "invalid_uin_or_password":"Invalid smart id number or password!",
+    "invalid_username_or_password": "Invalid username or password!",
+    "invalid_uin_or_password": "Invalid smart id number or password!",
     "otp_remaining_time": "Remaining time:",
     "otp_text": "Please enter the code that have been sent to the mobile number you have registered with",
-    "invalid_otp":"Invalid OTP! Please try again...",
+    "invalid_otp": "Invalid OTP! Please try again...",
     "user_already_logged_in": "User is already logged in",
     "user_is_deactivated": "User is not active"
   },
-
   "register": {
     "header_title": "Create New Account",
     "btn_register": "Register",
@@ -260,7 +252,6 @@
     "email_will_be_sent": "an email will be sent to you to confirm your registration",
     "update_user_failed_in_admin_portal": "An error occurred while trying to store your data. Please contact the admin"
   },
-
   "change-password": {
     "title": "Change Password",
     "header_text": "Your password has expired, please create a new one.",
@@ -269,7 +260,6 @@
     "new_password_confirm": "Confirm New Password",
     "success_text": "Password has been changed Successfully, please login with the new password"
   },
-
   "reset-password": {
     "title": "Forgot Password",
     "btn_reset_password": "Reset Password",
@@ -277,13 +267,11 @@
     "success_text": "The temporary password sent to your mobile number please reset password after login",
     "invalid_uin_or_birthdate": "Invalid smart id number or birthdate!"
   },
-
   "footer": {
     "copyright": "* Trial Version * All Rights Reserved, Elm {{year}}",
     "terms_and_conditions": "Terms & Conditions",
     "channels": "channels "
   },
-
   "support": {
     "header_title": "Support",
     "header_text": "Our team is ready to support you. To contact Support Team please use on the below channels:",
@@ -294,7 +282,6 @@
     "text-copied": "Details copied successfully!",
     "click-to-copy": "Click to copy"
   },
-
   "incident-management": {
     "title": "Incidents",
     "incidents_list": "Incidents List",
@@ -313,11 +300,9 @@
     "processing_error": "Error occurred while processing Incident",
     "city": "city"
   },
-
   "crisis-management": {
     "title": "Crisis Management"
   },
-
   "permit-management": {
     "title": "Pending Permits",
     "permits_list": "Permits List",
@@ -360,7 +345,7 @@
     "more_request_details_error": "Error occurred while requesting more information",
     "permit_rejection_error": "Error occurred while rejecting Permit",
     "permit_approval_error": "Error occurred while approving Permit",
-    "requester_history_title" : "Display Permits",
+    "requester_history_title": "Display Permits",
     "request_more_details_title": "Request More information from Requester",
     "request_more_details_reason": "Request Reason",
     "request_more_details_description": "Request Description",
@@ -380,7 +365,6 @@
     "from-region": "From Region",
     "to-region": "To Region"
   },
-
   "permit-appeal": {
     "title": "Appeals"
   },
@@ -500,25 +484,24 @@
     "morshid_name": "Morshid Name",
     "morshid_title": "’Morshid Title",
     "morshid_contact_number": "Contact Number",
-    "hajj_identity":"identity Number",
+    "hajj_identity": "identity Number",
     "main": "Main",
     "my_profile": "My profile",
     "view_my_card": "View my card",
     "yes": "Yes",
     "no": "No",
     "main": "Main",
-
     "package_type": "Package Type",
-    "camp_class":"Camp Class",
+    "camp_class": "Camp Class",
     "company_number": "Company Number",
     "company_name": "Company Name",
     "company_contact_number": "Company Contact Number",
     "location": "Location",
     "from": "from",
-    "to" : "to",
+    "to": "to",
     "BREAKFAST": "Breakfast",
     "LUNCH": "Lunch",
-    "DINNER":"Dinner"
+    "DINNER": "Dinner"
   },
   "printing-management": {
     "title": "Printing Management",
@@ -545,7 +528,7 @@
     "confirm_request": "Confirm Request",
     "request_details": "Print Request Details",
     "hamlah_number": "Hamlah Number",
-    "motawef_number":"Motawef Number",
+    "motawef_number": "Motawef Number",
     "hamlah": "Hamlah",
     "btn_confirm_request": "Confirm Request",
     "print_request_summary": "Print Request Summary",
@@ -593,5 +576,10 @@
     "channel_WEB_SERVICE": "Web Service",
     "dialog_download_error_text": "Error while downloading the template file. Please try again...",
     "dialog_confirm_request_error_text": "Error while confirming your request. Please try again..."
+  },
+  "haj-journey": {
+    "home": "Home",
+    "title": "Haj Journey",
+    "view-daily-activities": "view daily activities"
   }
 }

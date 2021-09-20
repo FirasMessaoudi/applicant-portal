@@ -581,5 +581,10 @@
     "channel_WEB_SERVICE": "ربط عن طريق الويب",
     "dialog_download_error_text": "حدث خطأ أثناء تنزيل ملف النموذج. يرجى المحاولة مرة أخرى ...",
     "dialog_confirm_request_error_text": "حدث خطأ أثناء تأكيد طلبك. يرجى المحاولة مرة أخرى ..."
+  },
+  "haj-journey": {
+    "home": "الرئيسية",
+    "title": "رحلة الحاج",
+    "view-daily-activities": "عرض أعمال اليوم"
   }
 }
