@@ -445,7 +445,7 @@ public class IntegrationService {
         WsResponse<List<TransportationTypeLookupDto>> wsResponse = null;
         try {
 
-            wsResponse = callIntegrationWs(TRANSPORTATION_TYPE_LOOKUP_URL, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(TRANSPORTATION_TYPES_LOOKUP_URL, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<TransportationTypeLookupDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
