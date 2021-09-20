@@ -142,10 +142,14 @@ export class CardService {
     return this.http.get<any>('/core/api/lookup/company_ritual_step/list');
   }
 
+  findTransportationType(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/transportation-type/list');
+  }
+
   /**
-   * Finds user health details
+   * Finds company ritual steps main data
    *
-   * @return {Observable<ApplicantHealth>}
+   * @return {Observable<CompanyRitualMainDataStep>}
    */
   findTafweejDetails(ritualId: number): Observable<CompanyRitualMainDataStep[]> {
     return this.http.get<any>('/core/api/users/tafweej/' + ritualId).pipe(

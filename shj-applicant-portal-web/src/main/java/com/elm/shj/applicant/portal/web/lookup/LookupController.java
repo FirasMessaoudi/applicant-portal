@@ -136,4 +136,10 @@ public class LookupController {
         return lookupService.retrieveCompanyStaffTitleLookups();
     }
 
+    @GetMapping("/transportation-type/list")
+    public List<TransportationTypeLookupDto> listTransportationTypes(Authentication authentication) {
+        log.debug("list transportation types...");
+        return lookupService.retrieveTransportationTypeLookups();
+    }
+
 }
