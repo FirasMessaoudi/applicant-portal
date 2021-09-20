@@ -19,7 +19,8 @@
   <div class="row no-gutters">
     <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
       <div class="accordion-group row no-gutters">
-        <div class="accordion stargger-animation" id="accordionExample" *ngFor="let step of ritualsSteps" [ngClass]="{
+        <div class="accordion stargger-animation" id="accordionExample"
+             *ngFor="let index = index; let step of ritualsSteps" [ngClass]="{
             rituals_steps_hide: isMapZoomed && step.id != zoomedMarker,
             rituals_steps_show: isMapZoomed && step.id == zoomedMarker,
             rituals_steps_default: !isMapZoomed
@@ -39,15 +40,15 @@
                         'text-white': step.isActive,
                         'text-dcc-primary': !step.isActive
                       }">
-                      {{ step.id }}
+                      {{ index + 1 }}
                     </p>
                   </div>
                   <div class="mx-4 flex-fill">
                     <h4 class="h5 rituals_steps_title Elm-fontb">
-                      {{ step.stepCode }}
+                      {{ step.stepCode ? lookupService().localizedLabel(this.ritualStepLabels, step.stepCode) : '' }}
                     </h4>
-                    <!-- TODO CREATE AN ENUMERATION WITH HIJRI MONTH NAMES -->
-                    <h5 class="h6 rituals_steps_date">{{ step.day }} {{ step.month }}</h5>
+                    <h5
+                      class="h6 rituals_steps_date">{{ step.day }} {{ ("hijri-months." + step.month) | translate}}</h5>
                   </div>
 
                   <div>
@@ -67,9 +68,9 @@
                     styleClass="mr-2 mb-0 h5 mt-2  "
                     icon="map-marker-alt-solid"
                   ></svg-icon>
-                  <span class="col-form-label px-md-1 pb-0"> اسم الموقع </span>
+                  <span class="col-form-label px-md-1 pb-0">{{'card-management.location_name' | translate}}</span>
                 </label>
-                <p class="pl-4">مخيم مزدلفة 1</p>
+                <p class="pl-4">{{currentLanguage.startsWith("en") ? step.locationNameEn : step.locationNameAr}}</p>
               </div>
               <div class="col-6 col-md-6 mb-3">
                 <label class="col-form-label pb-1 light-primary d-flex align-items-center">
@@ -78,10 +79,11 @@
                     icon="bus-solid"
                   ></svg-icon>
                   <span class="col-form-label px-md-1 pb-0">
-                    طريقة التنقل
+                    {{'program-management.transportation_type' | translate}}
                   </span>
                 </label>
-                <p class="pl-4">باص مكيف</p>
+                <p
+                  class="pl-4">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
               </div>
               <div class="col-6 col-md-6 mb-3">
                 <label class="col-form-label pb-1 light-primary d-flex align-items-center">
@@ -90,27 +92,19 @@
                     icon="clock-solid"
                   ></svg-icon>
                   <span class="col-form-label px-md-1 pb-0">
-                    وقت الانطلاق
+                    {{'program-management.departure_time' | translate}}
                   </span>
                 </label>
-                <p class="pl-4">06:00 مساء</p>
+                <!-- <p class="pl-4">06:00 مساء</p>-->
+                <p class="pl-4">{{step.time | date: 'hh:mm'}}</p>
               </div>
               <div class="col-12 mb-3">
-                <ul class="">
-                  <li class="">
-                    يُستحب للحاج أن يصلي المغرب والعشاء عند وصوله إلى مزدلفة قبل حط الرحال جمعًا وقصرًا.
+                <ul *ngIf="step.stepCode && lookupService().localizedDescription(this.ritualStepLabels, step.stepCode) != ''" class="">
+                  <li class=""
+                      *ngFor="let last = last; let item of lookupService().localizedDescription(this.ritualStepLabels, step.stepCode).split(',')">
+                    {{item}}
+                    <span *ngIf="last"></span>
                   </li>
-                  <li class="">النوم مبكرًا للتقوّي على أعمال يوم النحر.</li>
-                  <li class="">
-                    الوقوف بالمشعر الحرام بعد صلاة الفجر واستقبال القبلة وذكر الله تعالى.
-                  </li>
-                  <li class="">
-                    من السنة أن يدعو الحاج ويكبِّر ويهلِّل حتى يُسفر جدًا،
-                  </li>
-                  <li class="">
-                    ثم يفيض قبل طلوع الشمس كما فعل رسول الله صلى الله عليه وسلم
-                  </li>
-                  <li class="">الإسراع في بطن محسر إن تيسر ذلك.</li>
                 </ul>
               </div>
               <div class="col-6 col-md-6 mt-md-3">
@@ -125,14 +119,14 @@
               <div class="col-6 col-md-6 mt-md-3">
                 <a class="d-block text-right" *ngIf="!addedAlert" (click)="addedAlert = !addedAlert"
                    href="javascript:void(0);">
-                  <span class="mx-2 px-1">اضف للتنبيهات</span>
+                  <span class="mx-2 px-1">{{'program-management.add_to_alerts' | translate}}</span>
 
                   <svg-icon styleClass="flip" icon="bell-plus-light"></svg-icon>
                 </a>
 
                 <a class="d-block text-right" (click)="addedAlert = !addedAlert" *ngIf="addedAlert"
                    href="javascript:void(0);">
-                  <span class="mx-2 px-1">تم الاضافة للتنبيهات</span>
+                  <span class="mx-2 px-1">{{'program-management.added_to_alerts' | translate}}</span>
 
                   <svg-icon styleClass=" flip" icon="bell-on-solid"></svg-icon>
                 </a>

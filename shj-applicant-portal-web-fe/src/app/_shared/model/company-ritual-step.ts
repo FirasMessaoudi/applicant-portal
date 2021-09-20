@@ -11,4 +11,8 @@ export class CompanyRitualMainDataStep {
  locationNameEn?: String;
  creationDate?: Date;
  updateDate?: Date;
+  month?: number;
+  day?: number;
+  isDone?: boolean;
+  isActive?: boolean;
 }

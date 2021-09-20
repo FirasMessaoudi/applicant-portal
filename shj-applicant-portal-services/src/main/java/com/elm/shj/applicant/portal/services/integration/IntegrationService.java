@@ -449,7 +449,7 @@ public class IntegrationService {
                     new ParameterizedTypeReference<WsResponse<List<TransportationTypeLookupDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to load transportation types.", e);
+            log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();

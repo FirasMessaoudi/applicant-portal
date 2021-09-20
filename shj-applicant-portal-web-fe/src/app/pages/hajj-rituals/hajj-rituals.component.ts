@@ -5,8 +5,12 @@ import {CardService, UserService} from "@core/services";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {ToastService} from "@shared/components/toast";
-import {DateFormatterService} from "@shared/modules/hijri-gregorian-datepicker/datepicker/date-formatter.service";
 import * as moment_ from 'moment-hijri';
+import {LookupService} from "@core/utilities/lookup.service";
+import {hijriMonth} from "@shared/helpers/hijri-month.helper";
+import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
+import {I18nService} from "@dcc-commons-ng/services";
+import {Lookup} from "@model/lookup.model";
 
 const momentHijri = moment_;
 
@@ -21,7 +25,9 @@ export class HajjRitualsComponent implements OnInit {
   MAP_ZOOM_IN = 14;
   isMapZoomed = false;
   zoomedMarker = 0;
-  ritualsSteps = [];
+  ritualsSteps: CompanyRitualMainDataStep[] = [];
+  transportationTypes: Lookup[] = [];
+  ritualStepLabels = [];
   selectedApplicantRitual: ApplicantRitualLite;
   mapOptions: google.maps.MapOptions = {
     center: {lat: 21.423461874376475, lng: 39.825553299746616},
@@ -95,11 +101,13 @@ export class HajjRitualsComponent implements OnInit {
               private cardService: CardService,
               private userService: UserService,
               private translate: TranslateService,
+              private lookupsService: LookupService,
               private toastr: ToastService,
-              private dateFormatterService: DateFormatterService) {
+              private i18nService: I18nService) {
   }
 
   ngOnInit(): void {
+    this.loadLookups();
     //set rituals steps
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
@@ -163,11 +171,18 @@ export class HajjRitualsComponent implements OnInit {
   findRitualSteps() {
     this.cardService.findTafweejDetails(this.selectedApplicantRitual?.id).subscribe(data => {
       if (data) {
+        const today = new Date();
         this.ritualsSteps = data;
         this.ritualsSteps
           .forEach(step => {
-            step.month = momentHijri(step.time).iMonth();
+            const stepTime = new Date(step.time);
+            step.month = hijriMonth[momentHijri(step.time).iMonth()];
             step.day = momentHijri(step.time).iDate();
+            step.isDone = new Date(step.time) < new Date();
+            if (today.getUTCFullYear() === stepTime.getUTCFullYear() && today.getUTCMonth() === stepTime.getUTCMonth() && today.getUTCDate() === stepTime.getUTCDate()) {
+              step.isActive = true;
+              step.isDone = false;
+            }
           })
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found'),
@@ -176,4 +191,20 @@ export class HajjRitualsComponent implements OnInit {
     });
   }
 
+  loadLookups() {
+    this.cardService.findRitualStepsLabels().subscribe(result => {
+      this.ritualStepLabels = result;
+    });
+    this.cardService.findTransportationType().subscribe(result => {
+      this.transportationTypes = result;
+    });
+  }
+
+  lookupService(): LookupService {
+    return this.lookupsService;
+  }
+
+  get currentLanguage(): string {
+    return this.i18nService.language;
+  }
 }

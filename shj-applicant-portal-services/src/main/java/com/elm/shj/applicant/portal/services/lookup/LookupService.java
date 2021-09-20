@@ -36,7 +36,6 @@ public class LookupService {
     private List<HousingCategoryLookupDto> housingCategories;
     private List<HousingTypeLookupDto> housingTypes;
     private List<PackageTypeLookupDto> packageTypes;
-
     private List<CompanyRitualStepLookupDto> ritualSteps;
     private List<CompanyStaffTitleLookupDto> staffTitles;
     private List<HousingSiteLookupDto> housingSites;
