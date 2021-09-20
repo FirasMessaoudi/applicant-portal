@@ -136,4 +136,17 @@ public class LookupController {
         return lookupService.retrieveCompanyStaffTitleLookups();
     }
 
+    @GetMapping("/housing-site/list")
+    public List<HousingSiteLookupDto> listHousingSites(Authentication authentication) {
+        log.debug("list housing site...");
+        return lookupService.retrieveHousingSites();
+    }
+
+    @GetMapping("/transportation-type/list")
+    public List<TransportationTypeLookupDto> listTransportationTypes(Authentication authentication) {
+        log.debug("list transportation type...");
+        return lookupService.retrieveTransportationTypes();
+    }
+
+
 }

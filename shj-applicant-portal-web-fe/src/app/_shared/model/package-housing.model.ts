@@ -6,6 +6,7 @@ export class PackageHousing {
     id: number;
     type: string;
     typeCode: string;
+    siteCode: string;
     locationNameAr: string;
     locationNameEn: string;
     referenceNumber: string;
