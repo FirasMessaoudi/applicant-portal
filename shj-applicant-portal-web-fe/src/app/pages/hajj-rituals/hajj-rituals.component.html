@@ -19,7 +19,8 @@
   <div class="row no-gutters">
     <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
       <div class="accordion-group row no-gutters">
-        <div class="accordion stargger-animation" id="accordionExample" *ngFor="let index = index;let step of ritualsSteps" [ngClass]="{
+        <div class="accordion stargger-animation" id="accordionExample"
+             *ngFor="let index = index;let step of ritualsSteps" [ngClass]="{
             rituals_steps_show: isMapZoomed && step.id == zoomedMarker,
             rituals_steps_default: !isMapZoomed
           }">
@@ -46,7 +47,8 @@
                       {{ step.stepCode ? lookupService().localizedLabel(this.ritualStepLabels, step.stepCode) : '' }}
                     </h4>
                     <!-- TODO CREATE AN ENUMERATION WITH HIJRI MONTH NAMES -->
-                    <h5 class="h6 rituals_steps_date">{{ step.day }} {{ ("hijri-months." + step.month) | translate}}</h5>
+                    <h5
+                      class="h6 rituals_steps_date">{{ step.day }} {{ ("hijri-months." + step.month) | translate}}</h5>
                   </div>
 
                   <div>
@@ -77,10 +79,11 @@
                     icon="bus-solid"
                   ></svg-icon>
                   <span class="col-form-label px-md-1 pb-0">
-                    {{'program-management.transportation_type' | translate}} 
+                    {{'program-management.transportation_type' | translate}}
                   </span>
                 </label>
-                <p class="pl-4">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
+                <p
+                  class="pl-4">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
               </div>
               <div class="col-6 col-md-6 mb-3">
                 <label class="col-form-label pb-1 light-primary d-flex align-items-center">
@@ -95,21 +98,12 @@
                 <p class="pl-4">{{step.time | date: 'hh:mm'}}</p>
               </div>
               <div class="col-12 mb-3">
-                <ul class="">
-                  <li class="">
-                    يُستحب للحاج أن يصلي المغرب والعشاء عند وصوله إلى مزدلفة قبل حط الرحال جمعًا وقصرًا.
+                <ul>
+                  <li
+                    *ngFor="let last = last; let item of lookupService().localizedDescription(this.ritualStepLabels, step.stepCode).split(',')">
+                    {{item}}
+                    <span *ngIf="last"></span>
                   </li>
-                  <li class="">النوم مبكرًا للتقوّي على أعمال يوم النحر.</li>
-                  <li class="">
-                    الوقوف بالمشعر الحرام بعد صلاة الفجر واستقبال القبلة وذكر الله تعالى.
-                  </li>
-                  <li class="">
-                    من السنة أن يدعو الحاج ويكبِّر ويهلِّل حتى يُسفر جدًا،
-                  </li>
-                  <li class="">
-                    ثم يفيض قبل طلوع الشمس كما فعل رسول الله صلى الله عليه وسلم
-                  </li>
-                  <li class="">الإسراع في بطن محسر إن تيسر ذلك.</li>
                 </ul>
               </div>
               <div class="col-6 col-md-6 mt-md-3">

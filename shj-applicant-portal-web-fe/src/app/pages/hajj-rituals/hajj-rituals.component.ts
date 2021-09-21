@@ -122,7 +122,7 @@ export class HajjRitualsComponent implements OnInit {
         this.ritualsSteps
           .forEach(step => {
             const stepTime = new Date(step.time);
-            step.month = hijriMonth[momentHijri(step.time).iMonth()];
+            step.month = hijriMonth[momentHijri(step.time).iMonth() + 1];
             step.day = momentHijri(step.time).iDate();
             step.isDone = new Date(step.time) < new Date();
             if (today.getUTCFullYear() === stepTime.getUTCFullYear() && today.getUTCMonth() === stepTime.getUTCMonth() && today.getUTCDate() === stepTime.getUTCDate()) {
