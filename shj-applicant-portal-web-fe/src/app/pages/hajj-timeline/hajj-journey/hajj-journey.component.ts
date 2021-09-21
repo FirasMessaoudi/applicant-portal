@@ -6,6 +6,7 @@ import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import * as moment_ from 'moment-hijri';
 import {LookupService} from "@core/utilities/lookup.service";
 import {Lookup} from "@model/lookup.model";
+import {hijriMonth} from "@shared/helpers/hijri-month.helper";
 
 const momentHijri = moment_;
 
@@ -16,7 +17,7 @@ const momentHijri = moment_;
 })
 export class HajjJourneyComponent implements OnInit {
   ritualType = ''
-  ritualTypesLookups: Lookup[]
+  ritualTypesLookups: Lookup[] = [];
   private ritualSteps: CompanyRitualMainDataStep[] = []
   ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string }[]
   selectedApplicantRitual: ApplicantRitualLite
@@ -42,9 +43,9 @@ export class HajjJourneyComponent implements OnInit {
 
   handleIsActiveStep() {
     this.ritualStepsMap.forEach((stepGroups, index) => {
-      const dateFor = this.ritualStepsMap[index + 1] === undefined ? new Date().getDate() + 1 : this.ritualStepsMap[index + 1].key.getDate()
-      if (new Date().getDate() >= stepGroups?.key.getDate() &&
-        new Date().getDate() < dateFor) {
+      const dateFor = this.ritualStepsMap[index + 1] === undefined ? new Date().getUTCDate() + 1 : new Date(this.ritualStepsMap[index + 1].key).getUTCDate()
+      if (new Date().getUTCDate() >= new Date(stepGroups?.key).getUTCDate() &&
+        new Date().getUTCDate() < dateFor) {
         stepGroups.isActive = true;
       }
     })
@@ -81,10 +82,8 @@ export class HajjJourneyComponent implements OnInit {
 
 function groupByArray(xs: CompanyRitualMainDataStep[]) {
   return xs.reduce(function (arr, x) {
-    let time: Date = x.time
-    let el = arr.find((r) => {
-      return r.key.getDate() === time.getDate()
-    });
+    let time: Date = x.time;
+    let el = arr.find(r => new Date(r.key).getUTCDate() === new Date(time).getUTCDate());
     if (el) {
       el.value.push(x);
     } else {
@@ -93,7 +92,7 @@ function groupByArray(xs: CompanyRitualMainDataStep[]) {
         value: [x],
         isActive: false,
         day: momentHijri(time).iDate(),
-        month: momentHijri(time).iMonth()
+        month: hijriMonth[momentHijri(time).iMonth() + 1]
       });
     }
     return arr;

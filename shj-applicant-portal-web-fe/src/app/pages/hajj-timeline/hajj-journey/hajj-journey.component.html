@@ -8,7 +8,7 @@
 <div class="title__Page justify-content-start d-flex flex-column flex-md-row mt-md-1">
   <h3 class="sectionTitle">{{ "haj-journey.title" | translate }}</h3>
   <div class="col-12 col-lg-2 col-md-3 mx-md-3 mt-md-0 mt-4">
-    <p>{{ lookupService.localizedLabel( ritualTypesLookups, ritualType )}} </p>
+    <p>{{ritualType ? lookupService.localizedLabel(ritualTypesLookups, ritualType) : ''}} </p>
   </div>
 </div>
 
