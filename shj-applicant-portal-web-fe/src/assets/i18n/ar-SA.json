@@ -520,7 +520,8 @@
     "to" : "إلي",
     "BREAKFAST": "فطار",
     "LUNCH": "غداء",
-    "DINNER":"عشاء"
+    "DINNER":"عشاء",
+    "package_details": "بيانات الباقة"
   },
   "program-management": {
     "transportation_type": "طريقة التنقل",
