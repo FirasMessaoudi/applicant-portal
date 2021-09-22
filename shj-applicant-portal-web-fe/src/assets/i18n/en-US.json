@@ -515,7 +515,8 @@
     "to": "to",
     "BREAKFAST": "Breakfast",
     "LUNCH": "Lunch",
-    "DINNER": "Dinner"
+    "DINNER": "Dinner",
+    "package_details": "Package Details"
   },
   "program-management": {
     "transportation_type": "Transportation type",
