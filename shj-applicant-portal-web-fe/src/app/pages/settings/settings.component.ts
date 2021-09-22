@@ -95,10 +95,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
           this.translate.instant('general.dialog_error_title'));
-
       }
     });
-
 
     this.createForm();
   }
@@ -118,12 +116,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en").subscribe(response => {
         if (response && response.errors) {
           this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
-
         } else {
           this.toastr.success(this.translate.instant("general.dialog_edit_success_text"), this.translate.instant("general.dialog_edit_title"));
-
         }
-
       });
     }
     this.enableEditLanguage = false;
@@ -135,17 +130,10 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private createForm() {
-
     this.contactsForm = this.formBuilder.group({
       mobileNumber: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [DccValidators.email, Validators.required]]
+      email: ['', [DccValidators.email, Validators.required]],
     });
-
-  }
-
-
-  lookupService(): LookupService {
-    return this.lookupsService;
   }
 
   loadLookups() {
