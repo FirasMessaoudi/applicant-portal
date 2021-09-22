@@ -18,32 +18,32 @@ const momentHijri = moment_;
 export class HajjJourneyComponent implements OnInit {
   ritualType = ''
   ritualTypesLookups: Lookup[] = [];
-  private ritualSteps: CompanyRitualMainDataStep[] = []
-  ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string }[]
-  selectedApplicantRitual: ApplicantRitualLite
-  lookupService: LookupService
-  ritualStepsLookups: Lookup[] = []
+  private ritualSteps: CompanyRitualMainDataStep[] = [];
+  ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string; }[];
+  selectedApplicantRitual: ApplicantRitualLite;
+  lookupService: LookupService;
+  ritualStepsLookups: Lookup[] = [];
 
   constructor(private ritualTimelineService: RitualTimelineService, private userService: UserService, lookupService: LookupService) {
-    this.lookupService = lookupService
+    this.lookupService = lookupService;
   }
 
   ngOnInit(): void {
-    this.loadLookups()
+    this.loadLookups();
     this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
-    this.ritualType = this.selectedApplicantRitual.typeCode
+    this.ritualType = this.selectedApplicantRitual.typeCode;
 
-    if (this.selectedApplicantRitual === null) {
-      this.loadApplicantRitualFromService()
+    if (!this.selectedApplicantRitual) {
+      this.loadApplicantRitualFromService();
     } else {
-      this.loadRitualSteps()
+      this.loadRitualSteps();
     }
 
   }
 
   handleIsActiveStep() {
     this.ritualStepsMap.forEach((stepGroups, index) => {
-      const dateFor = this.ritualStepsMap[index + 1] === undefined ? new Date().getUTCDate() + 1 : new Date(this.ritualStepsMap[index + 1].key).getUTCDate()
+      const dateFor = this.ritualStepsMap[index + 1] === undefined ? new Date().getUTCDate() + 1 : new Date(this.ritualStepsMap[index + 1].key).getUTCDate();
       if (new Date().getUTCDate() >= new Date(stepGroups?.key).getUTCDate() &&
         new Date().getUTCDate() < dateFor) {
         stepGroups.isActive = true;
@@ -54,9 +54,9 @@ export class HajjJourneyComponent implements OnInit {
   loadRitualSteps() {
     this.ritualTimelineService.loadRitualSteps(this.selectedApplicantRitual.id).subscribe(
       result => {
-        this.ritualSteps = result
-        this.ritualStepsMap = groupByArray(this.ritualSteps)
-        this.handleIsActiveStep()
+        this.ritualSteps = result;
+        this.ritualStepsMap = groupByArray(this.ritualSteps);
+        this.handleIsActiveStep();
       }
     );
   }
@@ -73,9 +73,9 @@ export class HajjJourneyComponent implements OnInit {
 
   loadApplicantRitualFromService() {
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
-      this.ritualType = selectedApplicantRitual.name
-      this.selectedApplicantRitual = selectedApplicantRitual
-      this.loadRitualSteps()
+      this.ritualType = selectedApplicantRitual.name;
+      this.selectedApplicantRitual = selectedApplicantRitual;
+      this.loadRitualSteps();
     })
   }
 }

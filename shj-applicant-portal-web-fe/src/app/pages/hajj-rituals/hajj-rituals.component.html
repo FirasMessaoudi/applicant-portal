@@ -1,9 +1,13 @@
 <div class="full_view">
-  <nav aria-label="breadcrumb" class="pt-2">
+  <nav aria-label="breadcrumb" class="pt-2 justify-content-between flex-column flex-md-row d-md-flex">
     <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
       <li class="breadcrumb-item active" aria-current="page">{{'general.main' | translate}}</li>
       <li class="breadcrumb-item active" aria-current="page"></li>
     </ol>
+    <span class="col-12 col-lg-2 col-md-3 mx-md-3 mt-md-0 mt-4 text-right" routerLinkActive="disable">
+            <a class="py-2 d-block h6 "
+               [routerLink]="['/hajj-journey/list']">{{ 'header.ritual_schedule' | translate }}</a>
+    </span>
   </nav>
 
   <div class="title__Page justify-content-between flex-column flex-md-row mt-md-1 d-none d-md-flex">
@@ -46,7 +50,6 @@
                     <h4 class="h5 rituals_steps_title Elm-fontb">
                       {{ step.stepCode ? lookupService().localizedLabel(this.ritualStepLabels, step.stepCode) : '' }}
                     </h4>
-                    <!-- TODO CREATE AN ENUMERATION WITH HIJRI MONTH NAMES -->
                     <h5
                       class="h6 rituals_steps_date">{{ step.day }} {{ ("hijri-months." + step.month) | translate}}</h5>
                   </div>
