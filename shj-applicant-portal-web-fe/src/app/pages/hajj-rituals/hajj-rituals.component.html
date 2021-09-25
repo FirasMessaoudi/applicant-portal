@@ -31,7 +31,7 @@
           <div class="rituals_steps_card">
             <div class="rituals_steps_card_header" id="headingOne">
               <a class="collapsed" data-toggle="collapse" [href]="'#collapseRitualsStep' + step.id" aria-expanded="true"
-                 aria-controls="collapseOne" (click)="zoomMap(step.id)">
+                 aria-controls="collapseOne" (click)="zoomMap(step.id)" #ritualStepDom>
                 <div class="rituals_steps_item d-flex pl-5 align-items-center">
                   <div class="rituals_steps_item_circle" [ngClass]="{
                       active_step: step.isActive,
@@ -102,11 +102,11 @@
               </div>
               <div class="col-12 mb-3">
                 <ul>
-                  <li
+<!--                   <li
                     *ngFor="let last = last; let item of lookupService().localizedDescription(this.ritualStepLabels, step.stepCode).split(',')">
                     {{item}}
                     <span *ngIf="last"></span>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
               <div class="col-6 col-md-6 mt-md-3">
@@ -141,7 +141,7 @@
     <div class="col-12 col-lg-8 order-1 order-lg-2 map-c">
       <!--Start MAP-->
 
-      <div class="haj-map">
+      <div class="haj-map"  *ngIf="mapIsReady">
         <google-map [width]="'100%'" [height]="'100%'" [options]="mapOptions">
           <map-marker *ngFor="let marker of markers" [title]="marker.title" [position]="marker.position"
                       [options]="marker.options"></map-marker>

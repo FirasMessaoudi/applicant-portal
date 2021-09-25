@@ -148,5 +148,11 @@ public class LookupController {
         return lookupService.retrieveTransportationTypes();
     }
 
+    @GetMapping("/map-key")
+    public String mapKey() {
+        log.debug("load google map key");
+        return lookupService.retrieveGoogleMapKey();
+    }
+
 
 }
