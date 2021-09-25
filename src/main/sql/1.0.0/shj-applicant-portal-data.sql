@@ -58,6 +58,7 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.fi
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.filescan.username', 'sha_portalfilescan-username');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.engines.filescan.password', 'sha_portalfilescan-password');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('admin.portal.url', 'http://localhost:8085/shj-admin/api');
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('google.map.key', 'AIzaSyAC78ugAlOF9B2YK8-ukki2IQTyNAgUSO0');
 
 GO
 -- update sha_user data in 1.2.0 version
