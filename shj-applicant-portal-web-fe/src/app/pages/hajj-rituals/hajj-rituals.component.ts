@@ -11,8 +11,8 @@ import {hijriMonth} from "@shared/helpers/hijri-month.helper";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {I18nService} from "@dcc-commons-ng/services";
 import {Lookup} from "@model/lookup.model";
-import { MapOptions, Marker, Position } from '@app/_shared/model/marker.model';
-import { DOCUMENT } from '@angular/common';
+import {MapOptions, Marker, Position} from '@app/_shared/model/marker.model';
+import {DOCUMENT} from '@angular/common';
 
 const momentHijri = moment_;
 
@@ -33,7 +33,7 @@ export class HajjRitualsComponent implements OnInit {
   ritualStepLabels = [];
   selectedMarker: Marker;
   selectedApplicantRitual: ApplicantRitualLite;
-  mapIsReady= false;
+  mapIsReady = false;
   @ViewChild('ritualStepDom') ritualStepDom: ElementRef;
   mapOptions: google.maps.MapOptions = {
     center: {lat: 21.423461874376475, lng: 39.825553299746616},
@@ -63,7 +63,7 @@ export class HajjRitualsComponent implements OnInit {
       this.selectedApplicantRitual = selectedApplicantRitual;
       this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
       this.findRitualSteps();
-      
+
     });
   }
 
@@ -123,22 +123,22 @@ export class HajjRitualsComponent implements OnInit {
         const today = new Date();
         this.ritualsSteps = data;
         this.ritualsSteps.forEach(step => {
-            const stepTime = new Date(step.time);
-            step.month = hijriMonth[momentHijri(step.time).iMonth() + 1];
-            step.day = momentHijri(step.time).iDate();
-            step.isDone = new Date(step.time) < new Date();
-            if (today.getUTCFullYear() === stepTime.getUTCFullYear() && today.getUTCMonth() === stepTime.getUTCMonth() && today.getUTCDate() === stepTime.getUTCDate()) {
-              step.isActive = true;
-              step.isDone = false;
-            }
-          });
-          this.markers = this.ritualsSteps.map(step=>{
-            let marker = new Marker(step.id, new Position(step.locationLat, step.locationLng), step.stepCode,
+          const stepTime = new Date(step.time);
+          step.month = hijriMonth[momentHijri(step.time).iMonth() + 1];
+          step.day = momentHijri(step.time).iDate();
+          step.isDone = new Date(step.time) < new Date();
+          if (today.getUTCFullYear() === stepTime.getUTCFullYear() && today.getUTCMonth() === stepTime.getUTCMonth() && today.getUTCDate() === stepTime.getUTCDate()) {
+            step.isActive = true;
+            step.isDone = false;
+          }
+        });
+        this.markers = this.ritualsSteps.map(step => {
+          let marker = new Marker(step.id, new Position(step.locationLat, step.locationLng), step.stepCode,
             new MapOptions('../../../assets/images/svg-icons/map-marker-light.svg'));
-            return marker;
-            })
-            const bounds = this.getBounds(this.markers);
-            this.map.googleMap.fitBounds(bounds);
+          return marker;
+        })
+        const bounds = this.getBounds(this.markers);
+        this.map.googleMap.fitBounds(bounds);
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found'),
           this.translate.instant('general.dialog_error_title'));
@@ -163,23 +163,25 @@ export class HajjRitualsComponent implements OnInit {
     return this.i18nService.language;
   }
 
-  async loadMapkey(){
+  async loadMapkey() {
     this.lookupsService.loadGoogleMapKey().subscribe(result => {
-    this.loadScript(result).then(()=>{this.mapIsReady=true});
+      this.loadScript(result).then(() => {
+        this.mapIsReady = true
+      });
     });
-}
+  }
 
-private loadScript(key) {
-  return new Promise((resolve, reject) => {
-    const script = this.renderer2.createElement('script');
-    script.type = 'text/javascript';
-    script.src = 'https://maps.googleapis.com/maps/api/js?key='+key;
-    script.text = ``;
-    script.async = true;
-    script.defer = true;
-    script.onload = resolve;
-    script.onerror = reject;
-    this.renderer2.appendChild(this.document.body, script);
-  })
-}
+  private loadScript(key) {
+    return new Promise((resolve, reject) => {
+      const script = this.renderer2.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'https://maps.googleapis.com/maps/api/js?key=' + key;
+      script.text = ``;
+      script.async = true;
+      script.defer = true;
+      script.onload = resolve;
+      script.onerror = reject;
+      this.renderer2.appendChild(this.document.body, script);
+    })
+  }
 }
