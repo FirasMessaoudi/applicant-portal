@@ -486,3 +486,9 @@ ngb-typeahead-window.dropdown-menu {
     order: -1 !important;
   }
 }
+
+.mobile-number-errors > div {
+  [dir='ltr'] & {
+    margin-left: 103px !important;
+  }
+}
