@@ -120,7 +120,7 @@
         </div>
         <small
           *ngIf="(f.mobileNumber.errors && f.mobileNumber.touched)"
-          class="text-danger">
+          class="text-danger mobile-number-errors">
           <div
             *ngIf="f.mobileNumber.errors?.required"> {{'general.field_validation_required' | translate}}</div>
           <div

@@ -1,6 +1,9 @@
 import {I18nService} from "@dcc-commons-ng/services";
 import {Injectable} from "@angular/core";
 import {Lookup} from "@model/lookup.model";
+import {HttpClient} from "@angular/common/http";
+import { Observable } from "rxjs";
+
 
 const defaultLang = 'ar';
 
@@ -9,7 +12,8 @@ const defaultLang = 'ar';
 })
 export class LookupService {
 
-  constructor(private i18nService: I18nService) {
+  constructor(private i18nService: I18nService,
+              private http: HttpClient) {
   }
 
   localizedLabel(lookupItems: Lookup[], code: string): string {
@@ -24,5 +28,9 @@ export class LookupService {
     if (!item)
       item = lookupItems.find(type => type.code === code && type.lang.startsWith(defaultLang));
     return item?.description;
+  }
+
+  loadGoogleMapKey(): Observable<any> {
+    return this.http.get<any>('/core/api/lookup/map-key', {responseType: 'text' as 'json'});
   }
 }
