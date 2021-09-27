@@ -575,4 +575,22 @@ public class UserManagementController {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, ritualId);
     }
+
+    /**
+     * get user latest ritual season lite by uin
+     */
+    @GetMapping("/ritual-season/latest")
+    public CompanyRitualSeasonLiteDto findLatestApplicantRitualSeasonByUin(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findLatestApplicantRitualSeasonByUin(loggedInUserUin);
+    }
+
+    /**
+     * get user all ritual season lite by uin
+     */
+    @GetMapping("/ritual-season")
+    public List<CompanyRitualSeasonLiteDto> findAllApplicantRitualSeasonByUin(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findAllApplicantRitualSeasonByUin(loggedInUserUin);
+    }
 }

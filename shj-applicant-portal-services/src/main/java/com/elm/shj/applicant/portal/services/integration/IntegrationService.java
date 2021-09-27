@@ -52,6 +52,8 @@ public class IntegrationService {
     private final String COMPANY_STAFF_TITLE_LOOKUP_URL= "/ws/company_staff_title_label/list";
     private final String HOUSING_SITES_LOOKUP_URL = "/ws/housing-site/list";
     private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
+    private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
+    private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -447,6 +449,42 @@ public class IntegrationService {
 
             wsResponse = callIntegrationWs(TRANSPORTATION_TYPES_LOOKUP_URL, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<TransportationTypeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load the latest season ritual lite by uin from command portal.
+     *
+     * @return
+     */
+    public CompanyRitualSeasonLiteDto loadLatestApplicantRitualSeasonByUin(String uin) {
+        WsResponse<CompanyRitualSeasonLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_RITUAL_SEASON_LATEST_URL + "/" + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<CompanyRitualSeasonLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load the all season ritual lite by uin from command portal.
+     *
+     * @return
+     */
+    public List<CompanyRitualSeasonLiteDto> loadAllApplicantRitualSeasonByUin(String uin) {
+        WsResponse<List<CompanyRitualSeasonLiteDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_RITUAL_SEASON_URL + "/" + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CompanyRitualSeasonLiteDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);

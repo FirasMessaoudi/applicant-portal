@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class PackageCateringDto implements Serializable {
     private String mealCode;
 
     @NotNull(message = "validation.data.constraints.msg.20001")
-    private int mealTime;
+    private Time mealTime;
 
     @NotNull(message = "validation.data.constraints.msg.20001")
     private String mealDescription;
