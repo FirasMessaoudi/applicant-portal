@@ -488,7 +488,10 @@ ngb-typeahead-window.dropdown-menu {
 }
 
 .mobile-number-errors > div {
-  [dir='ltr'] & {
+  @include LTR {
     margin-left: 103px !important;
+    @include media-breakpoint-down(md) {
+      margin-left: 89px !important;
+    }
   }
 }
