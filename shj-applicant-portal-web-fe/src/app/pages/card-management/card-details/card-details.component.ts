@@ -139,7 +139,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.cardService.findTafweejDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+      //TODO: Just for demo, must change to selected company ritual season id
+      this.cardService.findTafweejDetails(1).subscribe(data => {
         if (data) {
           this.tafweejDetails = data;
         } else {
@@ -148,7 +149,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+      //TODO: Just for demo, must change to selected company ritual season id
+      this.cardService.findGroupLeadersDetails(1).subscribe(data => {
         if (data) {
           this.groupLeaders = data;
         } else {

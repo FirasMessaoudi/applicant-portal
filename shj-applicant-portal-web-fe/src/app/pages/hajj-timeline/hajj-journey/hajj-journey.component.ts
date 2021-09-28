@@ -52,7 +52,8 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadRitualSteps() {
-    this.ritualTimelineService.loadRitualSteps(this.selectedApplicantRitual.id).subscribe(
+    //TODO: Just for demo, must change to selected company ritual season id
+    this.ritualTimelineService.loadRitualSteps(1).subscribe(
       result => {
         this.ritualSteps = result;
         this.ritualStepsMap = groupByArray(this.ritualSteps);

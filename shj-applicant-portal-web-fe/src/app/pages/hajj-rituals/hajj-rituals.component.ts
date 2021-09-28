@@ -113,7 +113,8 @@ export class HajjRitualsComponent implements OnInit {
   }
 
   findRitualSteps() {
-    this.cardService.findTafweejDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+    //TODO: Just for demo, must change to selected company ritual season id
+    this.cardService.findTafweejDetails(1).subscribe(data => {
       if (data) {
         const today = new Date();
         this.ritualsSteps = data;
