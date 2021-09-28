@@ -515,3 +515,14 @@ ngb-typeahead-window.dropdown-menu {
   color: #000000;
   border-right: none;
 }
+
+.success-icon {
+  i {
+    display: block;
+    margin: auto;
+    svg {
+      display: block;
+      margin: auto;
+    }
+  }
+}
