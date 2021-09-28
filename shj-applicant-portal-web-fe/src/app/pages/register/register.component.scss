@@ -87,20 +87,11 @@ input[type=number] {
   }
 }
 
-ngb-typeahead-window.dropdown-menu {
-  min-width: 7.4rem;
-  max-height: 250px;
-  overflow: auto;
-  button.dropdown-item.active, .dropdown-item:active {
-    color: #212529;
-    text-decoration: none;
-    background-color: #f7f4ef;
-  }
-  [dir='rtl'] & {right: auto;
-    text-align: left !important;}
-  .dropdown-item{
-    direction: ltr;
-    [dir='rtl'] & { padding-left: 35px;}
-    [dir='ltr'] & { padding-left: 35px;}
-  }
+.country-prefix-input {
+  font-weight: normal;
+  border: 0;
+}
+
+.no-transform {
+  transform: none !important;
 }

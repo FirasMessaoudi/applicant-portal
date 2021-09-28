@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild, Inject, Renderer2, ElementRef} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {GoogleMap} from '@angular/google-maps';
-import {Location} from "@angular/common";
+import {DOCUMENT, Location} from "@angular/common";
 import {CardService, UserService} from "@core/services";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
@@ -12,7 +12,6 @@ import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {I18nService} from "@dcc-commons-ng/services";
 import {Lookup} from "@model/lookup.model";
 import {MapOptions, Marker, Position} from '@app/_shared/model/marker.model';
-import {DOCUMENT} from '@angular/common';
 
 const momentHijri = moment_;
 
@@ -41,7 +40,6 @@ export class HajjRitualsComponent implements OnInit {
     disableDefaultUI: true
   }
 
-
   @ViewChild(GoogleMap) map!: GoogleMap;
 
   constructor(private location: Location,
@@ -63,7 +61,6 @@ export class HajjRitualsComponent implements OnInit {
       this.selectedApplicantRitual = selectedApplicantRitual;
       this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
       this.findRitualSteps();
-
     });
   }
 
@@ -86,9 +83,7 @@ export class HajjRitualsComponent implements OnInit {
     })
     ;
 
-    const bounds = {north, south, east, west};
-
-    return bounds;
+    return {north, south, east, west};
   }
 
   zoomMap(stepId) {

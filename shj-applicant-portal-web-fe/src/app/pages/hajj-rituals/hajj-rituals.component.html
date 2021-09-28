@@ -100,8 +100,8 @@
                 </label>
                 <p class="pl-4">{{step.time | date: 'hh:mm'}}</p>
               </div>
-              <div *ngIf="lookupService().localizedDescription(this.ritualStepLabels, step.stepCode)" class="col-12 mb-3">
-                <ul>
+              <div class="col-12 mb-3">
+                <ul *ngIf="lookupService().localizedDescription(this.ritualStepLabels, step.stepCode)">
                   <li
                     *ngFor="let last = last; let item of lookupService().localizedDescription(this.ritualStepLabels, step.stepCode).split(',')">
                     {{item}}
