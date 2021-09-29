@@ -123,7 +123,7 @@
         <td class="ltr">{{ 'card-management.'+catering?.packageCatering?.type | translate}}</td>
         <td class="ltr">{{ currentLanguage.startsWith("en")? catering?.packageCatering?.descriptionEn : catering?.packageCatering?.descriptionAr }}</td>
         <td class="ltr">
-          {{ catering?.packageCatering?.mealTime }}
+          {{removeSeconds(catering?.packageCatering?.mealTime)}}
           {{'card-management.from' | translate}}
           {{ catering?.packageCatering?.packageHousing?.validityStart | dateFormat}}
           {{'card-management.to' | translate}}

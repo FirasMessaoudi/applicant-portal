@@ -248,8 +248,8 @@
     "verification_error": "Verification Error",
     "applicant_not_found": " Cannot register no record match the entry please check the input values",
     "user_already_registered": "Applicant already registered please you can login or request reset password",
-    "registered_successfully": "user has been registered successfully",
-    "email_will_be_sent": "an email will be sent to you to confirm your registration",
+    "registered_successfully": "You have been registered successfully",
+    "email_will_be_sent": "an email will be sent to you with your registration details",
     "update_user_failed_in_admin_portal": "An error occurred while trying to store your data. Please contact the admin"
   },
   "change-password": {
@@ -463,9 +463,9 @@
     "hamlah_type": "Hamlah Type",
     "hamlah_category": "Hamlah Category",
     "hamlah_contact_number": "Hamlah Contact Number",
-    "housing_included": "Housing Included",
-    "transportation_included": "Transportation Included",
-    "catering_included": "Catering Included",
+    "housing_included": "Include Housing",
+    "transportation_included": "Include Transportation",
+    "catering_included": "Include Catering",
     "housing_locations": "Housing",
     "location_number": "Location Code",
     "location_name": "Location Name",
