@@ -98,6 +98,7 @@ export class HeaderComponent implements OnInit {
   }
 
   open(content) {
+    this.seasons.forEach(s => s.id === this.selectedRitualSeason.id ? s.selected = true : s.selected = false);
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
@@ -127,7 +128,6 @@ export class HeaderComponent implements OnInit {
   listRitualSeasons() {
     this.userService.listRitualSeasons().subscribe(data => {
       this.seasons = data;
-      this.seasons.find(s => s.id === this.latestRitualSeason.id).selected = true;
     });
   }
 
