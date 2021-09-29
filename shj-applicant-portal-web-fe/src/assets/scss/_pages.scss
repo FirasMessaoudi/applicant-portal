@@ -474,6 +474,10 @@ ngb-typeahead-window.dropdown-menu {
 
 .dropdown-toggle.country-prefix-button {
   direction: ltr;
+  width: 115px;
+  @include media-breakpoint-down(md) {
+    width: 100px;
+  }
 }
 
 .country-prefix-search-input {
@@ -488,7 +492,37 @@ ngb-typeahead-window.dropdown-menu {
 }
 
 .mobile-number-errors > div {
-  [dir='ltr'] & {
-    margin-left: 103px !important;
+  @include LTR {
+    margin-left: 115px !important;
+    @include media-breakpoint-down(md) {
+      margin-left: 100px !important;
+    }
+  }
+}
+
+.dropdown-menu {
+  margin: 0;
+  padding: 0;
+}
+
+.form-control:disabled {
+  color: #6c757d !important;
+  background-color: #d8d8d8 !important;
+  font-weight: unset !important;
+}
+
+.country-prefix-button {
+  color: #000000;
+  border-right: none;
+}
+
+.success-icon {
+  i {
+    display: block;
+    margin: auto;
+    svg {
+      display: block;
+      margin: auto;
+    }
   }
 }

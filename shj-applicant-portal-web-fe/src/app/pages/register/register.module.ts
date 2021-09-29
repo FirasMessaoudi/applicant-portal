@@ -7,6 +7,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {SharedModule} from "@shared/shared.module";
 import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-datepicker/hijri-gregorian-datepicker.module";
+import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   exports: [],
@@ -16,7 +17,8 @@ import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-da
     ReactiveFormsModule,
     HttpClientModule,
     SharedModule,
-    HijriGregorianDatepickerModule
+    HijriGregorianDatepickerModule,
+    NgbDropdownModule,
   ],
 
   declarations: [

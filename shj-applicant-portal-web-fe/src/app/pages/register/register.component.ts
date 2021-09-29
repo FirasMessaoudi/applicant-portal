@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
-import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbDateStruct, NgbDropdown, NgbModal, NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 import {InvisibleReCaptchaComponent} from "ngx-captcha";
 import {ToastService} from "@shared/components/toast/toast-service";
 import {TranslateService} from "@ngx-translate/core";
@@ -18,7 +18,8 @@ import {DatePipe} from "@angular/common";
 import {User} from "@shared/model";
 import {CountryISO} from 'ngx-intl-tel-input';
 import {CountryLookup} from "@model/country-lookup.model";
-import {Subscription} from "rxjs";
+import {merge, Observable, Subject, Subscription} from "rxjs";
+import {filter, map} from "rxjs/operators";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -64,9 +65,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
   applicantCountry: any;
   countries: CountryLookup[] = [];
   selectedCountryCode = "SA";
-
   SAUDI_COUNTRY_CODE = "SA";
-
+  selectedCountryPrefix: string = "+966";
+  @ViewChild('instance')
+  instance: NgbTypeahead;
+  @ViewChild('elem')
+  elem: ElementRef;
+  @ViewChild('countryListDropdown')
+  countryListDropdown: NgbDropdown;
+  focus$ = new Subject<string>();
+  click$ = new Subject<string>();
 
   @ViewChild('datePicker') dateOfBirthPicker: HijriGregorianDatepickerComponent;
 
@@ -183,7 +191,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let reg2 = /\+/gi;
     let reg3 = /\-/gi;
 
-    let mobileNumber = this.registerForm.controls['mobileNumber'].value.number.replace(reg1, "").replace(reg3, "");
+    let mobileNumber = this.registerForm.controls['mobileNumber'].value.replace(reg1, "").replace(reg3, "");
     this.registerForm.controls['mobileNumber'].setValue(mobileNumber);
 
     this.registerService.generateOTPForRegistration(this.registerForm.value, this.captchaElem.getCurrentResponse()).subscribe(response => {
@@ -209,9 +217,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.user.otpExpiryMinutes = response.otpExpiryMinutes;
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
-          this.user.mobileNumber = this.registerForm.controls.mobileNumber.value.number.replace(reg1, "").replace(reg3, "");
-          this.user.countryCode = this.registerForm.controls.mobileNumber.value.countryCode;
-          this.user.countryPhonePrefix = this.registerForm.controls.mobileNumber.value.dialCode.replace(reg2, "")
+          this.user.mobileNumber = this.registerForm.controls.mobileNumber.value.replace(reg1, "").replace(reg3, "");
+          this.user.countryCode = this.selectedCountryCode.toUpperCase();
+          this.user.countryPhonePrefix = this.selectedCountryPrefix.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
@@ -250,8 +258,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   loadLookups() {
     this.cardService.findCountries().subscribe(result => {
+      result.forEach(c => c.countryPhonePrefix = '+' + c.countryPhonePrefix);
       this.countries = result;
-
     });
   }
 
@@ -375,8 +383,36 @@ export class RegisterComponent implements OnInit, OnDestroy {
     document.querySelector('body').classList.remove('register');
   }
 
+  public openTypeahead(): void {
+    // Dispatch event on input element that NgbTypeahead is bound to
+    this.elem.nativeElement.dispatchEvent(new Event('input'));
+    // Ensure input has focus so the user can start typing
+    setTimeout(() => { // this will make the execution after the above boolean has changed
+      this.elem.nativeElement.focus();
+    }, 0);
+  }
 
+  search = (text$: Observable<string>) => {
+    const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
+    const inputFocus$ = this.focus$;
+    return merge(text$, inputFocus$, clicksWithClosedPopup$).pipe(
+      map(term => (term === '' ? this.countries.filter(c => c.lang.toLowerCase() === this.i18nService.language.substr(0, 2))
+        : this.countries.filter(c => c.lang.toLowerCase() === this.i18nService.language.substr(0, 2)).filter(v => v.label.toLowerCase().indexOf(term.toLowerCase()) > -1 || v.countryPhonePrefix.toLowerCase().indexOf(term) > -1
+        ))));
+  }
 
+  inputFormatter = (x: { countryPhonePrefix: string }) => x.countryPhonePrefix
 
+  onSelect($event, input) {
+    $event.preventDefault();
+    this.selectedCountryPrefix = $event.item.countryPhonePrefix;
+    this.selectedCountryCode = $event.item.code.toLowerCase();
+    this.countryListDropdown.close();
+  }
 
+  onOpenChange(event: boolean) {
+    if (!event) {
+      this.elem.nativeElement.value = '';
+    }
+  }
 }
