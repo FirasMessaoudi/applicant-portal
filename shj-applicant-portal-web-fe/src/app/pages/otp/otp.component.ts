@@ -4,12 +4,13 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {finalize} from "rxjs/operators";
-import {Subscription} from "rxjs";
+import {BehaviorSubject, Subscription} from "rxjs";
 import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
 import {RegisterService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
 import {UserContacts} from "@model/UserContacts.model";
+import {OtpStorage} from "@pages/otp/otp.storage";
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -45,6 +46,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     private location: Location,
     private toastr: ToastService,
     private translate: TranslateService,
+    private otpStorage: OtpStorage,
     private userService: UserService) {
   }
 
@@ -57,9 +59,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
-
     this.currentPageUrl = this.router.url;
-
     this.createForm();
     this.otpDataSubscription = this.authenticationService.otpData.subscribe(data => {
       this.previousUrl = data.actionType;
@@ -99,7 +99,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
-          this.isSubmit=false
+          this.isSubmit = false
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
@@ -114,7 +114,6 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           this.getLatestApplicantRitualLite();
           this.setLanguage(user.preferredLanguage?.startsWith('ar') ? 'ar-SA' : 'en-US');
           this.router.navigate(['/'], {replaceUrl: true});
-
         }
       }, error => {
         console.log(error);
@@ -130,7 +129,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
-          this.isSubmit=false
+          this.isSubmit = false
         })).subscribe(user => {
         console.log(user);
         clearInterval(this.timerInterval);
@@ -156,11 +155,11 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
       });
     } else if ((this.previousUrl == "/settings") && this.currentPageUrl == "/edit/contacts/otp") {
-      this.editContacts.pin=pin;
+      this.editContacts.pin = pin;
       this.userService.updateUserContacts(this.editContacts).pipe(finalize(() => {
         this.otpForm.markAsPristine();
         this.loading = false;
-        this.isSubmit=false
+        this.isSubmit = false
       })).subscribe(response => {
         clearInterval(this.timerInterval);
         this.toastr.success(this.translate.instant('general.dialog_edit_user_success_text'), this.translate.instant('general.dialog_edit_title'));
@@ -230,20 +229,24 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getLatestApplicantRitualLite() {
-
     localStorage.removeItem("selectedSeason");
     localStorage.removeItem("selectedApplicantRitual");
+    localStorage.removeItem("selectedRitualSeason");
 
     this.userService.getLatestApplicantRitualLite().subscribe(applicantRitual => {
-
       if (applicantRitual) {
-
-        localStorage.setItem('selectedSeason', JSON.stringify(applicantRitual?.hijriSeason));
         localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
         this.userService.changeSelectedApplicantRitual(applicantRitual);
       }
-
     });
 
+    this.userService.getLatestRitualSeason().subscribe(season => {
+      if (season) {
+        this.otpStorage.ritualSeasonSubject.next(season);
+        localStorage.setItem('selectedRitualSeason', JSON.stringify(season));
+        localStorage.setItem('latestRitualSeason', JSON.stringify(season));
+      }
+    });
   }
+
 }

@@ -9,7 +9,6 @@
       "excel-only": "يتم قبول ملفات الاكسل فقط!"
     }
   },
-
   "dcc.commons.validation.constraints": {
     "nin": "الرجاء إدخال رقم هوية وطنية صحيح",
     "unique": "القيمة التي أدخلتها هي قيد الاستخدام",
@@ -65,6 +64,7 @@
     "btn_update": "تعديل",
     "btn_search": "بحث",
     "btn_view": "عرض",
+    "btn_confirm": "تأكيد",
     "actions": "الأدوات",
     "nav_first": "الأولى",
     "nav_last": "الأخيرة",
@@ -126,7 +126,11 @@
     "settings": "الإعدادات",
     "my_dashboard": "بياناتي",
     "my_program": "برنامجي",
-    "ritual_schedule": "الجدول الزمني"
+    "ritual_schedule": "الجدول الزمني",
+    "alert_text": "جميع البيانات المعروضة الآن هي البيانات السابقة لك في موسم",
+    "alert_button_text": "عودة لبيانات الموسم الحالي",
+    "change_ritual_modal_title": "اختر موسم الحج أو العمرة الذي تريد عرض بياناته",
+    "change_ritual_modal_caution": "ستتأثر جميع البيانات المعروضة بهذا التغيير"
   },
   "settings": {
     "ritual-type": "نوع الشعيرة",
@@ -135,7 +139,6 @@
     "edit-contacts": "تعديل جهات الاتصال",
     "search_country_dialing_code": "ابحث عن البلد أو رمز الاتصال"
   },
-
   "home": {
     "title": "الصفحة الرئيسية",
     "period": "الفترة",
@@ -236,7 +239,6 @@
     "invalid_otp":"رمز التحقق غير صحيح! الرجاء المحاولة مرة اخرى...",
     "user_already_logged_in": "المستخدم مرتبط بجلسة فعالة",
     "user_is_deactivated": "المستخدم غير مفعّل"
-
   },
   "register": {
     "header_title": "إنشاء حساب جديد",
@@ -517,7 +519,7 @@
     "company_contact_number": "رقم تواصل الشركة",
     "location": "الموقع",
     "from": "من",
-    "to" : "الى",
+    "to" : "إلى",
     "BREAKFAST": "فطار",
     "LUNCH": "غداء",
     "DINNER":"عشاء",
@@ -605,7 +607,7 @@
   },
   "haj-journey": {
     "home": "الرئيسية",
-    "title": "رحلة الحاج",
-    "view-daily-activities": "عرض أعمال اليوم"
+    "title": "رحلة ضيف الرحمن",
+    "view_daily_activities": "عرض أعمال اليوم"
   }
 }

@@ -17,7 +17,7 @@
 
     <div class="row form-group">
       <div class="col-12 px-0">
-        <label for="inputEmail">{{'general.language'|translate}}</label>
+        <label>{{'general.language'|translate}}</label>
         <div class="input-group flex-grow-1">
           <div class="setBox flex-grow-1" role="group">
             <select class="custom-select" [disabled]="!enableEditLanguage"
@@ -141,24 +141,8 @@
         <svg-icon styleClass="ml-3 mb-0 h5" icon="lock-alt"></svg-icon>
       </a>
     </div>
-
-
   </form>
-
 </div>
 
-<ng-template #showDelete let-modal>
-
-  <div class="modal-body">
-    <div class="flex-center-column my-3">
-      <svg-icon styleClass="text-dcc-primary-public fa-3x" icon="exclamation-triangle"></svg-icon>
-      هل أنت متأكد من أنك تريد تعديل الإعدادات؟
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-dcc-primary px-4 ml-3">حفظ التعديلات</button>
-    <button type="button" class="btn btn-light px-5">إلغاء</button>
-  </div>
-</ng-template>
 
 

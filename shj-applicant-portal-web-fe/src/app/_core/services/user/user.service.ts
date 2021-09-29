@@ -9,6 +9,7 @@ import {UserStatus} from "@model/user-status.model";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {UserContacts} from "@model/UserContacts.model";
 import {CookieService} from "ngx-cookie-service";
+import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -18,11 +19,10 @@ export const DEFAULT_MAX_USER_AGE = 16;
 @Injectable()
 export class UserService {
 
-
   public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-  seasons: number [] = [];
-  applicantRituals: ApplicantRitualLite [] = [];
+  seasons: number[] = [];
+  applicantRituals: ApplicantRitualLite[] = [];
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
     this.selectedApplicantRitual.asObservable();
@@ -30,9 +30,7 @@ export class UserService {
 
   public changeSelectedApplicantRitual(selectedApplicantRitual: any) {
     this.selectedApplicantRitual.next(selectedApplicantRitual);
-
   }
-
 
   /**
    * Lists all users.
@@ -118,7 +116,7 @@ export class UserService {
   /**
    *   updates user preferred language.
    *
-   * @param user the user to save or update
+   * @param lang
    * @return {Observable<User>} The saved or updated user.
    */
   updatePreferredLang(lang: string): Observable<any> {
@@ -138,7 +136,7 @@ export class UserService {
   /**
    * Creates or updates user details in the server.
    *
-   * @param user the user to save or update
+   * @param userContacts
    * @return {Observable<User>} The saved or updated user.
    */
   updateUserContacts(userContacts: UserContacts): Observable<any> {
@@ -165,7 +163,7 @@ export class UserService {
   /**
    * Changes the password of the user identified by id.
    *
-   * @param userId the user id to change
+   * @param changePasswordCmd
    * @return {Observable<any>} The operation result.
    */
   changePassword(changePasswordCmd: ChangePasswordCmd): Observable<any> {
@@ -184,7 +182,7 @@ export class UserService {
   /**
    * Deletes user by his ID from the server.
    *
-   *@param userId the user id
+   * @param userId the user id
    * @return {Observable} The user identified by userId.
    */
   delete(userId: number): Observable<any> {
@@ -262,6 +260,19 @@ export class UserService {
           return of(error);
         }
       }));
+  }
+
+  /**
+   * List all ritual seasons per applicant
+   *
+   * @return {Observable} The returned season list.
+   */
+  listRitualSeasons(): Observable<CompanyRitualSeasonLite[]> {
+    return this.http.get<CompanyRitualSeasonLite[]>('/core/api/users/ritual-season');
+  }
+
+  getLatestRitualSeason(): Observable<CompanyRitualSeasonLite> {
+    return this.http.get<CompanyRitualSeasonLite>('/core/api/users/ritual-season/latest');
   }
 
   getApplicantSeason(): Observable<number []> {

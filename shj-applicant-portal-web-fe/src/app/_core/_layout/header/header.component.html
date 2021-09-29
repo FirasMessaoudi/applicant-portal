@@ -1,154 +1,121 @@
-<header class="header-wrapper" [ngClass]="{ light_navbar: showNavbar }">
-    <div class="d-flex justify-content-between align-items-center w-100" [ngClass]="{ container: showNavbar, 'px-md-0': showNavbar }">
-        <div class="left-header d-flex">
-            <!--BACK BUTTON-->
-            <a *ngIf="!showNavbar" class="d-block" (click)="goBack()" href="javascript:void(0);">
-                <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
-                <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
-            </a>
-
-            <!-- LOGO -->
-            <div *ngIf="showNavbar" class="logo flex-center py-3" [ngClass]="{ 'px-md-2': showNavbar }">
-                <a href="javascript:void(0)" [routerLink]="['/']">
-                    <img src="assets/images/logo.png" alt="logo" />
-                </a>
-            </div>
-
-            <!-- NAVIGATION  -->
-            <div *ngIf="showNavbar" class="d-flex">
-                <nav class="navbar p-0 d-none d-md-flex mx-5">
-                    <div class="main-nav">
-                        <ul class="nav d-flex">
-                            <li routerLinkActive="active">
-                                <a (click)="isActive = false" class="py-2 d-block h6" [routerLink]="['/cards/details/1']">{{ 'header.my_dashboard' | translate }}</a>
-                            </li>
-                            <li routerLinkActive="disable">
-                                <a (click)="isActive = false" class="py-2 d-block h6 " [routerLink]="['/hajj-rituals']">{{ 'header.my_program' | translate }}</a>
-                            </li>
-                            <!--<li routerLinkActive="disable">
-                                <a (click)="isActive = false" class="py-2 d-block h6 " [routerLink]="['/hajj-journey/list']">{{ 'header.ritual_schedule' | translate }}</a>
-                            </li>-->
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-
-        </div>
-
-        <!--- PROFILE & SETTING-->
-        <div class="nav-right">
-            <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
-              <li class=" flex-center">
-                <a class="nav-link d-flex align-items-top  noArrow" tittle="معلوماتي" href="javascript:void(0)"
-                   id="userMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
-                  <div class="mx-3">
-                    <h6 class="text-dcc-primary m-0">
-                      {{ currentUser?.firstName }} {{ currentUser?.lastName }}
-                    </h6>
-
-                    <small class="text-black-50 mb-2" *ngIf="!enableEditRitual">
-                      <div class="row">
-                        <div class="col-md-8">
-                          <div> {{ "settings.season" | translate }}
-                            {{selectedApplicantRitual?.hijriSeason}}
-                          </div>
-                          <div>
-                            {{
-                            selectedApplicantRitual?.typeCode
-                              ? lookupService().localizedLabel(
-                              ritualTypes,
-                              selectedApplicantRitual?.typeCode
-                              )
-                              : ""
-                            }}
-                            {{selectedApplicantRitual?.dateStartHijri | monthDayHijriFormat}}
-                          </div>
-                        </div>
-
-                        <div class="col-md-2">
-                          <button class="btn  shadow-none ml-1" type="button" ngbTooltip="تعديل"  placement="top"
-                                  (click)="editRitual()">
-                            <svg-icon styleClass="fa-w-16 h4" icon="edit"></svg-icon>
-                          </button>
-
-                        </div>
-
-                      </div>
-                    </small>
-
-
-                    <small class="text-black-50 mb-2" *ngIf="enableEditRitual">
-
-                      <div class="row form-group m-0 mb-1 mt-1">
-
-                        <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
-                          <label for="inputEmail4">{{ "settings.season" | translate }}</label>
-
-                          <select id="inputEmail4" class="custom-select" (change)="onSeasonChange($event)"
-                                  [disabled]="!enableEditRitual">
-                            <option [value]="season" *ngFor="let season of userService.seasons"
-                                    [selected]="season==selectedSeason">{{season}}</option>
-                          </select>
-
-                        </div>
-                        <div class="col-md-7 px-0" role="group">
-                          <label for="inputEmail4">{{ "settings.ritual-type" | translate }}</label>
-
-                          <div class="input-group flex-nowrap">
-                            <select id="inputApplicantRitual" class="custom-select" (change)="onApplicantRitualChange($event)"
-                                    [disabled]="!enableEditRitual">
-                              <option [value]="ar.id" *ngFor="let ar of userService.applicantRituals"
-                                      [selected]="ar.id == selectedApplicantRitual.id">
-                                {{
-                                ar?.typeCode
-                                  ? lookupService().localizedLabel(
-                                  ritualTypes,
-                                  ar?.typeCode
-                                  )
-                                  : ""
-                                }}
-                                - {{ar?.dateStartHijri | monthDayHijriFormat}}
-                              </option>
-                            </select>
-                            <div class="input-group-append">
-
-                              <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="حفظ" *ngIf="enableEditRitual" placement="top"
-                                      (click)="saveSelectedRitual()">
-                                <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-                              </button>
-                              <button class="btn btn-outline-gray-300 shadow-none ml-1" (click)="CancelEditRitual()" type="button" ngbTooltip="إلغاء" placement="top">
-                                <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                    </small>
-
-                  </div>
-                </a>
-
-              </li>
-<!--                <li class="position-relative">-->
-<!--                    <a class="nav-link" href="javascript:void(0)" ngbTooltip="">-->
-<!--                        <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>-->
-<!--                    </a>-->
-<!--                    <span class="notif bg-red">4</span>-->
-<!--                </li>-->
-
-              <li class="position-relative">
-                <a class="nav-link" [routerLink]="['/settings']" ngbTooltip="{{ 'header.settings' | translate }}">
-                  <svg-icon styleClass="fa-w-16 h4" icon="cog"></svg-icon>
-                </a>
-              </li>
-                <li class="position-relative">
-                    <a class="nav-link" href="javascript:void(0)" (click)="logout()" ngbTooltip="{{ 'header.logout' | translate }}">
-                        <svg-icon styleClass="fa-w-16 h4 flip" icon="logout"></svg-icon>
-                    </a>
-                </li>
-            </ul>
-        </div>
+<div *ngIf="showAlert" class="alert reset-ritual mb-0" role="alert">
+  <div class="d-flex justify-content-between align-items-center w-100 h-100"
+       [ngClass]="{ container: showNavbar, 'px-md-0': showNavbar }">
+    <div>
+      <svg-icon class="mr-3" styleClass="fa" icon="lightbulb-exclamation"></svg-icon>
+      <span>{{'header.alert_text' | translate}}</span>
+      {{selectedApplicantRitual?.hijriSeason}}
     </div>
+    <a class="reset-btn noArrow py-1 px-3" (click)="backToLatestRitualSeason()">
+      <span>{{'header.alert_button_text' | translate}}</span>
+      <svg-icon styleClass="fa ml-2" icon="redo"></svg-icon>
+    </a>
+  </div>
+</div>
+<header class="header-wrapper" [ngClass]="{ light_navbar: showNavbar }">
+  <div class="d-flex justify-content-between align-items-center w-100"
+       [ngClass]="{ container: showNavbar, 'px-md-0': showNavbar }">
+    <div class="left-header d-flex">
+      <!--BACK BUTTON-->
+      <a *ngIf="!showNavbar" class="d-block" (click)="goBack()" href="javascript:void(0);">
+        <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
+        <span class="mx-2 px-1">{{ "general.btn_back" | translate }}</span>
+      </a>
+
+      <!-- LOGO -->
+      <div *ngIf="showNavbar" class="logo flex-center py-3" [ngClass]="{ 'px-md-2': showNavbar }">
+        <a href="javascript:void(0)" [routerLink]="['/']">
+          <img src="assets/images/logo.png" alt="logo"/>
+        </a>
+      </div>
+
+      <!-- NAVIGATION  -->
+      <div *ngIf="showNavbar" class="d-flex">
+        <nav class="navbar p-0 d-none d-md-flex mx-5">
+          <div class="main-nav">
+            <ul class="nav d-flex">
+              <li routerLinkActive="active">
+                <a (click)="isActive = false" class="py-2 d-block h6"
+                   [routerLink]="['/cards/details/1']">{{ 'header.my_dashboard' | translate }}</a>
+              </li>
+              <li routerLinkActive="disable">
+                <a (click)="isActive = false" class="py-2 d-block h6 "
+                   [routerLink]="['/hajj-rituals']">{{ 'header.my_program' | translate }}</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+
+    </div>
+
+    <!--- PROFILE & SETTING-->
+    <div class="nav-right">
+      <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
+        <li class=" flex-center">
+          <a class="nav-link d-flex align-items-top noArrow">
+            <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
+            <div class="mx-3">
+              <h6 class="text-dcc-primary m-0">
+                {{ currentUser?.firstName }} {{ currentUser?.lastName }}
+              </h6>
+              <small class="mb-2">
+                <a class="text-black-50" (click)="open(showEditRitual)" href="javascript:void(0)">
+                  {{selectedRitualSeason?.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, selectedRitualSeason?.ritualSeason?.ritualTypeCode) : ""}}
+                  <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
+                  {{selectedRitualSeason?.ritualSeason?.seasonYear}}
+                </a>
+              </small>
+            </div>
+          </a>
+        </li>
+        <li class="position-relative">
+          <a class="nav-link" [routerLink]="['/settings']" ngbTooltip="{{ 'header.settings' | translate }}">
+            <svg-icon styleClass="fa-w-16 h4" icon="cog"></svg-icon>
+          </a>
+        </li>
+        <li class="position-relative">
+          <a class="nav-link" href="javascript:void(0)" (click)="logout()"
+             ngbTooltip="{{ 'header.logout' | translate }}">
+            <svg-icon styleClass="fa-w-16 h4 flip" icon="logout"></svg-icon>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </header>
+
+<ng-template class="edit-ritual-modal" #showEditRitual let-modal>
+  <div class="modal-header">
+    <h4 class="sectionTitle">{{'header.change_ritual_modal_title' | translate}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true" class="h2">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body px-0">
+    <table class="w-100">
+      <tr class="table-row" *ngFor="let index = index; let s of seasons">
+        <td class="ritual-season p-lg-3" (click)="selectSeason(s.id)">
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="ml-3">
+              {{s.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, s.ritualSeason?.ritualTypeCode) : ""}}
+              <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
+              {{s.ritualSeason?.seasonYear}}
+            </div>
+            <div>
+              <svg-icon *ngIf="s.selected" class="check-circle" styleClass="fa2x mr-2" icon="check-circle"></svg-icon>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <div>
+      <svg-icon styleClass="fa mr-2" icon="lightbulb-exclamation"></svg-icon>
+      <span>{{'header.change_ritual_modal_caution' | translate}}</span>
+    </div>
+    <button type="button" class="btn btn-dcc-primary px-4 ml-3"
+            (click)="confirm()">{{'general.btn_confirm' | translate}}</button>
+  </div>
+</ng-template>

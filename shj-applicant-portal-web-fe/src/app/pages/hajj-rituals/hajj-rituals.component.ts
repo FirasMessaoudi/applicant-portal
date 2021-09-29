@@ -12,6 +12,7 @@ import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {I18nService} from "@dcc-commons-ng/services";
 import {Lookup} from "@model/lookup.model";
 import {MapOptions, Marker, Position} from '@app/_shared/model/marker.model';
+import {Router} from "@angular/router";
 
 const momentHijri = moment_;
 
@@ -49,6 +50,7 @@ export class HajjRitualsComponent implements OnInit {
               private lookupsService: LookupService,
               private toastr: ToastService,
               private i18nService: I18nService,
+              private router: Router,
               @Inject(DOCUMENT) private document: Document,
               private renderer2: Renderer2,) {
   }
@@ -180,4 +182,5 @@ export class HajjRitualsComponent implements OnInit {
       this.renderer2.appendChild(this.document.body, script);
     })
   }
+
 }
