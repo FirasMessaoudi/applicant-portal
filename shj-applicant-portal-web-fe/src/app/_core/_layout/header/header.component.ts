@@ -28,8 +28,8 @@ export class HeaderComponent implements OnInit {
   public isMenuCollapsed = false;
   routerDisabled = true;
   selectedApplicantRitual: ApplicantRitualLite;
-  selectedRitualSeason: any;
-  latestRitualSeason: any;
+  selectedRitualSeason: CompanyRitualSeasonLite;
+  latestRitualSeason: CompanyRitualSeasonLite;
   ritualTypes: Lookup[] = [];
   seasons: CompanyRitualSeasonLite[];
   showAlert: boolean;

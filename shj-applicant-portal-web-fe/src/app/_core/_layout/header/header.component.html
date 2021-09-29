@@ -4,7 +4,7 @@
     <div>
       <svg-icon class="mr-3" styleClass="fa" icon="lightbulb-exclamation"></svg-icon>
       <span>{{'header.alert_text' | translate}}</span>
-      {{selectedApplicantRitual?.hijriSeason}}
+      {{selectedRitualSeason?.ritualSeason?.seasonYear}}
     </div>
     <a class="reset-btn noArrow py-1 px-3" (click)="backToLatestRitualSeason()">
       <span>{{'header.alert_button_text' | translate}}</span>
