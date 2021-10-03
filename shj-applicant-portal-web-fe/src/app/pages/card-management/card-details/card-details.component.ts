@@ -72,49 +72,12 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
-
-
-      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
+      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
       this.loadLookups();
       this.loadUserDetails();
     });
-
-
-    //TODO: dummy  data
-    this.hamlahPackage = {
-      "id": 1,
-      "typeCode": {"id": 1, "code": null, "label": "VIP", "lang": null},
-      "hamlahId": 1,
-      "campId": 1,
-      "price": 6500,
-      "departureCity": "Mombai",
-      "countryId": 1,
-      "packageHousings": [{
-        "id": 1,
-        "type": "مزدلفة",
-        "code": "25475",
-        "labelAr": "مخيم مشاعل النور",
-        "labelEn": "",
-        "validityStart": "01-04-2021",
-        "validityEnd": "02-04-2021",
-        "addressAr": "مزدلفة بجوار محطة القطار",
-        "addressEn": "",
-        "isDefault": true,
-        "packageCaterings": [{"id": 1, "type": "غداء", "meal": "", "descriptionAr": "بوفيه مفتوح", "descriptionEn": ""}]
-      }],
-      "packageTransportations": [{
-        "id": 1,
-        "type": "باص",
-        "validityStart": "03-04-2021",
-        "validityEnd": "04-04-2021",
-        "locationFrom": "منى",
-        "locationTo": "مزدلفة",
-        "vehicleNumber": "ب ح ج 259"
-      }]
-    };
   }
 
   loadUserDetails() {
@@ -139,8 +102,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
-      //TODO: Just for demo, must change to selected company ritual season id
-      this.cardService.findTafweejDetails(1).subscribe(data => {
+      this.cardService.findTafweejDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
           this.tafweejDetails = data;
         } else {
@@ -149,8 +111,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
-      //TODO: Just for demo, must change to selected company ritual season id
-      this.cardService.findGroupLeadersDetails(1).subscribe(data => {
+      this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
           this.groupLeaders = data;
         } else {
@@ -163,13 +124,11 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadUserPackageDetails() {
-    console.log("in applicantPackage ",);
     if (this.applicantPackage == null) {
       this.loading = true;
-      this.cardService.findPackageDetails(1).subscribe(data => {
+      this.cardService.findPackageDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
           this.applicantPackage = data;
-          console.log("applicantPackage ", this.applicantPackage);
         } else {
           this.toastr.error(this.translate.instant('general.route_item_not_found'),
             this.translate.instant('general.dialog_error_title'));
@@ -224,25 +183,12 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  // goToList() {
-  //   this.router.navigate(['/cards/list']);
-  // }
-
   get currentLanguage(): string {
     return this.i18nService.language;
   }
 
   lookupService(): LookupService {
     return this.lookupsService;
-  }
-
-  packageCaterings(): PackageCatering[] {
-    let packageCaterings: PackageCatering[] = [];
-    //TODO: to be refactored after wiring the backend to the frontend
-    this.hamlahPackage.packageHousings.forEach(housing => {
-      packageCaterings = packageCaterings.concat(housing.packageCaterings);
-    });
-    return packageCaterings;
   }
 
   ngOnDestroy(): void {

@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
 import {I18nService} from "@dcc-commons-ng/services";
 import {finalize} from "rxjs/operators";
-import {BehaviorSubject, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
 import {TranslateService} from "@ngx-translate/core";
 import {RegisterService, UserService} from "@core/services";
@@ -233,18 +233,12 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     localStorage.removeItem("selectedApplicantRitual");
     localStorage.removeItem("selectedRitualSeason");
 
-    this.userService.getLatestApplicantRitualLite().subscribe(applicantRitual => {
-      if (applicantRitual) {
-        localStorage.setItem('selectedApplicantRitual', JSON.stringify(applicantRitual));
-        this.userService.changeSelectedApplicantRitual(applicantRitual);
-      }
-    });
-
     this.userService.getLatestRitualSeason().subscribe(season => {
       if (season) {
         this.otpStorage.ritualSeasonSubject.next(season);
         localStorage.setItem('selectedRitualSeason', JSON.stringify(season));
         localStorage.setItem('latestRitualSeason', JSON.stringify(season));
+        this.userService.changeSelectedApplicantRitual(season);
       }
     });
   }

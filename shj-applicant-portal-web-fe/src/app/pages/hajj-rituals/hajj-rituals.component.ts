@@ -12,6 +12,7 @@ import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {I18nService} from "@dcc-commons-ng/services";
 import {Lookup} from "@model/lookup.model";
 import {MapOptions, Marker, Position} from '@app/_shared/model/marker.model';
+import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 
 const momentHijri = moment_;
 
@@ -31,7 +32,7 @@ export class HajjRitualsComponent implements OnInit {
   transportationTypes: Lookup[] = [];
   ritualStepLabels = [];
   selectedMarker: Marker;
-  selectedApplicantRitual: ApplicantRitualLite;
+  selectedApplicantSeason: CompanyRitualSeasonLite;
   mapIsReady = false;
   @ViewChild('ritualStepDom') ritualStepDom: ElementRef;
   mapOptions: google.maps.MapOptions = {
@@ -56,10 +57,9 @@ export class HajjRitualsComponent implements OnInit {
   ngOnInit(): void {
     this.loadMapkey();
     this.loadLookups();
-    //set rituals steps
-    this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
-      this.selectedApplicantRitual = selectedApplicantRitual;
-      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
+    this.userService.selectedApplicantRitual.subscribe(season => {
+      this.selectedApplicantSeason = season;
+      this.selectedApplicantSeason = JSON.parse(localStorage.getItem('selectedRitualSeason'));
       this.findRitualSteps();
     });
   }
@@ -113,8 +113,7 @@ export class HajjRitualsComponent implements OnInit {
   }
 
   findRitualSteps() {
-    //TODO: Just for demo, must change to selected company ritual season id
-    this.cardService.findTafweejDetails(1).subscribe(data => {
+    this.cardService.findTafweejDetails(this.selectedApplicantSeason.id).subscribe(data => {
       if (data) {
         const today = new Date();
         this.ritualsSteps = data;

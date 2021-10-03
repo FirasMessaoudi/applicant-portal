@@ -136,15 +136,16 @@ export class HeaderComponent implements OnInit {
     this.selectedRitualSeason = this.seasons.find(s => s.selected === true);
     this.showAlert = this.selectedRitualSeason.id !== this.latestRitualSeason.id;
     localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedRitualSeason));
-    // TODO Trigger fetching applicant data on season change
-    //localStorage.setItem('selectedApplicantRitual', JSON.stringify(this.selectedApplicantRitual));
-    //this.userService.changeSelectedApplicantRitual(this.selectedApplicantRitual);
+    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedRitualSeason));
+    this.userService.changeSelectedApplicantRitual(this.selectedRitualSeason);
     this.modalService.dismissAll();
   }
 
   backToLatestRitualSeason() {
     this.selectedRitualSeason = JSON.parse(localStorage.getItem('latestRitualSeason'));
     this.seasons.forEach(s => s.id === this.selectedRitualSeason.id ? s.selected = true : s.selected = false);
+    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedRitualSeason));
+    this.userService.changeSelectedApplicantRitual(this.selectedRitualSeason);
     this.showAlert = false;
   }
 
