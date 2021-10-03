@@ -95,7 +95,7 @@
                 }}</label>
               <span class="form-control-plaintext">{{
                 applicant?.dateOfBirthGregorian
-                  | dateFormat
+                  | gregorianDateFormat
                 }}
                 <span
                   *ngIf="applicant?.dateOfBirthGregorian"
@@ -103,7 +103,7 @@
                 >
                 {{
                 applicant?.dateOfBirthHijri
-                  | hijriFormat
+                  | hijriDateFormat
                 }}
               </span>
             </div>
@@ -447,7 +447,7 @@
                   ">
                 <td class="ltr">{{ immunization.immunizationCode }}</td>
                 <td class="ltr">
-                  {{ immunization.immunizationDate | dateFormat }}
+                  {{ immunization.immunizationDate | gregorianDateFormat }}
                 </td>
               </tr>
               </tbody>

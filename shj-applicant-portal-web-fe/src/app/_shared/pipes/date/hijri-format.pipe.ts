@@ -1,7 +1,8 @@
 import {Pipe, PipeTransform} from '@angular/core';
+import {I18nService} from "@dcc-commons-ng/services";
 
 @Pipe({
-  name: 'hijriFormat'
+  name: 'hijriDateFormat'
 })
 export class HijriFormatPipe implements PipeTransform {
 
@@ -13,13 +14,23 @@ export class HijriFormatPipe implements PipeTransform {
    * @param args the field arguments
    * @returns the formatted value
    */
-  transform(value: any, args?: any): any {
-    let result = value+'' || '';
+  constructor(private i18nService: I18nService) {
+  }
 
-    if (isNaN(value) || result.length != 8){
+  transform(value: any, args?: any): any {
+    let result = value + '' || '';
+
+    if (isNaN(value) || result.length != 8) {
       return '';
     }
+    if (this.currentLanguage.startsWith("ar"))
+      return result.substring(0, 4) + '/' + result.substring(4, 6) + '/' + result.substring(6, 8);
 
-    return result.substring(0,4) + '/' + result.substring(4,6) + '/' + result.substring(6,8);
+    return result.substring(6, 8) + '/' + result.substring(4, 6) + '/' + result.substring(0, 4);
   }
+
+  get currentLanguage(): string {
+    return this.i18nService.language;
+  }
+
 }

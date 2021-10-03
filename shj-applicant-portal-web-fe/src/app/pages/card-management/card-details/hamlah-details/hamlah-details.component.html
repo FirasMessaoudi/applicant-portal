@@ -83,10 +83,8 @@
           class="ltr">{{ currentLanguage.startsWith("en") ? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
         <td
           class="ltr">{{ currentLanguage.startsWith("en") ? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
-        <td
-          class="ltr">{{ currentLanguage.startsWith("en") ? (housing?.packageHousing?.validityStart | date: 'dd/MM/yyyy') : (housing?.packageHousing?.validityStart | date: 'yyyy/MM/dd')}}</td>
-        <td
-          class="ltr">{{ currentLanguage.startsWith("en") ? (housing?.packageHousing?.validityEnd | date: 'dd/MM/yyyy') : (housing?.packageHousing?.validityEnd | date: 'yyyy/MM/dd')}}</td>
+        <td class="ltr">{{ housing?.packageHousing?.validityStart | gregorianDateFormat }}</td>
+        <td class="ltr">{{housing?.packageHousing?.validityEnd | gregorianDateFormat}}</td>
       </tr>
       </tbody>
     </table>
@@ -116,9 +114,9 @@
         <td>
           {{removeSeconds(catering?.packageCatering?.mealTime)}}
           {{'card-management.from' | translate}}
-          {{currentLanguage.startsWith("en") ? (catering?.packageCatering?.packageHousing?.validityStart | date: 'dd/MM/yyyy') : (catering?.packageCatering?.packageHousing?.validityStart| date: 'yyyy/MM/dd')}}
+          {{ catering?.packageCatering?.packageHousing?.validityStart |gregorianDateFormat  }}
           {{'card-management.to' | translate}}
-          {{ currentLanguage.startsWith("en") ? (catering?.packageCatering?.packageHousing?.validityStart | date: 'dd/MM/yyyy') : (catering?.packageCatering?.packageHousing?.validityStart | date: 'yyyy/MM/dd')}}
+          {{ catering?.packageCatering?.packageHousing?.validityStart | gregorianDateFormat }}
 
         </td>
         <td class="ltr">
@@ -168,8 +166,8 @@
           }}
         </td>
         <td
-          class="ltr">{{ currentLanguage.startsWith("en") ? (transportation?.packageTransportation?.validityStart| date: 'dd/MM/yyyy') : (transportation?.packageTransportation?.validityStart | date: 'yyyy/MM/dd')}}
-          -- {{currentLanguage.startsWith("en") ? (transportation?.packageTransportation?.validityEnd | date: 'dd/MM/yyyy') : (transportation?.packageTransportation?.validityEnd | date: 'yyyy/MM/dd')  }}</td>
+          class="ltr">{{ transportation?.packageTransportation?.validityStart| gregorianDateFormat}}
+          -- {{transportation?.packageTransportation?.validityEnd |gregorianDateFormat  }}</td>
         <td
           class="ltr">{{ currentLanguage.startsWith("en") ? transportation?.packageTransportation?.locationFromNameEn : transportation?.packageTransportation?.locationFromNameAr}}</td>
         <td
