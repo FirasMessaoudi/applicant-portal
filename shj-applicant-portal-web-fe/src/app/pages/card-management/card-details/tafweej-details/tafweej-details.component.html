@@ -22,9 +22,12 @@
         <td class="ltr"
             *ngIf="i>0">{{currentLanguage.startsWith('ar') ? companyRitualSteps[i - 1]?.locationNameAr : companyRitualSteps[i - 1]?.locationNameEn}}</td>
         <td class="ltr">{{currentLanguage.startsWith('ar') ? item?.locationNameAr : item.locationNameEn}}</td>
-        <td class="ltr">{{item?.time | dateFormat}}</td>
-        <td class="ltr" *ngIf="i<companyRitualSteps.length-1">{{companyRitualSteps[i + 1]?.time | dateFormat}}</td>
-        <td class="ltr" *ngIf="i==companyRitualSteps.length-1">{{item?.time | dateFormat}}</td>
+        <td
+          class="ltr">{{currentLanguage.startsWith("en") ? (item?.time | date: 'dd/MM/yyyy') : (item?.time | date: 'yyyy/MM/dd')}}</td>
+        <td class="ltr"
+            *ngIf="i<companyRitualSteps.length-1">{{currentLanguage.startsWith("en") ? (companyRitualSteps[i + 1]?.time | date: 'dd/MM/yyyy') : (companyRitualSteps[i + 1]?.time | date: 'yyyy/MM/dd')}}</td>
+        <td class="ltr"
+            *ngIf="i==companyRitualSteps.length-1">{{currentLanguage.startsWith("en") ? (item?.time | date: 'dd/MM/yyyy') : (item?.time | date: 'yyyy/MM/dd')}}</td>
       </tr>
 
       </tbody>

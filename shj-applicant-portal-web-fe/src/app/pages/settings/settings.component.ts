@@ -61,7 +61,7 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.loadLookups();
-
+    this.selectedLanguage = this.currentLanguage;
     this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
       if (data && data.id) {
         this.contactsForm.disable();
@@ -106,8 +106,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cancelEditLanguage() {
-    this.enableEditLanguage = false;
     this.selectedLanguage = this.currentLanguage;
+    this.enableEditLanguage = false;
   }
 
   private createForm() {

@@ -60,42 +60,33 @@
     <table class="table table-striped table-hover">
       <thead>
       <tr>
-        <th scope="col">{{'card-management.location_number' | translate}}</th>
-        <th scope="col">{{'card-management.location_type' | translate}}</th>
+         <th scope="col">{{'card-management.location_type' | translate}}</th>
         <th scope="col">{{'card-management.location_name' | translate}}</th>
         <th scope="col">{{'card-management.location_address' | translate}}</th>
-        <th scope="col">{{'card-management.location' | translate}}</th>
         <th scope="col">{{'card-management.start_date' | translate}}</th>
         <th scope="col">{{'card-management.end_date' | translate}}</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let housing of applicantPackage?.applicantPackageHousings">
-        <td class="">{{ housing?.packageHousing?.referenceNumber}} <span *ngIf="housing?.packageHousing?.default == true" class="border p-1 rounded bg-light text-dark">{{'card-management.main' | translate}}</span></td>
-        <td class="ltr">
-          {{
+        <td class="">  {{
           housing?.packageHousing?.typeCode
             ? lookupService().localizedLabel(
             housingTypes,
             housing?.packageHousing?.typeCode
             )
             : ''
-          }}
-        </td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
-        <td class="ltr">
-          {{
-          housing?.packageHousing?.siteCode
-            ? lookupService().localizedLabel(
-            housingSites,
-            housing?.packageHousing?.siteCode
-            )
-            : ''
-          }}
-        </td>
-        <td class="ltr">{{ housing?.packageHousing?.validityStart | dateFormat}}</td>
-        <td class="ltr">{{ housing?.packageHousing?.validityEnd | dateFormat}}</td>
+          }} <span *ngIf="housing?.packageHousing?.default == true"
+                   class="border p-1 rounded bg-light text-dark">{{'card-management.main' | translate}}</span></td>
+
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? (housing?.packageHousing?.validityStart | date: 'dd/MM/yyyy') : (housing?.packageHousing?.validityStart | date: 'yyyy/MM/dd')}}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? (housing?.packageHousing?.validityEnd | date: 'dd/MM/yyyy') : (housing?.packageHousing?.validityEnd | date: 'yyyy/MM/dd')}}</td>
       </tr>
       </tbody>
     </table>
@@ -122,12 +113,12 @@
       <tr *ngFor="let catering of applicantPackage?.applicantPackageCaterings">
         <td class="ltr">{{ 'card-management.'+catering?.packageCatering?.type | translate}}</td>
         <td class="ltr">{{ currentLanguage.startsWith("en")? catering?.packageCatering?.descriptionEn : catering?.packageCatering?.descriptionAr }}</td>
-        <td class="ltr">
+        <td>
           {{removeSeconds(catering?.packageCatering?.mealTime)}}
           {{'card-management.from' | translate}}
-          {{ catering?.packageCatering?.packageHousing?.validityStart | dateFormat}}
+          {{currentLanguage.startsWith("en") ? (catering?.packageCatering?.packageHousing?.validityStart | date: 'dd/MM/yyyy') : (catering?.packageCatering?.packageHousing?.validityStart| date: 'yyyy/MM/dd')}}
           {{'card-management.to' | translate}}
-          {{ catering?.packageCatering?.packageHousing?.validityStart | dateFormat}}
+          {{ currentLanguage.startsWith("en") ? (catering?.packageCatering?.packageHousing?.validityStart | date: 'dd/MM/yyyy') : (catering?.packageCatering?.packageHousing?.validityStart | date: 'yyyy/MM/dd')}}
 
         </td>
         <td class="ltr">
@@ -176,9 +167,13 @@
             : ''
           }}
         </td>
-        <td class="ltr">{{ transportation?.packageTransportation?.validityStart | dateTimeFormat}} -- {{ transportation?.packageTransportation?.validityEnd | dateTimeFormat }}</td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? transportation?.packageTransportation?.locationFromNameEn : transportation?.packageTransportation?.locationFromNameAr}}</td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? transportation?.packageTransportation?.locationToNameEn : transportation?.packageTransportation?.locationToNameAr }}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? (transportation?.packageTransportation?.validityStart| date: 'dd/MM/yyyy') : (transportation?.packageTransportation?.validityStart | date: 'yyyy/MM/dd')}}
+          -- {{currentLanguage.startsWith("en") ? (transportation?.packageTransportation?.validityEnd | date: 'dd/MM/yyyy') : (transportation?.packageTransportation?.validityEnd | date: 'yyyy/MM/dd')  }}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? transportation?.packageTransportation?.locationFromNameEn : transportation?.packageTransportation?.locationFromNameAr}}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? transportation?.packageTransportation?.locationToNameEn : transportation?.packageTransportation?.locationToNameAr }}</td>
         <td class="ltr">{{ transportation.vehicleNumber }}</td>
       </tr>
       </tbody>
