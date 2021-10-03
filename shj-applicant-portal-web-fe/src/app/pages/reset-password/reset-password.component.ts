@@ -108,6 +108,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword() {
+    this.loading = true;
     // trigger all validations
     Object.keys(this.resetPasswordForm.controls).forEach(field => {
       const control = this.resetPasswordForm.get(field);
@@ -143,6 +144,7 @@ export class ResetPasswordComponent implements OnInit {
       } else {
         this.toastr.success(this.translate.instant('reset-password.success_text'), this.translate.instant('reset-password.title'));
         this.router.navigate(['/login']);
+        this.loading = false;
       }
     },error => {
       console.log(error);
