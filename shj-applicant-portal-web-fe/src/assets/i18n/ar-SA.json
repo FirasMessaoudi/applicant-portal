@@ -116,7 +116,8 @@
     "full_name_Ar": "الاسم بالكامل بالعربيه",
     "identity_number": "رقم الهوية",
     "main": "الرئيسية",
-    "language": "اللغة"
+    "language": "اللغة",
+    "no-data-found": " لا توجد بيانات"
   },
   "header": {
     "welcome": "مرحبا",
