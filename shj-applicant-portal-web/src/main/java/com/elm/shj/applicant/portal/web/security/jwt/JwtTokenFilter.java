@@ -41,7 +41,8 @@ public class JwtTokenFilter extends BasicAuthenticationFilter {
         JwtToken userToken = null;
 
         boolean checkPasswordExpiryFlag = !request.getRequestURI().endsWith(Navigation.API_USERS_CHANGE_PWRD)
-                && !request.getRequestURI().endsWith(Navigation.API_AUTH_LOGOUT);
+        &&!request.getRequestURI().endsWith(Navigation.API_INTEGRATION_USERS_CHANGE_PWRD)
+                && !request.getRequestURI().endsWith(Navigation.API_AUTH_LOGOUT) && !request.getRequestURI().endsWith(Navigation.API_INTEGRATION_AUTH_LOGOUT);
 
         try {
             userToken = jwtTokenService.validateToken(request, checkPasswordExpiryFlag);
