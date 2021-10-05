@@ -35,7 +35,7 @@ public class NotificationSchedulerService {
     private final PasswordHistoryService passwordHistoryService;
     @Value("${dcc.validation.password.expires.in.months}")
     private int passwordAgeInMonths;
-    @Value("${password.expiry.Notification.Period.in.days}")
+    @Value("${password.expiry.notification.period.in.days}")
     private int passwordExpiryNotificationPeriod;
 
     @PostConstruct
