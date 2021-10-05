@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild, Inject, Renderer2, ElementRef} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {GoogleMap} from '@angular/google-maps';
-import {Location} from "@angular/common";
+import {DOCUMENT, Location} from "@angular/common";
 import {CardService, UserService} from "@core/services";
 import {TranslateService} from "@ngx-translate/core";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
@@ -12,7 +12,7 @@ import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {I18nService} from "@dcc-commons-ng/services";
 import {Lookup} from "@model/lookup.model";
 import {MapOptions, Marker, Position} from '@app/_shared/model/marker.model';
-import {DOCUMENT} from '@angular/common';
+import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 
 const momentHijri = moment_;
 
@@ -32,7 +32,7 @@ export class HajjRitualsComponent implements OnInit {
   transportationTypes: Lookup[] = [];
   ritualStepLabels = [];
   selectedMarker: Marker;
-  selectedApplicantRitual: ApplicantRitualLite;
+  selectedApplicantSeason: CompanyRitualSeasonLite;
   mapIsReady = false;
   @ViewChild('ritualStepDom') ritualStepDom: ElementRef;
   mapOptions: google.maps.MapOptions = {
@@ -40,7 +40,6 @@ export class HajjRitualsComponent implements OnInit {
     zoom: this.MAP_ZOOM_OUT,
     disableDefaultUI: true
   }
-
 
   @ViewChild(GoogleMap) map!: GoogleMap;
 
@@ -58,12 +57,10 @@ export class HajjRitualsComponent implements OnInit {
   ngOnInit(): void {
     this.loadMapkey();
     this.loadLookups();
-    //set rituals steps
-    this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
-      this.selectedApplicantRitual = selectedApplicantRitual;
-      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
+    this.userService.selectedApplicantRitual.subscribe(season => {
+      this.selectedApplicantSeason = season;
+      this.selectedApplicantSeason = JSON.parse(localStorage.getItem('selectedRitualSeason'));
       this.findRitualSteps();
-
     });
   }
 
@@ -86,9 +83,7 @@ export class HajjRitualsComponent implements OnInit {
     })
     ;
 
-    const bounds = {north, south, east, west};
-
-    return bounds;
+    return {north, south, east, west};
   }
 
   zoomMap(stepId) {
@@ -118,8 +113,7 @@ export class HajjRitualsComponent implements OnInit {
   }
 
   findRitualSteps() {
-    //TODO: Just for demo, must change to selected company ritual season id
-    this.cardService.findTafweejDetails(1).subscribe(data => {
+    this.cardService.findTafweejDetails(this.selectedApplicantSeason.id).subscribe(data => {
       if (data) {
         const today = new Date();
         this.ritualsSteps = data;
@@ -185,4 +179,5 @@ export class HajjRitualsComponent implements OnInit {
       this.renderer2.appendChild(this.document.body, script);
     })
   }
+
 }

@@ -22,8 +22,8 @@
           <div class="setBox flex-grow-1" role="group">
             <select class="custom-select" [disabled]="!enableEditLanguage"
                     (change)="selectedLanguage=$event.target.value">
-              <option value="ar-SA" [selected]="currentLanguage.startsWith('ar')">العربية</option>
-              <option value="en-US" [selected]="currentLanguage.startsWith('en')">English</option>
+              <option value="ar-SA" [selected]="selectedLanguage.startsWith('ar')">العربية</option>
+              <option value="en-US" [selected]="selectedLanguage.startsWith('en')">English</option>
             </select>
           </div>
           <div class="input-group-append">
@@ -34,16 +34,18 @@
                     (click)="enableEditLanguage=true">
               <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
             </button>
-                  <div *ngIf="enableEditLanguage">
-                  <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{'general.btn_save'|translate}}"
-                    placement="top"
-                    (click)="updateUserLanguage()">
-                    <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-                  </button>
-                  <button class="btn btn-outline-gray-300 shadow-none ml-1" (click)="cancelEditLanguage()" type="button" ngbTooltip="إلغاء" placement="top">
-                    <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
-                  </button>
-                </div>
+            <div *ngIf="enableEditLanguage">
+              <button class="btn btn-success shadow-none ml-1" type="button"
+                      ngbTooltip="{{'general.btn_save'|translate}}"
+                      placement="top"
+                      (click)="updateUserLanguage()">
+                <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
+              </button>
+              <button class="btn btn-outline-gray-300 shadow-none ml-1" (click)="cancelEditLanguage()"
+                      type="button" ngbTooltip="{{'general.btn_cancel'|translate}}" placement="top">
+                <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -113,7 +115,9 @@
                     *ngIf="!contactsForm.disabled" (click)="onSubmit()">
               <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
             </button>
-            <button class="btn btn-outline-gray-300 shadow-none ml-1" *ngIf="!contactsForm.disabled" (click)="setContactsDisabled()" type="button" ngbTooltip="إلغاء" placement="top">
+            <button class="btn btn-outline-gray-300 shadow-none ml-1" *ngIf="!contactsForm.disabled"
+                    (click)="setContactsDisabled()" type="button" ngbTooltip="{{'general.btn_cancel'|translate}}"
+                    placement="top">
               <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
             </button>
           </div>
@@ -157,7 +161,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-dcc-primary px-4 ml-3">حفظ التعديلات</button>
-    <button type="button" class="btn btn-light px-5">إلغاء</button>
+    <button type="button" class="btn btn-light px-5"> {{'general.btn_cancel'|translate}} </button>
   </div>
 </ng-template>
 

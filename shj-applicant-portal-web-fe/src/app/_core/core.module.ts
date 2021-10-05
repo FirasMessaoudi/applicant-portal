@@ -21,6 +21,7 @@ import {environment} from "@env/environment";
 import {LOGIN_URL, PUBLIC_URL_PATTERNS} from "@core/guards/authentication.guard";
 import {TranslateModule} from "@ngx-translate/core";
 import {LookupService} from "@core/utilities/lookup.service";
+import {OtpStorage} from "@pages/otp/otp.storage";
 
 
 @NgModule({
@@ -51,6 +52,7 @@ import {LookupService} from "@core/utilities/lookup.service";
     AuthenticationService,
     CardService,
     LookupService,
+    OtpStorage,
     {provide: 'environment', useValue: environment}
   ]
 })

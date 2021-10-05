@@ -21,7 +21,6 @@ import {Lookup} from "@model/lookup.model";
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
-  closeResult = '';
   seasons: number [] = [];
   applicantRituals: ApplicantRitualLite [] = [];
   selectedSeason: number;
@@ -60,27 +59,9 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
               private router: Router) {
   }
 
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
   ngOnInit() {
     this.loadLookups();
-
+    this.selectedLanguage = this.currentLanguage;
     this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
       if (data && data.id) {
         this.contactsForm.disable();
@@ -125,8 +106,8 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   cancelEditLanguage() {
-    this.enableEditLanguage = false;
     this.selectedLanguage = this.currentLanguage;
+    this.enableEditLanguage = false;
   }
 
   private createForm() {

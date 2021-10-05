@@ -2,8 +2,11 @@
             <span
               class="form-control-plaintext ">{{ 'card-management.tafweej_details' | translate }}
               (  {{companyRitualSteps[0]?.referenceNumber}}) </span>
-
-  <div class="table-responsive my-4">
+  <div class="text-center" *ngIf="!companyRitualSteps">
+    <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+    <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+  </div>
+  <div class="table-responsive my-4" *ngIf="companyRitualSteps">
     <table class="table table-striped table-hover">
       <thead>
       <tr>
@@ -22,9 +25,12 @@
         <td class="ltr"
             *ngIf="i>0">{{currentLanguage.startsWith('ar') ? companyRitualSteps[i - 1]?.locationNameAr : companyRitualSteps[i - 1]?.locationNameEn}}</td>
         <td class="ltr">{{currentLanguage.startsWith('ar') ? item?.locationNameAr : item.locationNameEn}}</td>
-        <td class="ltr">{{item?.time | dateFormat}}</td>
-        <td class="ltr" *ngIf="i<companyRitualSteps.length-1">{{companyRitualSteps[i + 1]?.time | dateFormat}}</td>
-        <td class="ltr" *ngIf="i==companyRitualSteps.length-1">{{item?.time | dateFormat}}</td>
+        <td
+          class="ltr">{{item?.time | gregorianDateFormat }}</td>
+        <td class="ltr"
+            *ngIf="i<companyRitualSteps.length-1">{{companyRitualSteps[i + 1]?.time | gregorianDateFormat}}</td>
+        <td class="ltr"
+            *ngIf="i==companyRitualSteps.length-1">{{item?.time | gregorianDateFormat }}</td>
       </tr>
 
       </tbody>

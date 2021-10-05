@@ -37,7 +37,7 @@ export class BadgeComponent implements OnInit {
       this.selectedApplicantRitual = selectedApplicantRitual;
     });
 
-    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
+    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
 
     this.cardService.findCardDetails(this.selectedApplicantRitual?.id).subscribe(data => {
       if (data) {

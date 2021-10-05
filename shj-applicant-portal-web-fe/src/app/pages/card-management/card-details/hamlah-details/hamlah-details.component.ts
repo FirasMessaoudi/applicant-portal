@@ -38,4 +38,9 @@ export class HamlahDetailsComponent implements OnInit {
     return this.lookupsService;
   }
 
+
+  removeSeconds(mealTime: any) {
+   var result= mealTime.split(":",2)
+    return result[0]+":"+result[1];
+  }
 }

@@ -586,7 +586,9 @@ public class UserManagementController {
     }
 
     /**
-     * get user all ritual season lite by uin
+     * get all ritual season lite by uin
+     *
+     * @param authentication the authenticated user
      */
     @GetMapping("/ritual-season")
     public List<CompanyRitualSeasonLiteDto> findAllApplicantRitualSeasonByUin(Authentication authentication) {

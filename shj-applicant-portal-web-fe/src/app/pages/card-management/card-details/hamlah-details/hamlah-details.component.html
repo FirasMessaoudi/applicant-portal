@@ -1,4 +1,5 @@
 <section>
+
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
     <div class="form-group col">
       <label class="col-form-label">{{'card-management.company_number' | translate}}</label>
@@ -53,49 +54,42 @@
   </div>
 </section>
 <hr class="my-4 w-100">
-<section *ngIf="applicantPackage?.applicantPackageHousings?.length > 0">
+<section>
   <span class="form-control-plaintext ">{{ 'card-management.housing_locations' | translate }}</span>
 
-  <div class="table-responsive my-4">
+  <div class="text-center" *ngIf="!(applicantPackage?.applicantPackageHousings?.length > 0)">
+    <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+    <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+  </div>
+  <div class="table-responsive my-4" *ngIf="(applicantPackage?.applicantPackageHousings?.length > 0)">
     <table class="table table-striped table-hover">
       <thead>
       <tr>
-        <th scope="col">{{'card-management.location_number' | translate}}</th>
         <th scope="col">{{'card-management.location_type' | translate}}</th>
         <th scope="col">{{'card-management.location_name' | translate}}</th>
         <th scope="col">{{'card-management.location_address' | translate}}</th>
-        <th scope="col">{{'card-management.location' | translate}}</th>
         <th scope="col">{{'card-management.start_date' | translate}}</th>
         <th scope="col">{{'card-management.end_date' | translate}}</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let housing of applicantPackage?.applicantPackageHousings">
-        <td class="">{{ housing?.packageHousing?.referenceNumber}} <span *ngIf="housing?.packageHousing?.default == true" class="border p-1 rounded bg-light text-dark">{{'card-management.main' | translate}}</span></td>
-        <td class="ltr">
-          {{
+        <td class="">  {{
           housing?.packageHousing?.typeCode
             ? lookupService().localizedLabel(
             housingTypes,
             housing?.packageHousing?.typeCode
             )
             : ''
-          }}
-        </td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
-        <td class="ltr">
-          {{
-          housing?.packageHousing?.siteCode
-            ? lookupService().localizedLabel(
-            housingSites,
-            housing?.packageHousing?.siteCode
-            )
-            : ''
-          }}
-        </td>
-        <td class="ltr">{{ housing?.packageHousing?.validityStart | dateFormat}}</td>
-        <td class="ltr">{{ housing?.packageHousing?.validityEnd | dateFormat}}</td>
+          }} <span *ngIf="housing?.packageHousing?.default == true"
+                   class="border p-1 rounded bg-light text-dark">{{'card-management.main' | translate}}</span></td>
+
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? housing?.packageHousing?.locationNameEn : housing?.packageHousing?.locationNameAr}}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? housing?.packageHousing?.addressEn : housing?.packageHousing?.addressAr}}</td>
+        <td class="ltr">{{ housing?.packageHousing?.validityStart | gregorianDateFormat }}</td>
+        <td class="ltr">{{housing?.packageHousing?.validityEnd | gregorianDateFormat}}</td>
       </tr>
       </tbody>
     </table>
@@ -103,10 +97,13 @@
 </section>
 
 <hr class="my-4 w-100">
-<section *ngIf="applicantPackage?.applicantPackageCaterings.length > 0">
+<section>
   <span class="form-control-plaintext ">{{ 'card-management.available_catering' | translate }}</span>
-
-  <div class="table-responsive my-4">
+  <div class="text-center" *ngIf="!(applicantPackage?.applicantPackageCaterings.length > 0)">
+    <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+    <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+  </div>
+  <div class="table-responsive my-4" *ngIf="applicantPackage?.applicantPackageCaterings.length > 0">
     <table class="table table-striped table-hover">
       <thead>
       <tr>
@@ -122,12 +119,12 @@
       <tr *ngFor="let catering of applicantPackage?.applicantPackageCaterings">
         <td class="ltr">{{ 'card-management.'+catering?.packageCatering?.type | translate}}</td>
         <td class="ltr">{{ currentLanguage.startsWith("en")? catering?.packageCatering?.descriptionEn : catering?.packageCatering?.descriptionAr }}</td>
-        <td class="ltr">
-          {{ catering?.packageCatering?.mealTime }}
+        <td>
+          {{removeSeconds(catering?.packageCatering?.mealTime)}}
           {{'card-management.from' | translate}}
-          {{ catering?.packageCatering?.packageHousing?.validityStart | dateFormat}}
+          {{ catering?.packageCatering?.packageHousing?.validityStart |gregorianDateFormat  }}
           {{'card-management.to' | translate}}
-          {{ catering?.packageCatering?.packageHousing?.validityStart | dateFormat}}
+          {{ catering?.packageCatering?.packageHousing?.validityStart | gregorianDateFormat }}
 
         </td>
         <td class="ltr">
@@ -150,10 +147,13 @@
 </section>
 
 <hr class="my-4 w-100">
-<section *ngIf="applicantPackage?.applicantPackageTransportations.length > 0">
+<section>
   <span class="form-control-plaintext ">{{ 'card-management.transportation_method' | translate }}</span>
-
-  <div class="table-responsive my-4">
+  <div class="text-center" *ngIf="!(applicantPackage?.applicantPackageTransportations.length > 0 )">
+    <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+    <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+  </div>
+  <div class="table-responsive my-4" *ngIf="(applicantPackage?.applicantPackageTransportations.length > 0)">
     <table class="table table-striped table-hover">
       <thead>
       <tr>
@@ -176,9 +176,13 @@
             : ''
           }}
         </td>
-        <td class="ltr">{{ transportation?.packageTransportation?.validityStart | dateTimeFormat}} -- {{ transportation?.packageTransportation?.validityEnd | dateTimeFormat }}</td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? transportation?.packageTransportation?.locationFromNameEn : transportation?.packageTransportation?.locationFromNameAr}}</td>
-        <td class="ltr">{{ currentLanguage.startsWith("en")? transportation?.packageTransportation?.locationToNameEn : transportation?.packageTransportation?.locationToNameAr }}</td>
+        <td
+          class="ltr">{{ transportation?.packageTransportation?.validityStart| gregorianDateFormat}}
+          -- {{transportation?.packageTransportation?.validityEnd |gregorianDateFormat  }}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? transportation?.packageTransportation?.locationFromNameEn : transportation?.packageTransportation?.locationFromNameAr}}</td>
+        <td
+          class="ltr">{{ currentLanguage.startsWith("en") ? transportation?.packageTransportation?.locationToNameEn : transportation?.packageTransportation?.locationToNameAr }}</td>
         <td class="ltr">{{ transportation.vehicleNumber }}</td>
       </tr>
       </tbody>

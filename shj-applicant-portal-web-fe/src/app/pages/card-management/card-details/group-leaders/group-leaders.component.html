@@ -1,4 +1,8 @@
-<div class="table-responsive my-4">
+<div class="text-center" *ngIf="!groupLeaders">
+  <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+  <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+</div>
+<div class="table-responsive my-4" *ngIf="groupLeaders">
   <table class="table table-striped table-hover">
     <thead>
     <tr>

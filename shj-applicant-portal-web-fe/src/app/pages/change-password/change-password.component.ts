@@ -16,7 +16,7 @@ import {ToastService} from "@shared/components/toast";
 export class ChangePasswordComponent implements OnInit {
 
   changePasswordForm: FormGroup;
-
+  loading = false;
   constructor(private router: Router,
               private i18nService: I18nService,
               private formBuilder: FormBuilder,
@@ -56,6 +56,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword() {
+    this.loading = true;
     let changePasswordCmd:ChangePasswordCmd = new ChangePasswordCmd();
     changePasswordCmd.oldPassword = this.changePasswordForm.controls['oldPassword'].value;
     changePasswordCmd.newPassword = this.changePasswordForm.controls['newPassword'].value;
@@ -77,6 +78,7 @@ export class ChangePasswordComponent implements OnInit {
         }
 
       } else {
+        this.loading = false;
         this.toastr.success(this.translate.instant('change-password.success_text'), this.translate.instant('change-password.title'));
         this.logout();
       }

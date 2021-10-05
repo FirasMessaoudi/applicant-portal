@@ -23,10 +23,10 @@
   <div class="row cardBox">
     <div class="col-12 col-md-4 order-md-1 order-1 order-md-0">
       <div class="col-form-label text-center text-md-left">
-        {{applicant?.fullNameAr || '---' }}
+        <span *ngIf="applicant?.fullNameAr as value; else elseBlock">{{value}}</span>
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        {{applicant?.fullNameEn || '---'}}
+        <span *ngIf="applicant?.fullNameEn as value; else elseBlock">{{value}}</span>
       </div>
     </div>
 
@@ -35,7 +35,7 @@
         {{ "card-management.applicant_id" | translate }}
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        {{applicant?.uin || '---'}}
+        <span *ngIf="applicant?.uin as value; else elseBlock">{{value}}</span>
       </div>
     </div>
 
@@ -44,7 +44,8 @@
         {{ "card-management.card_number" | translate }}
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        {{applicant?.cardReferenceNumber || '---'}} {{applicant?.cardStatusCode?.label}}
+        <span *ngIf="applicant?.cardReferenceNumber as value; else elseBlock">{{value}}</span>
+        {{applicant?.cardStatusCode?.label}}
       </div>
     </div>
 
@@ -85,9 +86,10 @@
               <label class="col-form-label">{{
                 "card-management.applicant_original_name" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.fullNameOrigin || '---'
-                }}</span>
+
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.fullNameOrigin  as value; else elseBlock">{{value}}</span>
+
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
@@ -95,7 +97,7 @@
                 }}</label>
               <span class="form-control-plaintext">{{
                 applicant?.dateOfBirthGregorian
-                  | dateFormat
+                  | gregorianDateFormat
                 }}
                 <span
                   *ngIf="applicant?.dateOfBirthGregorian"
@@ -103,7 +105,7 @@
                 >
                 {{
                 applicant?.dateOfBirthHijri
-                  | hijriFormat
+                  | hijriDateFormat
                 }}
               </span>
             </div>
@@ -149,34 +151,36 @@
               <label class="col-form-label">{{
                 "card-management.passport_number" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.passportNumber || '---'
-                }}</span>
+
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.passportNumber as value; else elseBlock">{{value}}</span>
+
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.marital_status" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.maritalStatusCode
-                  ? lookupService().localizedLabel(
-                    maritalStatuses,
-                    applicant?.maritalStatusCode?.toUpperCase()
-                  )
-                  : '---'
-                }}</span>
+              <br>
+              <span class="form-control-plaintext" *ngIf="applicant?.maritalStatusCode as value; else elseBlock">
+                {{lookupService().localizedLabel(
+                maritalStatuses,
+                value.toUpperCase()
+              )}}</span>
+
+
             </div>
             <div *ngIf="applicant?.idNumberOriginal" class="form-group col">
               <label class="col-form-label">{{
                 "card-management.applicant_original_id" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.idNumberOriginal || '---'
-                }}</span>
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.idNumberOriginal as value; else elseBlock">{{value}}</span>
+
             </div>
             <div *ngIf="applicant?.idNumber" class="form-group col">
               <label class="col-form-label">{{'general.nin_or_iqama' | translate}}</label>
-              <span class="form-control-plaintext ">{{applicant?.idNumber || '---'}}</span>
+              <span class="form-control-plaintext" *ngIf="applicant?.idNumber as value; else elseBlock">{{value}}</span>
+
             </div>
 
             <div class="form-group col">
@@ -185,7 +189,7 @@
                   <span *ngFor="let lang of applicant?.contacts[0]?.languageList.split(','); let lastItem = last;">
                     {{languageNativeName[lang.trim().toUpperCase()]}}<span *ngIf="!lastItem">-</span></span>
                   </span>
-              <span *ngIf="applicant?.contacts?.length == 0">---</span>
+              <span *ngIf="applicant?.contacts?.length == 0" class="col-form-label">---</span>
             </div>
           </div>
         </section>
@@ -194,70 +198,81 @@
                     <span class="form-control-plaintext">{{
                       "card-management.applicant_original_address" | translate
                       }}</span>
-
-          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+          <div class="text-center" *ngIf="!applicant?.contacts[0]">
+            <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+            <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+          </div>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3" *ngIf="applicant?.contacts[0]">
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.country" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.countryCode
-                  ? lookupService().localizedLabel(
-                    countries,
-                    applicant?.contacts[0]?.countryCode?.toUpperCase()
-                  )
-                  : "---"
-                }}</span>
+
+              <br>
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.contacts[0]?.countryCode  as value; else elseBlock">{{lookupService().localizedLabel(
+                countries,
+                value.toUpperCase()
+              )}}</span>
+
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.city" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.cityName || '---'
-                }}</span>
+              <br>
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.contacts[0]?.cityName as value; else elseBlock">{{value}}</span>
+
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.district" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.districtName || '---'
-                }}</span>
+              <br>
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.contacts[0]?.districtName as value; else elseBlock">{{value}}</span>
+
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.street" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.streetName || '---'
-                }}</span>
+              <br>
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.contacts[0]?.streetName as value; else elseBlock">{{value}}</span>
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.building_number" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.buildingNumber || '---'
-                }}</span>
+              <br>
+
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.contacts[0]?.buildingNumber">{{applicant?.contacts[0]?.buildingNumber}}</span>
+              <span class="col-form-label" *ngIf="!applicant?.contacts[0]?.buildingNumber">---</span>
             </div>
             <div class="form-group col">
               <label class="col-form-label">{{
                 "card-management.postal_code" | translate
                 }}</label>
-              <span class="form-control-plaintext">{{
-                applicant?.contacts[0]?.postalCode || '---'
-                }}</span>
+              <br>
+              <span class="form-control-plaintext"
+                    *ngIf="applicant?.contacts[0]?.postalCode  as value; else elseBlock">{{value}}</span>
+
             </div>
           </div>
         </section>
         <hr class="my-4 w-100"/>
-        <section *ngIf="applicant?.relatives?.length > 0">
+        <section>
                     <span class="form-control-plaintext">{{
                       "card-management.applicant_relatives" | translate
                       }}</span>
-
-          <div class="table-responsive my-4">
+          <div class="text-center" *ngIf="!(applicant?.relatives?.length > 0)">
+            <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+            <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+          </div>
+          <div class="table-responsive my-4" *ngIf="applicant?.relatives?.length > 0">
             <table class="table table-striped table-hover">
               <thead>
               <tr>
@@ -428,8 +443,11 @@
                     <span class="form-control-plaintext">{{
                       "card-management.vaccinations" | translate
                       }}</span>
-
-          <div class="table-responsive my-4">
+          <div class="text-center" *ngIf="!healthDetails?.immunizations">
+            <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+            <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
+          </div>
+          <div class="table-responsive my-4" *ngIf="healthDetails?.immunizations">
             <table class="table table-striped table-hover">
               <thead>
               <tr>
@@ -447,7 +465,7 @@
                   ">
                 <td class="ltr">{{ immunization.immunizationCode }}</td>
                 <td class="ltr">
-                  {{ immunization.immunizationDate | dateFormat }}
+                  {{ immunization.immunizationDate | gregorianDateFormat }}
                 </td>
               </tr>
               </tbody>
@@ -470,10 +488,13 @@
         "card-management.motawef_details" | translate
         }}</a>
       <ng-template ngbNavContent>
-          <app-group-leaders [applicantGroupLeaders]="groupLeaders" [groupLeadersTitle]="groupLeaderTitle"  ></app-group-leaders>
+        <app-group-leaders [applicantGroupLeaders]="groupLeaders"
+                           [groupLeadersTitle]="groupLeaderTitle"></app-group-leaders>
       </ng-template>
     </li>
   </ul>
 
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  <ng-template #elseBlock><span class="col-form-label">---</span></ng-template>
+
 </div>

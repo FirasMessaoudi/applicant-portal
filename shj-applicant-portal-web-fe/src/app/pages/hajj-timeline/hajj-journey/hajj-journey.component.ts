@@ -2,11 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {RitualTimelineService} from "@core/services/timeline/ritual-timeline.service";
 import {UserService} from "@core/services";
-import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import * as moment_ from 'moment-hijri';
 import {LookupService} from "@core/utilities/lookup.service";
 import {Lookup} from "@model/lookup.model";
 import {hijriMonth} from "@shared/helpers/hijri-month.helper";
+import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 
 const momentHijri = moment_;
 
@@ -20,7 +20,7 @@ export class HajjJourneyComponent implements OnInit {
   ritualTypesLookups: Lookup[] = [];
   private ritualSteps: CompanyRitualMainDataStep[] = [];
   ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string; }[];
-  selectedApplicantRitual: ApplicantRitualLite;
+  selectedRitualSeason: CompanyRitualSeasonLite;
   lookupService: LookupService;
   ritualStepsLookups: Lookup[] = [];
 
@@ -30,10 +30,10 @@ export class HajjJourneyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLookups();
-    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedApplicantRitual'));
-    this.ritualType = this.selectedApplicantRitual.typeCode;
+    this.selectedRitualSeason = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+    this.ritualType = this.selectedRitualSeason?.ritualSeason?.ritualTypeCode;
 
-    if (!this.selectedApplicantRitual) {
+    if (!this.selectedRitualSeason) {
       this.loadApplicantRitualFromService();
     } else {
       this.loadRitualSteps();
@@ -52,8 +52,7 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadRitualSteps() {
-    //TODO: Just for demo, must change to selected company ritual season id
-    this.ritualTimelineService.loadRitualSteps(1).subscribe(
+    this.ritualTimelineService.loadRitualSteps(this.selectedRitualSeason.id).subscribe(
       result => {
         this.ritualSteps = result;
         this.ritualStepsMap = groupByArray(this.ritualSteps);
@@ -73,9 +72,9 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadApplicantRitualFromService() {
-    this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
-      this.ritualType = selectedApplicantRitual.name;
-      this.selectedApplicantRitual = selectedApplicantRitual;
+    this.userService.selectedApplicantRitual.subscribe(season => {
+      this.ritualType = season.name;
+      this.selectedRitualSeason = season;
       this.loadRitualSteps();
     })
   }
