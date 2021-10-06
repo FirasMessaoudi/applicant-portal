@@ -37,8 +37,12 @@ public class Navigation {
     // Users
     public static final String API_INTEGRATION_USERS = "/api/ws/users";
 
+    public static final String API_INTEGRATION_USERS_CHANGE_PWRD = API_INTEGRATION_USERS + "/change-password";
+
     // Integration Authentication
     public static final String API_INTEGRATION_AUTH = "/api/ws/auth";
+
+    public static final String API_INTEGRATION_AUTH_LOGOUT = API_INTEGRATION_AUTH + "/logout";
 
     private Navigation() {
         // private constructor to prevent construction

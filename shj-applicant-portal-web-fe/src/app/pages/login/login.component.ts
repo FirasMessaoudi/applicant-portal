@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit {
       }))
       .subscribe(user => {
         console.log(user);
+        //TODO:to be checked in which scenario it is called or we have to remove this check for password expiry
         if (user.passwordExpired) {
           console.log('redirect to change password page');
           this.router.navigate(['/change-password'], {replaceUrl: true});

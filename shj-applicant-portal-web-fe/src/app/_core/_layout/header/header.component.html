@@ -52,7 +52,7 @@
     <!--- PROFILE & SETTING-->
     <div class="nav-right">
       <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
-        <li class=" flex-center">
+        <li class="flex-center">
           <a class="nav-link d-flex align-items-top noArrow">
             <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
             <div class="mx-3">
@@ -68,6 +68,26 @@
               </small>
             </div>
           </a>
+        </li>
+        <li class="position-relative">
+          <a class="nav-link d-flex align-items-center dropdown-toggle noArrow"
+             href="javascript:void(0)"
+             ngbTooltip="{{'header.notifications' | translate}}"
+             title="notifications"
+             id="notificationsLink"
+             data-toggle="dropdown"
+             aria-haspopup="true"
+             aria-expanded="false"
+          >
+            <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>
+            <span class="notif bg-red">4</span>
+          </a>
+          <div class="dropdown-menu animate slideIn" aria-labelledby="notificationsLink">
+            <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/notifications']">Notification 1</a>
+            <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/notifications']">Notification 2</a>
+            <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/notifications']">Notification 3</a>
+            <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/notifications']">Notification 4</a>
+          </div>
         </li>
         <li class="position-relative">
           <a class="nav-link" [routerLink]="['/settings']" ngbTooltip="{{ 'header.settings' | translate }}">

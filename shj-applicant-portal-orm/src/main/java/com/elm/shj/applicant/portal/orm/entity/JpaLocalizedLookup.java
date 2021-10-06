@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.orm.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +18,7 @@ import java.util.Date;
  */
 @MappedSuperclass
 @Getter
+@Setter
 public abstract class JpaLocalizedLookup implements Serializable {
 
     @Id

@@ -166,3 +166,11 @@ GO
 -- add lookup loading scheduler cron
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('scheduler.load.lookups.cron', '0 0/45 * * * *');
 GO
+
+-- add  password expiry notification scheduler cron
+GO
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('scheduler.password.expiry.notification.cron', '0 0 1 ? * *');
+GO
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('password.expiry.notification.period.in.days', 5);
+
+GO
