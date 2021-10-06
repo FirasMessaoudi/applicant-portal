@@ -26,5 +26,9 @@ export const APP_ROUTES: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('@pages/settings/settings.module').then(m => m.SettingsModule)
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('@pages/notifications/notifications.module').then(m => m.NotificationsModule)
   }
 ];

@@ -65,7 +65,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private i18nService: I18nService,
               private lookupsService: LookupService,
-              private userService: UserService
+              public userService: UserService
   ) {
   }
 
@@ -75,7 +75,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
       this.selectedApplicantRitual = selectedApplicantRitual;
       this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
       this.applicantPackage = null;
-      this.loadUserPackageDetails();
       this.loadLookups();
       this.loadUserDetails();
     });
