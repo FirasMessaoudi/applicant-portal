@@ -1,12 +1,83 @@
-<nav aria-label="breadcrumb" class="pt-2">
-  <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
-    <li class="breadcrumb-item active" aria-current="page"></li>
-  </ol>
-</nav>
-<div class="title__Page">
-  <h3 class="sectionTitle">{{'header.notifications' | translate}}</h3>
-</div>
+<div class="content__wrapper">
+  <nav aria-label="breadcrumb" class="pt-2">
+    <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
+      <li class="breadcrumb-item active" aria-current="page"></li>
+    </ol>
+  </nav>
 
-<div>
-  Notifications list
+  <div class="title__Page">
+    <h3 class="sectionTitle">
+      {{ "notification-management.title" | translate }}
+    </h3>
+  </div>
+
+  <!--Responsive view -->
+  <div class="container nav d-block d-md-none mt-4">
+    <header class="nav-header">
+      <nav class="middle scroll">
+                <span (click)="activeId = i + 1" [ngClass]="{ active: activeId == i + 1 }"
+                      *ngFor="let title of tabsHeader; let i = index" class="item">
+          {{ title | translate }}
+        </span>
+      </nav>
+    </header>
+  </div>
+
+  <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
+    <li [ngbNavItem]="1">
+      <a class="d-none d-md-block" ngbNavLink>{{"notification-management.private_notifications" | translate}} (4)</a>
+      <ng-template ngbNavContent>
+        <section>
+          <div class="d-flex justify-content-between p-2">
+            <div class="d-flex">
+              <svg-icon styleClass="fa-w-16 h2" icon="exclamation-triangle"></svg-icon>
+              <div class="d-flex flex-column ml-4">
+                <span class="font-weight-bold">صلاحية كلمة المرور</span>
+                <span>سوف تنتهي صلاحية كلمة المرور الحالية خلال 3 أيام من الآن</span>
+                <div>
+                  <button class="btn btn-outline-dcc-primary my-2">تغيير كلمة المرور</button>
+                </div>
+              </div>
+            </div>
+            <div>
+              <span class="mr-2">منذ 3 ساعات</span>
+              <svg-icon styleClass="fa-w-16" icon="eye"></svg-icon>
+            </div>
+          </div>
+        </section>
+        <hr class="my-2 w-100"/>
+        <section>
+          <div class="d-flex justify-content-between p-2">
+            <div class="d-flex">
+              <svg-icon styleClass="fa-w-16 h2" icon="id-card-light"></svg-icon>
+              <div class="d-flex flex-column ml-4">
+                <span class="font-weight-bold">تم إصدار البطاقة الذكية</span>
+                <span>تم إصدار البطاقة الذكية الخاصة بك. الرجاء التواصل مع قائد الحملة لاستلامها</span>
+              </div>
+            </div>
+            <div>
+              <span class="mr-2">منذ 5 ساعات</span>
+              <svg-icon styleClass="fa-w-16" icon="eye"></svg-icon>
+            </div>
+          </div>
+        </section>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2">
+      <a class="d-none d-md-block" ngbNavLink>{{"notification-management.public_notifications" | translate}} (23)</a>
+      <ng-template ngbNavContent>
+        <section></section>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="3">
+      <a class="d-none d-md-block" ngbNavLink>{{
+        "notification-management.view_all" | translate
+        }}<svg-icon styleClass="fa-w-16 ml-2" icon="print"></svg-icon></a>
+      <ng-template ngbNavContent>
+        <section>
+        </section>
+      </ng-template>
+    </li>
+  </ul>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
 </div>

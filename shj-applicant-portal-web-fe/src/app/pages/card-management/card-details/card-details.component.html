@@ -325,7 +325,7 @@
       </ng-template>
     </li>
 
-    <li [ngbNavItem]="3">
+    <li [ngbNavItem]="3" (click)="loadHealthDetails()">
       <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.health_details" | translate
         }}</a>

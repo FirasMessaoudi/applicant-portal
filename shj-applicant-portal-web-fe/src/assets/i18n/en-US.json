@@ -609,5 +609,11 @@
     "home": "Home",
     "title": "Rahman Guest Journey",
     "view_daily_activities": "View daily activities"
+  },
+  "notification-management": {
+    "title": "Notifications",
+    "private_notifications": "Private notifications",
+    "public_notifications": "Public notifications",
+    "view_all": "View all"
   }
 }
