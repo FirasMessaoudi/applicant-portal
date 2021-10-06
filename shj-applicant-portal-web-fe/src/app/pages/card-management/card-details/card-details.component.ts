@@ -74,10 +74,10 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
       this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
-      this.applicantPackage = null;
-      this.loadUserPackageDetails();
+
       this.loadLookups();
       this.loadUserDetails();
+
     });
   }
 
@@ -121,12 +121,14 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
+      this.applicantPackage = null;
+      this.loadUserPackageDetails();
     }
   }
 
   loadUserPackageDetails() {
     if (this.applicantPackage == null) {
-      this.loading = true;
+
       this.cardService.findPackageDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
           this.applicantPackage = data;
@@ -134,7 +136,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
           this.toastr.error(this.translate.instant('general.route_item_not_found'),
             this.translate.instant('general.dialog_error_title'));
         }
-        this.loading = false;
+
       });
     }
   }
