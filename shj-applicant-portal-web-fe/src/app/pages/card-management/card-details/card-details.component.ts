@@ -29,6 +29,9 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
+  cardStatusSuspended = 'SUSPENDED';
+  cardStatusCancelled = 'CANCELLED';
+  cardStatusActive = 'ACTIVE';
   applicantPackage: ApplicantPackageDetails = null;
   loading = true
   ritualTypes: Lookup[] = [];
@@ -43,6 +46,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   maritalStatuses: Lookup[] = [];
   ritualStepsLabels: Lookup[];
   groupLeaderTitle: Lookup[];
+  cardStatuses: Lookup[];
   languageNativeName = Language;
   selectedApplicantRitual: ApplicantRitualLite;
   activeId = 1;
@@ -54,7 +58,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     "card-management.motawef_details"
   ]
 
-
   constructor(private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastService,
@@ -62,7 +65,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private i18nService: I18nService,
               private lookupsService: LookupService,
-              public userService: UserService) {
+              private userService: UserService) {
   }
 
 
@@ -185,6 +188,33 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.cardService.findTransportationTypes().subscribe(result => {
       this.transportationTypes = result;
     });
+    this.cardService.findCardStatuses().subscribe(result => {
+      this.cardStatuses = result;
+    })
+  }
+
+  getCardStatus(code: string): string {
+    if (code !== this.cardStatusSuspended && code != this.cardStatusCancelled) {
+      code = this.cardStatusActive;
+    }
+    return this.lookupService().localizedLabel(this.cardStatuses, code);
+  }
+
+  /**
+   * Returns the css class for the given status
+   *
+   * @param status the current card status
+   */
+  buildStatusClass(status: any): string {
+    status = status.toUpperCase();
+    switch (status) {
+      case this.cardStatusSuspended:
+        return "Suspended";
+      case this.cardStatusCancelled:
+        return "new";
+      default:
+        return "done";
+    }
   }
 
   get currentLanguage(): string {

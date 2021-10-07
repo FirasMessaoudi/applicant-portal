@@ -287,27 +287,4 @@ export class UserService {
     return this.http.get<ApplicantRitualLite>('/core/api/users/ritual-lite/latest');
   }
 
-  /**
-   * Returns the css class for the given status
-   *
-   * @param status the current user status
-   */
-  buildStatusClass(status: any): string {
-    switch (status) {
-      case 0:
-        return "done";
-      case 1:
-        return "ready";
-      case 2:
-        return "warning";
-      case 3:
-        return "new";
-      case 4:
-        return "done-with-errors";
-      case 5:
-        return "Suspended";
-      default:
-        return "new";
-    }
-  }
 }

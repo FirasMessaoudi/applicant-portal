@@ -1,7 +1,7 @@
 <section>
-            <span
-              class="form-control-plaintext ">{{ 'card-management.tafweej_details' | translate }}
-              (  {{companyRitualSteps[0]?.referenceNumber}}) </span>
+  <span class="form-control-plaintext ">{{ 'card-management.tafweej_details' | translate }}
+    ({{companyRitualSteps[0]?.referenceNumber}})
+  </span>
   <div class="text-center" *ngIf="!companyRitualSteps">
     <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
     <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>

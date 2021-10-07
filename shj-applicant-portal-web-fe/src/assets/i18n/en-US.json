@@ -523,7 +523,8 @@
     "BREAKFAST": "Breakfast",
     "LUNCH": "Lunch",
     "DINNER": "Dinner",
-    "package_details": "Package Details"
+    "package_details": "Package Details",
+    "status_active": "Active"
   },
   "program-management": {
     "transportation_type": "Transportation type",
