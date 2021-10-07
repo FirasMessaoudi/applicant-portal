@@ -49,6 +49,7 @@ public class NotificationSchedulerService {
                         //send request to admin to get Template then sen notification for this user
                         System.out.print("notifying user with id :" + user.getId());
                     }
+
                 }
         );
 

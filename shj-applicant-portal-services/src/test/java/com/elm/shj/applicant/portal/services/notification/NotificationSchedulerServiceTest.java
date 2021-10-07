@@ -60,10 +60,11 @@ public class NotificationSchedulerServiceTest {
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
     //these  dates are considered valid and not valid based on today date and user password Age In Months  and  password Expiry Notification Period
-    private static final String TEST_VALID_NOTIFICATION_DATE = "2021-07-10";
-    private static final String TEST_VALID_NOTIFICATION_DATE2 = "2021-07-9";
-    private static final String TEST_VALID_NOTIFICATION_DATE3 = "2021-07-11";
-    private static final String TEST_VALID_NOTIFICATION_DATE4 = "2021-07-6";
+    private static final String TEST_VALID_NOTIFICATION_5DAYS_BEFORE = "2021-07-11";
+    private static final String TEST_VALID_NOTIFICATION_3DAYS_BEFORE = "2021-07-10";
+    private static final String TEST_VALID_NOTIFICATION_DAY_BEFORE = "2021-07-08";
+    private static final String TEST_NOT_VALID_NOTIFICATION_SAME_DAY = "2021-07-07";
+    private static final String TEST_NOT_VALID_NOTIFICATION_DAY_AFTER = "2021-07-13";
 
     @BeforeEach
     public void setUpStreams() throws IllegalAccessException {
@@ -80,20 +81,76 @@ public class NotificationSchedulerServiceTest {
     }
 
     @Test
-    public void test_notify_password_expired_users() throws ParseException {
+    public void test_notify_password_expired_users_success() throws ParseException {
         List<JpaUser> users = new ArrayList<>();
         JpaUser user = new JpaUser();
+        JpaUser user2 = new JpaUser();
         user.setId(1);
         users.add(user);
-        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory(, user.getId());
+        user2.setId(2);
+        users.add(user2);
+        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory(TEST_VALID_NOTIFICATION_5DAYS_BEFORE, user.getId());
+        when(passwordHistoryService.findLastByUserId(users.get(0).getId())).thenReturn(Optional.of(userPasswordHistory));
+        UserPasswordHistoryDto userPasswordHistory2 = buildUserPasswordsHistory(TEST_VALID_NOTIFICATION_3DAYS_BEFORE, user2.getId());
+        when(passwordHistoryService.findLastByUserId(users.get(1).getId())).thenReturn(Optional.of(userPasswordHistory2));
+        when(userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse()).thenReturn(users);
+        serviceToTest.notifyPasswordExpiredUsers();
+        verify(userRepository).findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
+        Assertions.assertEquals("notifying user with id :2notifying user with id :1", outContent.toString());
+
+
+    }
+
+    @Test
+    public void test_notify_password_expired_users_success_day_before_expiration() throws ParseException {
+        List<JpaUser> users = new ArrayList<>();
+        JpaUser user3 = new JpaUser();
+        user3.setId(3);
+        users.add(user3);
+        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory(TEST_VALID_NOTIFICATION_DAY_BEFORE, user3.getId());
         when(passwordHistoryService.findLastByUserId(users.get(0).getId())).thenReturn(Optional.of(userPasswordHistory));
         when(userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse()).thenReturn(users);
         serviceToTest.notifyPasswordExpiredUsers();
         verify(userRepository).findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
-        Assertions.assertEquals("notifying user with id :1", outContent.toString());
+        Assertions.assertEquals("notifying user with id :3", outContent.toString());
+
 
     }
 
+
+    @Test
+    public void test_notify_password_expired_users_failed_same_day() throws ParseException {
+        List<JpaUser> users = new ArrayList<>();
+        JpaUser user3 = new JpaUser();
+        user3.setId(3);
+        users.add(user3);
+
+        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory(TEST_NOT_VALID_NOTIFICATION_SAME_DAY, user3.getId());
+        when(passwordHistoryService.findLastByUserId(users.get(0).getId())).thenReturn(Optional.of(userPasswordHistory));
+        when(userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse()).thenReturn(users);
+        serviceToTest.notifyPasswordExpiredUsers();
+        verify(userRepository).findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
+        Assertions.assertEquals("", outContent.toString());
+
+
+    }
+
+    @Test
+    public void test_notify_password_expired_users_failed_day_after() throws ParseException {
+        List<JpaUser> users = new ArrayList<>();
+        JpaUser user3 = new JpaUser();
+        user3.setId(3);
+        users.add(user3);
+
+        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory(TEST_NOT_VALID_NOTIFICATION_DAY_AFTER, user3.getId());
+        when(passwordHistoryService.findLastByUserId(users.get(0).getId())).thenReturn(Optional.of(userPasswordHistory));
+        when(userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse()).thenReturn(users);
+        serviceToTest.notifyPasswordExpiredUsers();
+        verify(userRepository).findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
+        Assertions.assertEquals("", outContent.toString());
+
+
+    }
 
     private UserPasswordHistoryDto buildUserPasswordsHistory(String creationDate, long userId) throws ParseException {
         UserPasswordHistoryDto userPasswordHistory = new UserPasswordHistoryDto();
