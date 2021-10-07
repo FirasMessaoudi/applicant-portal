@@ -272,6 +272,22 @@ public class UserManagementWsController {
                         .body(ritualLiteDto).build());
     }
 
+    /**
+     * get user card details by his uin and ritual ID
+     *
+     * @param ritualId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/details/{ritualId}")
+    public ResponseEntity <WsResponse<?>> findApplicantCardDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualCardLiteDto card =  userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(card).build());
+
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<WsResponse<?>> handleBadCredentialsException(
             BadCredentialsException ex) {
