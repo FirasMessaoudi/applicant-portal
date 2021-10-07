@@ -47,9 +47,8 @@ public class NotificationSchedulerService {
                 user -> {
                     if (checkPasswordExpiry(user.getId())) {
                         //send request to admin to get Template then sen notification for this user
-                        System.out.println("notifying user with id :" + user.getId());
+                        System.out.print("notifying user with id :" + user.getId());
                     }
-
                 }
         );
 

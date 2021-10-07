@@ -1,34 +1,22 @@
 package com.elm.shj.applicant.portal.services.notification;
 
 import com.elm.dcc.foundation.commons.core.mapper.MapperRegistry;
-import com.elm.dcc.foundation.commons.validation.UniqueValidator;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
-import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.UserDtoMapper;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
-import org.apache.commons.lang3.time.DateUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -39,12 +27,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
-
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,7 +38,6 @@ import static org.mockito.Mockito.when;
  * @since 1.1.0
  */
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
 public class NotificationSchedulerServiceTest {
     @InjectMocks
     private NotificationSchedulerService serviceToTest;
@@ -77,18 +59,21 @@ public class NotificationSchedulerServiceTest {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
+    //these  dates are considered valid and not valid based on today date and user password Age In Months  and  password Expiry Notification Period
+    private static final String TEST_VALID_NOTIFICATION_DATE = "2021-07-10";
+    private static final String TEST_VALID_NOTIFICATION_DATE2 = "2021-07-9";
+    private static final String TEST_VALID_NOTIFICATION_DATE3 = "2021-07-11";
+    private static final String TEST_VALID_NOTIFICATION_DATE4 = "2021-07-6";
 
-    @Before
+    @BeforeEach
     public void setUpStreams() throws IllegalAccessException {
-//        ReflectionTestUtils.setField(serviceToTest, "passwordAgeInMonths", 3);
-        Field passwordAgeInMonthsField = ReflectionUtils.findField(serviceToTest.getClass(), "passwordAgeInMonths");
-        ReflectionUtils.makeAccessible(passwordAgeInMonthsField);
-        passwordAgeInMonthsField.set(serviceToTest, 3);
+        ReflectionTestUtils.setField(serviceToTest, "passwordAgeInMonths", 3);
+        ReflectionTestUtils.setField(serviceToTest, "passwordExpiryNotificationPeriod", 5);
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
     }
 
-    @After
+    @AfterEach
     public void restoreStreams() {
         System.setOut(originalOut);
         System.setErr(originalErr);
@@ -100,7 +85,7 @@ public class NotificationSchedulerServiceTest {
         JpaUser user = new JpaUser();
         user.setId(1);
         users.add(user);
-        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory("2021-07-10", user.getId());
+        UserPasswordHistoryDto userPasswordHistory = buildUserPasswordsHistory(, user.getId());
         when(passwordHistoryService.findLastByUserId(users.get(0).getId())).thenReturn(Optional.of(userPasswordHistory));
         when(userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse()).thenReturn(users);
         serviceToTest.notifyPasswordExpiredUsers();
