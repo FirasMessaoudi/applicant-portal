@@ -46,8 +46,8 @@ public class NotificationSchedulerService {
         users.parallelStream().forEach(
                 user -> {
                     if (checkPasswordExpiry(user.getId())) {
-                        //send request to admin to get Template then sen notification for this user
-                        log.info("notifying user with id :" + user.getId());
+                        //for each user prepare his object and add this object to list of user requests notification
+                        System.out.print("notifying user with id :" + user.getId());
                     }
 
                 }
