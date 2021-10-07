@@ -288,6 +288,49 @@ public class UserManagementWsController {
 
     }
 
+    /**
+     * get user latest ritual season lite by uin
+     */
+    @GetMapping("/ritual-season/latest")
+    public ResponseEntity<WsResponse<?>> findLatestApplicantRitualSeasonByUin(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        CompanyRitualSeasonLiteDto ritualSeason = userService.findLatestApplicantRitualSeasonByUin(loggedInUserUin);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(ritualSeason).build());
+    }
+
+    /**
+     * get user Tafweej details by uin and ritual ID
+     *
+     * @param ritualId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/tafweej/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(ritualSteps).build());
+    }
+
+    /**
+     * get user package details by his uin and companyRitualSeasonId
+     *
+     * @param companyRitualSeasonId the ID of the selected applicant's company Ritual Season Id
+     * @param authentication        the authenticated user
+     */
+    @GetMapping("/package/details/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>>  findApplicantPackageDetails(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantPackageDetailsDto applicantPackageDetails = userService.findApplicantPackageDetails(loggedInUserUin, companyRitualSeasonId);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantPackageDetails).build());
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<WsResponse<?>> handleBadCredentialsException(
             BadCredentialsException ex) {
@@ -295,5 +338,6 @@ public class UserManagementWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(WsError.EWsError.BAD_CREDENTIALS.getCode()).referenceNumber(ex.getMessage()).build()).build());
     }
+
 
 }

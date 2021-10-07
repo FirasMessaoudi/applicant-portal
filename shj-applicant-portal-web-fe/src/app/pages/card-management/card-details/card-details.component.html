@@ -36,6 +36,9 @@
       </div>
       <div class="form-control-plaintext text-center text-md-left">
         <span *ngIf="applicant?.uin as value; else elseBlock">{{value}}</span>
+        <span class="form-control-plaintext ">
+          <span
+            class="status mr-1 {{userService.buildStatusClass(applicant?.status)}}"></span>{{currentLanguage.startsWith("en") ? "Active" : "نشط"}}</span>
       </div>
     </div>
 
@@ -322,7 +325,7 @@
       </ng-template>
     </li>
 
-    <li [ngbNavItem]="3">
+    <li [ngbNavItem]="3" (click)="loadHealthDetails()">
       <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.health_details" | translate
         }}</a>
