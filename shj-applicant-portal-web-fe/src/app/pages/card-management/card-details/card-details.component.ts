@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Card} from "@model/card.model";
 import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
-import {PackageCatering} from "@model/package-catering.model";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CardService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
@@ -30,9 +29,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
-  //TODO: to be deleted after wiring the backend to the frontend
-  hamlahPackage: any;
-  applicantPackage: ApplicantPackageDetails =null;
+  applicantPackage: ApplicantPackageDetails = null;
   loading = true
   ritualTypes: Lookup[] = [];
   housingCategories: Lookup[];
@@ -58,7 +55,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   ]
 
 
-
   constructor(private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastService,
@@ -66,8 +62,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private i18nService: I18nService,
               private lookupsService: LookupService,
-              private userService: UserService
-  ) {
+              public userService: UserService) {
   }
 
 
@@ -75,14 +70,16 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
       this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+
       this.loadLookups();
       this.loadUserDetails();
+
     });
   }
 
   loadUserDetails() {
     if (this.selectedApplicantRitual) {
-      this.loading=true;
+      this.loading = true;
       this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
         if (data) {
           this.applicant = data;
@@ -93,14 +90,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
 
-      this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
-        if (data) {
-          this.healthDetails = data;
-        } else {
-          this.toastr.error(this.translate.instant('general.route_item_not_found'),
-            this.translate.instant('general.dialog_error_title'));
-        }
-      });
 
       this.cardService.findTafweejDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
@@ -120,12 +109,14 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         }
       });
 
+      this.applicantPackage = null;
+      this.loadUserPackageDetails();
     }
   }
 
   loadUserPackageDetails() {
     if (this.applicantPackage == null) {
-      this.loading = true;
+
       this.cardService.findPackageDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
           this.applicantPackage = data;
@@ -133,14 +124,27 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
           this.toastr.error(this.translate.instant('general.route_item_not_found'),
             this.translate.instant('general.dialog_error_title'));
         }
-        this.loading = false;
+
+      });
+    }
+  }
+
+  loadHealthDetails() {
+    if (this.healthDetails == null) {
+      this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+        if (data) {
+          this.healthDetails = data;
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
       });
     }
   }
 
   loadLookups() {
 
-   this.cardService.findRitualTypes().subscribe(result => {
+    this.cardService.findRitualTypes().subscribe(result => {
       this.ritualTypes = result;
     });
 
@@ -194,5 +198,4 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.loading = true;
   }
-
 }

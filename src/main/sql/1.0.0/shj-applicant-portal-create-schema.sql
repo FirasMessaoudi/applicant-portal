@@ -273,5 +273,29 @@ create table sha_portal.sha_scheduled_tasks_lock
 );
 GO
 
+if not exists(select * from sys.tables where name = 'sha_user_notification_status_lk')
+CREATE TABLE sha_portal.sha_user_notification_status_lk
+(
+    id            INT           NOT NULL PRIMARY KEY IDENTITY (1,1),
+    code          VARCHAR(20)   NOT NULL,
+    lang          VARCHAR(45)   NOT NULL,
+    label         NVARCHAR(50)  NOT NULL,
+    creation_date SMALLDATETIME NOT NULL DEFAULT current_timestamp,
+    CONSTRAINT user_notification_status_lk_unique UNIQUE (code ASC, lang ASC)
+);
+GO
 
+if not exists(select * from sys.tables where name = 'sha_user_notification')
+CREATE TABLE sha_portal.sha_user_notification
+(
+    id                              INT            NOT NULL PRIMARY KEY IDENTITY (1,1),
+    notification_template_name_code INT            NOT NULL,
+    user_id                         INT            NOT NULL,
+    resolved_body                   NVARCHAR(1000) NOT NULL,
+    status_id                       INT            NOT NULL,
+    creation_date                   SMALLDATETIME  NOT NULL DEFAULT current_timestamp,
+    update_date                     SMALLDATETIME  NULL,
+    CONSTRAINT fk_user_notification_user_notification_status_lk FOREIGN KEY (status_id) REFERENCES sha_portal.sha_user_notification_status_lk (id)
+);
+GO
 

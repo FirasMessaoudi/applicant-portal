@@ -131,7 +131,8 @@
     "alert_text": "All data displayed now is your previous data for season",
     "alert_button_text": "Back to current season data",
     "change_ritual_modal_title": "Choose the Hajj or Umrah season you want to view data",
-    "change_ritual_modal_caution": "All data displayed will be affected by this change"
+    "change_ritual_modal_caution": "All data displayed will be affected by this change",
+    "notifications": "Notifications"
   },
   "settings": {
     "ritual-type": "Ritual type",
@@ -608,5 +609,11 @@
     "home": "Home",
     "title": "Rahman Guest Journey",
     "view_daily_activities": "View daily activities"
+  },
+  "notification-management": {
+    "title": "Notifications",
+    "private_notifications": "Private notifications",
+    "public_notifications": "Public notifications",
+    "view_all": "View all"
   }
 }
