@@ -15,6 +15,7 @@ import {ApplicantHealth} from "@model/applicant-health.model";
 import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
+import {CardStatus} from "@model/enum/card-status.enum";
 
 @Component({
   selector: 'app-card-details',
@@ -29,9 +30,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
-  cardStatusSuspended = 'SUSPENDED';
-  cardStatusCancelled = 'CANCELLED';
-  cardStatusActive = 'ACTIVE';
+  activeCardStatus = 'Active';
   applicantPackage: ApplicantPackageDetails = null;
   loading = true
   ritualTypes: Lookup[] = [];
@@ -194,8 +193,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   getCardStatus(code: string): string {
-    if (code !== this.cardStatusSuspended && code != this.cardStatusCancelled) {
-      code = this.cardStatusActive;
+    if (code !== CardStatus.SUSPENDED && code != CardStatus.CANCELLED) {
+      return this.translate.instant('card-management.status_active');
     }
     return this.lookupService().localizedLabel(this.cardStatuses, code);
   }
@@ -206,11 +205,12 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
    * @param status the current card status
    */
   buildStatusClass(status: any): string {
-    status = status.toUpperCase();
     switch (status) {
-      case this.cardStatusSuspended:
+      case CardStatus.ACTIVE:
+        return "done";
+      case CardStatus.SUSPENDED:
         return "Suspended";
-      case this.cardStatusCancelled:
+      case CardStatus.CANCELLED:
         return "new";
       default:
         return "done";
