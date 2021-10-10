@@ -3,7 +3,12 @@ package com.elm.shj.applicant.portal.services.dto;
 import lombok.*;
 
 import java.io.Serializable;
-
+/**
+ * Dto for Notifications that will be returned for the user
+ *
+ * @author Ahmed Ali
+ * @since 1.1.0
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
