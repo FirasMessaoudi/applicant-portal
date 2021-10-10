@@ -51,9 +51,9 @@ public class NotificationSchedulerService {
                 user -> {
                     if (checkPasswordExpiry(user.getId())) {
                         //for each user prepare his object and add this object to list of user requests notification
-                        List<DetailedUserNotificationDto> response = integrationService.findUserNotifications(user.getId());
+//                        List<DetailedUserNotificationDto> response = integrationService.savePasswordExpiryNotificationRequest(1);
 
-                        System.out.print("notifying user with id :" + user.getId() + response.size());
+                        System.out.print("notifying user with id :" + user.getId());
                     }
 
                 }

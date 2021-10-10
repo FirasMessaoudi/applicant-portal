@@ -495,16 +495,16 @@ public class IntegrationService {
     }
 
     /**
-     * check if  Notification Template enabled By Name on command portal
+     * finds user notifications by user Id
      *
-     * @param nameCode the nameCode of the notification template  to find
-     * @return boolean represent if  Notification enabled or not
+     * @param userId the userId to find notifications for
+     * @return the User Notifications
      */
-    public List<DetailedUserNotificationDto> findUserNotifications(long UserId) {
+    public List<DetailedUserNotificationDto> findUserNotifications(long userId) {
         WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + UserId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<Boolean>>() {
+            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + userId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification template is enabled or not.", e);
