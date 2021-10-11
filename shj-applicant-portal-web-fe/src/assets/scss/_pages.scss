@@ -526,3 +526,73 @@ ngb-typeahead-window.dropdown-menu {
     }
   }
 }
+
+
+/*========= Notifications =======================================================================*/
+
+.state_wrap{
+
+}
+
+.nIcon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+
+    .state-default &{
+      background-color: #FAF7ED;
+      color: #BA9430;
+    }
+    .state-success &{
+      background-color: #EEF8ED;
+      color: #3B7937;
+    }
+
+    .state-info &{
+      background-color: #F2FAFD;
+      color: #657DA5;
+    }
+    .state-religious &{
+      background-color: #F5F8F5;
+      color: #3B7937;
+    }
+    .state-health &{
+      background-color: #FFF5F5;
+      color: #DE6868;
+    }
+    .state-ritual &{
+      background-color: #F5F8F5;
+      color: #3B7937;
+    }
+    .state-general &{
+      background-color: #F5F8F5;
+      color: #3B7937;
+    }
+    .state-pray &{
+      background-color: #F5F8F5;
+      color: #3B7937;
+    }
+
+}
+
+
+
+.popover{
+  font-family: inherit;
+  width: 385px;
+  max-width: 385px;
+  border: 0;
+  box-shadow: $box-shadow;
+}
+
+.popover-body {
+  padding: 0;
+}
+
+
+
+

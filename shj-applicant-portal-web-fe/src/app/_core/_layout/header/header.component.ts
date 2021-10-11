@@ -34,6 +34,15 @@ export class HeaderComponent implements OnInit {
   seasons: CompanyRitualSeasonLite[];
   showAlert: boolean;
 
+
+  activeId = 1;
+  tabsHeader = [
+    "notification-management.private_notifications",
+    "notification-management.public_notifications",
+    "notification-management.view_all"
+  ]
+
+  
   constructor(
     private modalService: NgbModal,
     private location: Location,

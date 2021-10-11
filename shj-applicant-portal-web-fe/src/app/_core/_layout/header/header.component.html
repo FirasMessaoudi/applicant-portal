@@ -70,19 +70,91 @@
           </a>
         </li>
         <li class="position-relative">
+
           <a class="nav-link d-flex align-items-center dropdown-toggle noArrow"
+              [autoClose]="'outside'"
+              [ngbPopover]="popContent"
+              placement="bottom"
+
              href="javascript:void(0)"
              ngbTooltip="{{'header.notifications' | translate}}"
              title="notifications"
              id="notificationsLink"
-             data-toggle="dropdown"
-             aria-haspopup="true"
-             aria-expanded="false"
           >
             <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>
             <span class="notif bg-red">4</span>
           </a>
-          <div class="dropdown-menu animate slideIn" aria-labelledby="notificationsLink">
+
+          <ng-template #popContent>
+            
+            <div class="d-flex border-bottom p-3 state-success">
+              <div class="nIcon mr-3">
+                <svg-icon styleClass="fa-w-18" icon="state-success"></svg-icon>
+              </div>
+              <div class="w-100">
+                <div>
+                  <div class="flex-center-between align-items-start">
+                    <b class="text-dark">صلاحية كلمة المرور صلاحية كلمة المرور صلاحية كلمة المرور</b>
+                    <div class="d-flex">
+                      <small class="mr-1 text-muted text-nowrap">منذ 3 ساعات</small>
+                      <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
+                    </div>
+                  </div>
+                  <p class="mt-2 mb-3">سوف تنتهي صلاحية كلمة المرور الحالية خلال 3 أيام من الآن</p>
+                </div>
+                <div class="Nbtn">
+                  <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">تغيير كلمة المرور</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex border-bottom p-3 state-info">
+              <div class="nIcon mr-3">
+                <svg-icon styleClass="fa-w-18" icon="state-info"></svg-icon>
+              </div>
+              <div class="w-100">
+                <div>
+                  <div class="flex-center-between align-items-start">
+                    <b class="text-dark">تم إصدار البطاقة الذكية</b>
+                    <div class="d-flex">
+                      <small class="mr-1 text-muted text-nowrap">منذ 5 ساعات</small>
+                      <svg-icon styleClass="text-light-gray" icon="unread"></svg-icon>
+                    </div>
+                  </div>
+                  <p class="mt-2 mb-3">تم إصدار البطاقة الذكية الخاصة بك. الرجاء التواصل مع قائد الحملة لاستلامها</p>
+                </div>
+              </div>
+            </div>
+      
+            <div class="d-flex border-bottom p-3 state-general">
+              <div class="nIcon mr-3">
+                <svg-icon styleClass="fa-w-18" icon="state-general"></svg-icon>
+              </div>
+              <div class="w-100">
+                <div>
+                  <div class="flex-center-between align-items-start">
+                    <b class="text-dark">تقييم الخدمات اليومي</b>
+                    <div class="d-flex">
+                      <small class="mr-1 text-muted text-nowrap">أمس</small>
+                      <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
+                    </div>
+                  </div>
+                  <p class="mt-2 mb-3">تقييم الخدمات يساعد على الرقي بالخدمات المقدمة نأمل منكم تقييم خدمات اليوم</p>
+                </div>
+                <div class="Nbtn">
+                  <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">تقييم الخدمات</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-center py-3">
+              <a class="text-body" [routerLink]="['/notifications']"><b>عرض كل التنبيهات</b></a>
+              <svg-icon styleClass="text-black-50 mx-2" icon="chevron-double-left"></svg-icon>
+            </div>
+
+          </ng-template>
+
+          <!-- <div class="dropdown-menu animate slideIn" aria-labelledby="notificationsLink">
             <a class="dropdown-item" href="javascript:void(0)" [routerLink]="['/notifications']">
               <div>
                 صلاحية كلمة المرور
@@ -100,7 +172,7 @@
                 تقييم الخدمات اليومي
               </div>
             </a>
-          </div>
+          </div> -->
         </li>
         <li class="position-relative">
           <a class="nav-link" [routerLink]="['/settings']" ngbTooltip="{{ 'header.settings' | translate }}">
