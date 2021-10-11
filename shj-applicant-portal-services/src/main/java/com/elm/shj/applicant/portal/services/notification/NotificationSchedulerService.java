@@ -2,6 +2,7 @@ package com.elm.shj.applicant.portal.services.notification;
 
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
+import com.elm.shj.applicant.portal.services.dto.DetailedUserNotificationDto;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
@@ -37,16 +38,21 @@ public class NotificationSchedulerService {
     private int passwordAgeInMonths;
     @Value("${password.expiry.notification.period.in.days}")
     private int passwordExpiryNotificationPeriod;
+    private final String NOTIFICATION_TEMPLATE_NAME_CODE = "PASSWORD_EXPIRATION";
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.password.expiry.notification.cron}")
     @SchedulerLock(name = "notify-password-expiry-users-task")
     void notifyPasswordExpiredUsers() {
+        //check if this notification is enabled or not
+
         List<JpaUser> users = userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
         users.parallelStream().forEach(
                 user -> {
                     if (checkPasswordExpiry(user.getId())) {
                         //for each user prepare his object and add this object to list of user requests notification
+//                        List<DetailedUserNotificationDto> response = integrationService.savePasswordExpiryNotificationRequest(1);
+
                         System.out.print("notifying user with id :" + user.getId());
                     }
 

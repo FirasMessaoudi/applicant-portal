@@ -54,6 +54,7 @@ public class IntegrationService {
     private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
     private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
+    private final String NOTIFICATION_TEMPLATE_URL = "/ws/notification";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -489,6 +490,25 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
             return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * finds user notifications by user Id
+     *
+     * @param userId the userId to find notifications for
+     * @return the User Notifications
+     */
+    public List<DetailedUserNotificationDto> findUserNotifications(long userId) {
+        WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + userId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification template is enabled or not.", e);
+
         }
         return wsResponse.getBody();
     }
