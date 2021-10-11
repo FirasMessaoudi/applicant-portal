@@ -3,7 +3,6 @@ import {GoogleMap} from '@angular/google-maps';
 import {DOCUMENT, Location} from "@angular/common";
 import {CardService, UserService} from "@core/services";
 import {TranslateService} from "@ngx-translate/core";
-import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {ToastService} from "@shared/components/toast";
 import * as moment_ from 'moment-hijri';
 import {LookupService} from "@core/utilities/lookup.service";
