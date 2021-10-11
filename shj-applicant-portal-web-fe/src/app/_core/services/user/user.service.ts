@@ -10,6 +10,7 @@ import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {UserContacts} from "@model/UserContacts.model";
 import {CookieService} from "ngx-cookie-service";
 import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
+import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -285,6 +286,10 @@ export class UserService {
 
   getLatestApplicantRitualLite(): Observable<ApplicantRitualLite> {
     return this.http.get<ApplicantRitualLite>('/core/api/users/ritual-lite/latest');
+  }
+
+  getNotifications(): Observable<DetailedUserNotification[]> {
+    return this.http.get<DetailedUserNotification[]>('/core/api/users/notifications');
   }
 
 }

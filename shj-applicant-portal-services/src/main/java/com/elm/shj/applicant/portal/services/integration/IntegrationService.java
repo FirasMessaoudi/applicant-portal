@@ -495,20 +495,20 @@ public class IntegrationService {
     }
 
     /**
-     * finds user notifications by user Id
+     * finds user notifications by user UIN
      *
-     * @param userId the userId to find notifications for
+     * @param uin the UIN to find notifications for
      * @return the User Notifications
      */
-    public List<DetailedUserNotificationDto> findUserNotifications(long userId) {
+    public List<DetailedUserNotificationDto> findUserNotificationsByUin(String uin) {
         WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + userId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification template is enabled or not.", e);
-
+            return Collections.emptyList();
         }
         return wsResponse.getBody();
     }

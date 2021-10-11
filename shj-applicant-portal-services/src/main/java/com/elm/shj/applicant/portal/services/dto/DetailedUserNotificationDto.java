@@ -3,6 +3,8 @@ package com.elm.shj.applicant.portal.services.dto;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  * Dto for Notifications that will be returned for the user
  *
@@ -26,5 +28,5 @@ public class DetailedUserNotificationDto implements Serializable {
     private boolean userSpecific;
     private String title;
     private String actionLabel;
-
+    private Date creationDate;
 }
