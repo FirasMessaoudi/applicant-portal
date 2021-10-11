@@ -1,6 +1,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -56,7 +57,7 @@ public class UserManagementWsController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final OtpService otpService;
-
+    private final LookupService lookupService;
     /**
      * Resets the user password
      *
@@ -329,6 +330,19 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantPackageDetails).build());
+    }
+    /**
+     * List health special needs types.
+     *
+     * @return list of health special needs types
+     */
+    @GetMapping("/health-special-needs/list")
+    public ResponseEntity<WsResponse<?>>  listHealthSpecialNeeds() {
+        log.debug("list health special needs...");
+        List<HealthSpecialNeedsTypeLookupDto> healthSpecialNeedsTypeLookupDtos =  lookupService.retrieveHealthSpecialNeedsTypes();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(healthSpecialNeedsTypeLookupDtos).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
