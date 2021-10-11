@@ -76,8 +76,6 @@ export class HeaderComponent implements OnInit {
     this.listRitualSeasons();
     this.currentUser = this.authenticationService.currentUser;
 
-    this.loadNotifications();
-
     this.otpStorage.ritualSeasonSubject.subscribe(data => {
       if (data) {
         this.selectedRitualSeason = data;
@@ -89,6 +87,8 @@ export class HeaderComponent implements OnInit {
     this.latestRitualSeason = JSON.parse((localStorage.getItem('latestRitualSeason')));
 
     this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+
+    this.loadNotifications();
 
   }
 

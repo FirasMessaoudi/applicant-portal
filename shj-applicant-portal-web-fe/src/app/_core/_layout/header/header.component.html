@@ -217,7 +217,7 @@
       <tr class="table-row" *ngFor="let index = index; let s of seasons">
         <td class="ritual-season p-lg-3" (click)="selectSeason(s.id)">
           <div class="d-flex justify-content-between align-items-center">
-            <div class="ml-3">
+            <div class="ml-3 ritual-item">
               {{s.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, s.ritualSeason?.ritualTypeCode) : ""}}
               <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
               {{s.ritualSeason?.seasonYear}}
