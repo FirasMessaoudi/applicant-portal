@@ -497,13 +497,13 @@ public class IntegrationService {
     /**
      * finds user notifications by user UIN
      *
-     * @param uin the UIN to find notifications for
+     * @param userId the Id of user to find notifications for
      * @return the User Notifications
      */
-    public List<DetailedUserNotificationDto> findUserNotificationsByUin(String uin) {
+    public List<DetailedUserNotificationDto> findUserNotificationsById(long userId) {
         WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + uin, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + userId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -527,7 +527,7 @@ public class IntegrationService {
                     new ParameterizedTypeReference<WsResponse<Object>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to get notification template is enabled or not.", e);
+            log.error("Cannot authenticate to send Password Expiry Notification Request", e);
 
         }
 

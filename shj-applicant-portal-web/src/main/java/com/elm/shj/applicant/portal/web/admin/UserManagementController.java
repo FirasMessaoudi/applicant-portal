@@ -600,8 +600,8 @@ public class UserManagementController {
      * @param authentication the authenticated user
      */
     @GetMapping("/notifications")
-    public List<DetailedUserNotificationDto> findUserNotificationsByUin(Authentication authentication) {
+    public List<DetailedUserNotificationDto> findUserNotificationsById(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findUserNotificationsByUin(loggedInUserUin);
+        return userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
     }
 }
