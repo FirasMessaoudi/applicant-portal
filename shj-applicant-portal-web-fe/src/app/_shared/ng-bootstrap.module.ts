@@ -12,7 +12,8 @@ import { NgbModalModule,
     NgbToastModule,
     NgbTooltipModule,
     NgbAccordionModule,
-    NgbTypeaheadModule
+    NgbTypeaheadModule,
+    NgbPopoverModule,
  } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NgbModalModule,
         NgbToastModule,
         NgbTooltipModule,
         NgbAccordionModule,
-        NgbTypeaheadModule
+        NgbTypeaheadModule,
+        NgbPopoverModule
     ],
     exports: [
         NgbCarouselModule,
@@ -46,7 +48,8 @@ import { NgbModalModule,
         NgbToastModule,
         NgbTooltipModule,
         NgbAccordionModule,
-        NgbTypeaheadModule
+        NgbTypeaheadModule,
+        NgbPopoverModule
     ],
 })
 export class NgBootstrapModule { }

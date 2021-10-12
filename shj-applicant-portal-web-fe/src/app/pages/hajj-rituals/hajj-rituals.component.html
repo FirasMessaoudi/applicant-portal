@@ -6,28 +6,37 @@
   </nav>
   <div class="title__Page">
     <h3 class="sectionTitle">{{'header.my_program' | translate}}</h3>
-      <div class="px-5 border-0 btn-group btn-group-toggle">
-        <div class="btn-group" role="group" aria-label="Button group">
-          <button [routerLink]="['/hajj-rituals']" class="btn btn-success">{{'header.my_program' | translate}}</button>
-        </div>
-        <div class="btn-group" role="group" aria-label="Button group">
-          <button [routerLink]="['/hajj-journey/list']" class="btn btn-outline-dark">{{'header.ritual_schedule' | translate}}</button>
-        </div>
+    <div class="px-5 border-0 btn-group btn-group-toggle">
+      <div class="btn-group" role="group" aria-label="Button group">
+        <button [routerLink]="['/hajj-rituals']" class="btn btn-success">{{'header.my_program' | translate}}</button>
       </div>
+      <div class="btn-group" role="group" aria-label="Button group">
+        <button [routerLink]="['/hajj-journey/list']"
+                class="btn btn-outline-dark">{{'header.ritual_schedule' | translate}}</button>
+      </div>
+    </div>
   </div>
 
   <div class="row no-gutters">
     <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
       <div class="accordion-group row no-gutters">
         <div class="accordion stargger-animation" id="accordionExample"
-             *ngFor="let index = index;let step of ritualsSteps" [ngClass]="{
+             *ngFor="let index = index;let step of ritualsSteps"
+             [ngClass]="{
+            rituals_steps_hide: isMapZoomed && step.id != zoomedMarker,
             rituals_steps_show: isMapZoomed && step.id == zoomedMarker,
             rituals_steps_default: !isMapZoomed
           }">
           <div class="rituals_steps_card">
             <div class="rituals_steps_card_header" id="headingOne">
-              <a class="collapsed" data-toggle="collapse" [href]="'#collapseRitualsStep' + step.id" aria-expanded="true"
-                 aria-controls="collapseOne" (click)="zoomMap(step.id)" #ritualStepDom>
+              <a class="collapsed"
+                 data-toggle="collapse"
+                 [href]="'#collapseRitualsStep' + step.id"
+                 aria-expanded="true"
+                 aria-controls="collapseOne"
+                 (click)="zoomMap(step.id)"
+                 #ritualStepDom
+              >
                 <div class="rituals_steps_item d-flex pl-5 align-items-center">
                   <div class="rituals_steps_item_circle" [ngClass]="{
                       active_step: step.isActive,
@@ -44,12 +53,11 @@
                   </div>
                   <div class="mx-4 flex-fill">
                     <h4 class="h5 rituals_steps_title Elm-fontb">
-                      {{ step.stepCode ? lookupService().localizedLabel(this.ritualStepLabels, step.stepCode) : '' }}
+                      {{ step.stepCode ? lookupService().localizedLabel(this.ritualStepLabels, step.stepCode) : '---' }}
                     </h4>
                     <h5
                       class="h6 rituals_steps_date">{{ step.day }} {{ ("hijri-months." + step.month) | translate}}</h5>
                   </div>
-
                   <div>
                     <span class="float-right arrow mx-md-3"></span>
                   </div>

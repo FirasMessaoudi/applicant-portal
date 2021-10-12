@@ -11,6 +11,10 @@ import {LookupService} from "@core/utilities/lookup.service";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {OtpStorage} from "@pages/otp/otp.storage";
 import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
+import {DetailedUserNotification} from "@model/detailed-user-notification.model";
+import * as momentjs from 'moment';
+
+const moment = momentjs;
 
 @Component({
   selector: 'app-header',
@@ -33,6 +37,18 @@ export class HeaderComponent implements OnInit {
   ritualTypes: Lookup[] = [];
   seasons: CompanyRitualSeasonLite[];
   showAlert: boolean;
+  allNotifications: DetailedUserNotification[] = [];
+  privateNotifications: DetailedUserNotification[] = [];
+  publicNotifications: DetailedUserNotification[] = [];
+
+
+  activeId = 1;
+  tabsHeader = [
+    "notification-management.private_notifications",
+    "notification-management.public_notifications",
+    "notification-management.view_all"
+  ]
+
 
   constructor(
     private modalService: NgbModal,
@@ -71,6 +87,8 @@ export class HeaderComponent implements OnInit {
     this.latestRitualSeason = JSON.parse((localStorage.getItem('latestRitualSeason')));
 
     this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+
+    this.loadNotifications();
 
   }
 
@@ -122,6 +140,14 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  loadNotifications() {
+    this.userService.getNotifications().subscribe(data => {
+      this.allNotifications = data;
+      this.privateNotifications = data.filter(notification => notification.userSpecific);
+      this.publicNotifications = data.filter(notification => !notification.userSpecific);
+    });
+  }
+
   lookupService(): LookupService {
     return this.lookupsService;
   }
@@ -156,4 +182,14 @@ export class HeaderComponent implements OnInit {
   selectSeason(season) {
     this.seasons.forEach(s => s.id === season ? s.selected = true : s.selected = false);
   }
+
+  getRelativeTime(date: Date) {
+    let dateValue = moment(date);
+    dateValue.locale('en');
+    if (this.currentLanguage.startsWith('ar')) {
+      dateValue.locale('ar-TN').fromNow();
+    }
+    return dateValue.fromNow();
+  }
+
 }

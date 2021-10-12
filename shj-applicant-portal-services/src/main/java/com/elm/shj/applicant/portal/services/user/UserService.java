@@ -484,5 +484,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public List<CompanyRitualSeasonLiteDto> findAllApplicantRitualSeasonByUin(String uin) {
         return integrationService.loadAllApplicantRitualSeasonByUin(uin);
     }
+
+    public List<DetailedUserNotificationDto> findUserNotificationsByUin(String uin) {
+        return integrationService.findUserNotificationsByUin(uin);
+    }
 }
 
