@@ -331,6 +331,7 @@ public class UserManagementWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantPackageDetails).build());
     }
+
     /**
      * List health special needs types.
      *

@@ -37,6 +37,9 @@ public class Navigation {
     // Users
     public static final String API_INTEGRATION_USERS = "/api/ws/users";
 
+    // Applicant
+    public static final String API_INTEGRATION_APPLICANT = "/api/ws/applicant";
+
     public static final String API_INTEGRATION_USERS_CHANGE_PWRD = API_INTEGRATION_USERS + "/change-password";
 
     // Integration Authentication
