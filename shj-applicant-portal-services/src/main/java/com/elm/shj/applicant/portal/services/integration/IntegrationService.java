@@ -512,4 +512,24 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
+
+    /**
+     * send user notifications by user Id
+     *
+     * @param passwordExpiryNotificationRequest the request body to be send to save notification
+     * @return the User Notifications
+     */
+    public void sendPasswordExpiryNotificationRequest(PasswordExpiryNotificationRequest passwordExpiryNotificationRequest) {
+
+        try {
+            callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/password-expiry", HttpMethod.POST, passwordExpiryNotificationRequest,
+                    new ParameterizedTypeReference<WsResponse<Object>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification template is enabled or not.", e);
+
+        }
+
+    }
 }
