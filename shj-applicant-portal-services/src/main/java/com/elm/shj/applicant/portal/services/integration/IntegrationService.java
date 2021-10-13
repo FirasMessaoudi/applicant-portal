@@ -54,7 +54,7 @@ public class IntegrationService {
     private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
     private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
-    private final String NOTIFICATION_URL = "/ws/notification/password-expiry";
+    private final String NOTIFICATION_URL = "/ws/notification";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
