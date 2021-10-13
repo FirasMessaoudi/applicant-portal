@@ -46,16 +46,16 @@ public class IntegrationService {
     private final String HOUSING_CATEGORY_LOOKUP_URL = "/ws/housing-category/list";
     private final String HOUSING_TYPES_LOOKUP_URL = "/ws/housing-type/list";
     private final String PACKAGE_TYPES_LOOKUP_URL = "/ws/package-type/list";
-    private final String COMPANY_RITUAL_STEP_LOOKUP_URL= "/ws/company_ritual_step_label/list";
-    private final String APPLICANT_TAFWEEJ_DETAILS_URL="/ws/company-ritual-step";
-    private final String APPLICANT_COMPANY_STAFF_DETAILS_URL="/ws/find/company-employees";
-    private final String COMPANY_STAFF_TITLE_LOOKUP_URL= "/ws/company_staff_title_label/list";
+    private final String COMPANY_RITUAL_STEP_LOOKUP_URL = "/ws/company_ritual_step_label/list";
+    private final String APPLICANT_TAFWEEJ_DETAILS_URL = "/ws/company-ritual-step";
+    private final String APPLICANT_COMPANY_STAFF_DETAILS_URL = "/ws/find/company-employees";
+    private final String COMPANY_STAFF_TITLE_LOOKUP_URL = "/ws/company_staff_title_label/list";
     private final String HOUSING_SITES_LOOKUP_URL = "/ws/housing-site/list";
     private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
     private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
-    private final String NOTIFICATION_TEMPLATE_URL = "/ws/notification";
-
+    private final String NOTIFICATION_URL = "/ws/notification/password-expiry";
+    private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -503,7 +503,7 @@ public class IntegrationService {
     public List<DetailedUserNotificationDto> findUserNotificationsById(long userId) {
         WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + userId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + userId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -523,7 +523,7 @@ public class IntegrationService {
     public void sendPasswordExpiryNotificationRequest(PasswordExpiryNotificationRequest passwordExpiryNotificationRequest) {
 
         try {
-            callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/password-expiry", HttpMethod.POST, passwordExpiryNotificationRequest,
+            callIntegrationWs(PASSWORD_EXPIRY_NOTIFICATION_URL, HttpMethod.POST, passwordExpiryNotificationRequest,
                     new ParameterizedTypeReference<WsResponse<Object>>() {
                     });
         } catch (WsAuthenticationException e) {
