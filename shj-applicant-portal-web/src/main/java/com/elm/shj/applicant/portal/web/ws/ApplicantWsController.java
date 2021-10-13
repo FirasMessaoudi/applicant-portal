@@ -48,7 +48,7 @@ public class ApplicantWsController {
      * @param ritualId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/details/{ritualId}")
+    @GetMapping("/card-details/{ritualId}")
     public ResponseEntity<WsResponse<?>> findApplicantCardDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         ApplicantRitualCardLiteDto card =  userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
@@ -71,19 +71,6 @@ public class ApplicantWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantPackageDetails).build());
-    }
-    /**
-     * List health special needs types.
-     *
-     * @return list of health special needs types
-     */
-    @GetMapping("/health-special-needs/list")
-    public ResponseEntity<WsResponse<?>>  listHealthSpecialNeeds() {
-        log.debug("list health special needs...");
-        List<HealthSpecialNeedsTypeLookupDto> healthSpecialNeedsTypeLookupDtos =  lookupService.retrieveHealthSpecialNeedsTypes();
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(healthSpecialNeedsTypeLookupDtos).build());
     }
     /**
      * get user health details by uin and ritual ID
