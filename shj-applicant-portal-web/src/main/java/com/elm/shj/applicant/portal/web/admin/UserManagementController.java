@@ -81,9 +81,7 @@ public class UserManagementController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final RecaptchaService recaptchaService;
-    private final RestTemplateConfig restTemplateConfig;
     private final OtpService otpService;
-
 
     /**
      * finds users by role id, nin or account status
@@ -594,5 +592,16 @@ public class UserManagementController {
     public List<CompanyRitualSeasonLiteDto> findAllApplicantRitualSeasonByUin(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findAllApplicantRitualSeasonByUin(loggedInUserUin);
+    }
+
+    /**
+     * get all notifications by user ID
+     *
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/notifications")
+    public List<DetailedUserNotificationDto> findUserNotificationsById(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
     }
 }

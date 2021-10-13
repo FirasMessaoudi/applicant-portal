@@ -523,7 +523,8 @@
     "BREAKFAST": "Breakfast",
     "LUNCH": "Lunch",
     "DINNER": "Dinner",
-    "package_details": "Package Details"
+    "package_details": "Package Details",
+    "status_active": "Active"
   },
   "program-management": {
     "transportation_type": "Transportation type",
@@ -609,5 +610,12 @@
     "home": "Home",
     "title": "Rahman Guest Journey",
     "view_daily_activities": "View daily activities"
+  },
+  "notification-management": {
+    "title": "Notifications",
+    "private_notifications": "Private notifications",
+    "public_notifications": "Public notifications",
+    "view_all": "View all",
+    "view_all_notifications": "View all notifications"
   }
 }

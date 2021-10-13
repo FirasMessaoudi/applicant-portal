@@ -15,6 +15,7 @@ import {ApplicantHealth} from "@model/applicant-health.model";
 import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
+import {CardStatus} from "@model/enum/card-status.enum";
 
 @Component({
   selector: 'app-card-details',
@@ -29,9 +30,8 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
-  //TODO: to be deleted after wiring the backend to the frontend
-  hamlahPackage: any;
-  applicantPackage: ApplicantPackageDetails =null;
+  activeCardStatus = 'Active';
+  applicantPackage: ApplicantPackageDetails = null;
   loading = true
   ritualTypes: Lookup[] = [];
   housingCategories: Lookup[];
@@ -45,6 +45,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   maritalStatuses: Lookup[] = [];
   ritualStepsLabels: Lookup[];
   groupLeaderTitle: Lookup[];
+  cardStatuses: Lookup[];
   languageNativeName = Language;
   selectedApplicantRitual: ApplicantRitualLite;
   activeId = 1;
@@ -56,8 +57,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     "card-management.motawef_details"
   ]
 
-
-
   constructor(private route: ActivatedRoute,
               private router: Router,
               private toastr: ToastService,
@@ -65,8 +64,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
               private translate: TranslateService,
               private i18nService: I18nService,
               private lookupsService: LookupService,
-              private userService: UserService
-  ) {
+              private userService: UserService) {
   }
 
 
@@ -83,7 +81,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
   loadUserDetails() {
     if (this.selectedApplicantRitual) {
-      this.loading=true;
+      this.loading = true;
       this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
         if (data) {
           this.applicant = data;
@@ -94,14 +92,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
 
-      this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
-        if (data) {
-          this.healthDetails = data;
-        } else {
-          this.toastr.error(this.translate.instant('general.route_item_not_found'),
-            this.translate.instant('general.dialog_error_title'));
-        }
-      });
 
       this.cardService.findTafweejDetails(this.selectedApplicantRitual.id).subscribe(data => {
         if (data) {
@@ -141,9 +131,22 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  loadHealthDetails() {
+    if (this.healthDetails == null) {
+      this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+        if (data) {
+          this.healthDetails = data;
+        } else {
+          this.toastr.error(this.translate.instant('general.route_item_not_found'),
+            this.translate.instant('general.dialog_error_title'));
+        }
+      });
+    }
+  }
+
   loadLookups() {
 
-   this.cardService.findRitualTypes().subscribe(result => {
+    this.cardService.findRitualTypes().subscribe(result => {
       this.ritualTypes = result;
     });
 
@@ -184,6 +187,34 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.cardService.findTransportationTypes().subscribe(result => {
       this.transportationTypes = result;
     });
+    this.cardService.findCardStatuses().subscribe(result => {
+      this.cardStatuses = result;
+    })
+  }
+
+  getCardStatus(code: string): string {
+    if (code !== CardStatus.SUSPENDED && code != CardStatus.CANCELLED) {
+      return this.translate.instant('card-management.status_active');
+    }
+    return this.lookupService().localizedLabel(this.cardStatuses, code);
+  }
+
+  /**
+   * Returns the css class for the given status
+   *
+   * @param status the current card status
+   */
+  buildStatusClass(status: any): string {
+    switch (status) {
+      case CardStatus.ACTIVE:
+        return "done";
+      case CardStatus.SUSPENDED:
+        return "Suspended";
+      case CardStatus.CANCELLED:
+        return "new";
+      default:
+        return "done";
+    }
   }
 
   get currentLanguage(): string {
@@ -197,5 +228,4 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.loading = true;
   }
-
 }

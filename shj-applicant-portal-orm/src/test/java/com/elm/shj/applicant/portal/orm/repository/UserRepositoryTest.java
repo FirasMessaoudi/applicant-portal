@@ -6,12 +6,16 @@ package com.elm.shj.applicant.portal.orm.repository;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.test.AbstractJpaTest;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Testing class for {@link UserRepository}
@@ -98,6 +102,12 @@ public class UserRepositoryTest extends AbstractJpaTest {
     public void test_find_by_uin_not_deleted_user_deleted() {
         JpaUser deletedUser = userRepository.findByUinAndDeletedFalseAndActivatedTrue(UIN_USER_DELETED);
         assertNull(deletedUser);
+    }
+
+    @Test
+    public void test_find_by_not_deleted_not_blocked_and_active_user() {
+        List<JpaUser> users = userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
+        assertNotNull(users);
     }
 
 }

@@ -2,6 +2,8 @@ package com.elm.shj.applicant.portal.services.notification;
 
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
+import com.elm.shj.applicant.portal.services.dto.PasswordExpiryNotificationRequest;
+import com.elm.shj.applicant.portal.services.dto.PasswordExpiryNotificationRequestParameterValue;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
@@ -17,8 +19,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Service handling Applicant Notifications
@@ -37,34 +38,48 @@ public class NotificationSchedulerService {
     private int passwordAgeInMonths;
     @Value("${password.expiry.notification.period.in.days}")
     private int passwordExpiryNotificationPeriod;
+    private final String NOTIFICATION_TEMPLATE_NAME_CODE = "PASSWORD_EXPIRATION";
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.password.expiry.notification.cron}")
     @SchedulerLock(name = "notify-password-expiry-users-task")
     void notifyPasswordExpiredUsers() {
+        //check if this notification is enabled or not
+        log.debug("password Expiry notification scheduler started...");
         List<JpaUser> users = userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
+        Set<PasswordExpiryNotificationRequestParameterValue> pExpiryNotificationRequestParamValues = new HashSet<>();
+        PasswordExpiryNotificationRequest passwordExpiryNotificationRequest = new PasswordExpiryNotificationRequest();
         users.parallelStream().forEach(
                 user -> {
-                    if (checkPasswordExpiry(user.getId())) {
-                        //send request to admin to get Template then sen notification for this user
-                        log.info("notifying user with id :" + user.getId());
+                    long result = checkPasswordExpiry(user.getId());
+                    if (result > 0 && result <= passwordExpiryNotificationPeriod) {
+                        //for each user prepare his object and add this object to list of user requests notification
+                        pExpiryNotificationRequestParamValues.add(
+                                PasswordExpiryNotificationRequestParameterValue.builder()
+                                        .uin(user.getUin())
+                                        .userName(user.getPreferredLanguage().equals("ar") ? user.getFullNameAr() : user.getFullNameEn())
+                                        .userLang(user.getPreferredLanguage())
+                                        .userId(user.getId())
+                                        .dayDiff((int) result)
+                                        .build()
+                        );
+                        System.out.print("notifying user with id :" + user.getId());
                     }
 
                 }
         );
-
-
+        passwordExpiryNotificationRequest.setParameterValueList(pExpiryNotificationRequestParamValues);
+        integrationService.sendPasswordExpiryNotificationRequest(passwordExpiryNotificationRequest);
     }
 
-    private boolean checkPasswordExpiry(long userId) {
+    private long checkPasswordExpiry(long userId) {
         Optional<UserPasswordHistoryDto> userPasswordHistory = passwordHistoryService.findLastByUserId(userId);
         if (userPasswordHistory.isPresent()) {
             //check the date compared with configured password age
             LocalDate passwordCreationDate = userPasswordHistory.get().getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            long result = ChronoUnit.DAYS.between(LocalDate.now(), passwordCreationDate.plusMonths(passwordAgeInMonths));
-            return result > 0 && result <= passwordExpiryNotificationPeriod;
+            return ChronoUnit.DAYS.between(LocalDate.now(), passwordCreationDate.plusMonths(passwordAgeInMonths));
         }
-        return false;
+        return -1;
     }
 
 }

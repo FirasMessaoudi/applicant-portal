@@ -525,7 +525,8 @@
     "BREAKFAST": "فطار",
     "LUNCH": "غداء",
     "DINNER":"عشاء",
-    "package_details": "بيانات الباقة"
+    "package_details": "بيانات الباقة",
+    "status_active": "نشط"
   },
   "program-management": {
     "transportation_type": "طريقة التنقل",
@@ -611,5 +612,12 @@
     "home": "الرئيسية",
     "title": "رحلة ضيف الرحمن",
     "view_daily_activities": "عرض أعمال اليوم"
+  },
+  "notification-management": {
+    "title": "التنبيهات",
+    "private_notifications": "تنبيهات خاصة",
+    "public_notifications": "تنبيهات عامة",
+    "view_all": "عرض الكل",
+    "view_all_notifications": "عرض كل التنبيهات"
   }
 }

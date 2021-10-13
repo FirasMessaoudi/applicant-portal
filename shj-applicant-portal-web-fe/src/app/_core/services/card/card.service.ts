@@ -175,6 +175,24 @@ export class CardService {
     );
   }
 
+  /**
+   * Returns the css class for the given status
+   *
+   * @param status the current card status
+   */
+  buildStatusClass(status: any): string {
+    switch (status) {
+      case 'ACTIVE':
+        return "done";
+      case 'SUSPENDED':
+        return "Suspended";
+      case 'CANCELLED':
+        return "new";
+      default:
+        return "done";
+    }
+  }
+
   findGroupLeadersTitle(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/company_staff_title_label/list');
   }

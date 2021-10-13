@@ -1,6 +1,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -56,7 +57,7 @@ public class UserManagementWsController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final OtpService otpService;
-
+    private final LookupService lookupService;
     /**
      * Resets the user password
      *
@@ -162,21 +163,6 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantMainDataDto.get()).build());
-    }
-
-    /**
-     * get user health details by uin and ritual ID
-     */
-    @GetMapping("/health/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        Optional<ApplicantHealthLiteDto> applicantHealthDetails = userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId);
-        if (!applicantHealthDetails.isPresent()) {
-            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
-        }
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(applicantHealthDetails.get()).build());
     }
 
     private ResponseEntity<WsResponse<?>> generateFailResponse(WsError.EWsError errorCode, String reference) {
@@ -297,22 +283,6 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());
-    }
-
-    /**
-     * get user package details by his uin and companyRitualSeasonId
-     *
-     * @param companyRitualSeasonId the ID of the selected applicant's company Ritual Season Id
-     * @param authentication        the authenticated user
-     */
-    @GetMapping("/package/details/{companyRitualSeasonId}")
-    public ResponseEntity<WsResponse<?>>  findApplicantPackageDetails(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantPackageDetailsDto applicantPackageDetails = userService.findApplicantPackageDetails(loggedInUserUin, companyRitualSeasonId);
-
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(applicantPackageDetails).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

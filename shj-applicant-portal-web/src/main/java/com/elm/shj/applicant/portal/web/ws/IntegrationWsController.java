@@ -4,9 +4,6 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.user.UserService;
-import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -21,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Controller for exposing web services for external party.
@@ -45,7 +40,6 @@ public class IntegrationWsController {
 
     private final JwtTokenService jwtTokenService;
     private final OtpAuthenticationProvider authenticationProvider;
-    private final UserService userService;
 
     /**
      * Authenticates the user requesting a webservice call

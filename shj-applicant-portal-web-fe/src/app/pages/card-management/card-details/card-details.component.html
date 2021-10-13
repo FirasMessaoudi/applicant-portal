@@ -35,10 +35,11 @@
         {{ "card-management.applicant_id" | translate }}
       </div>
       <div class="form-control-plaintext text-center text-md-left">
-        <span *ngIf="applicant?.uin as value; else elseBlock">{{value}}</span>
-        <span class="form-control-plaintext ">
-          <span
-            class="status mr-1 {{userService.buildStatusClass(applicant?.status)}}"></span>{{currentLanguage.startsWith("en") ? "Active" : "نشط"}}</span>
+        <span class="mr-3" *ngIf="applicant?.uin as value; else elseBlock">{{value}}</span>
+        <span>
+          <span class="status done mr-1"></span>
+          <span>{{'card-management.status_active' | translate}}</span>
+        </span>
       </div>
     </div>
 
@@ -46,9 +47,12 @@
       <div class="col-form-label text-center text-md-left">
         {{ "card-management.card_number" | translate }}
       </div>
-      <div class="form-control-plaintext text-center text-md-left">
-        <span *ngIf="applicant?.cardReferenceNumber as value; else elseBlock">{{value}}</span>
-        {{applicant?.cardStatusCode?.label}}
+      <div *ngIf="applicant?.cardReferenceNumber as value; else elseBlock" class="form-control-plaintext text-center text-md-left">
+        <span class="mr-3">{{value}}</span>
+        <span>
+          <span class="status {{buildStatusClass(applicant?.cardStatusCode)}} mr-1"></span>
+          <span>{{applicant?.cardStatusCode ? getCardStatus(applicant?.cardStatusCode) : '---'}}</span>
+        </span>
       </div>
     </div>
 
@@ -325,7 +329,7 @@
       </ng-template>
     </li>
 
-    <li [ngbNavItem]="3">
+    <li [ngbNavItem]="3" (click)="loadHealthDetails()">
       <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.health_details" | translate
         }}</a>
@@ -443,9 +447,7 @@
         </section>
         <hr class="my-4 w-100"/>
         <section>
-                    <span class="form-control-plaintext">{{
-                      "card-management.vaccinations" | translate
-                      }}</span>
+          <span class="form-control-plaintext">{{"card-management.vaccinations" | translate}}</span>
           <div class="text-center" *ngIf="!healthDetails?.immunizations">
             <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
             <p class="text-light-gray mb-3">{{ "general.no-data-found" | translate }}</p>
