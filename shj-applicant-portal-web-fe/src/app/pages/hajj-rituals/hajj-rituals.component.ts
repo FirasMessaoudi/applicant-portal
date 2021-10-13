@@ -25,8 +25,8 @@ export class HajjRitualsComponent implements OnInit {
   addedAlert = false;
   MAP_ZOOM_OUT = 10;
   MAP_ZOOM_IN = 14;
-  isMapZoomed = false;
-  zoomedMarker = 0;
+  isMapZoomedOut = "true";
+  zoomedMarker = -1;
   ritualsSteps: CompanyRitualMainDataStep[] = [];
   transportationTypes: Lookup[] = [];
   ritualStepLabels = [];
@@ -87,9 +87,14 @@ export class HajjRitualsComponent implements OnInit {
 
   zoomMap(stepId) {
     let bounds, north, south, east, west;
-    this.isMapZoomed = this.ritualStepDom.nativeElement.ariaExpanded;
-    if (this.isMapZoomed) {
+    this.isMapZoomedOut = this.ritualStepDom.nativeElement.ariaExpanded;
+    if (this.isMapZoomedOut == "false" || this.isMapZoomedOut == null) {
       this.zoomedMarker = stepId;
+      bounds = this.getBounds(this.markers);
+      this.map.googleMap.setZoom(this.MAP_ZOOM_OUT);
+      this.map.googleMap.fitBounds(bounds);
+    } else {
+      this.zoomedMarker = -1;
       this.selectedMarker = this.markers.find(m => m.id == stepId);
       north = this.selectedMarker.position.lat;
       south = this.selectedMarker.position.lat;
@@ -98,12 +103,6 @@ export class HajjRitualsComponent implements OnInit {
       bounds = {north, south, east, west};
       this.map.googleMap.fitBounds(bounds);
       this.map.googleMap.setZoom(this.MAP_ZOOM_IN);
-
-    } else {
-      //this.zoomedMarker = 0;
-      bounds = this.getBounds(this.markers);
-      this.map.googleMap.setZoom(this.MAP_ZOOM_OUT);
-      this.map.googleMap.fitBounds(bounds);
     }
   }
 

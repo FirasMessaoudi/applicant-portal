@@ -88,7 +88,7 @@
           <ng-template #popContent>
             <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
               <li [ngbNavItem]="1">
-                <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.private_notifications" | translate}}
+                <a class="p-3" ngbNavLink><b>{{"notification-management.private_notifications" | translate}}
                   ({{privateNotifications?.length}})</b></a>
                 <ng-template ngbNavContent>
 
@@ -157,7 +157,7 @@
                 </ng-template>
               </li>
               <li [ngbNavItem]="2">
-                <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.public_notifications" | translate}}
+                <a class="p-3" ngbNavLink><b>{{"notification-management.public_notifications" | translate}}
                   ({{publicNotifications?.length}})</b></a>
                 <ng-template ngbNavContent>
                   <div class="d-flex border-bottom p-3 state-success" *ngFor="let notification of publicNotifications">

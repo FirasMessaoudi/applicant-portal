@@ -46,16 +46,16 @@ public class IntegrationService {
     private final String HOUSING_CATEGORY_LOOKUP_URL = "/ws/housing-category/list";
     private final String HOUSING_TYPES_LOOKUP_URL = "/ws/housing-type/list";
     private final String PACKAGE_TYPES_LOOKUP_URL = "/ws/package-type/list";
-    private final String COMPANY_RITUAL_STEP_LOOKUP_URL= "/ws/company_ritual_step_label/list";
-    private final String APPLICANT_TAFWEEJ_DETAILS_URL="/ws/company-ritual-step";
-    private final String APPLICANT_COMPANY_STAFF_DETAILS_URL="/ws/find/company-employees";
-    private final String COMPANY_STAFF_TITLE_LOOKUP_URL= "/ws/company_staff_title_label/list";
+    private final String COMPANY_RITUAL_STEP_LOOKUP_URL = "/ws/company_ritual_step_label/list";
+    private final String APPLICANT_TAFWEEJ_DETAILS_URL = "/ws/company-ritual-step";
+    private final String APPLICANT_COMPANY_STAFF_DETAILS_URL = "/ws/find/company-employees";
+    private final String COMPANY_STAFF_TITLE_LOOKUP_URL = "/ws/company_staff_title_label/list";
     private final String HOUSING_SITES_LOOKUP_URL = "/ws/housing-site/list";
     private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
     private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
-    private final String NOTIFICATION_TEMPLATE_URL = "/ws/notification";
-
+    private final String NOTIFICATION_URL = "/ws/notification";
+    private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -495,7 +495,7 @@ public class IntegrationService {
     }
 
     /**
-     * finds user notifications by user UIN
+     * finds user notifications by user Id
      *
      * @param userId the Id of user to find notifications for
      * @return the User Notifications
@@ -503,33 +503,29 @@ public class IntegrationService {
     public List<DetailedUserNotificationDto> findUserNotificationsById(long userId) {
         WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/" + userId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + userId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to get notification template is enabled or not.", e);
+            log.error("Cannot authenticate to get notifications by user Id.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();
     }
 
-
     /**
-     * send user notifications by user Id
+     * send user notifications Request
      *
      * @param passwordExpiryNotificationRequest the request body to be send to save notification
      * @return the User Notifications
      */
     public void sendPasswordExpiryNotificationRequest(PasswordExpiryNotificationRequest passwordExpiryNotificationRequest) {
-
         try {
-            callIntegrationWs(NOTIFICATION_TEMPLATE_URL + "/password-expiry", HttpMethod.POST, passwordExpiryNotificationRequest,
+            callIntegrationWs(PASSWORD_EXPIRY_NOTIFICATION_URL, HttpMethod.POST, passwordExpiryNotificationRequest,
                     new ParameterizedTypeReference<WsResponse<Object>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to send Password Expiry Notification Request", e);
-
         }
-
     }
 }

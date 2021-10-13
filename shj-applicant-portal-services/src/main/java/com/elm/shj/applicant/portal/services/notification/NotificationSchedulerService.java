@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
 package com.elm.shj.applicant.portal.services.notification;
 
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.PasswordExpiryNotificationRequest;
-import com.elm.shj.applicant.portal.services.dto.PasswordExpiryNotificationRequestParameterValue;
+import com.elm.shj.applicant.portal.services.dto.PasswordExpiryNotificationRequestUserParameters;
 import com.elm.shj.applicant.portal.services.dto.UserPasswordHistoryDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
@@ -19,13 +22,16 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
- * Service handling Applicant Notifications
+ * Service Handling User Notifications
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Service
 @Slf4j
@@ -38,44 +44,44 @@ public class NotificationSchedulerService {
     private int passwordAgeInMonths;
     @Value("${password.expiry.notification.period.in.days}")
     private int passwordExpiryNotificationPeriod;
-    private final String NOTIFICATION_TEMPLATE_NAME_CODE = "PASSWORD_EXPIRATION";
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.password.expiry.notification.cron}")
     @SchedulerLock(name = "notify-password-expiry-users-task")
     void notifyPasswordExpiredUsers() {
-        //check if this notification is enabled or not
         log.debug("password Expiry notification scheduler started...");
         List<JpaUser> users = userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
-        Set<PasswordExpiryNotificationRequestParameterValue> pExpiryNotificationRequestParamValues = new HashSet<>();
+        Set<PasswordExpiryNotificationRequestUserParameters> passwordExpiryNotificationRequestUserParameters = new HashSet<>();
         PasswordExpiryNotificationRequest passwordExpiryNotificationRequest = new PasswordExpiryNotificationRequest();
         users.parallelStream().forEach(
                 user -> {
                     long result = checkPasswordExpiry(user.getId());
                     if (result > 0 && result <= passwordExpiryNotificationPeriod) {
-                        //for each user prepare his object and add this object to list of user requests notification
-                        pExpiryNotificationRequestParamValues.add(
-                                PasswordExpiryNotificationRequestParameterValue.builder()
-                                        .uin(user.getUin())
-                                        .userName(user.getPreferredLanguage().equals("ar") ? user.getFullNameAr() : user.getFullNameEn())
+                        //for each user prepare his parameters and add to list of users request notification
+                        passwordExpiryNotificationRequestUserParameters.add(
+                                PasswordExpiryNotificationRequestUserParameters.builder()
                                         .userLang(user.getPreferredLanguage())
                                         .userId(user.getId())
-                                        .dayDiff((int) result)
+                                        .daysToExpiry((int) result)
                                         .build()
                         );
-                        System.out.print("notifying user with id :" + user.getId());
+                        log.debug("notifying user with id :" + user.getId());
                     }
 
                 }
         );
-        passwordExpiryNotificationRequest.setParameterValueList(pExpiryNotificationRequestParamValues);
-        integrationService.sendPasswordExpiryNotificationRequest(passwordExpiryNotificationRequest);
+        passwordExpiryNotificationRequest.setUserParametersList(passwordExpiryNotificationRequestUserParameters);
+        if (passwordExpiryNotificationRequestUserParameters.size() > 0) {
+            integrationService.sendPasswordExpiryNotificationRequest(passwordExpiryNotificationRequest);
+        } else {
+            log.debug("no user has password will expire in {} days", passwordExpiryNotificationPeriod);
+        }
     }
 
     private long checkPasswordExpiry(long userId) {
         Optional<UserPasswordHistoryDto> userPasswordHistory = passwordHistoryService.findLastByUserId(userId);
         if (userPasswordHistory.isPresent()) {
-            //check the date compared with configured password age
+            //check today date compared with configured password age
             LocalDate passwordCreationDate = userPasswordHistory.get().getCreationDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             return ChronoUnit.DAYS.between(LocalDate.now(), passwordCreationDate.plusMonths(passwordAgeInMonths));
         }
