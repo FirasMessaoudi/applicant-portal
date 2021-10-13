@@ -495,7 +495,7 @@ public class IntegrationService {
     }
 
     /**
-     * finds user notifications by user UIN
+     * finds user notifications by user Id
      *
      * @param userId the Id of user to find notifications for
      * @return the User Notifications
@@ -515,7 +515,7 @@ public class IntegrationService {
 
 
     /**
-     * send user notifications by user Id
+     * send user notifications Request
      *
      * @param passwordExpiryNotificationRequest the request body to be send to save notification
      * @return the User Notifications
