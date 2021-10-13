@@ -507,12 +507,11 @@ public class IntegrationService {
                     new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to get notification template is enabled or not.", e);
+            log.error("Cannot authenticate to get notifications by user Id.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();
     }
-
 
     /**
      * send user notifications Request
@@ -521,15 +520,12 @@ public class IntegrationService {
      * @return the User Notifications
      */
     public void sendPasswordExpiryNotificationRequest(PasswordExpiryNotificationRequest passwordExpiryNotificationRequest) {
-
         try {
             callIntegrationWs(PASSWORD_EXPIRY_NOTIFICATION_URL, HttpMethod.POST, passwordExpiryNotificationRequest,
                     new ParameterizedTypeReference<WsResponse<Object>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to send Password Expiry Notification Request", e);
-
         }
-
     }
 }
