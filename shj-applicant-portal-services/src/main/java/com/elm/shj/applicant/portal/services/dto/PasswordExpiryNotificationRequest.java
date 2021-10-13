@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
 package com.elm.shj.applicant.portal.services.dto;
 
 import lombok.*;
@@ -6,10 +9,10 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * PasswordExpiryNotificationRequest class for Password Expiry Notification Request from the user
+ * class for Password Expiry Notification Requests from the user
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Builder
 @NoArgsConstructor
@@ -18,7 +21,7 @@ import java.util.Set;
 @Setter
 public class PasswordExpiryNotificationRequest implements Serializable {
     private static final long serialVersionUID = 8663675565915427887L;
-    private Set<PasswordExpiryNotificationRequestParameterValue> parameterValueList;
+    private Set<PasswordExpiryNotificationRequestUserParameters> userParametersList;
 
 
 }
