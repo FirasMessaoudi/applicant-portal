@@ -20,7 +20,7 @@
   <div class="row no-gutters">
     <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
       <div class="accordion-group row no-gutters">
-        <div *ngFor="let index = index;let step of ritualsSteps">
+        <ng-container *ngFor="let index = index;let step of ritualsSteps">
 
           <div class="accordion stargger-animation" id="accordionExample"
                *ngIf="zoomedMarker==-1 || zoomedMarker==step.id">
@@ -136,7 +136,7 @@
             </div>
           </div>
           </div>
-        </div>
+        </ng-container>
       </div>
     </div>
     <div class="col-12 col-lg-8 order-1 order-lg-2 map-c">
