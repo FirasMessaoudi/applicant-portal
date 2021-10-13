@@ -3,10 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantHealthLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantPackageDetailsDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantRitualCardLiteDto;
-import com.elm.shj.applicant.portal.services.dto.HealthSpecialNeedsTypeLookupDto;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -51,12 +48,13 @@ public class ApplicantWsController {
     @GetMapping("/card-details/{ritualId}")
     public ResponseEntity<WsResponse<?>> findApplicantCardDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantRitualCardLiteDto card =  userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        ApplicantRitualCardLiteDto card = userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(card).build());
 
     }
+
     /**
      * get user package details by his uin and companyRitualSeasonId
      *
@@ -64,7 +62,7 @@ public class ApplicantWsController {
      * @param authentication        the authenticated user
      */
     @GetMapping("/package/details/{companyRitualSeasonId}")
-    public ResponseEntity<WsResponse<?>>  findApplicantPackageDetails(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findApplicantPackageDetails(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         ApplicantPackageDetailsDto applicantPackageDetails = userService.findApplicantPackageDetails(loggedInUserUin, companyRitualSeasonId);
 
@@ -72,6 +70,7 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantPackageDetails).build());
     }
+
     /**
      * get user health details by uin and ritual ID
      */
@@ -86,6 +85,66 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantHealthDetails.get()).build());
     }
+
+    /**
+     * get user latest ritual season lite by uin
+     */
+    @GetMapping("/ritual-season/latest")
+    public ResponseEntity<WsResponse<?>> findLatestApplicantRitualSeasonByUin(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        CompanyRitualSeasonLiteDto ritualSeason = userService.findLatestApplicantRitualSeasonByUin(loggedInUserUin);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(ritualSeason).build());
+    }
+
+    /**
+     * get user main data by uin and ritualId
+     */
+    @GetMapping("/main-data/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        Optional<ApplicantMainDataDto> applicantMainDataDto = userService.findUserMainDataByUin(loggedInUserUin, ritualId);
+        if (!applicantMainDataDto.isPresent()) {
+            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
+        }
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantMainDataDto.get()).build());
+    }
+
+    /**
+     * get user Tafweej details by uin and ritual ID
+     *
+     * @param ritualId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/tafweej/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(ritualSteps).build());
+    }
+
+
+    /**
+     * get user Group Leaders details by uin and ritual ID
+     *
+     * @param ritualId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/company-staff/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findRelatedEmployeesByApplicantUinAndSeasonId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<CompanyStaffDto> employees = userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(employees).build());
+    }
+
+
     private ResponseEntity<WsResponse<?>> generateFailResponse(WsError.EWsError errorCode, String reference) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020 ELM. All rights reserved.
+ *  Copyright (c) 2021 ELM. All rights reserved.
  */
 package com.elm.shj.applicant.portal.web.ws;
 
@@ -156,7 +156,7 @@ public class LookupWsController {
      *
      * @return List Company Ritual Steps Label
      */
-    @GetMapping("/company_ritual_step/list")
+    @GetMapping("/company-ritual-step/list")
     public ResponseEntity<WsResponse<?>> listCompanyRitualStepsLabel(Authentication authentication) {
         log.debug("list company ritual step labels...");
         List<CompanyRitualStepLookupDto> companyRitualStepLookupDtos = lookupService.retrieveCompanyRitualStepLookups();
@@ -170,7 +170,7 @@ public class LookupWsController {
      *
      * @return List Company Staff Title Labels
      */
-    @GetMapping("/company_staff_title_label/list")
+    @GetMapping("/company-staff-title-label/list")
     public ResponseEntity<WsResponse<?>> listCompanyStaffTitleLabels(Authentication authentication) {
         log.debug("list company staff title labels...");
         List<CompanyStaffTitleLookupDto> companyStaffTitleLookupDtos = lookupService.retrieveCompanyStaffTitleLookups();
