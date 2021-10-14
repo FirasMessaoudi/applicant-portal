@@ -27,15 +27,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Testing class for service {@link NotificationSchedulerService}
+ * Testing class for service {@link PasswordExpiryNotificationScheduler}
  *
  * @author Ahmed Ali
  * @since 1.1.0
  */
 @ExtendWith(MockitoExtension.class)
-public class NotificationSchedulerServiceTest {
+public class PasswordExpiryNotificationSchedulerTest {
     @InjectMocks
-    private NotificationSchedulerService serviceToTest;
+    private PasswordExpiryNotificationScheduler serviceToTest;
     @Mock
     private UserRepository userRepository;
     @Mock

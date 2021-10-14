@@ -16,7 +16,7 @@ import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -33,10 +33,10 @@ import java.util.Set;
  * @author Ahmed Ali
  * @since 1.0.0
  */
-@Service
+@Component
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class NotificationSchedulerService {
+public class PasswordExpiryNotificationScheduler {
     private final IntegrationService integrationService;
     private final UserRepository userRepository;
     private final PasswordHistoryService passwordHistoryService;
