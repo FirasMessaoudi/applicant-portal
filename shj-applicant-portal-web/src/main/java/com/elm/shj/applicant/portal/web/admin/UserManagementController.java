@@ -11,7 +11,6 @@ import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
-import com.elm.shj.applicant.portal.web.config.RestTemplateConfig;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -68,8 +67,6 @@ public class UserManagementController {
 
     public static final String CONFIDENTIAL = "<CONFIDENTIAL>";
     public static final String NEW_PWRD_FIELD_NAME = "newPassword";
-    public static final String RESET_PWD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
-    public static final String CREATE_USER_SMS_NOTIFICATION_KEY = "user.mngt.new.user.sms.notification";
     private static final String PWRD_HISTORY_ERROR_MESSAGE_KEY = "{dcc.commons.validation.constraints.password-history}";
     private static final String PWRD_CONTAINS_USERNAME_ERROR_MESSAGE_KEY = "{dcc.commons.validation.constraints.password-contains-username}";
     private static final String CHANGE_PWRD_METHOD_NAME = "changeUserPassword";

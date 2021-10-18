@@ -19,9 +19,6 @@ public class Navigation {
     public static final String API_DASHBOARD = "/api/dashboard";
     // Password Change
     public static final String API_USERS_CHANGE_PWRD = API_USERS + "/change-password";
-
-    // Logout
-    public static final String API_AUTH_LOGOUT = API_AUTH + "/logout";
     // Password Reset
     public static final String API_USERS_RESET_PWRD = API_USERS + "/reset-password";
     // Lookup
@@ -30,22 +27,14 @@ public class Navigation {
     public static final String API_REGISTRATION = "/api/register";
     // Integration web service call
     public static final String API_INTEGRATION = "/api/ws";
-
     // Integration registration web service call
     public static final String API_INTEGRATION_REGISTRATION = "/api/ws/register";
-
     // Users
     public static final String API_INTEGRATION_USERS = "/api/ws/users";
-
-    // Applicant
-    public static final String API_INTEGRATION_APPLICANT = "/api/ws/applicant";
-
-    public static final String API_INTEGRATION_USERS_CHANGE_PWRD = API_INTEGRATION_USERS + "/change-password";
-
     // Integration Authentication
     public static final String API_INTEGRATION_AUTH = "/api/ws/auth";
-
-    public static final String API_INTEGRATION_AUTH_LOGOUT = API_INTEGRATION_AUTH + "/logout";
+    // User Notification
+    public static final String API_NOTIFICATION = "/api/notification";
 
     private Navigation() {
         // private constructor to prevent construction
