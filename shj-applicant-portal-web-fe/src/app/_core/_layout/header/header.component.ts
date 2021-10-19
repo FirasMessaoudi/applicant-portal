@@ -13,6 +13,8 @@ import {OtpStorage} from "@pages/otp/otp.storage";
 import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import * as momentjs from 'moment';
+import * as moment_ from 'moment-hijri';
+const momentHijri = moment_;
 
 const moment = momentjs;
 
@@ -37,6 +39,7 @@ export class HeaderComponent implements OnInit {
   ritualTypes: Lookup[] = [];
   seasons: CompanyRitualSeasonLite[];
   showAlert: boolean;
+  currentHijriYear: number;
   allNotifications: DetailedUserNotification[] = [];
   privateNotifications: DetailedUserNotification[] = [];
   publicNotifications: DetailedUserNotification[] = [];
@@ -74,6 +77,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.loadLookups();
     this.listRitualSeasons();
+    this.getCurrentHijriYear();
     this.currentUser = this.authenticationService.currentUser;
 
     this.otpStorage.ritualSeasonSubject.subscribe(data => {
@@ -192,4 +196,8 @@ export class HeaderComponent implements OnInit {
     return dateValue.fromNow();
   }
 
+  private getCurrentHijriYear() {
+    let now = moment(new Date());
+    this.currentHijriYear = momentHijri(now).iYear();
+  }
 }
