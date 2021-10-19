@@ -132,7 +132,8 @@
     "alert_button_text": "Back to current season data",
     "change_ritual_modal_title": "Choose the Hajj or Umrah season you want to view data",
     "change_ritual_modal_caution": "All data displayed will be affected by this change",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "current_year": "Current year"
   },
   "settings": {
     "ritual-type": "Ritual type",
