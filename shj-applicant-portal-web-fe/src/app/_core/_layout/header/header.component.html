@@ -51,12 +51,12 @@
 
     <!--- PROFILE & SETTING-->
     <div class="nav-right">
-      <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
+      <ul class="nav-menus align-items-center" [ngClass]="{ 'mx-0': showNavbar }">
         <li class="flex-center">
-          <a class="nav-link d-flex align-items-top noArrow">
-            <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
-            <div class="mx-3">
-              <h6 class="text-dcc-primary m-0">
+          <a class="nav-link d-flex align-items-center">
+            <svg-icon styleClass="h1 text-gray-300 resetH" icon="user-circle"></svg-icon>
+            <div class="mx-3 pt-2">
+              <h6 class="text-dark m-0">
                 {{ currentUser?.firstName }} {{ currentUser?.lastName }}
               </h6>
               <small class="mb-2">
@@ -81,7 +81,7 @@
              title="notifications"
              id="notificationsLink"
           >
-            <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>
+            <svg-icon styleClass="fa-w-16 h4 resetH" icon="bell"></svg-icon>
             <span class="notif bg-red" *ngIf="allNotifications?.length > 0">{{allNotifications?.length}}</span>
           </a>
 
@@ -198,13 +198,13 @@
         </li>
         <li class="position-relative">
           <a class="nav-link" [routerLink]="['/settings']" ngbTooltip="{{ 'header.settings' | translate }}">
-            <svg-icon styleClass="fa-w-16 h4" icon="cog"></svg-icon>
+            <svg-icon styleClass="fa-w-16 h4 resetH" icon="cog"></svg-icon>
           </a>
         </li>
         <li class="position-relative">
           <a class="nav-link" href="javascript:void(0)" (click)="logout()"
              ngbTooltip="{{ 'header.logout' | translate }}">
-            <svg-icon styleClass="fa-w-16 h4 flip" icon="logout"></svg-icon>
+            <svg-icon styleClass="fa-w-16 h4 flip resetH" icon="logout"></svg-icon>
           </a>
         </li>
       </ul>
