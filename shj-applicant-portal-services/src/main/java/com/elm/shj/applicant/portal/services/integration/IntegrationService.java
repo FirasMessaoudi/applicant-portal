@@ -56,6 +56,7 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
     private final String NOTIFICATION_URL = "/ws/notification";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
+    private final String COMPANY_DETAILS_URL = "/ws/company-details";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -527,5 +528,18 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to send Password Expiry Notification Request", e);
         }
+    }
+
+    public CompanyLiteDto loadCompanyDetails(String uin, Long ritualId) {
+        WsResponse<CompanyLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPANY_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<CompanyLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load company details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
     }
 }

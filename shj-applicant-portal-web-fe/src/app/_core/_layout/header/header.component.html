@@ -228,6 +228,7 @@
               {{s.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, s.ritualSeason?.ritualTypeCode) : ""}}
               <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
               {{s.ritualSeason?.seasonYear}}
+              <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}})</span>
             </div>
             <div>
               <svg-icon *ngIf="s.selected" class="check-circle" styleClass="fa2x mr-2" icon="check-circle"></svg-icon>

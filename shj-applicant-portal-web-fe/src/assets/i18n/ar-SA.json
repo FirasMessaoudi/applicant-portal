@@ -132,7 +132,8 @@
     "alert_button_text": "عودة لبيانات الموسم الحالي",
     "change_ritual_modal_title": "اختر موسم الحج أو العمرة الذي تريد عرض بياناته",
     "change_ritual_modal_caution": "ستتأثر جميع البيانات المعروضة بهذا التغيير",
-    "notifications": "التنبيهات"
+    "notifications": "التنبيهات",
+    "current_year": "العام الحالي"
   },
   "settings": {
     "ritual-type": "نوع الشعيرة",
