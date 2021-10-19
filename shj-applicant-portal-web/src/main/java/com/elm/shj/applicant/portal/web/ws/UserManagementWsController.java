@@ -10,6 +10,7 @@ import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
+import com.elm.shj.applicant.portal.web.security.otp.OtpToken;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -169,6 +171,22 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(errorCode.getCode()).referenceNumber(reference).build()).build());
+    }
+
+    @PostMapping("/otp")
+    public ResponseEntity<WsResponse<?>> otpRegistration(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication, HttpServletRequest request) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+
+        String mobileNumber = userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber();
+        String otp = otpService.createOtp(loggedInUserUin, mobileNumber);
+        log.debug("###################### OTP for [{}] : {} in edit contacts", loggedInUserUin, otp);
+        String maskedMobileNumber = mobileNumber == null ? null : mobileNumber.replaceAll("\\b\\d+(\\d{3})", "*******$1");
+        String maskedEmail = userContacts.getEmail() == null ? null : userContacts.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");
+        // return the Otp Token
+        OtpToken token = new OtpToken(true, otpService.getOtpExpiryMinutes(), loggedInUserUin, null, null, maskedMobileNumber, maskedEmail);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(token).build());
     }
 
     /**

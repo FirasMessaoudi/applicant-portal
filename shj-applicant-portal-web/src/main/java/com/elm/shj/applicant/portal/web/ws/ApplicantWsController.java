@@ -150,4 +150,13 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(errorCode.getCode()).referenceNumber(reference).build()).build());
     }
+
+    @GetMapping("/company-details/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findApplicantCompanyDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        CompanyLiteDto companyDetails = userService.findCompanyDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(companyDetails).build());
+    }
 }
