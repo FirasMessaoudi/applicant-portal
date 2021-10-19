@@ -26,8 +26,8 @@ public class HousingZoneDto implements Serializable {
     private static final long serialVersionUID = 7575765144322740810L;
 
     private long id;
-    private String nameAr;
-    private String nameEn;
+    private String labelAr;
+    private String labelEn;
     private String color;
     @JsonBackReference("packageHousings")
     private List<PackageHousingDto> packageHousings;
