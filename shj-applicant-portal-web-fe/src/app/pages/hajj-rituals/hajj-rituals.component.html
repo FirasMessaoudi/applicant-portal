@@ -70,34 +70,24 @@
               <div class="row">
                 <div class="col-6 col-md-6 mb-3">
                   <label class="col-form-label pb-1 light-primary d-flex align-items-center">
-                    <svg-icon
-                      styleClass="mr-2 mb-0 h5 mt-2  "
-                      icon="map-marker-alt-solid"
-                    ></svg-icon>
-                    <span class="col-form-label px-md-1 pb-0">{{'card-management.location_name' | translate}}</span>
+                    <svg-icon styleClass="mr-2 mb-0 h5 mt-2" icon="map-marker-alt-solid"></svg-icon>
+                    <span class="col-form-label px-md-1 pb-0 form-control-plaintext">{{'card-management.location_name' | translate}}</span>
                   </label>
                   <p class="pl-4">{{currentLanguage.startsWith("en") ? step.locationNameEn : step.locationNameAr}}</p>
                 </div>
                 <div class="col-6 col-md-6 mb-3">
                   <label class="col-form-label pb-1 light-primary d-flex align-items-center">
-                    <svg-icon
-                      styleClass="mr-2 mb-0 h5 mt-2 "
-                      icon="bus-solid"
-                    ></svg-icon>
-                    <span class="col-form-label px-md-1 pb-0">
+                    <svg-icon styleClass="mr-2 mb-0 h5 mt-2" icon="bus-solid"></svg-icon>
+                    <span class="col-form-label px-md-1 pb-0 form-control-plaintext">
                       {{'program-management.transportation_type' | translate}}
                     </span>
                   </label>
-                  <p
-                    class="pl-4">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
+                  <p class="pl-4">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
                 </div>
                 <div class="col-6 col-md-6 mb-3">
                   <label class="col-form-label pb-1 light-primary d-flex align-items-center">
-                    <svg-icon
-                      styleClass="mr-2 mb-0 h5 mt-2  "
-                      icon="clock-solid"
-                    ></svg-icon>
-                    <span class="col-form-label px-md-1 pb-0">
+                    <svg-icon styleClass="mr-2 mb-0 h5 mt-2" icon="clock-solid"></svg-icon>
+                    <span class="col-form-label px-md-1 pb-0 form-control-plaintext">
                       {{'program-management.departure_time' | translate}}
                     </span>
                   </label>
@@ -106,8 +96,7 @@
               </div>
               <div class="mb-3 flex-grow-1">
                 <ul *ngIf="lookupService().localizedDescription(this.ritualStepLabels, step.stepCode)">
-                  <li
-                    *ngFor="let last = last; let item of lookupService().localizedDescription(this.ritualStepLabels, step.stepCode).split(',')">
+                  <li *ngFor="let last = last; let item of lookupService().localizedDescription(this.ritualStepLabels, step.stepCode).split(',')">
                     {{item}}
                     <span *ngIf="last"></span>
                   </li>
@@ -116,7 +105,7 @@
               <div class="row">
                 <div class="col-6 col-md-6 mt-md-3">
                   <!--BACK BUTTON-->
-                  <a class="d-block" 
+                  <a class="d-block"
                   data-toggle="collapse"
                      [href]="'#collapseRitualsStep' + step.id"
                      aria-controls="collapseOne"
@@ -133,14 +122,14 @@
                   <a class="d-block text-right" *ngIf="!addedAlert" (click)="addedAlert = !addedAlert"
                      href="javascript:void(0);">
                     <span class="mx-2 px-1">{{'program-management.add_to_alerts' | translate}}</span>
-  
+
                     <svg-icon styleClass="flip" icon="bell-plus-light"></svg-icon>
                   </a>
-  
+
                   <a class="d-block text-right" (click)="addedAlert = !addedAlert" *ngIf="addedAlert"
                      href="javascript:void(0);">
                     <span class="mx-2 px-1">{{'program-management.added_to_alerts' | translate}}</span>
-  
+
                     <svg-icon styleClass=" flip" icon="bell-on-solid"></svg-icon>
                   </a>
                 </div>
