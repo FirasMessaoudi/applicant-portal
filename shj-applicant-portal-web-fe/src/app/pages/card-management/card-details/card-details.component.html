@@ -36,7 +36,7 @@
       </div>
       <div class="form-control-plaintext text-center text-md-left">
         <span class="mr-3" *ngIf="applicant?.uin as value; else elseBlock">{{value}}</span>
-        <span>
+        <span class="status_wraper">
           <span class="status done mr-1"></span>
           <span>{{'card-management.status_active' | translate}}</span>
         </span>
@@ -49,14 +49,14 @@
       </div>
       <div *ngIf="applicant?.cardReferenceNumber as value; else elseBlock" class="form-control-plaintext text-center text-md-left">
         <span class="mr-3">{{value}}</span>
-        <span>
+        <span class="status_wraper">
           <span class="status {{buildStatusClass(applicant?.cardStatusCode)}} mr-1"></span>
           <span>{{applicant?.cardStatusCode ? getCardStatus(applicant?.cardStatusCode) : '---'}}</span>
         </span>
       </div>
     </div>
 
-    <div class="col-12 col-md-4 order-0 order-md-3 d-flex justify-content-center">
+    <div class="col-12 col-md-4 order-0 order-md-3 d-flex justify-content-center maskAv">
             <span class="avatar">
         <img
           [src]="

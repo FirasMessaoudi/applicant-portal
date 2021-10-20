@@ -25,4 +25,8 @@ public class CompanyLiteDto implements Serializable {
     private String labelEn;
 
     private String contactNumber;
+
+    private double locationLat;
+
+    private double locationLng;
 }

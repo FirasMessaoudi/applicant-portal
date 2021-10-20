@@ -20,7 +20,7 @@ import {Lookup} from "@model/lookup.model";
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SettingsComponent implements OnInit {
   seasons: number [] = [];
   applicantRituals: ApplicantRitualLite [] = [];
   selectedSeason: number;
@@ -194,15 +194,6 @@ export class SettingsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.contactsForm.disable();
     }
   }
-
-  ngAfterViewInit() {
-    document.querySelector('body').classList.add('settings');
-  }
-
-  ngOnDestroy() {
-    document.querySelector('body').classList.remove('settings');
-  }
-
 
   public openTypeahead(): void {
     // Dispatch event on input element that NgbTypeahead is bound to

@@ -13,10 +13,10 @@
     </h3>
   </div>
 
-  <form class="d-inline-block w-100">
+  <form class="col-xl-4 col-lg-6">
 
-    <div class="row form-group">
-      <div class="col-12 px-0">
+    <div class="form-group">
+      
         <label for="inputEmail">{{'general.language'|translate}}</label>
         <div class="input-group flex-grow-1">
           <div class="setBox flex-grow-1" role="group">
@@ -48,12 +48,12 @@
             </div>
           </div>
         </div>
-      </div>
+      
     </div>
 
-    <form [formGroup]="contactsForm" class="row form-group">
+    <form [formGroup]="contactsForm">
 
-      <div class="col-md-5 pl-0 pr-1 mb-3 mb-md-0" role="group">
+      <div class="form-group">
         <label>{{"general.email"|translate}}</label>
         <div class="input-group">
 
@@ -67,14 +67,14 @@
           </div>
         </div>
       </div>
-      <div class="col-md-7 px-0" role="group">
+      <div class="form-group">
         <label> {{"general.mobile_number"|translate}}</label>
         <div class="input-group flex-nowrap">
           <div ngbDropdown #countryListDropdown="ngbDropdown" (openChange)="onOpenChange($event)" class="d-inline-block w-100">
             <div class="input-group">
-              <button class="btn btn-outline-gray-300 shadow-none country-prefix-button" id="dropdown1" ngbDropdownToggle
+              <button class="btn btn-link ltr country-prefix-button" id="dropdown1" ngbDropdownToggle
                       (click)="openTypeahead()" [disabled]="!this.contactsForm.enabled">
-                <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode?.toLowerCase()}}"></span>
+                <span class="flag-icon flag-icon-{{selectedCountryCode?.toLowerCase()}}"></span>
                 {{selectedCountryPrefix}}
               </button>
               <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="15"
@@ -83,7 +83,7 @@
 
               <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown1">
                 <ng-template #rt let-r="result" let-t="term">
-                  <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}} flag-icon-selected"></span>
+                  <span class="flag-icon flag-icon-{{r['code'].toLowerCase()}} flag-icon-selected"></span>
                   <ngb-highlight [result]="r.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
                 </ng-template>
                 <input id="typeahead-template"
@@ -135,9 +135,9 @@
       </div>
     </form>
 
-    <hr class="mx-n3 mb-4">
+    <hr class="mb-4">
 
-    <div class="row form-group">
+    <div class="form-group pb-4">
 
       <a class="btn btn-block btn-outline-dcc-primary px-4 setBox" [routerLink]="['/change-password']"
          routerLinkActive="router-link-active">
