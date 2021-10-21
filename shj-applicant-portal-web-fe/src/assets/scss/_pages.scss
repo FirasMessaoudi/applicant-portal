@@ -338,9 +338,16 @@ tr:hover .tblView {
     width: 50%;
     background-color: #FFF;
     position: absolute;
-    left: -1px;
     display: block;
     bottom: -80px;
+    
+    [dir="rtl"] & {
+      left: -1px;
+    }
+    [dir="ltr"] & {
+      right: -1px;
+    }
+
   }
 }
 
@@ -633,4 +640,9 @@ ngb-typeahead-window.dropdown-menu {
 
 
 
+.chevron{
 
+  [dir='ltr'] & {
+    transform: scaleX(-1);
+  }
+}
