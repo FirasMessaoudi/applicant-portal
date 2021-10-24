@@ -1,4 +1,5 @@
 export class DetailedUserNotification {
+  id: number;
   resolvedBody: string;
   statusCode: string;
   categoryCode: string;

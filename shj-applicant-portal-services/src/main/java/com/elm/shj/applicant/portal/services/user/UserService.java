@@ -489,6 +489,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.findUserNotificationsById(userId);
     }
 
+    public int markUserNotificationAsRead(long notificationId) {
+        return integrationService.markUserNotificationAsRead(notificationId);
+    }
+
     public CompanyLiteDto findCompanyDetailsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.loadCompanyDetails(uin, ritualId);
     }

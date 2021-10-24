@@ -92,18 +92,22 @@
                   ({{privateNotifications?.length}})</b></a>
                 <ng-template ngbNavContent>
 
-                  <div class="d-flex border-bottom p-3 state-success" *ngFor="let notification of privateNotifications">
+                  <div class="d-flex border-bottom p-3 state-success"
+                       *ngFor="let notification of privateNotifications ; let i = index" [attr.data-index]="i">
                     <div class="nIcon mr-3">
                       <svg-icon styleClass="fa-w-18" icon="state-success"></svg-icon>
                     </div>
-                    <div class="w-100">
+                    <div class="w-100" (click)="markAsRead(notification,i)">
                       <div>
                         <div class="flex-center-between align-items-start">
                           <b class="text-dark">{{notification?.title}}</b>
                           <div class="d-flex">
                             <small
                               class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                            <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
+                            <svg-icon *ngIf="notification.statusCode=='READ'" styleClass="text-light-gray"
+                                      icon="read"></svg-icon>
+                            <svg-icon *ngIf="notification.statusCode!='READ'" styleClass="text-light-gray"
+                                      icon="unread"></svg-icon>
                           </div>
                         </div>
                         <p class="mt-2 mb-3">{{notification?.resolvedBody}}</p>

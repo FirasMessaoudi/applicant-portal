@@ -56,6 +56,8 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
     private final String NOTIFICATION_URL = "/ws/notification";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
+    private final String MARK_NOTIFICATIONS_READ_URL = NOTIFICATION_URL + "/mark-as-read";
+
     private final String COMPANY_DETAILS_URL = "/ws/company-details";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -529,6 +531,26 @@ public class IntegrationService {
             log.error("Cannot authenticate to send Password Expiry Notification Request", e);
         }
     }
+
+
+    /**
+     * mark User Notification As Read
+     *
+     * @param notificationId the id of the notification to be marked as read
+     * @return the User Notifications count of affected rows
+     */
+    public int markUserNotificationAsRead(Long notificationId) {
+        WsResponse<Integer> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(MARK_NOTIFICATIONS_READ_URL + "/" + notificationId, HttpMethod.POST, null,
+                    new ParameterizedTypeReference<WsResponse<Integer>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to mark User Notification As Read", e);
+        }
+        return wsResponse.getBody();
+    }
+
 
     public CompanyLiteDto loadCompanyDetails(String uin, Long ritualId) {
         WsResponse<CompanyLiteDto> wsResponse = null;

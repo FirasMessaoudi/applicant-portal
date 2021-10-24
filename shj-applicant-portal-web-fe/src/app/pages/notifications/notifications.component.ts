@@ -3,6 +3,7 @@ import {UserService} from "@core/services";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import * as momentjs from 'moment';
 import {I18nService} from "@dcc-commons-ng/services";
+import {NotificationService} from "@core/services/notification/notification.service";
 
 const moment = momentjs;
 
@@ -24,6 +25,7 @@ export class NotificationsComponent implements OnInit {
   ]
 
   constructor(private userService: UserService,
+              private notificationService: NotificationService,
               private i18nService: I18nService) {
   }
 
@@ -32,11 +34,20 @@ export class NotificationsComponent implements OnInit {
   }
 
   loadNotifications() {
-    this.userService.getNotifications().subscribe(data => {
+    this.notificationService.getNotifications().subscribe(data => {
       this.allNotifications = data;
       this.privateNotifications = data.filter(notification => notification.userSpecific);
       this.publicNotifications = data.filter(notification => !notification.userSpecific);
     });
+  }
+
+  markAsRead(notification: DetailedUserNotification, index: number) {
+    if (notification.statusCode != "READ") {
+      this.notificationService.markAsRead(notification.id).subscribe(data => {
+        if (data > 0)
+          this.privateNotifications[index].statusCode = "READ";
+      });
+    }
   }
 
   getRelativeTime(date: Date) {
