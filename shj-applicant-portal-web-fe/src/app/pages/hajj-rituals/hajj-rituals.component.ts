@@ -131,7 +131,8 @@ export class HajjRitualsComponent implements OnInit {
           return marker;
         })
         const bounds = this.getBounds(this.markers);
-        this.map.googleMap.fitBounds(bounds);
+        if (this.map && this.map.googleMap)
+          this.map.googleMap.fitBounds(bounds);
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found'),
           this.translate.instant('general.dialog_error_title'));

@@ -71,27 +71,27 @@
                 <div class="col-6 col-md-6 mb-3">
                   <label class="col-form-label pb-1 light-primary d-flex align-items-center">
                     <svg-icon styleClass="mr-2 mb-0 h5 mt-2" icon="map-marker-alt-solid"></svg-icon>
-                    <span class="col-form-label px-md-1 pb-0 form-control-plaintext">{{'card-management.location_name' | translate}}</span>
+                    <span class="col-form-label px-md-1 pb-0">{{'card-management.location_name' | translate}}</span>
                   </label>
-                  <p class="pl-4">{{currentLanguage.startsWith("en") ? step.locationNameEn : step.locationNameAr}}</p>
+                  <p class="pl-4 form-control-plaintext">{{currentLanguage.startsWith("en") ? step.locationNameEn : step.locationNameAr}}</p>
                 </div>
                 <div class="col-6 col-md-6 mb-3">
                   <label class="col-form-label pb-1 light-primary d-flex align-items-center">
                     <svg-icon styleClass="mr-2 mb-0 h5 mt-2" icon="bus-solid"></svg-icon>
-                    <span class="col-form-label px-md-1 pb-0 form-control-plaintext">
+                    <span class="col-form-label px-md-1 pb-0">
                       {{'program-management.transportation_type' | translate}}
                     </span>
                   </label>
-                  <p class="pl-4">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
+                  <p class="pl-4 form-control-plaintext">{{step.transportationTypeCode ? lookupService().localizedLabel(transportationTypes, step.transportationTypeCode) : ''}}</p>
                 </div>
                 <div class="col-6 col-md-6 mb-3">
                   <label class="col-form-label pb-1 light-primary d-flex align-items-center">
                     <svg-icon styleClass="mr-2 mb-0 h5 mt-2" icon="clock-solid"></svg-icon>
-                    <span class="col-form-label px-md-1 pb-0 form-control-plaintext">
+                    <span class="col-form-label px-md-1 pb-0">
                       {{'program-management.departure_time' | translate}}
                     </span>
                   </label>
-                  <p class="pl-4">{{step.time | date: 'hh:mm'}}</p>
+                  <p class="pl-4 form-control-plaintext">{{step.time | date: 'hh:mm'}}</p>
                 </div>
               </div>
               <div class="mb-3 flex-grow-1">

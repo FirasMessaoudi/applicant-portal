@@ -236,8 +236,9 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     this.userService.getLatestRitualSeason().subscribe(season => {
       if (season) {
         this.otpStorage.ritualSeasonSubject.next(season);
-        localStorage.setItem('selectedRitualSeason', JSON.stringify(season));
-        localStorage.setItem('latestRitualSeason', JSON.stringify(season));
+        let seasonStr = JSON.stringify(season);
+        localStorage.setItem('selectedRitualSeason', seasonStr);
+        localStorage.setItem('latestRitualSeason', seasonStr);
         this.userService.changeSelectedApplicantRitual(season);
       }
     });
