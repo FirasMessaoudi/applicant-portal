@@ -45,7 +45,7 @@ export class NotificationsComponent implements OnInit {
     if (notification.statusCode != "READ") {
       this.notificationService.markAsRead(notification.id).subscribe(data => {
         if (data > 0)
-          this.privateNotifications[index].statusCode = "READ";
+          this.allNotifications[index].statusCode = "READ";
       });
     }
   }
