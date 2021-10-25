@@ -4,6 +4,8 @@
     <div>
       <svg-icon class="mr-3" styleClass="fa" icon="lightbulb-exclamation"></svg-icon>
       <span>{{'header.alert_text' | translate}}</span>
+      {{selectedRitualSeason?.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, selectedRitualSeason?.ritualSeason?.ritualTypeCode) : ""}}
+      <span>{{'header.season' | translate}}</span>
       {{selectedRitualSeason?.ritualSeason?.seasonYear}}
     </div>
     <a class="reset-btn noArrow py-1 px-3" (click)="backToLatestRitualSeason()">
@@ -232,7 +234,8 @@
               {{s.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, s.ritualSeason?.ritualTypeCode) : ""}}
               <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
               {{s.ritualSeason?.seasonYear}}
-              <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}})</span>
+              <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}}
+                )</span>
             </div>
             <div>
               <svg-icon *ngIf="s.selected" class="check-circle" styleClass="fa2x mr-2" icon="check-circle"></svg-icon>
