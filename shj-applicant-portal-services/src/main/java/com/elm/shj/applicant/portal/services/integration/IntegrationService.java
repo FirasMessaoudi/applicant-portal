@@ -57,6 +57,7 @@ public class IntegrationService {
     private final String NOTIFICATION_URL = "/ws/notification";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final String COMPANY_DETAILS_URL = "/ws/company-details";
+    private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -539,6 +540,23 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load company details.", e);
             return null;
+        }
+        return wsResponse.getBody();
+    }
+    /**
+     * Load health immunization  from command portal.
+     *
+     * @return
+     */
+    public List<HealthImmunizationLookupDto> loadHealthImmunizations() {
+        WsResponse<List<HealthImmunizationLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(HEALTH_IMMUNIZATION_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<HealthImmunizationLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load health immunization.", e);
+            return Collections.emptyList();
         }
         return wsResponse.getBody();
     }

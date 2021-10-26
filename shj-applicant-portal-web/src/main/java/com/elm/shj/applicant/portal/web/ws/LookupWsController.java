@@ -197,5 +197,12 @@ public class LookupWsController {
                         .body(transportationTypeLookupDtos).build());
     }
 
-
+    @GetMapping("/health-immunization/list")
+    public ResponseEntity<WsResponse<?>> listHealthImmunization(Authentication authentication) {
+        log.debug("list health immunizations...");
+        List<HealthImmunizationLookupDto> healthImmunizationLookup = lookupService.retrieveHealthImmunizations();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(healthImmunizationLookup).build());
+    }
 }
