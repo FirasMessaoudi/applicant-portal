@@ -43,6 +43,7 @@ public class LookupService {
     private List<CompanyStaffTitleLookupDto> staffTitles;
     private List<HousingSiteLookupDto> housingSites;
     private List<TransportationTypeLookupDto> transportationTypes;
+    private List<HealthImmunizationLookupDto> healthImmunizations;
     private List<ApplicantDigitalIdStatusLookupDto> applicantDigitalIdStatuses;
 
     @PostConstruct
@@ -64,6 +65,7 @@ public class LookupService {
         this.packageTypes = integrationService.loadPackageTypes();
         this.housingSites = integrationService.loadHousingSites();
         this.transportationTypes = integrationService.loadTransportationTypes();
+        this.healthImmunizations = integrationService.loadHealthImmunizations();
         this.applicantDigitalIdStatuses = integrationService.loadDigitalIdStatuses();
     }
 
@@ -126,5 +128,6 @@ public class LookupService {
     public String retrieveGoogleMapKey() {
         return this.googleMapKey;
     }
+    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations(){return healthImmunizations;}
 
 }

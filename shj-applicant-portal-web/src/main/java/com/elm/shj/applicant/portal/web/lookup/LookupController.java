@@ -6,9 +6,11 @@ package com.elm.shj.applicant.portal.web.lookup;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
+import com.elm.shj.applicant.portal.web.ws.WsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -159,6 +161,11 @@ public class LookupController {
         log.debug("load google map key");
         return lookupService.retrieveGoogleMapKey();
     }
+    @GetMapping("/health-immunization/list")
+    public List<HealthImmunizationLookupDto> listHealthImmunization(Authentication authentication) {
+        log.debug("list health immunizations...");
+        return lookupService.retrieveHealthImmunizations();
 
+    }
 
 }
