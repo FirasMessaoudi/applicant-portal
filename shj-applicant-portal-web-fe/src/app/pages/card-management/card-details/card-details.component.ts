@@ -47,6 +47,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   ritualStepsLabels: Lookup[];
   groupLeaderTitle: Lookup[];
   cardStatuses: Lookup[];
+  immunizations: Lookup[];
   languageNativeName = Language;
   selectedApplicantRitual: ApplicantRitualLite;
   activeId = 1;
@@ -187,12 +188,18 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.cardService.findTransportationTypes().subscribe(result => {
       this.transportationTypes = result;
     });
+
     this.cardService.findCardStatuses().subscribe(result => {
       this.cardStatuses = result;
-    })
+    });
+
     this.cardService.findDigitalIdStatuses().subscribe(result => {
       this.applicantStatuses = result;
-    })
+    });
+
+    this.cardService.findHealthImmunizations().subscribe(result => {
+      this.immunizations = result;
+    });
   }
 
   getCardStatus(code: string): string {

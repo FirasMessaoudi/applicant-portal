@@ -128,6 +128,7 @@ public class LookupService {
     public String retrieveGoogleMapKey() {
         return this.googleMapKey;
     }
-    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations(){return healthImmunizations;}
+
+    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations() { return healthImmunizations; }
 
 }
