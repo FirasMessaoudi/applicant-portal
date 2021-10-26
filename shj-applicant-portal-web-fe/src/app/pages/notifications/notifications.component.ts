@@ -36,8 +36,6 @@ export class NotificationsComponent implements OnInit {
   loadNotifications() {
     this.notificationService.getNotifications().subscribe(data => {
       this.allNotifications = data;
-      this.privateNotifications = data.filter(notification => notification.userSpecific);
-      this.publicNotifications = data.filter(notification => !notification.userSpecific);
     });
   }
 
@@ -61,5 +59,23 @@ export class NotificationsComponent implements OnInit {
 
   get currentLanguage(): string {
     return this.i18nService.language;
+  }
+
+  buildIcon(categoryCode): String {
+    let category = categoryCode.toUpperCase();
+    switch (category) {
+      case 'GENERAL':
+        return "state-default";
+      case 'HEALTH':
+        return "state-health";
+      case 'RELIGIOUS':
+        return "state-religious";
+      case 'RITUAL':
+        return "state-ritual";
+      case 'GENERAL_AWARENESS':
+        return "state-info";
+      default:
+        return "state-default";
+    }
   }
 }

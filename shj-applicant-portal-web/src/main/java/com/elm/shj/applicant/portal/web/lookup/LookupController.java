@@ -148,6 +148,12 @@ public class LookupController {
         return lookupService.retrieveTransportationTypes();
     }
 
+    @GetMapping("/digital-id-status/list")
+    public List<ApplicantDigitalIdStatusLookupDto> listApplicantStatuses(Authentication authentication) {
+        log.debug("list applicant digital ID statuses...");
+        return lookupService.retrieveApplicantStatuses();
+    }
+
     @GetMapping("/map-key")
     public String mapKey() {
         log.debug("load google map key");

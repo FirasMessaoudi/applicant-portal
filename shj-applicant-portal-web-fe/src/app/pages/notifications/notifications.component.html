@@ -100,7 +100,8 @@
 
         <div class="d-flex border-bottom py-4 state-ritual">
           <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-ritual"></svg-icon>
+            <svg-icon *ngIf="notification.important" styleClass="fa-w-18" icon="state-default"></svg-icon>
+            <svg-icon *ngIf="!notification.important" styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode)}}"></svg-icon>
           </div>
           <div class="w-100">
             <div>
@@ -149,7 +150,7 @@
       <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.public_notifications" | translate}} ({{publicNotifications?.length}})</b></a>
       <ng-template ngbNavContent>
 
-<!--        <div class="d-flex border-bottom py-4 state-religious">
+        <div class="d-flex border-bottom py-4 state-religious">
           <div class="nIcon mx-3">
             <svg-icon styleClass="fa-w-18" icon="state-religious"></svg-icon>
           </div>
@@ -257,11 +258,12 @@
 
             </div>
           </div>
-        </div>-->
+        </div>
 
         <div class="d-flex border-bottom py-4 state-general" *ngFor="let notification of publicNotifications">
           <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-general"></svg-icon>
+            <svg-icon *ngIf="notification.important" styleClass="fa-w-18" icon="state-info"></svg-icon>
+            <svg-icon *ngIf="!notification.important" styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode)}}"></svg-icon>
           </div>
           <div class="w-100">
             <div>
@@ -290,7 +292,8 @@
       <ng-template ngbNavContent>
         <div class="d-flex border-bottom py-4 state-general" *ngFor="let notification of allNotifications">
           <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-general"></svg-icon>
+            <svg-icon *ngIf="notification.important" styleClass="fa-w-18" icon="state-default"></svg-icon>
+            <svg-icon *ngIf="!notification.important" styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode)}}"></svg-icon>
           </div>
           <div class="w-100">
             <div>

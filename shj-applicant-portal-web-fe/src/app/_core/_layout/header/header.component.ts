@@ -93,7 +93,9 @@ export class HeaderComponent implements OnInit {
     this.selectedRitualSeason = JSON.parse((localStorage.getItem('selectedRitualSeason')));
     this.latestRitualSeason = JSON.parse((localStorage.getItem('latestRitualSeason')));
 
-    this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+    if (this.selectedRitualSeason?.id && this.latestRitualSeason?.id) {
+      this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+    }
 
     this.loadNotifications();
 

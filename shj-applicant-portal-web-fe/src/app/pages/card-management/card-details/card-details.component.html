@@ -46,7 +46,7 @@
       <div *ngIf="applicant?.cardReferenceNumber as value; else elseBlock" class="form-control-plaintext text-center text-md-left">
         <span class="mr-3">{{value}}</span>
         <span class="status_wraper">
-          <span class="status {{buildStatusClass(applicant?.cardStatusCode)}} mr-1"></span>
+          <span class="status {{buildCardStatusClass(applicant?.cardStatusCode)}} mr-1"></span>
           <span>{{applicant?.cardStatusCode ? getCardStatus(applicant?.cardStatusCode) : '---'}}</span>
         </span>
       </div>

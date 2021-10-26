@@ -3,23 +3,25 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Dto class for the company staff title domain.
+ * Dto class for the applicant digital ID status domain.
  *
  * @author Slim Ben Hadj
  * @since 1.0.0
  */
 @NoArgsConstructor
-@Data
-public class CompanyStaffTitleLookupDto implements Serializable {
+@Getter
+@Setter
+public class ApplicantDigitalIdStatusLookupDto implements Serializable {
 
-    private static final long serialVersionUID = -8167016824821086778L;
+    private static final long serialVersionUID = -5105135526667569959L;
 
     private long id;
     private String code;

@@ -16,6 +16,7 @@ import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
 import {CardStatus} from "@model/enum/card-status.enum";
+import {DigitalIdStatus} from "@model/enum/digital-id-status.enum";
 
 @Component({
   selector: 'app-card-details',
@@ -30,7 +31,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
-  activeCardStatus = 'Active';
+  applicantStatuses: Lookup[] = [];
   applicantPackage: ApplicantPackageDetails = null;
   loading = true
   ritualTypes: Lookup[] = [];
@@ -149,7 +150,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.cardService.findRitualTypes().subscribe(result => {
       this.ritualTypes = result;
     });
-
     this.cardService.findRelativeRelationships().subscribe(result => {
       this.relativeRelationships = result;
     });
@@ -190,6 +190,9 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     this.cardService.findCardStatuses().subscribe(result => {
       this.cardStatuses = result;
     })
+    this.cardService.findDigitalIdStatuses().subscribe(result => {
+      this.applicantStatuses = result;
+    })
   }
 
   getCardStatus(code: string): string {
@@ -204,7 +207,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
    *
    * @param status the current card status
    */
-  buildStatusClass(status: any): string {
+  buildCardStatusClass(status: any): string {
     switch (status) {
       case CardStatus.ACTIVE:
         return "done";
@@ -212,6 +215,17 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         return "Suspended";
       case CardStatus.CANCELLED:
         return "new";
+      default:
+        return "done";
+    }
+  }
+
+  buildDigitalIdClass(status: any): string {
+    switch (status) {
+      case DigitalIdStatus.VALID:
+        return "done";
+      case DigitalIdStatus.INVALID:
+        return "Suspended";
       default:
         return "done";
     }
