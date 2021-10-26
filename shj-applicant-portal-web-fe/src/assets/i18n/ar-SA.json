@@ -1,5 +1,5 @@
 {
-  "validation.constraints" : {
+  "validation.constraints": {
     "data-segment": {
       "missing": "عنصر شريحة البيانات مفقودة!",
       "not-found": "لم يتم العثور على شريحة البيانات المطلوبة!",
@@ -133,7 +133,9 @@
     "change_ritual_modal_title": "اختر موسم الحج أو العمرة الذي تريد عرض بياناته",
     "change_ritual_modal_caution": "ستتأثر جميع البيانات المعروضة بهذا التغيير",
     "notifications": "التنبيهات",
-    "current_year": "العام الحالي"
+    "current_year": "العام الحالي",
+    "alert_text": "جميع البيانات المعروضة الآن هي البيانات السابقة لك في",
+    "season": "موسم"
   },
   "settings": {
     "ritual-type": "نوع الشعيرة",
@@ -236,10 +238,10 @@
     "btn_new_registration": "لاتمتلك حساب؟ قم بالتسجيل الآن.",
     "btn_forgot_password": "نسيت كلمة المرور؟",
     "invalid_username_or_password": "كلمة المرور او اسم المستخدم غير صحيحة",
-    "invalid_uin_or_password":"رقم هوية الشعائر وكلمة المرور غير متطابقة.",
+    "invalid_uin_or_password": "رقم هوية الشعائر وكلمة المرور غير متطابقة.",
     "otp_remaining_time": "الوقت المتبقي:",
     "otp_text": "الرجاء إدخال الرمز الذي تم إرساله إلى رقم الهاتف الجوال الذي سجلت به",
-    "invalid_otp":"رمز التحقق غير صحيح! الرجاء المحاولة مرة اخرى...",
+    "invalid_otp": "رمز التحقق غير صحيح! الرجاء المحاولة مرة اخرى...",
     "user_already_logged_in": "المستخدم مرتبط بجلسة فعالة",
     "user_is_deactivated": "المستخدم غير مفعّل"
   },
@@ -274,7 +276,6 @@
     "btn_back_to_login": "العودة لتسجيل الدخول",
     "success_text": "تم إرسال كلمة المرور الموقتة على جوالك نامل الدخول وتعديل كلمة المرور ",
     "invalid_uin_or_birthdate": "رقم هوية الشعائر و تريخ الميلاد غير متطابقة."
-
   },
   "footer": {
     "copyright": "* نسخة تجريبية * جميع الحقوق محفوظة، شركة علم {{year}}",
@@ -403,7 +404,7 @@
     "thursday": "الخميس"
   },
   "hijri-months": {
-    "muharram" : "محرم",
+    "muharram": "محرم",
     "safar": "صفر",
     "rabi_al_awwal": "ربيع الأول",
     "rabi_al_thani": "ربيع الثاني",
@@ -412,7 +413,7 @@
     "rajab": "رجب",
     "shaaban": "شعبان",
     "ramadan": "رمضان",
-    "shawwal":  "شوال",
+    "shawwal": "شوال",
     "dhu_al_qidah": "ذي القعدة",
     "dhu_al_hijjah": "ذي الحجة"
   },
@@ -506,7 +507,7 @@
     "morshid_name": "اسم المرشد",
     "morshid_title": "دور المرشد",
     "morshid_contact_number": "رقم التواصل",
-    "hajj_identity":"هوية الحاج",
+    "hajj_identity": "هوية الحاج",
     "card_number": "رقم البطاقة",
     "main": "الرئيسية",
     "my_profile": "بياناتي",
@@ -514,18 +515,17 @@
     "yes": "نعم",
     "no": "لا",
     "main": "الاساسي",
-
     "package_type": "نوع الباقة",
-    "camp_class":"فئة المخيم",
+    "camp_class": "فئة المخيم",
     "company_number": "رقم الشركة",
     "company_name": "اسم الشركة",
     "company_contact_number": "رقم تواصل الشركة",
     "location": "الموقع",
     "from": "من",
-    "to" : "إلى",
+    "to": "إلى",
     "BREAKFAST": "فطار",
     "LUNCH": "غداء",
-    "DINNER":"عشاء",
+    "DINNER": "عشاء",
     "package_details": "بيانات الباقة",
     "status_active": "نشط"
   },

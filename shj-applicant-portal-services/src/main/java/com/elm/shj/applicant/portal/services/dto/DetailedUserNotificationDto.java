@@ -19,7 +19,7 @@ import java.util.Date;
 public class DetailedUserNotificationDto implements Serializable {
 
     private static final long serialVersionUID = 5803144348731445920L;
-
+    private long id;
     private String resolvedBody;
     private String statusCode;
     private String categoryCode;

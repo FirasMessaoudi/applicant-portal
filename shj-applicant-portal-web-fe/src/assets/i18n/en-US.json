@@ -133,7 +133,9 @@
     "change_ritual_modal_title": "Choose the Hajj or Umrah season you want to view data",
     "change_ritual_modal_caution": "All data displayed will be affected by this change",
     "notifications": "Notifications",
-    "current_year": "Current year"
+    "current_year": "Current year",
+    "alert_text": "All data displayed now is your previous data for",
+    "season": "season"
   },
   "settings": {
     "ritual-type": "Ritual type",
@@ -403,7 +405,7 @@
     "thursday": "Thursday"
   },
   "hijri-months": {
-    "muharram" : "Muharram",
+    "muharram": "Muharram",
     "safar": "Safar",
     "rabi_al_awwal": "Rabi' al-awwal",
     "rabi_al_thani": "Rabi' al-thani",
@@ -412,7 +414,7 @@
     "rajab": "Rajab",
     "shaaban": "Sha'aban",
     "ramadan": "Ramadan",
-    "shawwal":  "Shawwal",
+    "shawwal": "Shawwal",
     "dhu_al_qidah": "Dhu al-Qi'dah",
     "dhu_al_hijjah": "Dhu al-Hijjah"
   },

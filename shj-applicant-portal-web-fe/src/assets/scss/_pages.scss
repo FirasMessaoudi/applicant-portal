@@ -257,6 +257,12 @@ tr:hover .tblView {
   visibility: visible;
 }
 
+.status_wraper{
+  font-size: 14px;
+  color: #666;
+  font-weight: normal;
+  white-space: nowrap;
+}
 .status {
   display: inline-block;
   min-width: 8px;
@@ -306,6 +312,7 @@ tr:hover .tblView {
   padding: 5px;
   background-color: #f3f3f3;
   border: 2px #d3e2c5 solid;
+  z-index: 1;
 
   img {
     width: 154px;
@@ -318,6 +325,29 @@ tr:hover .tblView {
     display: inline-flex;
     margin-bottom: 1rem;
     margin-bottom: 1rem;
+  }
+
+}
+
+.maskAv{
+  position: relative;
+
+  &::after{
+    content: "";
+    height: 20px;
+    width: 50%;
+    background-color: #FFF;
+    position: absolute;
+    display: block;
+    bottom: -80px;
+    
+    [dir="rtl"] & {
+      left: -1px;
+    }
+    [dir="ltr"] & {
+      right: -1px;
+    }
+
   }
 }
 
@@ -473,10 +503,25 @@ ngb-typeahead-window.dropdown-menu {
 }
 
 .dropdown-toggle.country-prefix-button {
-  direction: ltr;
-  width: 115px;
-  @include media-breakpoint-down(md) {
-    width: 100px;
+  color: #6C6C6C;
+  background-color: #F8F8F8;
+  cursor: pointer;
+  box-shadow: none;
+  border: 1px solid #d8d8d8;
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+
+  [dir='rtl'] & {
+    border-right: 0;
+  }
+  [dir='ltr'] & {
+    border-left: 0;
+  }
+
+  &:disabled{
+    background-color: #d8d8d8;
+    /* color: #6c757d;
+    opacity: 1; */
   }
 }
 
@@ -595,4 +640,9 @@ ngb-typeahead-window.dropdown-menu {
 
 
 
+.chevron{
 
+  [dir='ltr'] & {
+    transform: scaleX(-1);
+  }
+}

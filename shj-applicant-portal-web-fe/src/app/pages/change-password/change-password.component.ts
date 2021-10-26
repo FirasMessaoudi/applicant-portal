@@ -78,10 +78,11 @@ export class ChangePasswordComponent implements OnInit {
         }
 
       } else {
-        this.loading = false;
         this.toastr.success(this.translate.instant('change-password.success_text'), this.translate.instant('change-password.title'));
         this.logout();
       }
+      this.loading = false;
+
     });
   }
 

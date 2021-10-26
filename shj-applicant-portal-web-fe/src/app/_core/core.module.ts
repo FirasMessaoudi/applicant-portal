@@ -22,6 +22,7 @@ import {LOGIN_URL, PUBLIC_URL_PATTERNS} from "@core/guards/authentication.guard"
 import {TranslateModule} from "@ngx-translate/core";
 import {LookupService} from "@core/utilities/lookup.service";
 import {OtpStorage} from "@pages/otp/otp.storage";
+import {NotificationService} from "@core/services/notification/notification.service";
 
 
 @NgModule({
@@ -47,6 +48,7 @@ import {OtpStorage} from "@pages/otp/otp.storage";
   providers: [
     UtilityService,
     UserService,
+    NotificationService,
     DashboardService,
     RegisterService,
     AuthenticationService,

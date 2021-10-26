@@ -14,6 +14,8 @@ import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import * as momentjs from 'moment';
 import * as moment_ from 'moment-hijri';
+import {NotificationService} from "@core/services/notification/notification.service";
+
 const momentHijri = moment_;
 
 const moment = momentjs;
@@ -43,8 +45,7 @@ export class HeaderComponent implements OnInit {
   allNotifications: DetailedUserNotification[] = [];
   privateNotifications: DetailedUserNotification[] = [];
   publicNotifications: DetailedUserNotification[] = [];
-
-
+  markedAsRead: boolean = false;
   activeId = 1;
   tabsHeader = [
     "notification-management.private_notifications",
@@ -53,8 +54,10 @@ export class HeaderComponent implements OnInit {
   ]
 
 
+
   constructor(
     private modalService: NgbModal,
+    private notificationService: NotificationService,
     private location: Location,
     public router: Router,
     private i18nService: I18nService,
@@ -145,11 +148,21 @@ export class HeaderComponent implements OnInit {
   }
 
   loadNotifications() {
-    this.userService.getNotifications().subscribe(data => {
+    this.notificationService.getNotifications().subscribe(data => {
       this.allNotifications = data;
       this.privateNotifications = data.filter(notification => notification.userSpecific);
       this.publicNotifications = data.filter(notification => !notification.userSpecific);
     });
+  }
+
+
+  markAsRead(notification: DetailedUserNotification, index: number) {
+    if (notification.statusCode != "READ") {
+      this.notificationService.markAsRead(notification.id).subscribe(data => {
+        if (data > 0)
+          this.allNotifications[index].statusCode = "READ";
+      });
+    }
   }
 
   lookupService(): LookupService {

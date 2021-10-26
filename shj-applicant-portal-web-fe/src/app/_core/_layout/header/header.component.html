@@ -4,6 +4,8 @@
     <div>
       <svg-icon class="mr-3" styleClass="fa" icon="lightbulb-exclamation"></svg-icon>
       <span>{{'header.alert_text' | translate}}</span>
+      {{selectedRitualSeason?.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, selectedRitualSeason?.ritualSeason?.ritualTypeCode) : ""}}
+      <span>{{'header.season' | translate}}</span>
       {{selectedRitualSeason?.ritualSeason?.seasonYear}}
     </div>
     <a class="reset-btn noArrow py-1 px-3" (click)="backToLatestRitualSeason()">
@@ -51,12 +53,12 @@
 
     <!--- PROFILE & SETTING-->
     <div class="nav-right">
-      <ul class="nav-menus" [ngClass]="{ 'mx-0': showNavbar }">
+      <ul class="nav-menus align-items-center" [ngClass]="{ 'mx-0': showNavbar }">
         <li class="flex-center">
-          <a class="nav-link d-flex align-items-top noArrow">
-            <svg-icon styleClass="h1 text-gray-300" icon="user-circle"></svg-icon>
-            <div class="mx-3">
-              <h6 class="text-dcc-primary m-0">
+          <a class="nav-link d-flex align-items-center">
+            <svg-icon styleClass="h1 text-gray-300 resetH" icon="user-circle"></svg-icon>
+            <div class="mx-3 pt-2">
+              <h6 class="text-dark m-0">
                 {{ currentUser?.firstName }} {{ currentUser?.lastName }}
               </h6>
               <small class="mb-2">
@@ -81,7 +83,7 @@
              title="notifications"
              id="notificationsLink"
           >
-            <svg-icon styleClass="fa-w-16 h4" icon="bell"></svg-icon>
+            <svg-icon styleClass="fa-w-16 h4 resetH" icon="bell"></svg-icon>
             <span class="notif bg-red" *ngIf="allNotifications?.length > 0">{{allNotifications?.length}}</span>
           </a>
 
@@ -92,18 +94,22 @@
                   ({{privateNotifications?.length}})</b></a>
                 <ng-template ngbNavContent>
 
-                  <div class="d-flex border-bottom p-3 state-success" *ngFor="let notification of privateNotifications">
+                  <div class="d-flex border-bottom p-3 state-success"
+                       *ngFor="let notification of privateNotifications ; let i = index" [attr.data-index]="i">
                     <div class="nIcon mr-3">
                       <svg-icon styleClass="fa-w-18" icon="state-success"></svg-icon>
                     </div>
-                    <div class="w-100">
+                    <div class="w-100" (click)="markAsRead(notification,i)">
                       <div>
                         <div class="flex-center-between align-items-start">
                           <b class="text-dark">{{notification?.title}}</b>
                           <div class="d-flex">
                             <small
                               class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                            <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
+                            <svg-icon *ngIf="notification.statusCode=='READ'" styleClass="text-light-gray"
+                                      icon="read"></svg-icon>
+                            <svg-icon *ngIf="notification.statusCode!='READ'" styleClass="text-light-gray"
+                                      icon="unread"></svg-icon>
                           </div>
                         </div>
                         <p class="mt-2 mb-3">{{notification?.resolvedBody}}</p>
@@ -190,7 +196,7 @@
             <div class="flex-center py-3">
               <a class="text-body"
                  [routerLink]="['/notifications']"><b>{{"notification-management.view_all_notifications" | translate}}</b></a>
-              <svg-icon styleClass="text-black-50 mx-2" icon="chevron-double-left"></svg-icon>
+              <svg-icon styleClass="text-black-50 mx-2 chevron" icon="chevron-double-left"></svg-icon>
             </div>
 
           </ng-template>
@@ -198,13 +204,13 @@
         </li>
         <li class="position-relative">
           <a class="nav-link" [routerLink]="['/settings']" ngbTooltip="{{ 'header.settings' | translate }}">
-            <svg-icon styleClass="fa-w-16 h4" icon="cog"></svg-icon>
+            <svg-icon styleClass="fa-w-16 h4 resetH" icon="cog"></svg-icon>
           </a>
         </li>
         <li class="position-relative">
           <a class="nav-link" href="javascript:void(0)" (click)="logout()"
              ngbTooltip="{{ 'header.logout' | translate }}">
-            <svg-icon styleClass="fa-w-16 h4 flip" icon="logout"></svg-icon>
+            <svg-icon styleClass="fa-w-16 h4 flip resetH" icon="logout"></svg-icon>
           </a>
         </li>
       </ul>
@@ -228,7 +234,8 @@
               {{s.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, s.ritualSeason?.ritualTypeCode) : ""}}
               <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
               {{s.ritualSeason?.seasonYear}}
-              <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}})</span>
+              <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}}
+                )</span>
             </div>
             <div>
               <svg-icon *ngIf="s.selected" class="check-circle" styleClass="fa2x mr-2" icon="check-circle"></svg-icon>

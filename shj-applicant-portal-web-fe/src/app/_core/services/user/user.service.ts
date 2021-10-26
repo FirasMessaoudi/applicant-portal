@@ -10,7 +10,6 @@ import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {UserContacts} from "@model/UserContacts.model";
 import {CookieService} from "ngx-cookie-service";
 import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
-import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -208,28 +207,6 @@ export class UserService {
 
   /**
    *
-   * @param searchField
-   */
-  searchByNinOrUserName(searchField: string): Observable<any> {
-    let params = new HttpParams().set('ninUserName', searchField);
-    return this.http.get<any>("/core/api/users/search-by-nin-or-username", {params}).pipe(
-      map(data => {
-        return data;
-      }),
-      catchError((error: HttpErrorResponse) => {
-        console.log("error message ", error.message);
-        if (error.hasOwnProperty("error")) {
-          return of(error.error);
-        } else {
-          console.error("An error happened while searching the user : " + error);
-          return of(error);
-        }
-      })
-    );
-  }
-
-  /**
-   *
    * @param form
    * @param recaptchaToken
    */
@@ -242,22 +219,6 @@ export class UserService {
           return of(error.error);
         } else {
           console.error('An error happen while registering new user : ' + error);
-          return of(error);
-        }
-      }));
-  }
-
-  /**
-   *
-   * @param userIdNumber
-   */
-  resetUserPassword(userIdNumber: number): Observable<any> {
-    return this.http.get<any>('/core/api/users/reset-user-password/' + userIdNumber).pipe(
-      catchError((error: HttpErrorResponse) => {
-        if (error.hasOwnProperty('error')) {
-          return of(error.error);
-        } else {
-          console.error('An error happen while resetting user password : ' + error);
           return of(error);
         }
       }));
@@ -288,8 +249,5 @@ export class UserService {
     return this.http.get<ApplicantRitualLite>('/core/api/users/ritual-lite/latest');
   }
 
-  getNotifications(): Observable<DetailedUserNotification[]> {
-    return this.http.get<DetailedUserNotification[]>('/core/api/users/notifications');
-  }
 
 }

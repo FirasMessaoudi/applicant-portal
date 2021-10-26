@@ -120,10 +120,10 @@
           <div ngbDropdown #countryListDropdown="ngbDropdown" (openChange)="onOpenChange($event)"
                class="d-inline-block w-100">
             <div class="input-group">
-              <button class="btn btn-outline-gray-300 shadow-none country-prefix-button" id="dropdown1"
+              <button class="btn btn-link ltr country-prefix-button" id="dropdown1"
                       ngbDropdownToggle
                       (click)="openTypeahead()" [disabled]="!this.registerForm.enabled">
-                <span class="flag-icon mx-2 flag-icon-{{selectedCountryCode?.toLowerCase()}}"></span>
+                <span class="flag-icon flag-icon-{{selectedCountryCode?.toLowerCase()}}"></span>
                 {{selectedCountryPrefix}}
               </button>
               <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="15"
@@ -132,7 +132,7 @@
 
               <div ngbDropdownMenu class="dropdown-menu no-transform" aria-labelledby="dropdown1">
                 <ng-template #rt let-r="result" let-t="term">
-                  <span class="flag-icon mx-2 flag-icon-{{r['code'].toLowerCase()}} flag-icon-selected"></span>
+                  <span class="flag-icon flag-icon-{{r['code'].toLowerCase()}} flag-icon-selected"></span>
                   <ngb-highlight [result]="r.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
                 </ng-template>
                 <input id="typeahead-template"
