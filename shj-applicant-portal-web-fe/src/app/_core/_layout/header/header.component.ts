@@ -215,4 +215,35 @@ export class HeaderComponent implements OnInit {
     let now = moment(new Date());
     this.currentHijriYear = momentHijri(now).iYear();
   }
+
+  buildIcon(categoryCode): String {
+    let category = categoryCode.toUpperCase();
+    switch (category) {
+      case 'GENERAL':
+        return "state-default";
+      case 'HEALTH':
+        return "state-health";
+      case 'RELIGIOUS':
+        return "state-religious";
+      case 'RITUAL':
+        return "state-ritual";
+      case 'GENERAL_AWARENESS':
+        return "state-info";
+      default:
+        return "state-default";
+    }
+  }
+
+  buildRoute(nameCode) {
+    switch (nameCode) {
+      case 'PASSWORD_EXPIRATION':
+        return "/change-password";
+      case 'DAILY_SURVEY':
+        return "/";
+      case 'OUT_ARAFAT_FENCE':
+        return "/hajj-rituals";
+      default:
+        return "/";
+    }
+  }
 }

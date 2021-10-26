@@ -78,4 +78,17 @@ export class NotificationsComponent implements OnInit {
         return "state-default";
     }
   }
+
+  buildRoute(nameCode) {
+    switch (nameCode) {
+      case 'PASSWORD_EXPIRATION':
+        return "/change-password";
+      case 'DAILY_SURVEY':
+        return "/";
+      case 'OUT_ARAFAT_FENCE':
+        return "/hajj-rituals";
+      default:
+        return "/";
+    }
+  }
 }

@@ -308,7 +308,7 @@
               <p>{{notification?.resolvedBody}}</p>
             </div>
             <div class="Nbtn" *ngIf="notification?.actionRequired">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
+              <button [routerLink]="[buildRoute(notification?.nameCode)]" class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
             </div>
           </div>
         </div>
