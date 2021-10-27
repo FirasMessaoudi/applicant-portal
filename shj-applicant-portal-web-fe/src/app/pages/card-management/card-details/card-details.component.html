@@ -46,7 +46,7 @@
       <div *ngIf="applicant?.cardReferenceNumber as value; else elseBlock" class="form-control-plaintext text-center text-md-left">
         <span class="mr-3">{{value}}</span>
         <span class="status_wraper">
-          <span class="status {{buildStatusClass(applicant?.cardStatusCode)}} mr-1"></span>
+          <span class="status {{buildCardStatusClass(applicant?.cardStatusCode)}} mr-1"></span>
           <span>{{applicant?.cardStatusCode ? getCardStatus(applicant?.cardStatusCode) : '---'}}</span>
         </span>
       </div>
@@ -461,30 +461,18 @@
               </tr>
               </thead>
               <tbody>
-              <tr *ngFor="
-                    let immunization of healthDetails?.immunizations
-                  ">
-                <td class="ltr">{{ immunization.immunizationCode }}</td>
-                <td class="ltr">
-                  {{ immunization.immunizationDate | gregorianDateFormat }}
-                </td>
-              </tr>
+                <tr *ngFor="let immunization of healthDetails?.immunizations">
+                  <td class="ltr">{{ immunization.immunizationCode ? lookupService().localizedLabel(immunizations, immunization.immunizationCode) : ''}}</td>
+                  <td class="ltr">{{ immunization.immunizationDate | gregorianDateFormat }}</td>
+                </tr>
               </tbody>
             </table>
           </div>
         </section>
       </ng-template>
     </li>
+
     <li [ngbNavItem]="4">
-      <a class="d-none d-md-block" ngbNavLink>{{
-        "card-management.tafweej_details" | translate
-        }}</a>
-      <ng-template ngbNavContent>
-        <app-tafweej-details [companyRitualSteps]="tafweejDetails"
-                             [ritualStepsLabels]="ritualStepsLabels"></app-tafweej-details>
-      </ng-template>
-    </li>
-    <li [ngbNavItem]="5">
       <a class="d-none d-md-block" ngbNavLink>{{
         "card-management.motawef_details" | translate
         }}</a>

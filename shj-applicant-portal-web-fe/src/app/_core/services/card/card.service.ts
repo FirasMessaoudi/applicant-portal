@@ -204,4 +204,12 @@ export class CardService {
   findTransportationTypes(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/transportation-type/list');
   }
+
+  findDigitalIdStatuses(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/digital-id-status/list');
+  }
+
+  findHealthImmunizations(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/health-immunization/list');
+  }
 }

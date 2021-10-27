@@ -1,5 +1,4 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
-
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
 import {I18nService} from "@dcc-commons-ng/services";
@@ -42,18 +41,8 @@ export class HeaderComponent implements OnInit {
   seasons: CompanyRitualSeasonLite[];
   showAlert: boolean;
   currentHijriYear: number;
-  allNotifications: DetailedUserNotification[] = [];
-  privateNotifications: DetailedUserNotification[] = [];
-  publicNotifications: DetailedUserNotification[] = [];
-  markedAsRead: boolean = false;
+  notifications: DetailedUserNotification[] = [];
   activeId = 1;
-  tabsHeader = [
-    "notification-management.private_notifications",
-    "notification-management.public_notifications",
-    "notification-management.view_all"
-  ]
-
-
 
   constructor(
     private modalService: NgbModal,
@@ -93,7 +82,9 @@ export class HeaderComponent implements OnInit {
     this.selectedRitualSeason = JSON.parse((localStorage.getItem('selectedRitualSeason')));
     this.latestRitualSeason = JSON.parse((localStorage.getItem('latestRitualSeason')));
 
-    this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+    if (this.selectedRitualSeason?.id && this.latestRitualSeason?.id) {
+      this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+    }
 
     this.loadNotifications();
 
@@ -149,20 +140,8 @@ export class HeaderComponent implements OnInit {
 
   loadNotifications() {
     this.notificationService.getNotifications().subscribe(data => {
-      this.allNotifications = data;
-      this.privateNotifications = data.filter(notification => notification.userSpecific);
-      this.publicNotifications = data.filter(notification => !notification.userSpecific);
+      this.notifications = data;
     });
-  }
-
-
-  markAsRead(notification: DetailedUserNotification, index: number) {
-    if (notification.statusCode != "READ") {
-      this.notificationService.markAsRead(notification.id).subscribe(data => {
-        if (data > 0)
-          this.allNotifications[index].statusCode = "READ";
-      });
-    }
   }
 
   lookupService(): LookupService {
@@ -213,4 +192,13 @@ export class HeaderComponent implements OnInit {
     let now = moment(new Date());
     this.currentHijriYear = momentHijri(now).iYear();
   }
+
+  getPrivateNotifications() {
+    return this.notifications.filter(notification => notification.userSpecific);
+  }
+
+  getPublicNotifications() {
+    return this.notifications.filter(notification => !notification.userSpecific);
+  }
+
 }

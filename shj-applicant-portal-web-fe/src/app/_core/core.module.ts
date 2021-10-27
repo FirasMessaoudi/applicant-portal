@@ -23,12 +23,13 @@ import {TranslateModule} from "@ngx-translate/core";
 import {LookupService} from "@core/utilities/lookup.service";
 import {OtpStorage} from "@pages/otp/otp.storage";
 import {NotificationService} from "@core/services/notification/notification.service";
+import {NotificationListComponent} from "@core/_layout/header/notification-list/notification-list.component";
 
 
 @NgModule({
   declarations: [
     ...layout.layout,
-
+    NotificationListComponent,
   ],
   imports: [
     CommonModule,

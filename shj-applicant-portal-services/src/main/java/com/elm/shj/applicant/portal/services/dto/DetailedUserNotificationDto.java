@@ -23,6 +23,7 @@ public class DetailedUserNotificationDto implements Serializable {
     private String resolvedBody;
     private String statusCode;
     private String categoryCode;
+    private String nameCode;
     private boolean important;
     private boolean actionRequired;
     private boolean userSpecific;

@@ -80,114 +80,27 @@
 
              href="javascript:void(0)"
              ngbTooltip="{{'header.notifications' | translate}}"
-             title="notifications"
              id="notificationsLink"
           >
             <svg-icon styleClass="fa-w-16 h4 resetH" icon="bell"></svg-icon>
-            <span class="notif bg-red" *ngIf="allNotifications?.length > 0">{{allNotifications?.length}}</span>
+            <span class="notif bg-red" *ngIf="notifications?.length > 0">{{notifications?.length}}</span>
           </a>
 
           <ng-template #popContent>
             <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
               <li [ngbNavItem]="1">
                 <a class="p-3" ngbNavLink><b>{{"notification-management.private_notifications" | translate}}
-                  ({{privateNotifications?.length}})</b></a>
+                  ({{getPrivateNotifications()?.length}})</b></a>
                 <ng-template ngbNavContent>
-
-                  <div class="d-flex border-bottom p-3 state-success"
-                       *ngFor="let notification of privateNotifications ; let i = index" [attr.data-index]="i">
-                    <div class="nIcon mr-3">
-                      <svg-icon styleClass="fa-w-18" icon="state-success"></svg-icon>
-                    </div>
-                    <div class="w-100" (click)="markAsRead(notification,i)">
-                      <div>
-                        <div class="flex-center-between align-items-start">
-                          <b class="text-dark">{{notification?.title}}</b>
-                          <div class="d-flex">
-                            <small
-                              class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                            <svg-icon *ngIf="notification.statusCode=='READ'" styleClass="text-light-gray"
-                                      icon="read"></svg-icon>
-                            <svg-icon *ngIf="notification.statusCode!='READ'" styleClass="text-light-gray"
-                                      icon="unread"></svg-icon>
-                          </div>
-                        </div>
-                        <p class="mt-2 mb-3">{{notification?.resolvedBody}}</p>
-                      </div>
-                      <div class="Nbtn" *ngIf="notification?.actionRequired">
-                        <button
-                          class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!--                  <div class="d-flex border-bottom p-3 state-info">
-                                      <div class="nIcon mr-3">
-                                        <svg-icon styleClass="fa-w-18" icon="state-info"></svg-icon>
-                                      </div>
-                                      <div class="w-100">
-                                        <div>
-                                          <div class="flex-center-between align-items-start">
-                                            <b class="text-dark">تم إصدار البطاقة الذكية</b>
-                                            <div class="d-flex">
-                                              <small class="mr-1 text-muted text-nowrap">منذ 5 ساعات</small>
-                                              <svg-icon styleClass="text-light-gray" icon="unread"></svg-icon>
-                                            </div>
-                                          </div>
-                                          <p class="mt-2 mb-3">تم إصدار البطاقة الذكية الخاصة بك. الرجاء التواصل مع قائد الحملة لاستلامها</p>
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    <div class="d-flex border-bottom p-3 state-general">
-                                      <div class="nIcon mr-3">
-                                        <svg-icon styleClass="fa-w-18" icon="state-general"></svg-icon>
-                                      </div>
-                                      <div class="w-100">
-                                        <div>
-                                          <div class="flex-center-between align-items-start">
-                                            <b class="text-dark">تقييم الخدمات اليومي</b>
-                                            <div class="d-flex">
-                                              <small class="mr-1 text-muted text-nowrap">أمس</small>
-                                              <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                                            </div>
-                                          </div>
-                                          <p class="mt-2 mb-3">تقييم الخدمات يساعد على الرقي بالخدمات المقدمة نأمل منكم تقييم خدمات اليوم</p>
-                                        </div>
-                                        <div class="Nbtn">
-                                          <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">تقييم الخدمات</button>
-                                        </div>
-                                      </div>
-                                    </div>-->
+                  <app-notification-list [notifications]="getPrivateNotifications()"></app-notification-list>
 
                 </ng-template>
               </li>
               <li [ngbNavItem]="2">
                 <a class="p-3" ngbNavLink><b>{{"notification-management.public_notifications" | translate}}
-                  ({{publicNotifications?.length}})</b></a>
+                  ({{getPublicNotifications()?.length}})</b></a>
                 <ng-template ngbNavContent>
-                  <div class="d-flex border-bottom p-3 state-success" *ngFor="let notification of publicNotifications">
-                    <div class="nIcon mr-3">
-                      <svg-icon styleClass="fa-w-18" icon="state-success"></svg-icon>
-                    </div>
-                    <div class="w-100">
-                      <div>
-                        <div class="flex-center-between align-items-start">
-                          <b class="text-dark">{{notification?.title}}</b>
-                          <div class="d-flex">
-                            <small
-                              class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                            <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                          </div>
-                        </div>
-                        <p class="mt-2 mb-3">{{notification?.resolvedBody}}</p>
-                      </div>
-                      <div class="Nbtn" *ngIf="notification?.actionRequired">
-                        <button
-                          class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
-                      </div>
-                    </div>
-                  </div>
+                 <app-notification-list [notifications]="getPublicNotifications()"></app-notification-list>
                 </ng-template>
               </li>
             </ul>

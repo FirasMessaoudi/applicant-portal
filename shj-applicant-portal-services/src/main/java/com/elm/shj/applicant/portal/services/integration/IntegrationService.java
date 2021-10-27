@@ -52,6 +52,7 @@ public class IntegrationService {
     private final String COMPANY_STAFF_TITLE_LOOKUP_URL = "/ws/company_staff_title_label/list";
     private final String HOUSING_SITES_LOOKUP_URL = "/ws/housing-site/list";
     private final String TRANSPORTATION_TYPES_LOOKUP_URL = "/ws/transportation-type/list";
+    private final String DIGITAL_ID_STATUS_LOOKUP_URL = "/ws/digital-id-status/list";
     private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
     private final String NOTIFICATION_URL = "/ws/notification";
@@ -457,6 +458,19 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<ApplicantDigitalIdStatusLookupDto> loadDigitalIdStatuses() {
+        WsResponse<List<ApplicantDigitalIdStatusLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(DIGITAL_ID_STATUS_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantDigitalIdStatusLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load digital ID statuses.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();
