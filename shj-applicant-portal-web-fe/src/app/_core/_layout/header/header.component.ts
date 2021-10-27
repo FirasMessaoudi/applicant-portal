@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
 import {I18nService} from "@dcc-commons-ng/services";
@@ -14,6 +14,9 @@ import {DetailedUserNotification} from "@model/detailed-user-notification.model"
 import * as momentjs from 'moment';
 import * as moment_ from 'moment-hijri';
 import {NotificationService} from "@core/services/notification/notification.service";
+
+import { PerfectScrollbarConfigInterface,
+  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 
 const momentHijri = moment_;
 
@@ -199,6 +202,35 @@ export class HeaderComponent implements OnInit {
 
   getPublicNotifications() {
     return this.notifications.filter(notification => !notification.userSpecific);
+  }
+
+
+
+  public config: PerfectScrollbarConfigInterface = {};
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+  
+  public scrollToXY(x: number, y: number): void {
+    this.componentRef.directiveRef.scrollTo(x, y, 500);
+  }
+
+  public scrollToTop(): void {
+     this.componentRef.directiveRef.scrollToTop();
+  }
+
+  public scrollToLeft(): void {
+    this.componentRef.directiveRef.scrollToLeft();
+  }
+
+  public scrollToRight(): void {
+     this.componentRef.directiveRef.scrollToRight();
+  }
+
+  public scrollToBottom(): void {
+    this.componentRef.directiveRef.scrollToBottom();
+  }
+
+  public onScrollEvent(event: any): void {
+    console.log(event);
   }
 
 }
