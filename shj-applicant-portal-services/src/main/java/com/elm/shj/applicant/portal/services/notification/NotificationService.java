@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
+package com.elm.shj.applicant.portal.services.notification;
+
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Service handling user notification operations
+ *
+ * @author ahmad flaifel
+ * @since 1.0.0
+ */
+@Slf4j
+@Service
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
+public class NotificationService {
+
+    private final IntegrationService integrationService;
+
+    /**
+     * Count user new notifications.
+     *
+     * @param userId user id
+     * @return number of un-read notifications
+     */
+    public int countUserNewNotifications(long userId) {
+        return this.integrationService.countUserNewNotifications(userId);
+    }
+
+}

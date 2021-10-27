@@ -56,6 +56,7 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_SEASON_URL = "/ws/applicant/ritual-season";
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
     private final String NOTIFICATION_URL = "/ws/notification";
+    private final String NOTIFICATION_COUNT_URL = NOTIFICATION_URL + "/count-new-notifications/";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final String MARK_NOTIFICATIONS_READ_URL = NOTIFICATION_URL + "/mark-as-read";
 
@@ -535,6 +536,25 @@ public class IntegrationService {
     }
 
     /**
+     * Count user new notifications.
+     *
+     * @param userId
+     * @return number of user new notifications or 0 in case of exception.
+     */
+    public int countUserNewNotifications(long userId) {
+        WsResponse<Integer> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_COUNT_URL + userId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<Integer>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get user new notifications count for {} user Id.", userId, e);
+            return 0;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
      * send user notifications Request
      *
      * @param passwordExpiryNotificationRequest the request body to be send to save notification
@@ -582,6 +602,7 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
     /**
      * Load health immunization  from command portal.
      *

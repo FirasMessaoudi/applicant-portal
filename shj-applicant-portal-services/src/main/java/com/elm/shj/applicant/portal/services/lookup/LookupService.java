@@ -132,9 +132,7 @@ public class LookupService {
         return this.googleMapKey;
     }
 
-    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations() {
-        return healthImmunizations;
-    }
+    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations() { return healthImmunizations; }
 
     public List<ReligiousOccasionsDayLookupDto> retrieveReligiousOccasionsDay() {
         return religiousOccasionsDay;

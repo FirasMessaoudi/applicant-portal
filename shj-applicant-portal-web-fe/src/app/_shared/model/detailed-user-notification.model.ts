@@ -3,6 +3,7 @@ export class DetailedUserNotification {
   resolvedBody: string;
   statusCode: string;
   categoryCode: string;
+  nameCode: string;
   important: boolean;
   actionRequired: boolean;
   userSpecific: boolean;

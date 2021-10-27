@@ -33,4 +33,11 @@ export class NotificationService {
     return this.http.get<DetailedUserNotification[]>('/core/api/users/notifications');
   }
 
+  /**
+   * Count user new notifications.
+   */
+  countUserNewNotifications() : Observable<any> {
+    return this.http.get('/core/api/notification/new-notifications-count');
+  }
+
 }

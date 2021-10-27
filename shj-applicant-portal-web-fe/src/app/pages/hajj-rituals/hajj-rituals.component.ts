@@ -88,21 +88,21 @@ export class HajjRitualsComponent implements OnInit {
   zoomMap(stepId) {
     let bounds, north, south, east, west;
     this.isMapZoomedOut = this.ritualStepDom.nativeElement.ariaExpanded;
+    this.selectedMarker = this.markers.find(m => m.id == stepId);
+    north = this.selectedMarker.position.lat;
+    south = this.selectedMarker.position.lat;
+    east = this.selectedMarker.position.lng;
+    west = this.selectedMarker.position.lng;
+    this.zoomedMarker = stepId;
     if (this.isMapZoomedOut == "false" || this.isMapZoomedOut == null) {
-      this.zoomedMarker = stepId;
-      bounds = this.getBounds(this.markers);
-      this.map.googleMap.setZoom(this.MAP_ZOOM_OUT);
-      this.map.googleMap.fitBounds(bounds);
-    } else {
-      this.zoomedMarker = -1;
-      this.selectedMarker = this.markers.find(m => m.id == stepId);
-      north = this.selectedMarker.position.lat;
-      south = this.selectedMarker.position.lat;
-      east = this.selectedMarker.position.lng;
-      west = this.selectedMarker.position.lng;
       bounds = {north, south, east, west};
       this.map.googleMap.fitBounds(bounds);
       this.map.googleMap.setZoom(this.MAP_ZOOM_IN);
+    } else {
+      this.zoomedMarker = -1;
+      bounds = this.getBounds(this.markers);
+      this.map.googleMap.setZoom(this.MAP_ZOOM_OUT);
+      this.map.googleMap.fitBounds(bounds);
     }
   }
 
