@@ -302,6 +302,19 @@ public class UserManagementWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());
     }
+    /**
+     * get all notifications by user ID
+     *
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/notifications")
+    public ResponseEntity<WsResponse<?>> findUserNotificationsById(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<DetailedUserNotificationDto> detailedUserNotificationDtos = userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(detailedUserNotificationDtos).build());
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<WsResponse<?>> handleBadCredentialsException(
