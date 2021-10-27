@@ -14,7 +14,7 @@ const moment = momentjs;
 })
 export class NotificationsComponent implements OnInit {
 
-  activeId = 1;
+  activeId = 3;
   notifications: DetailedUserNotification[] = [];
   page: any;
 
