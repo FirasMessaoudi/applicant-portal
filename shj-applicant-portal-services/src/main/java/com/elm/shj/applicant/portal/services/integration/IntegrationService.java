@@ -61,6 +61,9 @@ public class IntegrationService {
 
     private final String COMPANY_DETAILS_URL = "/ws/company-details";
     private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
+    private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
+
+
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -592,6 +595,24 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load health immunization.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load religious occasions day  from command portal.
+     *
+     * @return
+     */
+    public List<ReligiousOccasionsDayLookupDto> loadReligiousOccasionsDay() {
+        WsResponse<List<ReligiousOccasionsDayLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(RELIGIOUS_OCCASIONS_DAY_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ReligiousOccasionsDayLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load religious occasions day.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();

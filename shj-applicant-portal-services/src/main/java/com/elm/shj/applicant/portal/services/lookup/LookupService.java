@@ -45,6 +45,7 @@ public class LookupService {
     private List<TransportationTypeLookupDto> transportationTypes;
     private List<HealthImmunizationLookupDto> healthImmunizations;
     private List<ApplicantDigitalIdStatusLookupDto> applicantDigitalIdStatuses;
+    private List<ReligiousOccasionsDayLookupDto> religiousOccasionsDay;
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
@@ -67,6 +68,8 @@ public class LookupService {
         this.transportationTypes = integrationService.loadTransportationTypes();
         this.healthImmunizations = integrationService.loadHealthImmunizations();
         this.applicantDigitalIdStatuses = integrationService.loadDigitalIdStatuses();
+        this.religiousOccasionsDay = integrationService.loadReligiousOccasionsDay();
+
     }
 
     public List<RitualTypeLookupDto> retrieveRitualTypes() {
@@ -128,6 +131,13 @@ public class LookupService {
     public String retrieveGoogleMapKey() {
         return this.googleMapKey;
     }
-    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations(){return healthImmunizations;}
+
+    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations() {
+        return healthImmunizations;
+    }
+
+    public List<ReligiousOccasionsDayLookupDto> retrieveReligiousOccasionsDay() {
+        return religiousOccasionsDay;
+    }
 
 }

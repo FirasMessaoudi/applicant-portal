@@ -205,4 +205,13 @@ public class LookupWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(healthImmunizationLookup).build());
     }
+
+    @GetMapping("/religious-occasions-day/list")
+    public ResponseEntity<WsResponse<?>> listReligiousOccasionsDay(Authentication authentication) {
+        log.debug("list religious occasions day...");
+        List<ReligiousOccasionsDayLookupDto> religiousOccasionsDayLookup = lookupService.retrieveReligiousOccasionsDay();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(religiousOccasionsDayLookup).build());
+    }
 }
