@@ -15,14 +15,8 @@ const moment = momentjs;
 export class NotificationsComponent implements OnInit {
 
   activeId = 1;
-  allNotifications: DetailedUserNotification[] = [];
-  privateNotifications: DetailedUserNotification[] = [];
-  publicNotifications: DetailedUserNotification[] = [];
-  tabsHeader = [
-    "notification-management.private_notifications",
-    "notification-management.public_notifications",
-    "notification-management.view_all"
-  ]
+  notifications: DetailedUserNotification[] = [];
+  page: any;
 
   constructor(private userService: UserService,
               private notificationService: NotificationService,
@@ -35,17 +29,9 @@ export class NotificationsComponent implements OnInit {
 
   loadNotifications() {
     this.notificationService.getNotifications().subscribe(data => {
-      this.allNotifications = data;
+      this.notifications = data;
+      console.log(data);
     });
-  }
-
-  markAsRead(notification: DetailedUserNotification, index: number) {
-    if (notification.statusCode != "READ") {
-      this.notificationService.markAsRead(notification.id).subscribe(data => {
-        if (data > 0)
-          this.allNotifications[index].statusCode = "READ";
-      });
-    }
   }
 
   getRelativeTime(date: Date) {
@@ -61,34 +47,15 @@ export class NotificationsComponent implements OnInit {
     return this.i18nService.language;
   }
 
-  buildIcon(categoryCode): String {
-    let category = categoryCode.toUpperCase();
-    switch (category) {
-      case 'GENERAL':
-        return "state-default";
-      case 'HEALTH':
-        return "state-health";
-      case 'RELIGIOUS':
-        return "state-religious";
-      case 'RITUAL':
-        return "state-ritual";
-      case 'GENERAL_AWARENESS':
-        return "state-info";
-      default:
-        return "state-default";
-    }
+  loadPage(number: number) {
+
   }
 
-  buildRoute(nameCode) {
-    switch (nameCode) {
-      case 'PASSWORD_EXPIRATION':
-        return "/change-password";
-      case 'DAILY_SURVEY':
-        return "/";
-      case 'OUT_ARAFAT_FENCE':
-        return "/hajj-rituals";
-      default:
-        return "/";
-    }
+  getPrivateNotifications() {
+    return this.notifications.filter(notification => notification.userSpecific);
+  }
+
+  getPublicNotifications() {
+    return this.notifications.filter(notification => !notification.userSpecific);
   }
 }

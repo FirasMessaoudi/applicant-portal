@@ -13,275 +13,22 @@
 
   <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li [ngbNavItem]="1">
-      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.private_notifications" | translate}} ({{privateNotifications?.length}})</b></a>
+      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.private_notifications" | translate}}
+        ({{getPrivateNotifications()?.length}})</b></a>
       <ng-template ngbNavContent>
 
-<!--        <div class="d-flex border-bottom py-4 state-success">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-success"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">صلاحية كلمة المرور</b>
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ 3 ساعات</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>سوف تنتهي صلاحية كلمة المرور الحالية خلال 3 أيام من الآن</p>
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">تغيير كلمة المرور</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-info">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-info"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">تم إصدار البطاقة الذكية</b>
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ 5 ساعات</small>
-                  <svg-icon styleClass="text-light-gray" icon="unread"></svg-icon>
-                </div>
-              </div>
-              <p>تم إصدار البطاقة الذكية الخاصة بك. الرجاء التواصل مع قائد الحملة لاستلامها</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-general">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-general"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">تقييم الخدمات اليومي</b>
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">أمس</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>تقييم الخدمات يساعد على الرقي بالخدمات المقدمة نأمل منكم تقييم خدمات اليوم</p>
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">تقييم الخدمات</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-default">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-default"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">خارج حدود عرفات</b>
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ 3 أيام</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>عزيزي الحاج أنت خارج حدود عرفات يجب عليك التواجد داخل حدود عرفات حتى وقت المغرب من اليوم التاسع
-                للحج</p>
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">التوجه الى عرفات</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-ritual">
-          <div class="nIcon mx-3">
-            <svg-icon *ngIf="notification.important" styleClass="fa-w-18" icon="state-default"></svg-icon>
-            <svg-icon *ngIf="!notification.important" styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode)}}"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">موقع مخيم عرفات</b>
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ أسبوع</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>رقم المخيم الخاص بك في عرفات هو 43</p>
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">عرض في الخريطة</button>
-            </div>
-          </div>
-        </div>-->
-
-        <div class="d-flex border-bottom py-4 state-ritual"
-             *ngFor="let notification of privateNotifications; let i = index" [attr.data-index]="i">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-ritual"></svg-icon>
-          </div>
-          <div class="w-100" (click)="markAsRead(notification,i)">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">{{notification?.title}}</b>
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                  <svg-icon *ngIf="notification.statusCode=='READ'" styleClass="text-light-gray" icon="read"></svg-icon>
-                  <svg-icon *ngIf="notification.statusCode!='READ'" styleClass="text-light-gray"
-                            icon="unread"></svg-icon>
-                </div>
-              </div>
-              <p>{{notification?.resolvedBody}}</p>
-            </div>
-            <div class="Nbtn" *ngIf="notification?.actionRequired">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
-            </div>
-          </div>
-        </div>
+        <!--Private notifications-->
+        <app-notification-list [notifications]="getPrivateNotifications()"></app-notification-list>
 
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
-      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.public_notifications" | translate}} ({{publicNotifications?.length}})</b></a>
+      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.public_notifications" | translate}}
+        ({{getPublicNotifications()?.length}})</b></a>
       <ng-template ngbNavContent>
 
-<!--        <div class="d-flex border-bottom py-4 state-religious">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-religious"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">ما هو طواف الإفاضة ؟</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">أمس</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>هو رُكن من أركان الحجّ لا يتمّ الحج إلّا بالإتيان به؛ ودليل ذلك قوله -تعالى-: (وَلْيَطَّوَّفُوا
-                بِالْبَيْتِ الْعَتِيقِ)</p>
-
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">اعرف المزيد</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-info">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-info"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">تعليمات هامة</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ 3 أيام</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>تجنب صعود الجبال والاماكن المرتفعة وتجنب المزاحمة والالتحام والافتراش في الطرقات</p>
-
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-pray">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-pray"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">دعاء يوم عرفة</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ أسبوع</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>ربنا تقبل منا إنك أنت السميع العليم.</p>
-
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">عرض في الخريطة</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-health">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-health"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">حافظ على صحتك</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ أسبوع</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>في حالة ارتفاع درجة حرارتك فوق 38 درجة توجة الى اقرب نقطة صحية مباشرة</p>
-
-            </div>
-            <div class="Nbtn">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">اقرب النقاط الصحية</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex border-bottom py-4 state-general">
-          <div class="nIcon mx-3">
-            <svg-icon styleClass="fa-w-18" icon="state-general"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">بطاقة الحج</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">منذ أسبوع</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>احرص على حمل بطاقة الحج الخاصة بك عند اداء الشعائر</p>
-
-            </div>
-          </div>
-        </div>-->
-
-        <div class="d-flex border-bottom py-4 state-general" *ngFor="let notification of publicNotifications">
-          <div class="nIcon mx-3">
-            <svg-icon *ngIf="notification.important" styleClass="fa-w-18" icon="state-info"></svg-icon>
-            <svg-icon *ngIf="!notification.important" styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode)}}"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">{{notification?.title}}</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>{{notification?.resolvedBody}}</p>
-            </div>
-            <div class="Nbtn" *ngIf="notification?.actionRequired">
-              <button class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
-            </div>
-          </div>
-        </div>
+        <!--Public notifications-->
+        <app-notification-list [notifications]="getPublicNotifications()"></app-notification-list>
 
       </ng-template>
     </li>
@@ -290,28 +37,8 @@
         <svg-icon styleClass="fa-w-16 ml-2" icon="ballot"></svg-icon>
       </a>
       <ng-template ngbNavContent>
-        <div class="d-flex border-bottom py-4 state-general" *ngFor="let notification of allNotifications">
-          <div class="nIcon mx-3">
-            <svg-icon *ngIf="notification.important" styleClass="fa-w-18" icon="state-default"></svg-icon>
-            <svg-icon *ngIf="!notification.important" styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode)}}"></svg-icon>
-          </div>
-          <div class="w-100">
-            <div>
-              <div class="flex-center-between align-items-start">
-                <b class="text-dark">{{notification?.title}}</b>
-
-                <div class="d-flex">
-                  <small class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
-                  <svg-icon styleClass="text-light-gray" icon="read"></svg-icon>
-                </div>
-              </div>
-              <p>{{notification?.resolvedBody}}</p>
-            </div>
-            <div class="Nbtn" *ngIf="notification?.actionRequired">
-              <button [routerLink]="[buildRoute(notification?.nameCode)]" class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
-            </div>
-          </div>
-        </div>
+        <!--All notifications-->
+        <app-notification-list [notifications]="notifications"></app-notification-list>
       </ng-template>
     </li>
   </ul>

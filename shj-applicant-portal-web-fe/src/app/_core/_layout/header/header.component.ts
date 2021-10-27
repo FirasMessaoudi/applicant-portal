@@ -1,5 +1,4 @@
 import {Component, ElementRef, Input, OnInit} from '@angular/core';
-
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
 import {I18nService} from "@dcc-commons-ng/services";
@@ -42,18 +41,8 @@ export class HeaderComponent implements OnInit {
   seasons: CompanyRitualSeasonLite[];
   showAlert: boolean;
   currentHijriYear: number;
-  allNotifications: DetailedUserNotification[] = [];
-  privateNotifications: DetailedUserNotification[] = [];
-  publicNotifications: DetailedUserNotification[] = [];
-  markedAsRead: boolean = false;
+  notifications: DetailedUserNotification[] = [];
   activeId = 1;
-  tabsHeader = [
-    "notification-management.private_notifications",
-    "notification-management.public_notifications",
-    "notification-management.view_all"
-  ]
-
-
 
   constructor(
     private modalService: NgbModal,
@@ -151,20 +140,8 @@ export class HeaderComponent implements OnInit {
 
   loadNotifications() {
     this.notificationService.getNotifications().subscribe(data => {
-      this.allNotifications = data;
-      this.privateNotifications = data.filter(notification => notification.userSpecific);
-      this.publicNotifications = data.filter(notification => !notification.userSpecific);
+      this.notifications = data;
     });
-  }
-
-
-  markAsRead(notification: DetailedUserNotification, index: number) {
-    if (notification.statusCode != "READ") {
-      this.notificationService.markAsRead(notification.id).subscribe(data => {
-        if (data > 0)
-          this.allNotifications[index].statusCode = "READ";
-      });
-    }
   }
 
   lookupService(): LookupService {
@@ -216,34 +193,12 @@ export class HeaderComponent implements OnInit {
     this.currentHijriYear = momentHijri(now).iYear();
   }
 
-  buildIcon(categoryCode): String {
-    let category = categoryCode.toUpperCase();
-    switch (category) {
-      case 'GENERAL':
-        return "state-default";
-      case 'HEALTH':
-        return "state-health";
-      case 'RELIGIOUS':
-        return "state-religious";
-      case 'RITUAL':
-        return "state-ritual";
-      case 'GENERAL_AWARENESS':
-        return "state-info";
-      default:
-        return "state-default";
-    }
+  getPrivateNotifications() {
+    return this.notifications.filter(notification => notification.userSpecific);
   }
 
-  buildRoute(nameCode) {
-    switch (nameCode) {
-      case 'PASSWORD_EXPIRATION':
-        return "/change-password";
-      case 'DAILY_SURVEY':
-        return "/";
-      case 'OUT_ARAFAT_FENCE':
-        return "/hajj-rituals";
-      default:
-        return "/";
-    }
+  getPublicNotifications() {
+    return this.notifications.filter(notification => !notification.userSpecific);
   }
+
 }
