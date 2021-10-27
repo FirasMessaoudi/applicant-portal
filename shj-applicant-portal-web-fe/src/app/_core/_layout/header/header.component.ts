@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-=======
-import {Component, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
->>>>>>> 9c53325e9421a8fca557205c7a0b7fc69adcbe17
+import {Component, ElementRef, Input, OnInit, ViewChild, OnDestroy} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
 import {I18nService} from "@dcc-commons-ng/services";
@@ -220,7 +216,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.notifications.filter(notification => !notification.userSpecific);
   }
 
-<<<<<<< HEAD
 
 
   public config: PerfectScrollbarConfigInterface = {};
@@ -250,9 +245,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     console.log(event);
   }
 
-=======
   ngOnDestroy(): void {
     clearInterval(this.newNotificationsCountTimerInterval);
   }
->>>>>>> 9c53325e9421a8fca557205c7a0b7fc69adcbe17
 }
