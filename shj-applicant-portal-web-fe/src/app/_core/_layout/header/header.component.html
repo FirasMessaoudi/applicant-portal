@@ -86,7 +86,9 @@
              (click)="loadNotifications()"
           >
             <svg-icon styleClass="fa-w-16 h4 resetH" icon="bell"></svg-icon>
-            <span class="notif bg-red" *ngIf="newNotificationsCount > 0">{{newNotificationsCount}}</span>
+            <span class="notif bg-red" *ngIf="userNewNotificationsCount?.userSpecificNewNotificationsCount > 0 || userNewNotificationsCount?.userNotSpecificNewNotificationsCount > 0">
+              {{userNewNotificationsCount?.userSpecificNewNotificationsCount + userNewNotificationsCount?.userNotSpecificNewNotificationsCount}}
+            </span>
           </a>
 
           <ng-template #popContent>

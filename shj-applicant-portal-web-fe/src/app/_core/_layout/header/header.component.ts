@@ -12,7 +12,7 @@ import {OtpStorage} from "@pages/otp/otp.storage";
 import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import {NotificationService} from "@core/services/notification/notification.service";
-
+import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
 import * as momentjs from 'moment';
 import * as moment_ from 'moment-hijri';
 
@@ -49,7 +49,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentHijriYear: number;
   notifications: DetailedUserNotification[] = [];
   newNotificationsCountTimerInterval: any;
-  newNotificationsCount: number;
+  userNewNotificationsCount: UserNewNotificationsCount;
   activeId = 1;
 
   constructor(
@@ -99,10 +99,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   countUserNewNotifications() {
     this.newNotificationsCountTimerInterval = setInterval(() => {
       // call back-end to get the count
-      this.notificationService.countUserNewNotifications().subscribe(count => {
-        this.newNotificationsCount = count;
+      this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
+        this.userNewNotificationsCount = notificationsCount;
       });
-    }, 120000);
+    }, 60000);
   }
 
   loadLookups() {
@@ -220,7 +220,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   public config: PerfectScrollbarConfigInterface = {};
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
-  
+
   public scrollToXY(x: number, y: number): void {
     this.componentRef.directiveRef.scrollTo(x, y, 500);
   }

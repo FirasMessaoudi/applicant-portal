@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.services.notification;
 
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class NotificationService {
      * @param userId user id
      * @return number of un-read notifications
      */
-    public int countUserNewNotifications(long userId) {
+    public UserNewNotificationsCountVo countUserNewNotifications(long userId) {
         return this.integrationService.countUserNewNotifications(userId);
     }
 

@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.notification;
 
+import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
 import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -46,10 +47,10 @@ public class NotificationController {
      * @return
      */
     @GetMapping("/new-notifications-count")
-    public ResponseEntity<Integer> countUserNewNotifications(Authentication authentication) {
+    public ResponseEntity<UserNewNotificationsCountVo> countUserNewNotifications(Authentication authentication) {
         // get the logged-in user id from authentication then count the un-read notifications
         long loggedInUserId = jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L);
-        int count = notificationService.countUserNewNotifications(loggedInUserId);
-        return ResponseEntity.ok(count);
+        UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(loggedInUserId);
+        return ResponseEntity.ok(notificationsCountVo);
     }
 }

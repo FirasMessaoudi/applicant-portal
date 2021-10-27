@@ -17,7 +17,7 @@ import java.util.List;
  */
 @NoArgsConstructor
 @Data
-public class ApplicantPackageDTO implements Serializable {
+public class ApplicantPackageDto implements Serializable {
 
     private static final long serialVersionUID = 9128835722212623516L;
 

@@ -541,15 +541,15 @@ public class IntegrationService {
      * @param userId
      * @return number of user new notifications or 0 in case of exception.
      */
-    public int countUserNewNotifications(long userId) {
-        WsResponse<Integer> wsResponse = null;
+    public UserNewNotificationsCountVo countUserNewNotifications(long userId) {
+        WsResponse<UserNewNotificationsCountVo> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(NOTIFICATION_COUNT_URL + userId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<Integer>>() {
+                    new ParameterizedTypeReference<WsResponse<UserNewNotificationsCountVo>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get user new notifications count for {} user Id.", userId, e);
-            return 0;
+            return UserNewNotificationsCountVo.builder().build();
         }
         return wsResponse.getBody();
     }
