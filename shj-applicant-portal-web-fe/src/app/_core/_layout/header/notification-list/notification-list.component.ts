@@ -24,14 +24,6 @@ export class NotificationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadNotifications();
-  }
-
-  loadNotifications() {
-    this.notificationService.getNotifications().subscribe(data => {
-      this.notifications = data;
-      console.log(data);
-    });
   }
 
   getRelativeTime(date: Date) {

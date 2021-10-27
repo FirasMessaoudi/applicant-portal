@@ -86,8 +86,6 @@ export class HeaderComponent implements OnInit {
       this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
     }
 
-    this.loadNotifications();
-
   }
 
   loadLookups() {

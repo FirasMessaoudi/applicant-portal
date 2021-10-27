@@ -77,10 +77,10 @@
              [autoClose]="'outside'"
              [ngbPopover]="popContent"
              placement="bottom"
-
              href="javascript:void(0)"
              ngbTooltip="{{'header.notifications' | translate}}"
              id="notificationsLink"
+             (click)="loadNotifications()"
           >
             <svg-icon styleClass="fa-w-16 h4 resetH" icon="bell"></svg-icon>
             <span class="notif bg-red" *ngIf="notifications?.length > 0">{{notifications?.length}}</span>
