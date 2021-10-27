@@ -13,8 +13,8 @@
 
   <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li [ngbNavItem]="1">
-      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.private_notifications" | translate}}
-        ({{getPrivateNotifications()?.length}})</b></a>
+      <a class="py-3 px-4" ngbNavLink>{{"notification-management.private_notifications" | translate}}
+        ({{getPrivateNotifications()?.length}})</a>
       <ng-template ngbNavContent>
 
         <!--Private notifications-->
@@ -23,8 +23,8 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
-      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.public_notifications" | translate}}
-        ({{getPublicNotifications()?.length}})</b></a>
+      <a class="py-3 px-4" ngbNavLink>{{"notification-management.public_notifications" | translate}}
+        ({{getPublicNotifications()?.length}})</a>
       <ng-template ngbNavContent>
 
         <!--Public notifications-->
@@ -33,7 +33,7 @@
       </ng-template>
     </li>
     <li [ngbNavItem]="3">
-      <a class="py-3 px-4" ngbNavLink><b>{{"notification-management.view_all" | translate}}</b>
+      <a class="py-3 px-4" ngbNavLink>{{"notification-management.view_all" | translate}}
         <svg-icon styleClass="fa-w-16 ml-2" icon="ballot"></svg-icon>
       </a>
       <ng-template ngbNavContent>
