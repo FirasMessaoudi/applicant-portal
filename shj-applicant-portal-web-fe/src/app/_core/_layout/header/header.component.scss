@@ -128,3 +128,21 @@ a.stroke {
   color: #000000;
   font-weight: bold;
 }
+
+
+
+
+.content-container {
+  position: relative;
+  overflow: auto;
+  height: 400px;
+  min-height: 0;
+}
+.scroll-container {
+  position: relative;
+}
+
+.scrollable-content {
+  padding: 16px;
+  margin: 0;
+}

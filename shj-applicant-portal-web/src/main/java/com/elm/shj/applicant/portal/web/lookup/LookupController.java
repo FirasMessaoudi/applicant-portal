@@ -165,7 +165,12 @@ public class LookupController {
     public List<HealthImmunizationLookupDto> listHealthImmunization(Authentication authentication) {
         log.debug("list health immunizations...");
         return lookupService.retrieveHealthImmunizations();
+    }
 
+    @GetMapping("/religious-occasions-day/list")
+    public List<ReligiousOccasionsDayLookupDto> listReligiousOccasionsDay(Authentication authentication) {
+        log.debug("list religious occasions day...");
+        return lookupService.retrieveReligiousOccasionsDay();
     }
 
 }

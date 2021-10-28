@@ -29,6 +29,14 @@ import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format
 import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
 import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
 
+// Notification scrollbar
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 @NgModule({
   declarations: [
@@ -53,9 +61,16 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
     HijriGregorianDatepickerModule,
     NgMultiSelectDropDownModule,
     GoogleMapsModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    PerfectScrollbarModule
   ],
-  providers: [DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule],
+  providers: [
+    DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule,
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
+      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }
+  ],
   exports: [
     NgbdDatepickerIslamicumalqura,
     AccordionModule,
@@ -77,7 +92,8 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
     NgMultiSelectDropDownModule,
     HijriGregorianDatepickerModule,
     GoogleMapsModule,
-    NgxIntlTelInputModule
+    NgxIntlTelInputModule,
+    PerfectScrollbarModule
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,
