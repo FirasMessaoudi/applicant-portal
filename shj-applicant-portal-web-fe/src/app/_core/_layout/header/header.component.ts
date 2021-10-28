@@ -97,12 +97,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   countUserNewNotifications() {
-    this.newNotificationsCountTimerInterval = setInterval(() => {
-      // call back-end to get the count
-      this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
-        this.userNewNotificationsCount = notificationsCount;
-      });
-    }, 60000);
+    // retrieve the count then initialize the timer.
+    this.loadUserNewNotificationsCounts();
+    this.newNotificationsCountTimerInterval = setInterval(() =>
+    {this.loadUserNewNotificationsCounts()}, 120000);
+  }
+
+  loadUserNewNotificationsCounts() {
+    this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
+      this.userNewNotificationsCount = notificationsCount;
+    });
   }
 
   loadLookups() {
