@@ -51,6 +51,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class UserManagementWsController {
 
+    public static final String CONFIDENTIAL = "<CONFIDENTIAL>";
     public static final String RESET_PASSWORD_SUCCESS_MSG = "Reset password successfully";
     public static final String CHANGE_PASSWORD_SUCCESS_MSG = "Change password successfully";
 
@@ -322,6 +323,35 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(WsError.EWsError.BAD_CREDENTIALS.getCode()).referenceNumber(ex.getMessage()).build()).build());
+    }
+
+    /**
+     * finds a user by his ID
+     *
+     * @param userId the user id to find
+     * @return the found user or <code>null</code>
+     */
+    @GetMapping("/find/{userId}")
+    @RolesAllowed(AuthorityConstants.EDIT_USER)
+    public ResponseEntity<WsResponse<?>> findUser(@PathVariable long userId) {
+        log.debug("Handler for {}", "Find User");
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(maskUserInfo(userService.findOne(userId))).build());
+    }
+
+    /**
+     * Masking sensitive data from user information
+     *
+     * @param user the user to filter
+     * @return the filtered user
+     */
+    private static UserDto maskUserInfo(UserDto user) {
+        if (user != null) {
+            user.setPasswordHash(CONFIDENTIAL);
+            user.setPassword(CONFIDENTIAL);
+        }
+        return user;
     }
 
 

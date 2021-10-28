@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {catchError} from "rxjs/internal/operators";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
+import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
 
 
 /**
@@ -11,8 +12,14 @@ import {DetailedUserNotification} from "@model/detailed-user-notification.model"
 @Injectable()
 export class NotificationService {
 
-  constructor(private http: HttpClient) {
+  private userNewNotificationsCountBehavior = new BehaviorSubject<UserNewNotificationsCount>(null);
+  currentUserNewNotificationsCount = this.userNewNotificationsCountBehavior.asObservable();
 
+  constructor(private http: HttpClient) {
+  }
+
+  updateUserNewNotificationsCount(userNewNotificationsCount: UserNewNotificationsCount) {
+    this.userNewNotificationsCountBehavior.next(userNewNotificationsCount);
   }
 
   markAsRead(notificationId: number): Observable<any> {

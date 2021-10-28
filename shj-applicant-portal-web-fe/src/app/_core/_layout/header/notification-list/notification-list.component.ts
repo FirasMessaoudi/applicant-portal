@@ -39,12 +39,16 @@ export class NotificationListComponent implements OnInit {
     return this.i18nService.language;
   }
 
-
   markAsRead(notification: DetailedUserNotification, index: number) {
     if (notification.statusCode != "READ") {
       this.notificationService.markAsRead(notification.id).subscribe(data => {
-        if (data > 0)
+        if (data > 0) {
           this.notifications[index].statusCode = "READ";
+          //update the un-read notifications count.
+          this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
+            this.notificationService.updateUserNewNotificationsCount(notificationsCount);
+          });
+        }
       });
     }
   }
