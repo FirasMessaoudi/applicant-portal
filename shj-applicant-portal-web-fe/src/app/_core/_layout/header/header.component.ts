@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit, ViewChild, OnDestroy} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
 import {I18nService} from "@dcc-commons-ng/services";
@@ -16,8 +16,7 @@ import {UserNewNotificationsCount} from "@model/user-new-notifications-count.mod
 import * as momentjs from 'moment';
 import * as moment_ from 'moment-hijri';
 
-import { PerfectScrollbarConfigInterface,
-  PerfectScrollbarComponent, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 
 const momentHijri = moment_;
 
@@ -75,7 +74,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.countUserNewNotifications();
+    this.loadUserNewNotificationsCounts();
+    this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
+      this.userNewNotificationsCount = updatedCount;
+    });
+    this.initializeUserNewNotificationsCountTimer();
     this.loadLookups();
     this.listRitualSeasons();
     this.getCurrentHijriYear();
@@ -96,16 +99,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  countUserNewNotifications() {
-    // retrieve the count then initialize the timer.
-    this.loadUserNewNotificationsCounts();
+  initializeUserNewNotificationsCountTimer() {
     this.newNotificationsCountTimerInterval = setInterval(() =>
     {this.loadUserNewNotificationsCounts()}, 120000);
   }
 
   loadUserNewNotificationsCounts() {
     this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
-      this.userNewNotificationsCount = notificationsCount;
+      this.notificationService.updateUserNewNotificationsCount(notificationsCount);
     });
   }
 
