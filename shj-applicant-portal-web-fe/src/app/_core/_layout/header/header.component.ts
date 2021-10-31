@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
 import {I18nService} from "@dcc-commons-ng/services";
@@ -11,9 +11,12 @@ import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {OtpStorage} from "@pages/otp/otp.storage";
 import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
+import {NotificationService} from "@core/services/notification/notification.service";
+import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
 import * as momentjs from 'moment';
 import * as moment_ from 'moment-hijri';
-import {NotificationService} from "@core/services/notification/notification.service";
+
+import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 
 const momentHijri = moment_;
 
@@ -26,13 +29,15 @@ const moment = momentjs;
   host: {'class': 'dcc__wrapper'},
   animations: $animations
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+
   closeResult = '';
   currentUser: any;
+
   @Input()
   showNavbar = false;
+
   isActive: boolean;
-  public isMenuCollapsed = false;
   routerDisabled = true;
   selectedApplicantRitual: ApplicantRitualLite;
   selectedRitualSeason: CompanyRitualSeasonLite;
@@ -42,6 +47,8 @@ export class HeaderComponent implements OnInit {
   showAlert: boolean;
   currentHijriYear: number;
   notifications: DetailedUserNotification[] = [];
+  newNotificationsCountTimerInterval: any;
+  userNewNotificationsCount: UserNewNotificationsCount;
   activeId = 1;
 
   constructor(
@@ -67,6 +74,11 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadUserNewNotificationsCounts();
+    this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
+      this.userNewNotificationsCount = updatedCount;
+    });
+    this.initializeUserNewNotificationsCountTimer();
     this.loadLookups();
     this.listRitualSeasons();
     this.getCurrentHijriYear();
@@ -85,9 +97,17 @@ export class HeaderComponent implements OnInit {
     if (this.selectedRitualSeason?.id && this.latestRitualSeason?.id) {
       this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
     }
+  }
 
-    this.loadNotifications();
+  initializeUserNewNotificationsCountTimer() {
+    this.newNotificationsCountTimerInterval = setInterval(() =>
+    {this.loadUserNewNotificationsCounts()}, 120000);
+  }
 
+  loadUserNewNotificationsCounts() {
+    this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
+      this.notificationService.updateUserNewNotificationsCount(notificationsCount);
+    });
   }
 
   loadLookups() {
@@ -201,4 +221,36 @@ export class HeaderComponent implements OnInit {
     return this.notifications.filter(notification => !notification.userSpecific);
   }
 
+
+
+  public config: PerfectScrollbarConfigInterface = {};
+  @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;
+
+  public scrollToXY(x: number, y: number): void {
+    this.componentRef.directiveRef.scrollTo(x, y, 500);
+  }
+
+  public scrollToTop(): void {
+     this.componentRef.directiveRef.scrollToTop();
+  }
+
+  public scrollToLeft(): void {
+    this.componentRef.directiveRef.scrollToLeft();
+  }
+
+  public scrollToRight(): void {
+     this.componentRef.directiveRef.scrollToRight();
+  }
+
+  public scrollToBottom(): void {
+    this.componentRef.directiveRef.scrollToBottom();
+  }
+
+  public onScrollEvent(event: any): void {
+    console.log(event);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.newNotificationsCountTimerInterval);
+  }
 }

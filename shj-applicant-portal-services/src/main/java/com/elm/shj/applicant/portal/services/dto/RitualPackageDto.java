@@ -35,7 +35,7 @@ public class RitualPackageDto implements Serializable {
 
 
     @JsonBackReference("applicantPackages")
-    private List<ApplicantPackageDTO> applicantPackages;
+    private List<ApplicantPackageDto> applicantPackages;
     @JsonBackReference("packageHousings")
     private List<PackageHousingDto> packageHousings;
     @JsonBackReference("packageTransportations")

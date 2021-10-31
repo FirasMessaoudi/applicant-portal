@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams} from '@angular/common/http';
-import {map} from 'rxjs/operators';
 import {BehaviorSubject, Observable, of} from 'rxjs';
 import {catchError} from "rxjs/internal/operators";
 import {ChangePasswordCmd, User} from '@shared/model';

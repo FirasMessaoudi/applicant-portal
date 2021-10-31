@@ -62,11 +62,11 @@ export class NotificationListComponent implements OnInit {
 
   buildIcon(categoryCode, important): String {
     if (important) {
-      return 'state-default';
+      return "state-default";
     }
     switch (categoryCode) {
       case 'GENERAL':
-        return "state-default";
+        return "state-general";
       case 'HEALTH':
         return "state-health";
       case 'RELIGIOUS':
@@ -76,7 +76,7 @@ export class NotificationListComponent implements OnInit {
       case 'GENERAL_AWARENESS':
         return "state-info";
       default:
-        return "state-info";
+        return "state-general";
     }
   }
 

@@ -27,6 +27,6 @@ public class ApplicantPackageHousingDto implements Serializable {
     private String bedNumber;
     private Date creationDate;
     private Date updateDate;
-    private ApplicantPackageDTO applicantPackage;
+    private ApplicantPackageDto applicantPackage;
     private PackageHousingDto packageHousing;
 }

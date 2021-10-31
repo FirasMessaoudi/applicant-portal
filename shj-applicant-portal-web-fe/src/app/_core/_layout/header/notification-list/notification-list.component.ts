@@ -24,14 +24,6 @@ export class NotificationListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadNotifications();
-  }
-
-  loadNotifications() {
-    this.notificationService.getNotifications().subscribe(data => {
-      this.notifications = data;
-      console.log(data);
-    });
   }
 
   getRelativeTime(date: Date) {
@@ -47,12 +39,16 @@ export class NotificationListComponent implements OnInit {
     return this.i18nService.language;
   }
 
-
   markAsRead(notification: DetailedUserNotification, index: number) {
     if (notification.statusCode != "READ") {
       this.notificationService.markAsRead(notification.id).subscribe(data => {
-        if (data > 0)
+        if (data > 0) {
           this.notifications[index].statusCode = "READ";
+          //update the un-read notifications count.
+          this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
+            this.notificationService.updateUserNewNotificationsCount(notificationsCount);
+          });
+        }
       });
     }
   }
@@ -63,7 +59,7 @@ export class NotificationListComponent implements OnInit {
     }
     switch (categoryCode) {
       case 'GENERAL':
-        return "state-default";
+        return "state-general";
       case 'HEALTH':
         return "state-health";
       case 'RELIGIOUS':
@@ -73,7 +69,7 @@ export class NotificationListComponent implements OnInit {
       case 'GENERAL_AWARENESS':
         return "state-info";
       default:
-        return "state-info";
+        return "state-general";
     }
   }
 
