@@ -318,7 +318,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     /**
-     * Reset user password.
+     * Reset user password and reset trials counter to 0.
      *
      * @param user
      */
