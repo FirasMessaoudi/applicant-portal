@@ -9,7 +9,7 @@
     "build:qa": "npm run env -s && ng build -c qa --base-href=\"./\"",
     "build:stag": "npm run env -s && ng build -c stag --base-href=\"./\"",
     "build:prod": "npm run env -s && ng build --prod --base-href=\"./\"",
-    "start": "npm run env -s && ng serve --aot --proxy-config proxy.conf.js --host 0.0.0.0 --source-map",
+    "start": "npm run env -s && ng serve --port 4201 --aot --proxy-config proxy.conf.js --host 0.0.0.0 --source-map",
     "start:ux": "npm run env -s && ng serve --aot --proxy-config proxy.conf.js --host 172.20.10.5 --source-map",
     "serve:sw": "npm run build -s && npx http-server ./dist -p 4200",
     "lint": "ng lint && stylelint \"src/**/*.scss\" --syntax scss && htmlhint \"src\" --config .htmlhintrc",
