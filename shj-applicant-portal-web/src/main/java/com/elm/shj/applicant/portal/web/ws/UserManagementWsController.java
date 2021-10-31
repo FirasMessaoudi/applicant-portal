@@ -315,6 +315,13 @@ public class UserManagementWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(detailedUserNotificationDtos).build());
     }
+    @PostMapping("/notifications/mark-as-read/{notificationId}")
+    public ResponseEntity<WsResponse<?>> markUserNotificationAsRead(@PathVariable Long notificationId) {
+        int numberOfRowsAffected = userService.markUserNotificationAsRead(notificationId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(numberOfRowsAffected).build());
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<WsResponse<?>> handleBadCredentialsException(
