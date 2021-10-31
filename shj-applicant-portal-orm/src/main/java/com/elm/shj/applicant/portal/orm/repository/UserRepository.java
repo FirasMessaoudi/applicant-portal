@@ -68,7 +68,7 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
     Date retrieveTokenExpiryDate(@Param("idNumber") long idNumber);
 
     @Modifying
-    @Query("update JpaUser user set user.passwordHash = :pwdHash, user.changePasswordRequired = :changePwd where user.id =:userId")
+    @Query("update JpaUser user set user.passwordHash = :pwdHash, user.changePasswordRequired = :changePwd, user.numberOfTries = 0 where user.id =:userId")
     void resetPwd(@Param("userId") long userId, @Param("pwdHash") String pwdHash, @Param("changePwd") boolean changePwd);
 
     @Modifying
