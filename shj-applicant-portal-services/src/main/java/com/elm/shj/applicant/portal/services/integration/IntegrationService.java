@@ -57,6 +57,7 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_SEASON_LATEST_URL = "/ws/applicant/ritual-season/latest";
     private final String NOTIFICATION_URL = "/ws/notification";
     private final String NOTIFICATION_COUNT_URL = NOTIFICATION_URL + "/count-new-notifications/";
+    private final String NOTIFICATION_CATEGORY_PREFERENCE_URL = NOTIFICATION_URL + "/user-notification-category-preference/";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final String MARK_NOTIFICATIONS_READ_URL = NOTIFICATION_URL + "/mark-as-read";
 
@@ -634,6 +635,25 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load religious occasions day.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Find user notification category preference from command portal.
+     *
+     * @param userId
+     * @return
+     */
+    public List<UserNotificationCategoryPreferenceDto> findUserNotificationCategoryPreference(long userId) {
+        WsResponse<List<UserNotificationCategoryPreferenceDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_PREFERENCE_URL + userId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<UserNotificationCategoryPreferenceDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get user notification category preference by {} user Id.", userId, e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();
