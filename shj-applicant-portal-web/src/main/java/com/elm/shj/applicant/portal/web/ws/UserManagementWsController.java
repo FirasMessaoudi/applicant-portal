@@ -1,6 +1,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -59,6 +60,7 @@ public class UserManagementWsController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final OtpService otpService;
+    private final NotificationService notificationService;
 
     /**
      * Resets the user password
@@ -321,6 +323,15 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(numberOfRowsAffected).build());
+    }
+
+    @GetMapping("/notifications/category-preference")
+    public ResponseEntity<WsResponse<?>> findUserNotificationCategoryPreference( Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<UserNotificationCategoryPreferenceDto> userNotificationCategoryPreferenceDtos = notificationService.findUserNotificationCategoryPreference(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(userNotificationCategoryPreferenceDtos).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

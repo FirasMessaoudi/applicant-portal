@@ -24,7 +24,7 @@ public class UserNotificationCategoryPreferenceDto implements Serializable {
     private static final long serialVersionUID = -3674938432773107508L;
 
     private long id;
-    private int userId;
+    private long userId;
     private String categoryCode;
     private boolean enabled;
     private Date creationDate;

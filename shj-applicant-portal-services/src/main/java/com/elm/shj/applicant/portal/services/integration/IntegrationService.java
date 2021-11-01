@@ -64,6 +64,7 @@ public class IntegrationService {
     private final String COMPANY_DETAILS_URL = "/ws/company-details";
     private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
+    private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
 
 
     private final WebClient webClient;
@@ -654,6 +655,23 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get user notification category preference by {} user Id.", userId, e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+    /**
+     * Find notification category lookup from command portal.
+     *
+     * @return
+     */
+    public List<NotificationCategoryLookupDto> loadNotificationCategories() {
+        WsResponse<List<NotificationCategoryLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<NotificationCategoryLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification categories", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();
