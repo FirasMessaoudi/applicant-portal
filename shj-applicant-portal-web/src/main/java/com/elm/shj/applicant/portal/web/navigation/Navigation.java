@@ -37,7 +37,8 @@ public class Navigation {
     public static final String API_NOTIFICATION = "/api/notification";
     // Applicant
     public static final String API_INTEGRATION_APPLICANT = "/api/ws/applicant";
-
+    // Configuration web service call
+    public static final String API_CONFIGURATION = "/api/ws/configuration";
     public static final String API_INTEGRATION_USERS_CHANGE_PWRD = API_INTEGRATION_USERS + "/change-password";
     public static final String API_INTEGRATION_AUTH_LOGOUT = API_INTEGRATION_AUTH + "/logout";
     // Logout

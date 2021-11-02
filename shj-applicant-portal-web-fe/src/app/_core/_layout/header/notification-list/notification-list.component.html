@@ -21,7 +21,7 @@
     </div>
     <div class="Nbtn" *ngIf="notification?.actionRequired">
       <button
-        [routerLink]="[buildRoute(notification?.nameCode)]"
+        [routerLink]="[buildRoute(notification?.nameCode)]" (click)="markAsRead(notification,i)"
         class="btn btn-sm btn-outline-dcc-dark-primary pt-1">{{notification?.actionLabel}}</button>
     </div>
   </div>
