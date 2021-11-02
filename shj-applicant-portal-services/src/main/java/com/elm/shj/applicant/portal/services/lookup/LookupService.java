@@ -47,6 +47,8 @@ public class LookupService {
     private List<ApplicantDigitalIdStatusLookupDto> applicantDigitalIdStatuses;
     private List<ReligiousOccasionsDayLookupDto> religiousOccasionsDay;
     private List<NotificationCategoryLookupDto> notificationCategories;
+    private List<NotificationTemplateNameLookupDto> retrieveNotificationNames;
+
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
     @SchedulerLock(name = "load-applicant-lookups-task")
@@ -70,6 +72,7 @@ public class LookupService {
         this.applicantDigitalIdStatuses = integrationService.loadDigitalIdStatuses();
         this.religiousOccasionsDay = integrationService.loadReligiousOccasionsDay();
         this.notificationCategories = integrationService.loadNotificationCategories();
+        this.retrieveNotificationNames = integrationService.loadNotificationNames();
 
     }
 
@@ -143,4 +146,7 @@ public class LookupService {
     }
 
 
+    public List<NotificationTemplateNameLookupDto> retrieveNotificationNames() {
+        return retrieveNotificationNames;
+    }
 }

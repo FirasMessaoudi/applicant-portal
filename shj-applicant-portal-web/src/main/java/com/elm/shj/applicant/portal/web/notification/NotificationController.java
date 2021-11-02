@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.notification;
 
+import com.elm.shj.applicant.portal.services.dto.UserNotificationCategoryPreferenceDto;
 import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
 import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -52,5 +53,17 @@ public class NotificationController {
         long loggedInUserId = jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L);
         UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(loggedInUserId);
         return ResponseEntity.ok(notificationsCountVo);
+    }
+
+    /**
+     * Update user notification category preference.
+     *
+     * @param userNotificationCategoryPreference
+     * @return updated userNotificationCategoryPreference
+     */
+    @GetMapping("//update-user-notification-category-preference")
+    public ResponseEntity<UserNotificationCategoryPreferenceDto> updateUserNotificationCategoryPreference(@RequestBody UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
+        UserNotificationCategoryPreferenceDto userNotificationCategoryPreferenceUpdated = notificationService.save(userNotificationCategoryPreference);
+        return ResponseEntity.ok(userNotificationCategoryPreferenceUpdated);
     }
 }

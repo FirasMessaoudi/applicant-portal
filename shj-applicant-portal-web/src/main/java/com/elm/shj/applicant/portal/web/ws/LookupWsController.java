@@ -214,6 +214,7 @@ public class LookupWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(religiousOccasionsDayLookup).build());
     }
+
     @GetMapping("/notification-category/list")
     public ResponseEntity<WsResponse<?>> listNotificationCategories(Authentication authentication) {
         log.debug("list religious occasions day...");
@@ -221,5 +222,14 @@ public class LookupWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(notificationCategoryLookupDtos).build());
+    }
+
+    @GetMapping("/notification-name/list")
+    public ResponseEntity<WsResponse<?>> listNotificationNames(Authentication authentication) {
+        log.debug("list notification names...");
+        List<NotificationTemplateNameLookupDto> notificationTemplateNameLookupDtos = lookupService.retrieveNotificationNames();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(notificationTemplateNameLookupDtos).build());
     }
 }

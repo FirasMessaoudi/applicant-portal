@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Dto class for Notification category
+ * Dto class for the notification template name lookup domain.
  *
  * @author f.messaoudi
  * @since 1.0.0
@@ -19,9 +19,9 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NotificationCategoryLookupDto implements Serializable {
+public class NotificationTemplateNameLookupDto implements Serializable {
 
-    private static final long serialVersionUID = 2108238859214254284L;
+    private static final long serialVersionUID = -7319072087623445505L;
 
     private long id;
     private String code;

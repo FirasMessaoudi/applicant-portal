@@ -65,6 +65,9 @@ public class IntegrationService {
     private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
     private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
+    private  final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
+    private  final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
+
 
 
     private final WebClient webClient;
@@ -659,6 +662,7 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
     /**
      * Find notification category lookup from command portal.
      *
@@ -673,6 +677,37 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification categories", e);
             return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Find notification name lookup from command portal.
+     *
+     * @return
+     */
+    public List<NotificationTemplateNameLookupDto> loadNotificationNames() {
+        WsResponse<List<NotificationTemplateNameLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_NAME_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<NotificationTemplateNameLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public UserNotificationCategoryPreferenceDto save(UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
+        WsResponse<UserNotificationCategoryPreferenceDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_UPDATE, HttpMethod.PUT, userNotificationCategoryPreference,
+                    new ParameterizedTypeReference<WsResponse<UserNotificationCategoryPreferenceDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return null;
         }
         return wsResponse.getBody();
     }
