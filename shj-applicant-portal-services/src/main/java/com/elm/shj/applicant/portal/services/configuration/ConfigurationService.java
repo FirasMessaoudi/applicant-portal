@@ -24,13 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ConfigurationService {
 
-    @Value("${location.request.in.minutes}")
+    @Value("${send.user.location.period.in.minutes}")
     private int locationRequestInMinutes;
 
     public List<ConfigDto> findUserLocationRequestDuration() {
         List<ConfigDto> configList =new ArrayList<>();
         ConfigDto config = new ConfigDto();
-        config.setConfKey("location.request.in.minutes");
+        config.setConfKey("send.user.location.period.in.minutes");
         config.setConfValue(String.valueOf(locationRequestInMinutes));
         configList.add(config);
 
