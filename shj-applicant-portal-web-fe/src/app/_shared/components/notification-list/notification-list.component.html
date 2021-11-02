@@ -1,6 +1,6 @@
-<div class="d-flex border-bottom py-4 {{buildIcon(notification?.categoryCode, notification?.important)}}"
+<div class="d-flex border-bottom p-3 {{buildIcon(notification?.categoryCode, notification?.important)}}"
      *ngFor="let notification of notifications; let i = index" [attr.data-index]="i">
-  <div class="nIcon mx-3">
+  <div class="nIcon mr-3">
     <svg-icon styleClass="fa-w-18" icon="{{buildIcon(notification?.categoryCode, notification?.important)}}"></svg-icon>
   </div>
   <div class="w-100" (click)="markAsRead(notification,i)">
@@ -13,7 +13,7 @@
           <svg-icon *ngIf="notification.statusCode != 'READ'" styleClass="text-light-gray" icon="unread"></svg-icon>
         </div>
       </div>
-      <p>{{notification?.resolvedBody}}</p>
+      <p class="mt-2 mb-3">{{notification?.resolvedBody}}</p>
     </div>
     <div class="Nbtn" *ngIf="notification?.actionRequired">
       <button [routerLink]="[buildRoute(notification?.nameCode)]"

@@ -4,7 +4,6 @@ import {TranslateModule} from "@ngx-translate/core";
 import {SharedModule} from "@shared/shared.module";
 import {NotificationsRoutingModule} from "@pages/notifications/notifications-routing.module";
 import {NotificationsComponent} from "@pages/notifications/notifications.component";
-import {NotificationListComponent} from "@pages/notifications/notification-list/notification-list.component";
 
 @NgModule({
   imports: [
@@ -14,9 +13,8 @@ import {NotificationListComponent} from "@pages/notifications/notification-list/
     SharedModule
   ],
   exports: [
-    NotificationListComponent
   ],
-  declarations: [NotificationsComponent, NotificationListComponent]
+  declarations: [NotificationsComponent]
 })
 export class NotificationsModule {
 }

@@ -7,7 +7,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import * as layout from '@core/_layout';
 import {UtilityService} from '@core/utilities/utility.service';
 import {EnsureModuleLoadedOnceGuard} from '@core/guards/ensure-module-loaded-once.guard';
-import {RouterModule} from '@angular/router';
 
 import {ReactiveFormsModule} from '@angular/forms';
 // SVG Icons
@@ -23,17 +22,13 @@ import {TranslateModule} from "@ngx-translate/core";
 import {LookupService} from "@core/utilities/lookup.service";
 import {OtpStorage} from "@pages/otp/otp.storage";
 import {NotificationService} from "@core/services/notification/notification.service";
-import {NotificationListComponent} from "@core/_layout/header/notification-list/notification-list.component";
-
 
 @NgModule({
   declarations: [
     ...layout.layout,
-    NotificationListComponent,
   ],
   imports: [
     CommonModule,
-    RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
