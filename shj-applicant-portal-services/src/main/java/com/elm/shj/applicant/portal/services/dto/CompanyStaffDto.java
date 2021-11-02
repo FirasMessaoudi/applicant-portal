@@ -3,7 +3,6 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,9 +10,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Dto class for the companyStaff.

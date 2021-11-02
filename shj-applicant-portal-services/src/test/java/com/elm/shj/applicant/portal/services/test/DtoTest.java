@@ -8,7 +8,6 @@ import com.google.common.collect.ImmutableMap.Builder;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

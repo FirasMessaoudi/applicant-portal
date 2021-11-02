@@ -3,7 +3,6 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
