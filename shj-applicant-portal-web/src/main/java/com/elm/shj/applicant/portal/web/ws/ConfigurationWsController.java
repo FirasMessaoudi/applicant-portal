@@ -20,7 +20,7 @@ import java.util.*;
  * Controller for exposing web services related to configurations for external party.
  *
  * @author salzoubi
- * @since 1.1.0
+ * @since 1.0.0
  */
 @CrossOrigin(
         originPatterns = "*",
@@ -36,9 +36,9 @@ public class ConfigurationWsController {
 
     private final ConfigurationService configurationService;
 
-    @GetMapping("/location-request-period")
-    public ResponseEntity<WsResponse<?>> findUserLocationRequestDuration( Authentication authentication) {
-        List<ConfigDto> configList =configurationService.findUserLocationRequestDuration();
+    @GetMapping("/list")
+    public ResponseEntity<WsResponse<?>> getMobileConfigurationsList( Authentication authentication) {
+        List<ConfigDto> configList =configurationService.getMobileConfigurationsList();
 
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())

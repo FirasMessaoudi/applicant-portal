@@ -17,7 +17,7 @@ import java.util.List;
  * Service handling configuration
  *
  * @author salzoubi
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Slf4j
 @Service
@@ -25,15 +25,18 @@ import java.util.List;
 public class ConfigurationService {
 
     @Value("${send.user.location.period.in.minutes}")
-    private int locationRequestInMinutes;
+    private int userLocationPeriodInMinutes;
 
-    public List<ConfigDto> findUserLocationRequestDuration() {
+    public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
+        configList.add(getUserLocationPeriodConfig());
+        return configList;
+    }
+    
+    private ConfigDto getUserLocationPeriodConfig(){
         ConfigDto config = new ConfigDto();
         config.setConfKey("send.user.location.period.in.minutes");
-        config.setConfValue(String.valueOf(locationRequestInMinutes));
-        configList.add(config);
-
-        return configList;
+        config.setConfValue(String.valueOf(userLocationPeriodInMinutes));
+        return config;
     }
 }
