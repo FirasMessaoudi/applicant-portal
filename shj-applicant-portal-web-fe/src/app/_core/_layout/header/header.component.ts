@@ -221,7 +221,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return this.notifications.filter(notification => !notification.userSpecific);
   }
 
-
+  navigateToNotificationsPage() {
+    this.router.navigate(['/notifications']);
+  }
 
   public config: PerfectScrollbarConfigInterface = {};
   @ViewChild(PerfectScrollbarComponent) componentRef?: PerfectScrollbarComponent;

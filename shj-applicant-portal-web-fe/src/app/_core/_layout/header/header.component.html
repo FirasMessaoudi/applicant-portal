@@ -76,7 +76,7 @@
         </li>
         <li class="position-relative">
 
-          <a class="nav-link d-flex align-items-center dropdown-toggle noArrow"
+          <a #p="ngbPopover" class="nav-link d-flex align-items-center dropdown-toggle noArrow"
              [autoClose]="'outside'"
              [ngbPopover]="popContent"
              placement="bottom"
@@ -98,14 +98,13 @@
                   ({{userNewNotificationsCount?.userSpecificNewNotificationsCount}})</a>
                 <ng-template ngbNavContent>
                   <app-notification-list [notifications]="getPrivateNotifications()"></app-notification-list>
-
                 </ng-template>
               </li>
               <li [ngbNavItem]="2">
                 <a class="p-3" ngbNavLink>{{"notification-management.public_notifications" | translate}}
                   ({{userNewNotificationsCount?.userNotSpecificNewNotificationsCount}})</a>
                 <ng-template ngbNavContent>
-                <app-notification-list [notifications]="getPublicNotifications()"></app-notification-list>
+                  <app-notification-list [notifications]="getPublicNotifications()"></app-notification-list>
                 </ng-template>
               </li>
             </ul>
@@ -119,8 +118,7 @@
             </div>
 
             <div class="flex-center py-3">
-              <a class="text-body"
-                 [routerLink]="['/notifications']"><b>{{"notification-management.view_all_notifications" | translate}}</b></a>
+              <a class="text-body" role="button" (click)="p.close();navigateToNotificationsPage()"><b>{{"notification-management.view_all_notifications" | translate}}</b></a>
               <svg-icon styleClass="text-black-50 mx-2 chevron" icon="chevron-double-left"></svg-icon>
             </div>
 

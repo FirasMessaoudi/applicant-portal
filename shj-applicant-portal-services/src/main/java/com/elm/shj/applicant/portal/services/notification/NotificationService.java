@@ -46,4 +46,13 @@ public class NotificationService {
         return this.integrationService.findUserNotificationCategoryPreference(userId);
     }
 
+    /**
+     * update user notification category preference
+     *
+     * @param  userNotificationCategoryPreference to update
+     */
+    public UserNotificationCategoryPreferenceDto save(UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
+        return this.integrationService.save(userNotificationCategoryPreference);
+
+    }
 }

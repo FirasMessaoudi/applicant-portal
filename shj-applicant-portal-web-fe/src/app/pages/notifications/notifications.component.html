@@ -14,7 +14,7 @@
   <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li [ngbNavItem]="1">
       <a class="py-3 px-4" ngbNavLink>{{"notification-management.private_notifications" | translate}}
-        ({{getPrivateNotifications()?.length}})</a>
+        ({{userNewNotificationsCount?.userSpecificNewNotificationsCount}})</a>
       <ng-template ngbNavContent>
 
         <!--Private notifications-->
@@ -24,7 +24,7 @@
     </li>
     <li [ngbNavItem]="2">
       <a class="py-3 px-4" ngbNavLink>{{"notification-management.public_notifications" | translate}}
-        ({{getPublicNotifications()?.length}})</a>
+        ({{userNewNotificationsCount?.userNotSpecificNewNotificationsCount}})</a>
       <ng-template ngbNavContent>
 
         <!--Public notifications-->

@@ -11,17 +11,17 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Dto class for the ritual type domain.
+ * Dto class for the notification template name lookup domain.
  *
- * @author ahmad flaifel
+ * @author f.messaoudi
  * @since 1.0.0
  */
 @Getter
 @Setter
 @NoArgsConstructor
-public class RitualTypeLookupDto implements Serializable {
+public class NotificationTemplateNameLookupDto implements Serializable {
 
-    private static final long serialVersionUID = -1042347822036530816L;
+    private static final long serialVersionUID = -7319072087623445505L;
 
     private long id;
     private String code;

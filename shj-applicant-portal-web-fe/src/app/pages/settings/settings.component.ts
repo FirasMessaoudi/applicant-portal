@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {ModalDismissReasons, NgbDropdown, NgbModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {NgbDropdown, NgbModal, NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
 import {AuthenticationService, CardService, UserService} from "@core/services";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ToastService} from "@shared/components/toast";

@@ -4,6 +4,7 @@ import * as momentjs from 'moment';
 import {I18nService} from "@dcc-commons-ng/services";
 import {NotificationService} from "@core/services/notification/notification.service";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
+import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
 
 const moment = momentjs;
 
@@ -16,6 +17,7 @@ export class NotificationListComponent implements OnInit {
 
   @Input()
   notifications: DetailedUserNotification[];
+  userNewNotificationsCount: UserNewNotificationsCount;
 
   constructor(private userService: UserService,
               private notificationService: NotificationService,
@@ -23,13 +25,20 @@ export class NotificationListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
+      this.userNewNotificationsCount = updatedCount;
+    });
   }
 
   markAsRead(notification: DetailedUserNotification, index: number) {
     if (notification.statusCode != "READ") {
       this.notificationService.markAsRead(notification.id).subscribe(data => {
-        if (data > 0)
+        if (data > 0) {
           this.notifications[index].statusCode = "READ";
+          this.notificationService.countUserNewNotifications().subscribe(notificationsCount => {
+            this.notificationService.updateUserNewNotificationsCount(notificationsCount);
+          });
+        }
       });
     }
   }

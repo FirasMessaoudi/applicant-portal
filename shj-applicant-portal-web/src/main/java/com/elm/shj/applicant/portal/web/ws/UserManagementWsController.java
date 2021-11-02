@@ -60,7 +60,6 @@ public class UserManagementWsController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final OtpService otpService;
-    private final NotificationService notificationService;
 
     /**
      * Resets the user password
@@ -303,35 +302,6 @@ public class UserManagementWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());
-    }
-    /**
-     * get all notifications by user ID
-     *
-     * @param authentication the authenticated user
-     */
-    @GetMapping("/notifications")
-    public ResponseEntity<WsResponse<?>> findUserNotificationsById(Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<DetailedUserNotificationDto> detailedUserNotificationDtos = userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(detailedUserNotificationDtos).build());
-    }
-    @PostMapping("/notifications/mark-as-read/{notificationId}")
-    public ResponseEntity<WsResponse<?>> markUserNotificationAsRead(@PathVariable Long notificationId) {
-        int numberOfRowsAffected = userService.markUserNotificationAsRead(notificationId);
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(numberOfRowsAffected).build());
-    }
-
-    @GetMapping("/notifications/category-preference")
-    public ResponseEntity<WsResponse<?>> findUserNotificationCategoryPreference( Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<UserNotificationCategoryPreferenceDto> userNotificationCategoryPreferenceDtos = notificationService.findUserNotificationCategoryPreference(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(userNotificationCategoryPreferenceDtos).build());
     }
 
     @ExceptionHandler(BadCredentialsException.class)

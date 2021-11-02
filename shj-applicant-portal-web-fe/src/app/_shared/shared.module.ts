@@ -33,6 +33,8 @@ import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import {NotificationListComponent} from "@shared/components/notification-list/notification-list.component";
+import {RouterModule} from "@angular/router";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -48,7 +50,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HijriFormatPipe,
     MonthDayHijriFormatPipe,
     IbanStatusPipe,
-    ArabicNumberPipe
+    ArabicNumberPipe,
+    NotificationListComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +65,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgMultiSelectDropDownModule,
     GoogleMapsModule,
     NgxIntlTelInputModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    RouterModule
   ],
   providers: [
     DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule,
@@ -93,7 +97,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HijriGregorianDatepickerModule,
     GoogleMapsModule,
     NgxIntlTelInputModule,
-    PerfectScrollbarModule
+    PerfectScrollbarModule,
+    NotificationListComponent,
+    RouterModule
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,
