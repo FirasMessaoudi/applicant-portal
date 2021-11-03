@@ -26,9 +26,14 @@ public class ApplicantPackageDto implements Serializable {
     @NotNull(message = "validation.data.constraints.msg.20001")
     private long applicantUin;
 
+    private Date startDate;
+
+    private Date endDate;
+
     private Date creationDate;
 
     private Date updateDate;
+
 
     @JsonBackReference(value = "ritualPackage")
     private RitualPackageDto ritualPackage;
