@@ -232,4 +232,13 @@ public class LookupWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(notificationTemplateNameLookupDtos).build());
     }
+
+    @GetMapping("/meal-type/list")
+    public ResponseEntity<WsResponse<?>> listMealTypes(Authentication authentication) {
+        log.debug("list meal types...");
+        List<MealTypeLookupDto> mealTypesLookup = lookupService.retrieveMealTypes();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(mealTypesLookup).build());
+    }
 }

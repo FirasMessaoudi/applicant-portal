@@ -171,4 +171,11 @@ public class LookupController {
         return lookupService.retrieveReligiousOccasionsDay();
     }
 
+
+    @GetMapping("/meal-type/list")
+    public List<MealTypeLookupDto> listMealTypes(Authentication authentication) {
+        log.debug("list meal types...");
+        return lookupService.retrieveMealTypes();
+    }
+
 }
