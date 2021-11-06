@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -120,6 +121,36 @@ public class AuthenticationWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
 
+    }
+
+    /**
+     * Authenticate the requests from mobile app background services
+     *
+     * @param credentials
+     */
+    @PostMapping("/api-auth")
+    public ResponseEntity<WsResponse<?>> login(@RequestBody Map<String, String> credentials, HttpServletRequest request, HttpServletResponse response) {
+        log.debug("Auth Webservice request handler");
+
+        String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
+        if (callerType == null || !callerType.equals(JwtTokenService.WEB_SERVICE_CALLER_TYPE)) {
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body("accees denied").build());
+        }
+
+        JwtToken authentication;
+        try {
+            authentication = (JwtToken) jwtAuthenticationProvider
+                    .authenticate(new UsernamePasswordAuthenticationToken(credentials.get("username"), credentials.get("password")));
+        } catch (RecaptchaException rex) {
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body("Multiple failed login attempts").build());
+        }
+
+        jwtTokenService.attachTokenCookie(response, authentication);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(authentication.getToken()).build());
     }
 
 

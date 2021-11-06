@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -97,6 +98,9 @@ public class JpaUser implements Serializable {
 
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "user")
 	private Set<JpaUserRole> userRoles;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+	private List<JpaUserLocation> userLocations;
 
 	@Column(name = "AVATAR")
 	private String avatar;
