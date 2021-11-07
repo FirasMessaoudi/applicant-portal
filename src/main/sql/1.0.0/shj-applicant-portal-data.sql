@@ -172,5 +172,8 @@ GO
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('scheduler.password.expiry.notification.cron', '0 0 1 ? * *');
 GO
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('password.expiry.notification.period.in.days', 5);
-
 GO
+
+INSERT INTO sha_portal.sha_config (conf_key,conf_value) VALUES ('send.user.location.period.in.minutes' ,'2')
+GO
+

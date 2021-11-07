@@ -1,12 +1,13 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
-import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
+import com.elm.shj.applicant.portal.services.user.UserLocationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
+import com.elm.shj.applicant.portal.web.admin.UserLocationsCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -60,6 +61,7 @@ public class UserManagementWsController {
     private final PasswordHistoryService passwordHistoryService;
     private final JwtTokenService jwtTokenService;
     private final OtpService otpService;
+    private final UserLocationService userLocationService;
 
     /**
      * Resets the user password
@@ -341,5 +343,22 @@ public class UserManagementWsController {
         return user;
     }
 
+    @PostMapping("/user-locations")
+    public ResponseEntity<WsResponse<?>> storeUserLocations(@RequestBody UserLocationsCmd userLocations, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        Optional<UserDto> databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin));
+        if (databaseUser.isPresent()) {
+            for (UserLocationDto location : userLocations.getLocations())
+                location.setUser(databaseUser.get());
+            userLocationService.storeUserLocation(userLocations.getLocations());
+        } else {
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.USER_NOT_FOUND.getCode()).referenceNumber(loggedInUserUin).build()).build());
+        }
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(null).build());
+    }
 
 }

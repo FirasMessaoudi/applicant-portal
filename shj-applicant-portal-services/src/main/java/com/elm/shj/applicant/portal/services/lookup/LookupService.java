@@ -48,6 +48,7 @@ public class LookupService {
     private List<ReligiousOccasionsDayLookupDto> religiousOccasionsDay;
     private List<NotificationCategoryLookupDto> notificationCategories;
     private List<NotificationTemplateNameLookupDto> retrieveNotificationNames;
+    private List<MealTypeLookupDto> mealTypes;
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
@@ -73,6 +74,7 @@ public class LookupService {
         this.religiousOccasionsDay = integrationService.loadReligiousOccasionsDay();
         this.notificationCategories = integrationService.loadNotificationCategories();
         this.retrieveNotificationNames = integrationService.loadNotificationNames();
+        this.mealTypes = integrationService.loadMealTypes();
 
     }
 
@@ -148,5 +150,9 @@ public class LookupService {
 
     public List<NotificationTemplateNameLookupDto> retrieveNotificationNames() {
         return retrieveNotificationNames;
+    }
+
+    public List<MealTypeLookupDto> retrieveMealTypes() {
+        return mealTypes;
     }
 }

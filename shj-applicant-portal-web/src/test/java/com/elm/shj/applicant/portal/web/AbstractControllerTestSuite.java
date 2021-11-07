@@ -17,6 +17,7 @@ import com.elm.shj.applicant.portal.services.otp.OtpGenerator;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.role.RoleService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
+import com.elm.shj.applicant.portal.services.user.UserLocationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.boot.BootApplication;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -127,6 +128,9 @@ public abstract class AbstractControllerTestSuite {
 
     @MockBean
     protected IntegrationService integrationService;
+
+    @MockBean
+    protected UserLocationService userLocationService;
 
     protected Cookie tokenCookie;
 

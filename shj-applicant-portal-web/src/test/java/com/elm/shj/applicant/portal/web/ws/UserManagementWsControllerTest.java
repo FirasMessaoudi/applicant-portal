@@ -4,6 +4,7 @@ import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
+import com.elm.shj.applicant.portal.web.admin.UserLocationsCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import org.junit.jupiter.api.Test;
@@ -331,6 +332,20 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
 
 
         verify(userService, times(1)).findApplicantRitualLatestByUin(any(String.class));
+
+    }
+
+    @Test
+    public void test_store_user_locations_success() throws Exception {
+        String url = Navigation.API_INTEGRATION_USERS + "/user_locations";
+
+        UserLocationsCmd userLocationsCmd = new UserLocationsCmd();
+
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.body.status", is(0)));
+
+
+        verify(userLocationService, times(1)).storeUserLocation(anyList());
 
     }
 
