@@ -46,7 +46,7 @@ public class NotificationWsController {
      * @param authentication the authenticated user
      */
 
-    @GetMapping("/notifications")
+    @GetMapping("/notifications/list")
     public ResponseEntity<WsResponse<?>> findUserNotificationsById(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         List<DetailedUserNotificationDto> detailedUserNotificationDtos = userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
