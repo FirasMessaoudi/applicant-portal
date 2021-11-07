@@ -46,6 +46,50 @@ export class SettingsComponent implements OnInit {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
+  notificationsList=[
+    {
+      id:0,
+      checked:true,
+      title:'عامة',
+      icon:'comment-alt-lines-light',
+      iconColor:'dcc-primary',
+      description:'احرص على حمل بطاقة الحج الخاصة بك عند اداء الشعائر'
+    },
+    {
+      id:1,
+      checked:false,
+      title:'صحي',
+      icon:'heartbeat-light',
+      iconColor:'dcc-danger',
+      description:'في حالة ارتفاع درجة حرارتك فوق 38 درجة توجة الى اقرب نقطة صحية مباشرة'
+    },
+    {
+      id:2,
+      checked:true,
+      title:'شعيرة',
+      icon:'flag-light',
+      iconColor:'dcc-primary',
+      description:'طواف الإفاضة هو رُكن من أركان الحجّ لا يتمّ الحج إلّا بالإتيان به؛ ودليل ذلك قوله -تعالى-: (وَلْيَطَّوَّفُوا بِالْبَيْتِ الْعَتِيقِ)'
+    },
+    {
+      id:3,
+      checked:false,
+      title:'توعية عامة',
+      icon:'bullhorn-light',
+      iconColor:'dcc-blue',
+      description:'تجنب صعود الجبال والاماكن المرتفعة وتجنب المزاحمة والالتحام والافتراش في الطرقات'
+    },
+    {
+      id:0,
+      checked:false,
+      title:'دينية',
+      icon:'kaaba-light',
+      iconColor:'dcc-primary',
+      description:'ربنا تقبل منا إنك أنت السميع العليم.'
+    },
+
+  ]
+
   constructor(private modalService: NgbModal,
               private userService: UserService,
               private cardService: CardService,
@@ -227,5 +271,7 @@ export class SettingsComponent implements OnInit {
       this.elem.nativeElement.value = '';
     }
   }
-
+finalSave(){
+  this.updateUserLanguage();
+}
 }
