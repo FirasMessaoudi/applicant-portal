@@ -5,9 +5,11 @@ package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.DetailedUserNotificationDto;
 import com.elm.shj.applicant.portal.services.dto.UserNotificationCategoryPreferenceDto;
+import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
 import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
+import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -91,4 +93,19 @@ public class NotificationWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body( notificationService.save(userNotificationCategoryPreference)).build());
     }
+
+    /**
+     * Count user new notifications for logged-in user.
+     *
+     * @param authentication
+     * @return
+     */
+    @GetMapping("/notifications/new-notifications-count")
+    public ResponseEntity<WsResponse<?>> countUserNewNotifications(Authentication authentication) {
+        // get the logged-in user id from authentication then count the un-read notifications
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(notificationsCountVo).build());    }
 }
