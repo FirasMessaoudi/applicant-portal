@@ -345,11 +345,11 @@ public class UserManagementWsController {
 
     @PostMapping("/user-locations")
     public ResponseEntity<WsResponse<?>> storeUserLocations(@RequestBody UserLocationsCmd userLocations, Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        String loggedInUserUin = userLocations.getUin();
         Optional<UserDto> databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin));
         if (databaseUser.isPresent()) {
             for (UserLocationDto location : userLocations.getLocations())
-                location.setUser(databaseUser.get());
+                location.setUserId(databaseUser.get().getId());
             userLocationService.storeUserLocation(userLocations.getLocations());
         } else {
             return ResponseEntity.ok(

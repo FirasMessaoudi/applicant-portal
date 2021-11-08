@@ -15,7 +15,7 @@ public class UserLocationDto implements Serializable {
 
     private long id;
 
-    private UserDto user;
+    private long userId;
 
     private double latitude;
 
