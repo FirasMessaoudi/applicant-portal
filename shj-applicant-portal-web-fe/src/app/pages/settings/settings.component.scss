@@ -1,30 +1,42 @@
-
+@import "animation";
+@import "variables";
+@import "mixins";
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
+
 /* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }
 
 .dropdown-menu {
-  margin: 0;
-  padding: 0;
-  border: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
 .form-control:disabled {
-  color: #6c757d !important;
-  background-color: #d8d8d8 !important;
-  font-weight: unset !important;
+    color: #6c757d !important;
+    background-color: #d8d8d8 !important;
+    font-weight: unset !important;
 }
 
 .custom-select:disabled {
-  color: #6c757d;
-  background-color: #d8d8d8 !important;
+    color: #6c757d;
+    background-color: #d8d8d8 !important;
 }
 
-
+//animation //
+// @for $i from 0 through 10 {
+//     .notification_card:nth-child(#{$i + 1}) {
+//         @extend .animated;
+//         @extend .fadeIn;
+//         animation-delay: 0s + ($i * 0.15);
+//         animation-duration: 0.4s;
+//     }
+// }
