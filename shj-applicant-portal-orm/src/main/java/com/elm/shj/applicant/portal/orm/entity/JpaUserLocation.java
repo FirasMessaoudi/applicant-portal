@@ -7,6 +7,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * The persistent class for the sha_user_location database table.
+ *
+ * @author jaafer jarray
+ * @since 1.3.0
+ */
 @Entity
 @Table(name = "sha_user_location")
 @NamedQuery(name = "JpaUserLocation.findAll", query = "SELECT j FROM JpaUserLocation j")
@@ -14,16 +20,15 @@ import java.util.Date;
 @NoArgsConstructor
 public class JpaUserLocation implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
+    private static final long serialVersionUID = 2766666271092315066L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private JpaUser user;
+    @Column(name = "user_id", nullable = false)
+    private long userId;
 
     @Column(name = "latitude")
     private double latitude;

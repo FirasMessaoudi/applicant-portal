@@ -7,6 +7,12 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * dto class for user location domain.
+ *
+ * @author jaafer jarray
+ * @since 1.3.0
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,7 +21,7 @@ public class UserLocationDto implements Serializable {
 
     private long id;
 
-    private UserDto user;
+    private long userId;
 
     private double latitude;
 
