@@ -343,7 +343,7 @@ public class UserManagementWsController {
         return user;
     }
 
-    @PostMapping("/user-locations")
+    @PostMapping("/store-user-locations")
     public ResponseEntity<WsResponse<?>> storeUserLocations(@RequestBody UserLocationsCmd userLocations, Authentication authentication) {
         String loggedInUserUin = userLocations.getUin();
         Optional<UserDto> databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin));
