@@ -7,6 +7,12 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * dto class for user location domain.
+ *
+ * @author jaafer jarray
+ * @since 1.3.0
+ */
 @Getter
 @Setter
 @NoArgsConstructor
