@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
 package com.elm.shj.applicant.portal.web.admin;
 
 import com.elm.shj.applicant.portal.services.dto.UserLocationDto;
@@ -12,7 +15,7 @@ import java.util.List;
  * user locations MVC Command
  *
  * @author jaafer jarray
- * @since 1.3.0
+ * @since 1.0.0
  */
 @NoArgsConstructor
 @Getter
