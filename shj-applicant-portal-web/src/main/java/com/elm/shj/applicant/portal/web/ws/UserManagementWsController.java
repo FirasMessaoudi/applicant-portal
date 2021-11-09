@@ -361,4 +361,30 @@ public class UserManagementWsController {
                         .body(null).build());
     }
 
+    @PutMapping("/language/{lang}")
+    public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, Authentication authentication) {
+        log.debug("Handler for {}", "Update User preferred language");
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        UserDto databaseUser = null;
+        try {
+            databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
+        } catch (Exception e) {
+            log.error("Error while find user in  updating user preferred language.", e);
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.USER_NOT_FOUND.getCode()).referenceNumber(loggedInUserUin).build()).build());
+        }
+        // sets form fields to database user instance
+        databaseUser.setPreferredLanguage(lang);
+        try {
+            userService.save(databaseUser);
+        } catch (Exception e) {
+            log.error("Error while updating user contacts.", e);
+            return ResponseEntity.of(Optional.empty());
+        }
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(null).build());
+    }
+
 }
