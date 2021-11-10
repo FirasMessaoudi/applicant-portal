@@ -149,8 +149,7 @@ public class AuthenticationWsController {
 
         jwtTokenService.attachTokenCookie(response, authentication);
 
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(authentication.getToken()).build());
+        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(authentication.getToken()).build());
     }
 
 
