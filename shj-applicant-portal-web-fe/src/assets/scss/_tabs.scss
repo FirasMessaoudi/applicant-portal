@@ -1,0 +1,19 @@
+.custom_tab{
+  width: 100%;
+  border-bottom: 2px solid #F0F0F0;
+  align-items: flex-end;
+  .btn.btn-link{
+    font-size: 1.2rem;
+    color:#666666;
+    border-bottom: 2px solid transparent;
+    @extend .px-5;
+    @extend .py-3;
+    &:hover,&.custom_tab_active{
+      box-shadow: none;
+      color:$dcc-primary;
+      border-bottom: 2px solid $dcc-primary;
+    }
+
+  }
+
+}

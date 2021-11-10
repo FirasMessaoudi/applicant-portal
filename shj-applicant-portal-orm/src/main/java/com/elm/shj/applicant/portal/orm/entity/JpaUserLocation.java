@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
 package com.elm.shj.applicant.portal.orm.entity;
 
 import lombok.Data;
@@ -7,6 +10,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * The persistent class for the sha_user_location database table.
+ *
+ * @author jaafer jarray
+ * @since 1.0.0
+ */
 @Entity
 @Table(name = "sha_user_location")
 @NamedQuery(name = "JpaUserLocation.findAll", query = "SELECT j FROM JpaUserLocation j")

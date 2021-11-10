@@ -134,7 +134,9 @@
     "notifications": "التنبيهات",
     "current_year": "العام الحالي",
     "alert_text": "جميع البيانات المعروضة الآن هي البيانات السابقة لك في",
-    "season": "موسم"
+    "season": "موسم",
+    "view_with_map": "عرض بالخريطة",
+    "view_with_timeline": "عرض بالجدول الزمني"
   },
   "settings": {
     "ritual-type": "نوع الشعيرة",

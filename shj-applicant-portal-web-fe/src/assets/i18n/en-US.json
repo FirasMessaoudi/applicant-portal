@@ -134,7 +134,9 @@
     "notifications": "Notifications",
     "current_year": "Current year",
     "alert_text": "All data displayed now is your previous data for",
-    "season": "season"
+    "season": "season",
+    "view_with_map": "View map",
+    "view_with_timeline": "View timeline"
   },
   "settings": {
     "ritual-type": "Ritual type",

@@ -16,8 +16,7 @@ const momentHijri = moment_;
   styleUrls: ['./hajj-journey.component.scss']
 })
 export class HajjJourneyComponent implements OnInit {
-  ritualType = ''
-  ritualTypesLookups: Lookup[] = [];
+
   private ritualSteps: CompanyRitualMainDataStep[] = [];
   ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string; }[];
   selectedRitualSeason: CompanyRitualSeasonLite;
@@ -31,7 +30,6 @@ export class HajjJourneyComponent implements OnInit {
   ngOnInit(): void {
     this.loadLookups();
     this.selectedRitualSeason = JSON.parse(localStorage.getItem('selectedRitualSeason'));
-    this.ritualType = this.selectedRitualSeason?.ritualSeason?.ritualTypeCode;
 
     if (!this.selectedRitualSeason) {
       this.loadApplicantRitualFromService();
@@ -65,15 +63,10 @@ export class HajjJourneyComponent implements OnInit {
     this.ritualTimelineService.loadRitualStepsLookups().subscribe(result => {
       this.ritualStepsLookups = result;
     });
-
-    this.ritualTimelineService.loadRitualTypes().subscribe(result => {
-      this.ritualTypesLookups = result;
-    });
   }
 
   loadApplicantRitualFromService() {
     this.userService.selectedApplicantRitual.subscribe(season => {
-      this.ritualType = season.name;
       this.selectedRitualSeason = season;
       this.loadRitualSteps();
     })

@@ -1,14 +1,25 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
 package com.elm.shj.applicant.portal.web.admin;
 
 import com.elm.shj.applicant.portal.services.dto.UserLocationDto;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * user locations MVC Command
+ *
+ * @author jaafer jarray
+ * @since 1.0.0
+ */
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class UserLocationsCmd implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<UserLocationDto> locations;

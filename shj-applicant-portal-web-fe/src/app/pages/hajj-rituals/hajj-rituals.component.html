@@ -6,16 +6,19 @@
   </nav>
   <div class="title__Page">
     <h3 class="sectionTitle">{{'header.my_program' | translate}}</h3>
-    <div class="px-5 border-0 btn-group btn-group-toggle">
-      <div class="btn-group" role="group" aria-label="Button group">
-        <button [routerLink]="['/hajj-rituals']" class="btn btn-success">{{'header.my_program' | translate}}</button>
-      </div>
-      <div class="btn-group" role="group" aria-label="Button group">
-        <button [routerLink]="['/hajj-journey/list']"
-                class="btn btn-outline-dark">{{'header.ritual_schedule' | translate}}</button>
-      </div>
-    </div>
   </div>
+
+ <div class="d-flex custom_tab">
+      <button [routerLink]="['/hajj-rituals']" class="btn btn-link custom_tab_active">
+        {{'header.view_with_map' | translate}}
+        <svg-icon styleClass="h4 mb-0  mt-3 mt-md-0 mx-2 text-dcc-primary" icon="map-light"></svg-icon>
+      </button>
+
+      <button [routerLink]="['/hajj-journey/list']"
+              class="btn btn-link">{{'header.view_with_timeline' | translate}}
+        <svg-icon styleClass="h4 mb-0  mt-3 mt-md-0 mx-3" icon="clock-light"></svg-icon>
+      </button>
+ </div>
 
   <div class="row no-gutters">
     <div class="col-12 col-lg-4 col-md order-2 order-lg-1 d-flex flex-column rituals_steps">
@@ -30,8 +33,7 @@
                    [href]="'#collapseRitualsStep' + step.id"
                    aria-controls="collapseOne"
                    (click)="zoomMap(step.id)"
-                   #ritualStepDom
-                >
+                   #ritualStepDom>
                   <div class="rituals_steps_item d-flex pl-5 align-items-center">
                   <div>
                     <div class="rituals_steps_item_circle" [ngClass]="{
@@ -109,8 +111,7 @@
                      [href]="'#collapseRitualsStep' + step.id"
                      aria-controls="collapseOne"
                      (click)="zoomMap(step.id)"
-                     #ritualStepDom
-                  >
+                     #ritualStepDom>
                     <svg-icon styleClass=" flip" icon="arrow-right"></svg-icon>
                     <span class="mx-2 px-1">{{
                       "general.btn_back" | translate
@@ -121,14 +122,12 @@
                   <a class="d-block text-right" *ngIf="!addedAlert" (click)="addedAlert = !addedAlert"
                      href="javascript:void(0);">
                     <span class="mx-2 px-1">{{'program-management.add_to_alerts' | translate}}</span>
-
                     <svg-icon styleClass="flip" icon="bell-plus-light"></svg-icon>
                   </a>
 
                   <a class="d-block text-right" (click)="addedAlert = !addedAlert" *ngIf="addedAlert"
                      href="javascript:void(0);">
                     <span class="mx-2 px-1">{{'program-management.added_to_alerts' | translate}}</span>
-
                     <svg-icon styleClass=" flip" icon="bell-on-solid"></svg-icon>
                   </a>
                 </div>

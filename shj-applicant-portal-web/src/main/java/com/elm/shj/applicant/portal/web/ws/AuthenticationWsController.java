@@ -128,8 +128,8 @@ public class AuthenticationWsController {
      *
      * @param credentials
      */
-    @PostMapping("/api-auth")
-    public ResponseEntity<WsResponse<?>> login(@RequestBody Map<String, String> credentials, HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/auth")
+    public ResponseEntity<WsResponse<?>> authenticate(@RequestBody Map<String, String> credentials, HttpServletRequest request, HttpServletResponse response) {
         log.debug("Auth Webservice request handler");
 
         String callerType = request.getHeader(JwtTokenService.CALLER_TYPE_HEADER_NAME);
@@ -149,8 +149,7 @@ public class AuthenticationWsController {
 
         jwtTokenService.attachTokenCookie(response, authentication);
 
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(authentication.getToken()).build());
+        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(authentication.getToken()).build());
     }
 
 
