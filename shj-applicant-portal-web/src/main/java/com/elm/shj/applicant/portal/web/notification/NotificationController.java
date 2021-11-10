@@ -61,7 +61,7 @@ public class NotificationController {
      * @param userNotificationCategoryPreference
      * @return updated userNotificationCategoryPreference
      */
-    @GetMapping("//update-user-notification-category-preference")
+    @PostMapping("/update-user-notification-category-preference")
     public ResponseEntity<UserNotificationCategoryPreferenceDto> updateUserNotificationCategoryPreference(@RequestBody UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
         UserNotificationCategoryPreferenceDto userNotificationCategoryPreferenceUpdated = notificationService.save(userNotificationCategoryPreference);
         return ResponseEntity.ok(userNotificationCategoryPreferenceUpdated);

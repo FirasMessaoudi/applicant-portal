@@ -722,7 +722,7 @@ public class IntegrationService {
     public UserNotificationCategoryPreferenceDto save(UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
         WsResponse<UserNotificationCategoryPreferenceDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_UPDATE, HttpMethod.PUT, userNotificationCategoryPreference,
+            wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_UPDATE, HttpMethod.POST, userNotificationCategoryPreference,
                     new ParameterizedTypeReference<WsResponse<UserNotificationCategoryPreferenceDto>>() {
                     });
         } catch (WsAuthenticationException e) {

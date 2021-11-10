@@ -87,7 +87,7 @@ public class NotificationWsController {
      *
      * @param  userNotificationCategoryPreference to update
      */
-    @PutMapping("/notifications/update-user-notification-category-preference")
+    @PostMapping("/notifications/update-user-notification-category-preference")
     public ResponseEntity<WsResponse<?>> updateUserNotificationCategoryPreference( @RequestBody UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())

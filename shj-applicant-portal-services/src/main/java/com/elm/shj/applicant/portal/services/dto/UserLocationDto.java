@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2021 ELM. All rights reserved.
+ */
 package com.elm.shj.applicant.portal.services.dto;
 
 import lombok.Getter;
@@ -11,7 +14,7 @@ import java.util.Date;
  * dto class for user location domain.
  *
  * @author jaafer jarray
- * @since 1.3.0
+ * @since 1.0.0
  */
 @Getter
 @Setter
