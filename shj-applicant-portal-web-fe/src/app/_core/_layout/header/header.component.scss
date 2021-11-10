@@ -113,6 +113,7 @@ a.stroke {
 .ritual-season {
   height: 64px;
   border: 1px solid #EDEDED;
+
   &:hover {
     cursor: pointer;
     background-color: $dcc-light;
@@ -129,15 +130,13 @@ a.stroke {
   font-weight: bold;
 }
 
-
-
-
 .content-container {
   position: relative;
   overflow: auto;
   height: 400px;
   min-height: 0;
 }
+
 .scroll-container {
   position: relative;
 }
