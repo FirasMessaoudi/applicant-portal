@@ -179,7 +179,7 @@
         font-size: 1.5rem;
         @include px(4);
         &.active {
-            background-color: $dcc-primary;
+            background-color: $dcc-primary ;
             color: #fff;
         }
     }
@@ -332,7 +332,7 @@ tr:hover .tblView {
     border-width: 2px;
     &:hover,
     &.active {
-        color: #3b7937;
+        color: #3b7937 !important;
         border-color: transparent transparent #3b7937;
     }
 }
