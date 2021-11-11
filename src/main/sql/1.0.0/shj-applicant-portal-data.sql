@@ -62,7 +62,7 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('google.map.key
 
 GO
 -- update sha_user data in 1.2.0 version
-USE sha_portal
+
 GO
 UPDATE sha_portal.sha_user SET password_hash = '$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK'
 where id = 1;
@@ -70,14 +70,14 @@ where id = 1;
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.recaptcha.invisible.key.site', '6Le30G0UAAAAAM3Kwdf4V_feWJ-zD7OFAjxqO3Vo');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.recaptcha.invisible.key.secret', '6Le30G0UAAAAAIBhhUZ-TtNdmbCRqzoxNftB5W1w');
 GO
-USE sha_portal
+
 GO
 INSERT INTO sha_portal.sha_user_password_history (user_id, old_password_hash) values (1, '$2a$10$MLt2QkqgBSo5WdVu5UJXjunvi0t/h.BKDJQWzO2tyrQKBysLmc9ou');
 
 DELETE FROM sha_portal.sha_config where conf_key = 'elm.engines.filescan.host';
 DELETE FROM sha_portal.sha_config where conf_key = 'elm.engines.filescan.port';
 GO
-USE sha_portal
+
 GO
 UPDATE sha_portal.sha_config SET conf_value='http://192.168.2.149:8080/sha_portal-engines-filescan/scan-file'
 where conf_key = 'elm.providers.filescan.rest.url';
@@ -94,7 +94,7 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.connection.timeout', 5000);
 GO
 -- update script for sha_portal aash version 1.7.1
-USE sha_portal
+
 GO
 UPDATE sha_portal.sha_user SET email = 'sgh@elm.sa' where id = 1;
 GO
@@ -102,7 +102,7 @@ GO
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('login.simultaneous.enabled', 'false');
 GO
 -- update script for sha_portal aash version 1.8.0
-USE sha_portal
+
 GO
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.commons.web.cors.allowed_origins', 'http://localhost:8080,http://localhost:4200,http://127.0.0.1:4200,http://localhost:8200,http://127.0.0.1:8200,http://ci-sha_portal.elm.com.sa:8080');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.commons.web.cors.allowed_methods', 'GET,POST,PUT,OPTIONS');
