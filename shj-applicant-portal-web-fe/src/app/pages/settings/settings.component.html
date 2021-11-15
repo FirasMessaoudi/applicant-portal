@@ -1,6 +1,5 @@
 <nav aria-label="breadcrumb" class="pt-2">
     <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
-        <!-- <li class="breadcrumb-item active" aria-current="page ">{{'general.main' | translate}}</li> -->
         <li class="breadcrumb-item active" aria-current="page "></li>
     </ol>
 </nav>
@@ -9,13 +8,11 @@
     <div class="title__Page mx-n3">
         <h3 class="sectionTitle">
             {{ "settings.settings" | translate }}
-            <!--      <svg-icon styleClass="text-gray-300" icon="cog"></svg-icon>-->
         </h3>
         <!-- lg screen change password-->
         <a class="d-none d-sm-inline btn btn-outline-dcc-primary px-4 setBox" [routerLink]="['/change-password']" routerLinkActive="router-link-active">
-      {{ "header.change_password" | translate }}
-      <!-- <svg-icon styleClass="ml-3 mb-0 h5" icon="lock-alt"></svg-icon> -->
-    </a>
+          {{ "header.change_password" | translate }}
+        </a>
 
         <!-- mobile change password-->
         <a class="d-block d-sm-none btn btn-link bg-light shadow-sm mx-3" [routerLink]="['/change-password']" routerLinkActive="router-link-active" ngbTooltip="{{ 'header.change_password' | translate }}">
@@ -29,33 +26,14 @@
             <div class="input-group flex-grow-1">
                 <div class="setBox flex-grow-1" role="group">
                     <select class="custom-select" (change)="selectedLanguage = $event.target.value">
-            <option
-              value="ar-SA"
-              [selected]="selectedLanguage.startsWith('ar')"
-            >
-              العربية
-            </option>
-            <option
-              value="en-US"
-              [selected]="selectedLanguage.startsWith('en')"
-            >
-              English
-            </option>
-          </select>
+                      <option value="ar-SA" [selected]="selectedLanguage.startsWith('ar')">
+                        العربية
+                      </option>
+                      <option value="en-US" [selected]="selectedLanguage.startsWith('en')">
+                        English
+                      </option>
+                    </select>
                 </div>
-                <!-- <div class="input-group-append">
-                    <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="{{ 'general.btn_edit' | translate }}" placement="top" *ngIf="!enableEditLanguage" (click)="enableEditLanguage = true">
-            <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-          </button>
-                    <div *ngIf="enableEditLanguage">
-                        <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{ 'general.btn_save' | translate }}" placement="top" (click)="updateUserLanguage()">
-              <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-            </button>
-                        <button class="btn btn-outline-gray-300 shadow-none ml-1" (click)="cancelEditLanguage()" type="button" ngbTooltip="{{ 'general.btn_cancel' | translate }}" placement="top">
-              <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
-            </button>
-                    </div>
-                </div> -->
             </div>
         </div>
 

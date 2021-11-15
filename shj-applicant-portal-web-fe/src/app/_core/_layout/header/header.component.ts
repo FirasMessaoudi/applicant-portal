@@ -159,6 +159,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   loadNotifications() {
+    this.loadUserNewNotificationsCounts();
     this.notificationService.getNotifications().subscribe(data => {
       this.notifications = data;
     });
