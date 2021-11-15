@@ -42,7 +42,6 @@ public class UserDto implements Serializable {
     @Email
     private String email;
 
-    @NotBlank(groups = {CreateUserValidationGroup.class})
     @OnlyCharacters(min = 6, max = 150, arabic = true)
     private String fullNameAr;
     private String gender;
