@@ -18,7 +18,7 @@ import lombok.*;
 @Setter
 public class PasswordExpiryNotificationRequestUserParameters {
 
-    private long userId;
+    private String userId;
     private String userLang;
     private int daysToExpiry;
 }

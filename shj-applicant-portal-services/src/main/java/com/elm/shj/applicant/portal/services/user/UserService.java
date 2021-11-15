@@ -101,6 +101,16 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
     }
 
+    /**
+     * Finds a user by his UIN
+     *
+     * @param uin the UIN of the user to find
+     * @return the found user or empty structure
+     */
+    public Optional<UserDto> findByUin(String uin) {
+        JpaUser user = userRepository.findByUinAndDeletedFalseAndActivatedTrue(uin);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
 
     public Optional<UserDto> findByUinAndDateOfBirth(long uin, Date dateOfBirth) {
         JpaUser user = userRepository.findDistinctByDeletedFalseAndUinEqualsAndDateOfBirthGregorianEquals(uin, dateOfBirth);
@@ -467,8 +477,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     }
 
-
-
     public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(String uin, Long ritualId) {
        return  integrationService.loadApplicantTafweejDetails(uin, ritualId);
     }
@@ -485,8 +493,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadAllApplicantRitualSeasonByUin(uin);
     }
 
-    public List<DetailedUserNotificationDto> findUserNotificationsById(long userId) {
-        return integrationService.findUserNotificationsById(userId);
+    public List<DetailedUserNotificationDto> findUserNotificationsByUin(String uin) {
+        return integrationService.findUserNotificationsByUin(uin);
     }
 
     public int markUserNotificationAsRead(long notificationId) {

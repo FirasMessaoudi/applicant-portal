@@ -592,13 +592,13 @@ public class UserManagementController {
     }
 
     /**
-     * get all notifications by user ID
+     * get all notifications by user's UIN
      *
      * @param authentication the authenticated user
      */
     @GetMapping("/notifications")
-    public List<DetailedUserNotificationDto> findUserNotificationsById(Authentication authentication) {
+    public List<DetailedUserNotificationDto> findUserNotificationsByUin(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        return userService.findUserNotificationsByUin(loggedInUserUin);
     }
 }

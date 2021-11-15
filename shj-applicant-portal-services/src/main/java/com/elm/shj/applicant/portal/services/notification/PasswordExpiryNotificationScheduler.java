@@ -61,7 +61,7 @@ public class PasswordExpiryNotificationScheduler {
                         passwordExpiryNotificationRequestUserParameters.add(
                                 PasswordExpiryNotificationRequestUserParameters.builder()
                                         .userLang(user.getPreferredLanguage())
-                                        .userId(user.getId())
+                                        .userId(String.valueOf(user.getUin()))
                                         .daysToExpiry((int) result)
                                         .build()
                         );
