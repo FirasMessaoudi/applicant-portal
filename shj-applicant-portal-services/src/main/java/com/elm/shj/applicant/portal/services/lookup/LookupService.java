@@ -143,10 +143,10 @@ public class LookupService {
     public List<ReligiousOccasionsDayLookupDto> retrieveReligiousOccasionsDay() {
         return religiousOccasionsDay;
     }
+
     public List<NotificationCategoryLookupDto> retrieveNotificationCategories() {
         return notificationCategories;
     }
-
 
     public List<NotificationTemplateNameLookupDto> retrieveNotificationNames() {
         return retrieveNotificationNames;

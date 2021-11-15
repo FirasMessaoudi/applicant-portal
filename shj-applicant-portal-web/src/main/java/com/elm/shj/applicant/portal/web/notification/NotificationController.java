@@ -8,13 +8,12 @@ import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCou
 import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
-import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
-import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +32,6 @@ public class NotificationController {
 
     private final UserService userService;
     private final NotificationService notificationService;
-    private final JwtTokenService jwtTokenService;
 
     @PostMapping("/mark-as-read/{notificationId}")
     public ResponseEntity<Integer> markUserNotificationAsRead(@PathVariable Long notificationId) {
@@ -50,8 +48,8 @@ public class NotificationController {
     @GetMapping("/new-notifications-count")
     public ResponseEntity<UserNewNotificationsCountVo> countUserNewNotifications(Authentication authentication) {
         // get the logged-in user id from authentication then count the un-read notifications
-        long loggedInUserId = jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L);
-        UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(loggedInUserId);
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(loggedInUserUin);
         return ResponseEntity.ok(notificationsCountVo);
     }
 

@@ -1,0 +1,26 @@
+@Library('pipeline') _
+
+pipeline_cloud_native {
+
+  build = {
+    strategy        = 'docker-compose'
+    config_files    = ['./docker-compose.yaml']
+    docker_buildkit = true
+    // remove this flag....
+    binary_artifact = '/usr/src/app.war'
+  }
+
+  deploy = {
+    // and remove this falg and you will get your app UP in Openshift :-)
+    dry_run             =  true
+    strategy            = 'helm'
+    gitops_repo_url     = 'https://bitbucket.elm.sa/scm/haj/haj-helm-releases.git'
+    gitops_repo_path    = 'smart-hajj-applicant-portal'
+    gitops_repo_commit  = 'HEAD'
+    ci_values           = [
+      app: [
+        image: [tag: '${env.PIPELINE_TAG}']
+      ]
+    ]
+  }
+}

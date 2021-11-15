@@ -29,11 +29,11 @@ public class NotificationService {
     /**
      * Count user new notifications.
      *
-     * @param userId user id
+     * @param uin user UIN
      * @return number of un-read notifications
      */
-    public UserNewNotificationsCountVo countUserNewNotifications(long userId) {
-        return this.integrationService.countUserNewNotifications(userId);
+    public UserNewNotificationsCountVo countUserNewNotifications(String uin) {
+        return this.integrationService.countUserNewNotifications(uin);
     }
 
     /**
@@ -42,7 +42,7 @@ public class NotificationService {
      * @param userId
      * @return
      */
-    public List<UserNotificationCategoryPreferenceDto> findUserNotificationCategoryPreference(long userId) {
+    public List<UserNotificationCategoryPreferenceDto> findUserNotificationCategoryPreference(String userId) {
         return this.integrationService.findUserNotificationCategoryPreference(userId);
     }
 

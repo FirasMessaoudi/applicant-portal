@@ -523,15 +523,15 @@ public class IntegrationService {
     }
 
     /**
-     * finds user notifications by user Id
+     * finds user notifications by user's UIN
      *
-     * @param userId the Id of user to find notifications for
-     * @return the User Notifications
+     * @param uin the UIN of user to find notifications for
+     * @return the user notifications
      */
-    public List<DetailedUserNotificationDto> findUserNotificationsById(long userId) {
+    public List<DetailedUserNotificationDto> findUserNotificationsByUin(String uin) {
         WsResponse<List<DetailedUserNotificationDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + userId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -544,17 +544,17 @@ public class IntegrationService {
     /**
      * Count user new notifications.
      *
-     * @param userId
+     * @param uin
      * @return number of user new notifications or 0 in case of exception.
      */
-    public UserNewNotificationsCountVo countUserNewNotifications(long userId) {
+    public UserNewNotificationsCountVo countUserNewNotifications(String uin) {
         WsResponse<UserNewNotificationsCountVo> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(NOTIFICATION_COUNT_URL + userId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(NOTIFICATION_COUNT_URL + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<UserNewNotificationsCountVo>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to get user new notifications count for {} user Id.", userId, e);
+            log.error("Cannot authenticate to get user new notifications count for user with UIN {}.", uin, e);
             return UserNewNotificationsCountVo.builder().build();
         }
         return wsResponse.getBody();
@@ -670,7 +670,7 @@ public class IntegrationService {
      * @param userId
      * @return
      */
-    public List<UserNotificationCategoryPreferenceDto> findUserNotificationCategoryPreference(long userId) {
+    public List<UserNotificationCategoryPreferenceDto> findUserNotificationCategoryPreference(String userId) {
         WsResponse<List<UserNotificationCategoryPreferenceDto>> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_PREFERENCE_URL + userId, HttpMethod.GET, null,

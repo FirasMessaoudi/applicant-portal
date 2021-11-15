@@ -1,0 +1,6 @@
+/* Flip only notification icon in side nav */
+.nIcon {
+  svg-icon[ng-reflect-icon="state-info"] {
+    transform: scaleX(-1);
+  }
+}

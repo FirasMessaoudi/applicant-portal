@@ -47,12 +47,12 @@ public class NotificationWsController {
      */
 
     @GetMapping("/notifications/list")
-    public ResponseEntity<WsResponse<?>> findUserNotificationsById(Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findUserNotificationsByUin(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<DetailedUserNotificationDto> detailedUserNotificationDtos = userService.findUserNotificationsById(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        List<DetailedUserNotificationDto> detailedUserNotifications = userService.findUserNotificationsByUin(loggedInUserUin);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(detailedUserNotificationDtos).build());
+                        .body(detailedUserNotifications).build());
     }
 
     /**
@@ -74,9 +74,9 @@ public class NotificationWsController {
      * @param authentication the authenticated user
      */
     @GetMapping("/notifications/category-preference")
-    public ResponseEntity<WsResponse<?>> findUserNotificationCategoryPreference( Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findUserNotificationCategoryPreference(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<UserNotificationCategoryPreferenceDto> userNotificationCategoryPreferenceDtos = notificationService.findUserNotificationCategoryPreference(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        List<UserNotificationCategoryPreferenceDto> userNotificationCategoryPreferenceDtos = notificationService.findUserNotificationCategoryPreference(loggedInUserUin);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(userNotificationCategoryPreferenceDtos).build());
@@ -104,7 +104,7 @@ public class NotificationWsController {
     public ResponseEntity<WsResponse<?>> countUserNewNotifications(Authentication authentication) {
         // get the logged-in user id from authentication then count the un-read notifications
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(userService.findByUin(Long.parseLong(loggedInUserUin)).get().getId());
+        UserNewNotificationsCountVo notificationsCountVo = notificationService.countUserNewNotifications(loggedInUserUin);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(notificationsCountVo).build());    }
