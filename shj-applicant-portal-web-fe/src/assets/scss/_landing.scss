@@ -29,9 +29,12 @@
     }
     background-repeat: no-repeat;
     background-image: url("assets/images/dots-pattern.png");
-    background-size: 50% 50%;
-    background-position-y: 105%;
-    background-position-x: 130%;
+    background-position: right bottom;
+
+    [dir="rtl"] & {
+        background-image: url("assets/images/dots-pattern-rtl.png");
+        background-position: left bottom;
+      }
 }
 
 .lang-switch {
