@@ -325,7 +325,14 @@ tr:hover .tblView {
         [dir="ltr"] & {
             right: -1px;
         }
+
+        @include media-breakpoint-down(sm) {
+            height: 0;
+            width: 0;
+            background-color: transparent;
+        }
     }
+    
 }
 
 .nav-tabs .nav-link {
