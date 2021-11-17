@@ -37,7 +37,7 @@ export class NotificationService {
   }
 
   getNotifications(): Observable<DetailedUserNotification[]> {
-    return this.http.get<DetailedUserNotification[]>('/core/api/users/notifications');
+    return this.http.get<DetailedUserNotification[]>('/core/api/notification/list');
   }
 
   /**
