@@ -6,14 +6,14 @@
   <div class="w-100" (click)="markAsRead(notification,i)">
     <div>
       <div class="flex-center-between align-items-start">
-        <b class="text-dark">{{notification?.title}}</b>
+        <b class="text-dark text-break">{{notification?.title}}</b>
         <div class="d-flex">
           <small class="mr-1 text-muted text-nowrap">{{getRelativeTime(notification?.creationDate)}}</small>
           <svg-icon *ngIf="notification.statusCode == 'READ'" styleClass="text-light-gray" icon="read"></svg-icon>
           <svg-icon *ngIf="notification.statusCode != 'READ'" styleClass="text-light-gray" icon="unread"></svg-icon>
         </div>
       </div>
-      <p class="mt-2 mb-3">{{notification?.resolvedBody}}</p>
+      <p class="mt-2 mb-3 text-break">{{notification?.resolvedBody}}</p>
     </div>
     <div class="Nbtn" *ngIf="notification?.actionRequired">
       <button [routerLink]="[buildRoute(notification?.nameCode)]" (click)="markAsRead(notification,i)"
