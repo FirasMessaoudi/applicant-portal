@@ -42,7 +42,8 @@ public class IntegrationService {
     private final String APPLICANT_HEALTH_DETAILS_URL = "/ws/health";
     private final String APPLICANT_MAIN_DATA_URL = "/ws/find/main-data";
     private final String CARD_DETAILS_URL = "/ws/details";
-    private final String APPLICANT_PACKAGE_URL = "/ws//applicant/package";
+    private final String APPLICANT_PACKAGE_URL = "/ws/applicant/package";
+    private final String PACKAGE_CATERING_URL = "/ws/package/catering";
     private final String HOUSING_CATEGORY_LOOKUP_URL = "/ws/housing-category/list";
     private final String HOUSING_TYPES_LOOKUP_URL = "/ws/housing-type/list";
     private final String PACKAGE_TYPES_LOOKUP_URL = "/ws/package-type/list";
@@ -332,6 +333,25 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+
+    /**
+     * Load package catering from command portal.
+     *
+     * @return
+     */
+    public List<PackageCateringDto> loadPackageCatering(String uin, long companyRitualSeasonId) {
+        WsResponse<List<PackageCateringDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(PACKAGE_CATERING_URL + "/" + uin + "/" + companyRitualSeasonId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<PackageCateringDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load Package Catering.", e);
             return null;
         }
         return wsResponse.getBody();

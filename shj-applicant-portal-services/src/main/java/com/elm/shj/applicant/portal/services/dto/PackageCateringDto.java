@@ -43,6 +43,8 @@ public class PackageCateringDto implements Serializable {
 
     private Date updateDate;
 
+    private boolean isDefault;
+
     private PackageHousingDto packageHousing;
 
     @JsonBackReference(value = "applicantPackageCaterings")
