@@ -138,7 +138,7 @@ export class SettingsComponent implements OnInit {
     this.enableEditLanguage = true;
     if (this.selectedLanguage != "" && this.selectedLanguage != this.currentLanguage) {
       this.setLanguage(this.selectedLanguage);
-      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en").subscribe(response => {
+      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en", this.authenticationService.currentUser.uin).subscribe(response => {
         if (response && response.errors) {
           this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
         } else {

@@ -12,7 +12,8 @@ export class ApplicantRitualCard {
   fullNameAr: string;
   fullNameEn: string;
   photo: string;
-  leaderName: string;
+  leaderNameAr: string;
+  leaderNameEn: string;
   leaderMobile: string;
   nationalityCode: string;
 }
