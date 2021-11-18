@@ -9,6 +9,10 @@ import {environment} from "@env/environment";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
+import {Lookup} from "@model/lookup.model";
+import {LookupService} from "@core/utilities/lookup.service";
+import {UserService} from "@core/services";
+
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -26,16 +30,22 @@ export class LoginComponent implements OnInit {
 
   @ViewChild('reCaptchaEl')
   captchaElem: ReCaptcha2Component;
+  supportedLanguages: Lookup[];
+  localizedSupportedLanguages: Lookup[];
+  selectedLangCode: string;
 
   constructor(private modalService: NgbModal,
-    private formBuilder: FormBuilder,
-    private i18nService: I18nService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private reCaptchaV3Service: ReCaptchaV3Service,
-    private authenticationService: AuthenticationService,
-    private titleService: Title,
-    private translate: TranslateService) {}
+              private formBuilder: FormBuilder,
+              private i18nService: I18nService,
+              private route: ActivatedRoute,
+              private router: Router,
+              private reCaptchaV3Service: ReCaptchaV3Service,
+              private authenticationService: AuthenticationService,
+              private titleService: Title,
+              private translate: TranslateService,
+              private lookupService: LookupService,
+              private userService: UserService) {
+  }
 
   get currentLanguage(): string {
     return this.i18nService.language;
@@ -51,6 +61,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadLookups();
     this.recaptchaSiteKey = environment.recaptchaSiteKey;
     this.authenticationService.updateSubject(null);
     this.modalService.dismissAll();
@@ -91,8 +102,12 @@ export class LoginComponent implements OnInit {
         } else if (user.otpRequired) {
           console.log('redirect to otp page');
           user.maskedMobileNumber = user.mobileNumber;
+          user.preferedLang = this.selectedLangCode;
           this.authenticationService.updateOtpSubject({user: user, actionType: "/login"});
+          this.userService.updatePreferredLang(this.selectedLangCode, this.loginForm.value.username).subscribe(response => {
+          });
           this.router.navigate(['/otp'], {replaceUrl: true});
+
         } else {
           console.log('redirect to / page');
           this.router.navigate(['/'], {replaceUrl: true});
@@ -128,4 +143,20 @@ export class LoginComponent implements OnInit {
   onCaptchaSuccess(captchaResponse: string): void {
     console.log(captchaResponse);
   }
+
+  loadLookups() {
+    this.authenticationService.findSupportedLanguages().subscribe(result => {
+      this.supportedLanguages = result;
+      this.localizedSupportedLanguages = this.supportedLanguages.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
+      this.onLangSelect(this.currentLanguage.startsWith('ar') ? "ar" : "en");
+    });
+
+  }
+
+  onLangSelect(code: string) {
+    this.selectedLangCode = code.toLowerCase();
+    this.setLanguage(code.toLowerCase());
+  }
+
+
 }

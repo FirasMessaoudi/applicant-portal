@@ -49,6 +49,7 @@ public class LookupService {
     private List<NotificationCategoryLookupDto> notificationCategories;
     private List<NotificationTemplateNameLookupDto> retrieveNotificationNames;
     private List<MealTypeLookupDto> mealTypes;
+    private List<LanguageLookupDto> supportedLanguages;
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
@@ -75,6 +76,7 @@ public class LookupService {
         this.notificationCategories = integrationService.loadNotificationCategories();
         this.retrieveNotificationNames = integrationService.loadNotificationNames();
         this.mealTypes = integrationService.loadMealTypes();
+        this.supportedLanguages = integrationService.loadSupportedLanguages();
 
     }
 
@@ -138,7 +140,9 @@ public class LookupService {
         return this.googleMapKey;
     }
 
-    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations() { return healthImmunizations; }
+    public List<HealthImmunizationLookupDto> retrieveHealthImmunizations() {
+        return healthImmunizations;
+    }
 
     public List<ReligiousOccasionsDayLookupDto> retrieveReligiousOccasionsDay() {
         return religiousOccasionsDay;
@@ -154,5 +158,9 @@ public class LookupService {
 
     public List<MealTypeLookupDto> retrieveMealTypes() {
         return mealTypes;
+    }
+
+    public List<LanguageLookupDto> retrieveSupportedLanguages() {
+        return this.supportedLanguages;
     }
 }

@@ -1,35 +1,29 @@
-<span class="lang_swtich_login">
-  <button
-    class="btn btn-md border btn-light px-3 mt-4 mb-3"
-    *ngIf="currentLanguage.startsWith('en')"
-    (click)="setLanguage('ar-SA')"
-  >
-    <span>عربي</span>
-</button>
-<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
-    <span>English</span>
-  </button>
-</span>
+<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+  <button ngbDropdownItem *ngFor="let lang of localizedSupportedLanguages"
+          (click)="onLangSelect(lang.code)">{{lang.label}}</button>
+</div>
+
+
 <div class="login__box">
-    <div class="text-center">
-        <img class="my-4" src="assets/images/logo.png" alt="logo" />
+  <div class="text-center">
+    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
+  </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
+    <div class="alert alert-danger" [hidden]="!error || loading">
+      <span *ngIf="error?.status == 500 || error?.status == 555">{{'login.invalid_uin_or_password' | translate }}</span>
+      <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
+      <span *ngIf="error?.status == 557">{{'login.user_is_deactivated' | translate }}</span>
     </div>
+    <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
+      {{ "login.header_title" | translate }}
+    </h1>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
-        <div class="alert alert-danger" [hidden]="!error || loading">
-            <span *ngIf="error?.status == 500 || error?.status == 555">{{'login.invalid_uin_or_password' | translate }}</span>
-            <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
-            <span *ngIf="error?.status == 557">{{'login.user_is_deactivated' | translate }}</span>
-        </div>
-        <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
-            {{ "login.header_title" | translate }}
-        </h1>
-
-        <div class="form-group">
-            <div class="d-flex flex-column flex-lg-row justify-content-between">
-                <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
-                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked/>
-                    <label class="custom-control-label" for="customRadioInline1">{{"register.smart_id_number"|translate}}</label
+    <div class="form-group">
+      <div class="d-flex flex-column flex-lg-row justify-content-between">
+        <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
+          <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked/>
+          <label class="custom-control-label" for="customRadioInline1">{{"register.smart_id_number"|translate}}</label
           >
         </div>
         <div
@@ -43,7 +37,7 @@
             [disabled]="true"
           />
           <label class="custom-control-label" for="customRadioInline2"
-            >{{"general.identity_number"|translate}}</label
+          >{{"general.identity_number"|translate}}</label
           >
         </div>
         <div
@@ -57,14 +51,14 @@
             [disabled]="true"
           />
           <label class="custom-control-label" for="customRadioInline3"
-            >{{"card-management.passport_number"|translate}}</label
+          >{{"card-management.passport_number"|translate}}</label
           >
         </div>
       </div>
     </div>
     <div class="form-group">
       <label
-        >{{"register.smart_id_number"|translate}}
+      >{{"register.smart_id_number"|translate}}
         <span class="text-danger px-1">*</span></label
       >
       <input
@@ -92,7 +86,7 @@
     </div>
     <div class="form-group">
       <label
-        >{{ "general.password" | translate
+      >{{ "general.password" | translate
         }}<span class="text-danger px-1">*</span></label
       >
       <input
@@ -142,7 +136,7 @@
       </button>
 
       <div class="d-flex justify-content-between">
-        <a  [routerLink]="['/landing']" class="text-dcc-primary  mt-3" [hidden]="true">
+        <a [routerLink]="['/landing']" class="text-dcc-primary  mt-3" [hidden]="true">
           دخول المؤسسات
           <svg-icon styleClass="mx-2 flip" icon="arrow-left-light"></svg-icon>
         </a>

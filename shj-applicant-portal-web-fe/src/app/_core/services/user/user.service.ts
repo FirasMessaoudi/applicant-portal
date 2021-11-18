@@ -118,10 +118,10 @@ export class UserService {
    * @param lang
    * @return {Observable<User>} The saved or updated user.
    */
-  updatePreferredLang(lang: string): Observable<any> {
+  updatePreferredLang(lang: string, uin: string): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('X-XSRF-TOKEN', this.cookieService.get("XSRF-TOKEN"));
-    return this.http.put<any>('/core/api/users/language/' + lang, null, {'headers':headers}).pipe(catchError((error: HttpErrorResponse) => {
+    return this.http.put<any>('/core/api/users/language/' + lang + '/' + uin, null, {'headers': headers}).pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {
           return of(error.error);
         } else {

@@ -154,11 +154,23 @@ public class LookupController {
         return lookupService.retrieveApplicantStatuses();
     }
 
+    /**
+     * List all supported languages
+     *
+     * @return the list of supported languages list
+     */
+    @GetMapping("/language/list")
+    public List<LanguageLookupDto> listLanguages() {
+        log.debug("list System Supported Languages...");
+        return lookupService.retrieveSupportedLanguages();
+    }
+
     @GetMapping("/map-key")
     public String mapKey() {
         log.debug("load google map key");
         return lookupService.retrieveGoogleMapKey();
     }
+
     @GetMapping("/health-immunization/list")
     public List<HealthImmunizationLookupDto> listHealthImmunization(Authentication authentication) {
         log.debug("list health immunizations...");
