@@ -529,7 +529,8 @@
     "LUNCH": "غداء",
     "DINNER": "عشاء",
     "package_details": "بيانات الباقة",
-    "status_active": "نشط"
+    "status_active": "نشط",
+    "my_card": "بطاقتي"
   },
   "program-management": {
     "transportation_type": "طريقة التنقل",

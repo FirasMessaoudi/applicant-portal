@@ -78,7 +78,7 @@
             </th>
             <th class="brdrTrns">
               <div>الوحدة</div>
-              <div>unit</div>
+              <div>Unit</div>
             </th>
           </tr>
           <tr>
@@ -105,8 +105,13 @@
             </th>
           </tr>
           <tr>
-            <td><span class="col-form-label">---</span></td>
-            <td><span class="col-form-label">---</span></td>
+            <td><span class="col-form-label" *ngIf="cardDetails?.leaderMobile as value; else elseBlock">{{value}}</span></td>
+            <td>
+              <span class="col-form-label">
+                <h2 class="h6 badge_hajj_country d-block" *ngIf="cardDetails?.leaderNameAr as value; else elseBlock">{{value}}</h2>
+                <h2 class="h6 badge_hajj_country d-block" *ngIf="cardDetails?.leaderNameEn as value; else elseBlock">{{value}}</h2>
+              </span>
+            </td>
           </tr>
         </table>
       </fieldset>
