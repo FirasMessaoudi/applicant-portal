@@ -112,7 +112,7 @@ public class UserServiceTest {
     public void test_find_all_non_deleted() {
         serviceToTest.findAllNotDeleted(any(), anyLong(), Collections.singleton(RoleRepository.SYSTEM_ADMIN_USER_ROLE_ID));
         verify(userRepository).findDistinctByDeletedFalseAndIdNot(any(), anyLong());
-        serviceToTest.findAllNotDeleted(any(), anyLong(), Collections.singleton(5L));
+        serviceToTest.findAllNotDeleted(any(), anyLong(), eq(Collections.singleton(5L)));
         verify(userRepository).findDistinctByDeletedFalseAndIdNotAndUserRolesRoleIdNot(any(), anyLong(), eq(RoleRepository.SYSTEM_ADMIN_ROLE_ID));
     }
 

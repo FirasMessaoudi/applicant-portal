@@ -393,10 +393,10 @@ public class UserManagementController {
      * @param lang the preferred language to update user with
      * @return success if update done
      */
-    @PutMapping("/language/{lang}")
-    public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, Authentication authentication) {
+    @PutMapping("/language/{lang}/{uin}")
+    public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, @PathVariable String uin) {
         log.debug("Handler for {}", "Update User preferred language");
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        String loggedInUserUin = uin;
         UserDto databaseUser = null;
         try {
             databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
