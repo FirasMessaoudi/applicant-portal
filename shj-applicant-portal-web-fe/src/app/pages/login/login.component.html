@@ -13,14 +13,15 @@
           (click)="onLangSelect(lang.code)">{{lang.label}}</button>
 </div> -->
 
- <svg-icon styleClass="fa-w-20" icon="globe"></svg-icon> 
- <select [(ngModel)]="selectedCity" (ngModelChange)="onChange($event)" >
-  <option *ngFor="let c of cities" [ngValue]="c"> {{c.name}} </option>
+<svg-icon styleClass="fa-w-20" icon="globe"></svg-icon>
+<select [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
+  <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"
+          [selected]="currentLanguage.startsWith(lang.code.toLowerCase())"> {{lang.label}} </option>
 </select>
 
 <div class="login__box">
   <div class="text-center">
-    <img class="my-4" src="assets/images/logo.png" alt="logo" />
+    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
   </div>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">

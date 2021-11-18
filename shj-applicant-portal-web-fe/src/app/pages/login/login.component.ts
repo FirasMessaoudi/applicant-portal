@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
   captchaElem: ReCaptcha2Component;
   supportedLanguages: Lookup[];
   localizedSupportedLanguages: Lookup[];
-  selectedLangCode: string;
+  selectedLang: Lookup;
 
   constructor(private modalService: NgbModal,
               private formBuilder: FormBuilder,
@@ -102,9 +102,9 @@ export class LoginComponent implements OnInit {
         } else if (user.otpRequired) {
           console.log('redirect to otp page');
           user.maskedMobileNumber = user.mobileNumber;
-          user.preferedLang = this.selectedLangCode;
+          user.preferedLang = this.selectedLang.code;
           this.authenticationService.updateOtpSubject({user: user, actionType: "/login"});
-          this.userService.updatePreferredLang(this.selectedLangCode, this.loginForm.value.username).subscribe(response => {
+          this.userService.updatePreferredLang(this.selectedLang.code, this.loginForm.value.username).subscribe(response => {
           });
           this.router.navigate(['/otp'], {replaceUrl: true});
 
@@ -148,22 +148,17 @@ export class LoginComponent implements OnInit {
     this.authenticationService.findSupportedLanguages().subscribe(result => {
       this.supportedLanguages = result;
       this.localizedSupportedLanguages = this.supportedLanguages.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
-      this.onLangSelect(this.currentLanguage.startsWith('ar') ? "ar" : "en");
+      this.selectedLang = new Lookup();
+      this.selectedLang.lang = this.currentLanguage.startsWith('ar') ? "ar" : "en";
+
     });
 
   }
 
-  onLangSelect(code: string) {
-    this.selectedLangCode = code.toLowerCase();
-    this.setLanguage(code.toLowerCase());
+  onLangSelect(lang) {
+    this.selectedLang = lang;
+    this.setLanguage(lang.code.toLowerCase());
   }
 
-
-  cities = [{'name': 'العربية'},{'name': 'English'},{'name': 'Français'},{'name': 'Türkçe'}, {'name': 'فارسی'}, {'name': 'اردو'}];
-  selectedCity = this.cities[1];
-  
-  onChange(city) {
-    alert(city.name);
-  }
 
 }
