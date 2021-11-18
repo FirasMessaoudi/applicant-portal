@@ -8,10 +8,16 @@
     <span>English</span>
   </button>
 </span> -->
-<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+<!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
   <button ngbDropdownItem *ngFor="let lang of localizedSupportedLanguages"
           (click)="onLangSelect(lang.code)">{{lang.label}}</button>
-</div>
+</div> -->
+
+ <svg-icon styleClass="fa-w-20" icon="globe"></svg-icon> 
+ <select [(ngModel)]="selectedCity" (ngModelChange)="onChange($event)" >
+  <option *ngFor="let c of cities" [ngValue]="c"> {{c.name}} </option>
+</select>
+
 <div class="login__box">
   <div class="text-center">
     <img class="my-4" src="assets/images/logo.png" alt="logo" />
