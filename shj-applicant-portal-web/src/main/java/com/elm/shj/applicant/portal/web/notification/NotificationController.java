@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.notification;
 
+import com.elm.shj.applicant.portal.services.dto.DetailedUserNotificationDto;
 import com.elm.shj.applicant.portal.services.dto.UserNotificationCategoryPreferenceDto;
 import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
 import com.elm.shj.applicant.portal.services.notification.NotificationService;
@@ -16,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Main controller for user notifications
@@ -40,9 +43,20 @@ public class NotificationController {
     }
 
     /**
+     * get all notifications by user's UIN
+     *
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/list")
+    public List<DetailedUserNotificationDto> findUserNotificationsByUin(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findUserNotificationsByUin(loggedInUserUin);
+    }
+
+    /**
      * Count user new notifications for logged-in user.
      *
-     * @param authentication
+     * @param authentication authenticated user
      * @return
      */
     @GetMapping("/new-notifications-count")
