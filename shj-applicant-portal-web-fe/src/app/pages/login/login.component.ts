@@ -159,4 +159,11 @@ export class LoginComponent implements OnInit {
   }
 
 
+  cities = [{'name': 'العربية'},{'name': 'English'},{'name': 'Français'},{'name': 'Türkçe'}, {'name': 'فارسی'}, {'name': 'اردو'}];
+  selectedCity = this.cities[1];
+  
+  onChange(city) {
+    alert(city.name);
+  }
+
 }
