@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -344,21 +345,24 @@ public class UserManagementWsController {
     }
 
     @PostMapping("/store-user-locations")
-    public ResponseEntity<WsResponse<?>> storeUserLocations(@RequestBody UserLocationsCmd userLocations, Authentication authentication) {
-        String loggedInUserUin = userLocations.getUin();
-        Optional<UserDto> databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin));
-        if (databaseUser.isPresent()) {
-            for (UserLocationDto location : userLocations.getLocations())
-                location.setUserId(databaseUser.get().getId());
-            userLocationService.storeUserLocation(userLocations.getLocations());
-        } else {
+    public ResponseEntity<WsResponse<?>> storeUserLocations(@RequestBody Map<String, List<UserLocationDto>> location, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+      try  {
+
+            Optional<UserDto> databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin));
+            List<UserLocationDto> locationsList = location.get("location");
+            locationsList.forEach(e -> e.setUserId(databaseUser.get().getId()));
+            userLocationService.storeUserLocation(locationsList);
             return ResponseEntity.ok(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.USER_NOT_FOUND.getCode()).referenceNumber(loggedInUserUin).build()).build());
-        }
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(null).build());
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
+        }catch (Exception e){
+          e.printStackTrace();
+
+          return ResponseEntity.ok(
+                  WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                          .body(WsError.builder().error(WsError.EWsError.USER_NOT_FOUND.getCode()).referenceNumber(loggedInUserUin).build()).build());
+
+      }
     }
 
     @PutMapping("/language/{lang}")

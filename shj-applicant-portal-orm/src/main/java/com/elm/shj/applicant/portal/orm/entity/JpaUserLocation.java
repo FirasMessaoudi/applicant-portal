@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -49,10 +50,10 @@ public class JpaUserLocation implements Serializable {
     private double speed;
 
     @Column(name = "gps_time")
-    private Date time;
+    private LocalDateTime time;
 
     @Transient
-    private long timestamp;
+    private String timestamp;
 
     @Column(name = "creation_date", nullable = false)
     private Date creationDate;
@@ -61,9 +62,9 @@ public class JpaUserLocation implements Serializable {
     private Date updateDate;
 
     @PrePersist
-    public void prePersist() {
+    public void prePersist(){
         creationDate = new Date();
-        time = new Date(timestamp);
+        time = LocalDateTime.parse(timestamp.substring(0,timestamp.length()-1));
     }
 
     @PreUpdate

@@ -34,7 +34,7 @@ public class UserLocationDto implements Serializable {
 
     private double speed;
 
-    private long timestamp;
+    private String timestamp;
 
     private Date creationDate;
 }
