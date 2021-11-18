@@ -135,8 +135,8 @@
     "current_year": "Current year",
     "alert_text": "All data displayed now is your previous data for",
     "season": "season",
-    "view_with_map": "View map",
-    "view_with_timeline": "View timeline"
+    "view_with_map": "View as a Map",
+    "view_with_timeline": "View as a Timeline"
   },
   "settings": {
     "ritual-type": "Ritual type",
@@ -512,7 +512,7 @@
     "hajj_identity": "identity Number",
     "main": "Main",
     "my_profile": "My profile",
-    "view_my_card": "View my card",
+    "view_my_card": "View My Card",
     "yes": "Yes",
     "no": "No",
     "main": "Main",
@@ -528,7 +528,8 @@
     "LUNCH": "Lunch",
     "DINNER": "Dinner",
     "package_details": "Package Details",
-    "status_active": "Active"
+    "status_active": "Active",
+    "my_card": "My Card"
   },
   "program-management": {
     "transportation_type": "Transportation type",

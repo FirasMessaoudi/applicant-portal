@@ -1,83 +1,64 @@
-<span class="lang_swtich_login">
-  <button
-    class="btn btn-md border btn-light px-3 mt-4 mb-3"
-    *ngIf="currentLanguage.startsWith('en')"
-    (click)="setLanguage('ar-SA')"
-  >
+<!-- <span class="lang_swtich_login">
+  <button class="btn btn-md border btn-light mt-n6 shadow-none" *ngIf="currentLanguage.startsWith('en')"
+    (click)="setLanguage('ar-SA')">
     <span>عربي</span>
-</button>
-<button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')" (click)="setLanguage('en-US')">
+  </button>
+  <button class="btn btn-md border btn-light mt-n6 shadow-none" *ngIf="currentLanguage.startsWith('ar')"
+    (click)="setLanguage('en-US')">
     <span>English</span>
   </button>
-</span>
+</span> -->
+<!-- <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+  <button ngbDropdownItem *ngFor="let lang of localizedSupportedLanguages"
+          (click)="onLangSelect(lang.code)">{{lang.label}}</button>
+</div> -->
+
+<svg-icon styleClass="fa-w-20" icon="globe"></svg-icon>
+<select [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
+  <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"
+          [selected]="currentLanguage.startsWith(lang.code.toLowerCase())"> {{lang.label}} </option>
+</select>
+
 <div class="login__box">
-    <div class="text-center">
-        <img class="my-4" src="assets/images/logo.png" alt="logo" />
+  <div class="text-center">
+    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
+  </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
+    <div class="alert alert-danger" [hidden]="!error || loading">
+      <span *ngIf="error?.status == 500 || error?.status == 555">{{'login.invalid_uin_or_password' | translate }}</span>
+      <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
+      <span *ngIf="error?.status == 557">{{'login.user_is_deactivated' | translate }}</span>
     </div>
+    <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
+      {{ "login.header_title" | translate }}
+    </h1>
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
-        <div class="alert alert-danger" [hidden]="!error || loading">
-            <span *ngIf="error?.status == 500 || error?.status == 555">{{'login.invalid_uin_or_password' | translate }}</span>
-            <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
-            <span *ngIf="error?.status == 557">{{'login.user_is_deactivated' | translate }}</span>
+    <div class="form-group">
+      <div class="d-flex flex-column flex-lg-row justify-content-between">
+        <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
+          <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked />
+          <label class="custom-control-label" for="customRadioInline1">{{"register.smart_id_number"|translate}}</label>
         </div>
-        <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
-            {{ "login.header_title" | translate }}
-        </h1>
-
-        <div class="form-group">
-            <div class="d-flex flex-column flex-lg-row justify-content-between">
-                <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
-                    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked/>
-                    <label class="custom-control-label" for="customRadioInline1">{{"register.smart_id_number"|translate}}</label
-          >
+        <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
+          <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
+            [disabled]="true" />
+          <label class="custom-control-label" for="customRadioInline2">{{"general.identity_number"|translate}}</label>
         </div>
-        <div
-          class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0"
-        >
-          <input
-            type="radio"
-            id="customRadioInline2"
-            name="customRadioInline1"
-            class="custom-control-input"
-            [disabled]="true"
-          />
-          <label class="custom-control-label" for="customRadioInline2"
-            >{{"general.identity_number"|translate}}</label
-          >
-        </div>
-        <div
-          class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0"
-        >
-          <input
-            type="radio"
-            id="customRadioInline3"
-            name="customRadioInline1"
-            class="custom-control-input"
-            [disabled]="true"
-          />
-          <label class="custom-control-label" for="customRadioInline3"
-            >{{"card-management.passport_number"|translate}}</label
-          >
+        <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
+          <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input"
+            [disabled]="true" />
+          <label class="custom-control-label"
+            for="customRadioInline3">{{"card-management.passport_number"|translate}}</label>
         </div>
       </div>
     </div>
     <div class="form-group">
-      <label
-        >{{"register.smart_id_number"|translate}}
-        <span class="text-danger px-1">*</span></label
-      >
-      <input
-        type="text"
-        formControlName="username"
-        class="form-control"
-        required
-        [class.is-invalid]="f.username.invalid && f.username.touched"
-      />
-      <div
-        *ngIf="f.username.invalid && f.username.touched"
-        class="invalid-feedback"
-      >
+      <!-- <label>{{"register.smart_id_number"|translate}}
+        <span class="text-danger px-1">*</span></label> -->
+      <input type="text" formControlName="username" class="form-control" placeholder="{{'general.identity_number'|translate}}" required
+        [class.is-invalid]="f.username.invalid && f.username.touched" />
+      <div *ngIf="f.username.invalid && f.username.touched" class="invalid-feedback">
         <div *ngIf="f.username.errors.required">
           {{ "general.field_validation_required" | translate }}
         </div>
@@ -91,21 +72,11 @@
       </div>
     </div>
     <div class="form-group">
-      <label
-        >{{ "general.password" | translate
-        }}<span class="text-danger px-1">*</span></label
-      >
-      <input
-        type="password"
-        formControlName="password"
-        class="form-control"
-        required
-        [class.is-invalid]="f.password.invalid && f.password.touched"
-      />
-      <div
-        *ngIf="f.password.invalid && f.password.touched"
-        class="invalid-feedback"
-      >
+      <!-- <label>{{ "general.password" | translate
+        }}<span class="text-danger px-1">*</span></label> -->
+      <input type="password" formControlName="password" class="form-control" required
+        [class.is-invalid]="f.password.invalid && f.password.touched" />
+      <div *ngIf="f.password.invalid && f.password.touched" class="invalid-feedback">
         <div *ngIf="f.password.errors.required">
           {{ "general.field_validation_required" | translate }}
         </div>
@@ -115,49 +86,30 @@
       </div>
     </div>
 
-    <ngx-recaptcha2
-      #reCaptchaEl
-      *ngIf="showCaptcha"
-      type="Image"
-      formControlName="recaptcha"
-      class="recaptcha"
-      [siteKey]="recaptchaSiteKey"
-      hl="{{ currentLanguage }}"
-      (load)="onCaptchaLoad()"
-      (ready)="onCaptchaReady()"
-      (success)="onCaptchaSuccess($event)"
-    >
+    <ngx-recaptcha2 #reCaptchaEl *ngIf="showCaptcha" type="Image" formControlName="recaptcha" class="recaptcha"
+      [siteKey]="recaptchaSiteKey" hl="{{ currentLanguage }}" (load)="onCaptchaLoad()" (ready)="onCaptchaReady()"
+      (success)="onCaptchaSuccess($event)">
     </ngx-recaptcha2>
 
     <div class="form-group">
-      <button
-        class="btn btn-dcc-primary btn-block"
-        [disabled]="loginForm.invalid || loading"
-      >
-        <span
-          *ngIf="loading"
-          class="spinner-border spinner-border-sm mr-1"
-        ></span>
+      <button class="btn btn-dcc-primary btn-block" [disabled]="loginForm.invalid || loading">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
         {{ "login.btn_login" | translate }}
       </button>
 
       <div class="d-flex justify-content-between">
-        <a  [routerLink]="['/landing']" class="text-dcc-primary  mt-3" [hidden]="true">
+        <a [routerLink]="['/landing']" class="text-dcc-primary  mt-3" [hidden]="true">
           دخول المؤسسات
           <svg-icon styleClass="mx-2 flip" icon="arrow-left-light"></svg-icon>
         </a>
-        <a
-          [routerLink]="['/reset-password']"
-          class="text-dcc-primary d-block mt-3"
-        >
+        <a [routerLink]="['/reset-password']" class="text-dcc-primary d-block mt-3">
           {{ "login.btn_forgot_password" | translate }}
         </a>
       </div>
     </div>
 
     <div class="form-group mt-6 mb-0">
-      <a routerLink="/register" (click)="refreshRegisterData()"
-         class="btn btn-outline-dcc-primary btn-block">
+      <a routerLink="/register" (click)="refreshRegisterData()" class="btn btn-outline-dcc-primary btn-block">
         {{ "login.btn_new_registration" | translate }}
       </a>
     </div>

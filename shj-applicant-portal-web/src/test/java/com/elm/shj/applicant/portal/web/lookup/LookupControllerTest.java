@@ -29,6 +29,14 @@ class LookupControllerTest extends AbstractControllerTestSuite {
         verify(authorityLookupService, times(1)).findAllParentAuthorities();
     }
 
+
+    @Test
+    void test_list_supported_languages() throws Exception {
+        String url = Navigation.API_LOOKUP + "/language/list";
+        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk());
+        verify(lookupService, times(1)).retrieveSupportedLanguages();
+    }
+
     /**
      * {@inheritDoc}
      */

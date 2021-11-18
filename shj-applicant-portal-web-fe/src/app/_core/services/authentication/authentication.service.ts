@@ -3,6 +3,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import {EAuthority} from "@model/enum/authority.enum";
+import {CountryLookup} from "@model/country-lookup.model";
 
 
 const CURRENT_USER_KEY = 'currentUser';
@@ -149,7 +150,8 @@ export class AuthenticationService {
     return this.currentUser && this.currentUser.authorities && this.currentUser.authorities.filter(authorityObj => authorityObj.authority === authority.toString()).length > 0;
   }
 
-
-
+  findSupportedLanguages(): Observable<CountryLookup[]> {
+    return this.http.get<any>('/core/api/lookup/language/list');
+  }
 
 }

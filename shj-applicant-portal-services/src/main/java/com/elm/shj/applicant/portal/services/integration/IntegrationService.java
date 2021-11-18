@@ -68,7 +68,8 @@ public class IntegrationService {
     private final String MEAL_TYPE_LOOKUP = "/ws/meal-type/list";
     private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
     private  final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
-    private  final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
+    private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
+    private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
 
 
 
@@ -739,6 +740,25 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+
+    /**
+     * Find all supported languages lookup from command portal.
+     *
+     * @return all Supported Languages
+     */
+    public List<LanguageLookupDto> loadSupportedLanguages() {
+        WsResponse<List<LanguageLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(SUPPORTED_LANGUAGES_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<LanguageLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get supported languages", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
     public UserNotificationCategoryPreferenceDto save(UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
         WsResponse<UserNotificationCategoryPreferenceDto> wsResponse = null;
         try {
@@ -751,4 +771,6 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
+
 }
