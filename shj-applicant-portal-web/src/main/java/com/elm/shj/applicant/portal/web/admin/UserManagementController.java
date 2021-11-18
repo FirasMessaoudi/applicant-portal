@@ -591,14 +591,4 @@ public class UserManagementController {
         return userService.findAllApplicantRitualSeasonByUin(loggedInUserUin);
     }
 
-    /**
-     * get all notifications by user's UIN
-     *
-     * @param authentication the authenticated user
-     */
-    @GetMapping("/notifications")
-    public List<DetailedUserNotificationDto> findUserNotificationsByUin(Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findUserNotificationsByUin(loggedInUserUin);
-    }
 }

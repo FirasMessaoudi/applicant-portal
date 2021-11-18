@@ -113,8 +113,8 @@ export class SettingsComponent implements OnInit {
         this.contactsForm.controls['mobileNumber'].setValue(data.mobileNumber);
         this.originalMobileNo = data.mobileNumber
         this.originalEmail = data.email;
-        this.originalCountryCode = data.countryCode.toLowerCase();
-        this.selectedCountryCode = data.countryCode.toLowerCase();
+        this.originalCountryCode = data?.countryCode?.toLowerCase();
+        this.selectedCountryCode = data?.countryCode?.toLowerCase();
         this.originalCountryPrefix = '+' + data.countryPhonePrefix;
         this.selectedCountryPrefix = '+' + data.countryPhonePrefix;
       } else {
