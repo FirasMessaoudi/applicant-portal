@@ -121,7 +121,7 @@ export class UserService {
   updatePreferredLang(lang: string, uin: string): Observable<any> {
     let headers = new HttpHeaders();
     headers = headers.set('X-XSRF-TOKEN', this.cookieService.get("XSRF-TOKEN"));
-    return this.http.put<any>('/core/api/users/language/' + lang + '/' + uin, null, {'headers': headers}).pipe(catchError((error: HttpErrorResponse) => {
+    return this.http.put<any>('/core/api/users/language/' + lang.toLowerCase() + '/' + uin, null, {'headers': headers}).pipe(catchError((error: HttpErrorResponse) => {
         if (error.hasOwnProperty('error')) {
           return of(error.error);
         } else {
