@@ -54,8 +54,10 @@
   width: 100%;
 
   @include make-col(11);
-
   @include media-breakpoint-up(md) {
+    width: 502px;
+}
+  /* @include media-breakpoint-up(md) {
       @include make-col(10);
   }
   @include media-breakpoint-up(lg) {
@@ -69,5 +71,5 @@
   }
   @include media-breakpoint-up(xxxl) {
       @include make-col(4);
-  }
+  } */
 }

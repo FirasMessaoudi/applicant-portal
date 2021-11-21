@@ -17,5 +17,22 @@
 }
 
 .lang_swtich_login {
-    
+    position: relative;
+    height: 30px;
+    width: 90px;
+    @include pt(2);
+    @include pl(2);
+
+    select{
+        position: absolute;
+        border: 0;
+        background-color: transparent;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+    }
+    svg-icon{
+        position: absolute;
+        padding-right: 4px;
+    }
 }

@@ -33,6 +33,11 @@
   [dir="ltr"] & {
     margin-left: 0.5rem;
   }
+
+  .custom-control-inline.custom-radio &{
+    font-size: .9rem;
+    
+  }
 }
 
 .custom-checkbox .custom-control-input:checked ~ .custom-control-label::after {

@@ -13,15 +13,17 @@
           (click)="onLangSelect(lang.code)">{{lang.label}}</button>
 </div> -->
 
-<svg-icon styleClass="fa-w-20" icon="globe"></svg-icon>
-<select [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
-  <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"
-          [selected]="currentLanguage.startsWith(lang.code.toLowerCase())"> {{lang.label}} </option>
-</select>
+<div class="lang_swtich_login">
+  <svg-icon styleClass="h4 text-light-gray" icon="globe"></svg-icon>
+  <select class="text-muted pl-4" [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
+    <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"
+            [selected]="currentLanguage.startsWith(lang.code.toLowerCase())"> {{lang.label}} </option>
+  </select>
+</div>
 
 <div class="login__box">
   <div class="text-center">
-    <img class="my-4" src="assets/images/logo.png" alt="logo"/>
+    <img src="assets/images/logo.png" alt="logo"/>
   </div>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
@@ -74,7 +76,7 @@
     <div class="form-group">
       <!-- <label>{{ "general.password" | translate
         }}<span class="text-danger px-1">*</span></label> -->
-      <input type="password" formControlName="password" class="form-control" required
+      <input type="password" formControlName="password" class="form-control" placeholder="{{'general.password' | translate}}" required
         [class.is-invalid]="f.password.invalid && f.password.touched" />
       <div *ngIf="f.password.invalid && f.password.touched" class="invalid-feedback">
         <div *ngIf="f.password.errors.required">
