@@ -4,16 +4,21 @@
 
 
 
-.login__box {}
+.login__box {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    
+}
 
 .login-box__wrapper {
     position: relative;
     z-index: 2;
-    @include py(4);
-    @include px(6);
-    @include mb(3);
     // background-color: #fff;
     border-radius: $border-radius;
+    flex-grow: 1;
+
 }
 
 .lang_swtich_login {

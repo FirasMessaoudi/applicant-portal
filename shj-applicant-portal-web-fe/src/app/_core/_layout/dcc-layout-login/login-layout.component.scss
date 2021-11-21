@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
+    min-height: 80vh;
     background-color: #fff;
     box-shadow: 0 5px 74px 55px rgba(73, 90, 103, 0.02);
     @include media-breakpoint-up(sm) {

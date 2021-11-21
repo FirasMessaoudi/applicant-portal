@@ -13,20 +13,22 @@
           (click)="onLangSelect(lang.code)">{{lang.label}}</button>
 </div> -->
 
-<div class="lang_swtich_login">
-  <svg-icon styleClass="h4 text-light-gray" icon="globe"></svg-icon>
-  <select class="text-muted pl-4" [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
-    <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"
-            [selected]="currentLanguage.startsWith(lang.code.toLowerCase())"> {{lang.label}} </option>
-  </select>
-</div>
 
-<div class="login__box">
-  <div class="text-center my-4">
-    <img src="assets/images/logo.png" alt="logo"/>
+<div class="login__box px-6 mb-4">
+  <div>
+    <div class="lang_swtich_login">
+      <svg-icon styleClass="h4 text-light-gray" icon="globe"></svg-icon>
+      <select class="text-muted pl-4" [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
+        <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"
+                [selected]="currentLanguage.startsWith(lang.code.toLowerCase())"> {{lang.label}} </option>
+      </select>
+    </div>
+    <div class="text-center my-4">
+      <img src="assets/images/logo.png" alt="logo"/>
+    </div>
   </div>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-box__wrapper pt-5">
     <div class="alert alert-danger" [hidden]="!error || loading">
       <span *ngIf="error?.status == 500 || error?.status == 555">{{'login.invalid_uin_or_password' | translate }}</span>
       <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
@@ -109,11 +111,10 @@
         </a>
       </div>
     </div>
-
-    <div class="form-group mt-6 mb-0">
-      <a routerLink="/register" (click)="refreshRegisterData()" class="btn btn-outline-dcc-primary btn-block">
-        <b>{{ "login.btn_new_registration" | translate }}</b>
-      </a>
-    </div>
   </form>
+  <div class="form-group mt-6 mb-0">
+    <a routerLink="/register" (click)="refreshRegisterData()" class="btn btn-outline-dcc-primary btn-block">
+      <b>{{ "login.btn_new_registration" | translate }}</b>
+    </a>
+  </div>
 </div>

@@ -5,7 +5,7 @@
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
-
+    min-height: 80vh;
     background-color: #fff;
     box-shadow: 0 5px 74px 55px rgba(73, 90, 103, 0.02);
     @include media-breakpoint-up(sm) {
@@ -13,11 +13,11 @@
       border: 1px solid #eae2cf;
       background-repeat: no-repeat;
       background-image: url("assets/images/dots-pattern.png");
-      background-position: right bottom;
+      background-position: left bottom;
       
       [dir="rtl"] & {
         background-image: url("assets/images/dots-pattern-rtl.png");
-        background-position: left bottom;
+        background-position: right bottom;
       }
     }
 
