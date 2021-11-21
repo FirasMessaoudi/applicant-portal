@@ -8,7 +8,6 @@ import com.elm.shj.applicant.portal.orm.entity.JpaAuthorityLookup;
 import com.elm.shj.applicant.portal.orm.repository.AuthorityLookupRepository;
 import com.elm.shj.applicant.portal.services.dto.AuthorityLookupDto;
 import com.elm.shj.applicant.portal.services.dto.AuthorityLookupDtoMapper;
-import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,8 +30,6 @@ class AuthorityLookupServiceTest {
     @InjectMocks
     private AuthorityLookupService serviceToTest;
 
-    @InjectMocks
-    private IntegrationService integrationService;
 
     @Mock
     private AuthorityLookupRepository authorityLookupRepository;
