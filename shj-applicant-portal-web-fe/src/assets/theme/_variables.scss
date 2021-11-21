@@ -5,7 +5,7 @@ $input-color: #333;
 $component-active-bg: #14415a;
 $input-btn-padding-y: 0.43rem;
 $input-btn-padding-x: 0.86rem;
-$line-height-base: 1.72;
+$line-height-base: 2.15;
 $border-color: #eaf1f6;
 $input-font-weight: 600;
 $border-radius: 0;
@@ -46,7 +46,7 @@ $theme-colors: ( "dcc-primary": $dcc-primary, "dcc-light-primary": $dcc-light-pr
 $link-hover-decoration: none;
 $font-family-base: "Elm-font",
 sans-serif;
-$line-height-base: 1.7;
+$line-height-base: 2.15;
 // Body
 $body-color: #666666;
 // Grid breakpoints
@@ -82,7 +82,7 @@ $custom-checkbox-indicator-icon-indeterminate: url("data:image/svg+xml,<svg xmln
 $custom-checkbox-indicator-indeterminate-border-color: $component-active-bg;
 $input-disabled-bg: #fafafa;
 $input-group-addon-bg: $input-disabled-bg;
-$form-group-margin-bottom: 2rem;
+$form-group-margin-bottom: 1.5rem;
 $custom-select-color: #000;
 // Table
 $table-cell-padding: 1.2rem;

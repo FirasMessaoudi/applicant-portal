@@ -303,7 +303,7 @@
 .was-validated .form-control:invalid, .form-control.is-invalid {
   background-position: left calc(0.43em + 0.215rem) center;
 
-  padding-left: calc(1.72em + 0.86rem);
+  padding-left: calc($input-line-height + 0.86rem);
   padding-right: 0.86rem;
 
 }
