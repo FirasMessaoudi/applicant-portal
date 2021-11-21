@@ -13,6 +13,13 @@
           (click)="onLangSelect(lang.code)">{{lang.label}}</button>
 </div> -->
 
+<div class="lang_swtich_login">
+  <svg-icon styleClass="h4 text-light-gray" icon="globe"></svg-icon>
+  <select class="text-muted pl-4" [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
+    <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"> {{lang.label}}  </option>
+  </select>
+
+</div>
 
 <div class="login__box px-6 mb-4">
   <div>
@@ -41,27 +48,28 @@
     <div class="form-group">
       <div class="d-flex flex-column flex-lg-row justify-content-between">
         <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
-          <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked />
+          <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" checked/>
           <label class="custom-control-label" for="customRadioInline1">{{"register.smart_id_number"|translate}}</label>
         </div>
         <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
           <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
-            [disabled]="true" />
+                 [disabled]="true"/>
           <label class="custom-control-label" for="customRadioInline2">{{"general.identity_number"|translate}}</label>
         </div>
         <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
           <input type="radio" id="customRadioInline3" name="customRadioInline1" class="custom-control-input"
-            [disabled]="true" />
+                 [disabled]="true"/>
           <label class="custom-control-label"
-            for="customRadioInline3">{{"card-management.passport_number"|translate}}</label>
+                 for="customRadioInline3">{{"card-management.passport_number"|translate}}</label>
         </div>
       </div>
     </div>
     <div class="form-group">
       <!-- <label>{{"register.smart_id_number"|translate}}
         <span class="text-danger px-1">*</span></label> -->
-      <input type="text" formControlName="username" class="form-control" placeholder="{{'general.identity_number'|translate}}" required
-        [class.is-invalid]="f.username.invalid && f.username.touched" />
+      <input type="text" formControlName="username" class="form-control"
+             placeholder="{{'general.identity_number'|translate}}" required
+             [class.is-invalid]="f.username.invalid && f.username.touched"/>
       <div *ngIf="f.username.invalid && f.username.touched" class="invalid-feedback">
         <div *ngIf="f.username.errors.required">
           {{ "general.field_validation_required" | translate }}
@@ -78,8 +86,9 @@
     <div class="form-group">
       <!-- <label>{{ "general.password" | translate
         }}<span class="text-danger px-1">*</span></label> -->
-      <input type="password" formControlName="password" class="form-control" placeholder="{{'general.password' | translate}}" required
-        [class.is-invalid]="f.password.invalid && f.password.touched" />
+      <input type="password" formControlName="password" class="form-control"
+             placeholder="{{'general.password' | translate}}" required
+             [class.is-invalid]="f.password.invalid && f.password.touched"/>
       <div *ngIf="f.password.invalid && f.password.touched" class="invalid-feedback">
         <div *ngIf="f.password.errors.required">
           {{ "general.field_validation_required" | translate }}
@@ -91,8 +100,9 @@
     </div>
 
     <ngx-recaptcha2 #reCaptchaEl *ngIf="showCaptcha" type="Image" formControlName="recaptcha" class="recaptcha"
-      [siteKey]="recaptchaSiteKey" hl="{{ currentLanguage }}" (load)="onCaptchaLoad()" (ready)="onCaptchaReady()"
-      (success)="onCaptchaSuccess($event)">
+                    [siteKey]="recaptchaSiteKey" hl="{{ currentLanguage }}" (load)="onCaptchaLoad()"
+                    (ready)="onCaptchaReady()"
+                    (success)="onCaptchaSuccess($event)">
     </ngx-recaptcha2>
 
     <div class="form-group">

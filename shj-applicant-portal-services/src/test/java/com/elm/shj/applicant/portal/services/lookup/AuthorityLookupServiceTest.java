@@ -31,6 +31,9 @@ class AuthorityLookupServiceTest {
     @InjectMocks
     private AuthorityLookupService serviceToTest;
 
+    @InjectMocks
+    private IntegrationService integrationService;
+
     @Mock
     private AuthorityLookupRepository authorityLookupRepository;
 
@@ -56,4 +59,6 @@ class AuthorityLookupServiceTest {
         serviceToTest.findAllParentAuthorities();
         verify(authorityLookupRepository).findAllByParentIsNull();
     }
+
+
 }
