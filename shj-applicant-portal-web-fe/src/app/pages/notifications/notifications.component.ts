@@ -5,6 +5,8 @@ import * as momentjs from 'moment';
 import {I18nService} from "@dcc-commons-ng/services";
 import {NotificationService} from "@core/services/notification/notification.service";
 import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
+import {Page} from "@shared/model";
+import {Subscription} from "rxjs";
 
 const moment = momentjs;
 
@@ -17,8 +19,11 @@ export class NotificationsComponent implements OnInit {
 
   activeId = 3;
   notifications: DetailedUserNotification[] = [];
-  page: any;
+  ALL: string = "ALL";
   userNewNotificationsCount: UserNewNotificationsCount;
+  pageArray: Array<number>;
+  page: Page;
+  listSubscription: Subscription;
 
   constructor(private userService: UserService,
               private notificationService: NotificationService,
@@ -29,13 +34,28 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
       this.userNewNotificationsCount = updatedCount;
     });
-    this.loadNotifications();
+    this.loadPage(this.ALL, 0);
   }
 
-  loadNotifications() {
-    this.notificationService.getNotifications().subscribe(data => {
-      this.notifications = data;
+  ngOnDestroy() {
+    this.listSubscription.unsubscribe();
+  }
+
+
+  loadPage(type: string, page) {
+    // load data requests for param page
+    this.listSubscription = this.notificationService.getTypedNotifications(type, page).subscribe(data => {
+      console.log(data);
+      this.page = data;
+      if (this.page != null) {
+        this.pageArray = Array.from(this.pageCounter(this.page.totalPages));
+        this.notifications = this.page.content;
+      }
     });
+  }
+
+  pageCounter(i: number): Array<number> {
+    return new Array(i);
   }
 
   getRelativeTime(date: Date) {
@@ -49,17 +69,5 @@ export class NotificationsComponent implements OnInit {
 
   get currentLanguage(): string {
     return this.i18nService.language;
-  }
-
-  loadPage(number: number) {
-
-  }
-
-  getPrivateNotifications() {
-    return this.notifications.filter(notification => notification.userSpecific);
-  }
-
-  getPublicNotifications() {
-    return this.notifications.filter(notification => !notification.userSpecific);
   }
 }

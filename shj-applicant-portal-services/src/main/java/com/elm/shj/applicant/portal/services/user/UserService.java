@@ -500,6 +500,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.findUserNotificationsByUin(uin);
     }
 
+    public Page<DetailedUserNotificationDto> findTypedUserNotificationsByUin(String uin, String type, Pageable pageable) {
+        return integrationService.findTypedUserNotificationsByUin(uin, type, pageable);
+    }
+
     public int markUserNotificationAsRead(long notificationId) {
         return integrationService.markUserNotificationAsRead(notificationId);
     }
@@ -507,5 +511,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public CompanyLiteDto findCompanyDetailsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.loadCompanyDetails(uin, ritualId);
     }
+
 }
 
