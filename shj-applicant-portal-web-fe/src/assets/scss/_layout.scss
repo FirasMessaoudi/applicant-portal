@@ -257,6 +257,7 @@ span.notif {
 }
 
 .dot_bg {
+    background-size: 25%;
     @include LTR {
         background: #f3f5f2 url(assets/images/public-body-bg-ltr.svg) no-repeat right bottom;
     }
