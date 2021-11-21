@@ -72,6 +72,22 @@ public class ApplicantWsController {
     }
 
     /**
+     * get user package catering event if there is no applicant package catering by his uin and companyRitualSeasonId
+     *
+     * @param companyRitualSeasonId the ID of the selected applicant's company Ritual Season Id
+     * @param authentication        the authenticated user
+     */
+    @GetMapping("/package/catering/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findPackageCatering(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<PackageCateringDto> packageCateringList = userService.findPackageCatering(loggedInUserUin, companyRitualSeasonId);
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(packageCateringList).build());
+    }
+
+    /**
      * get user health details by uin and ritual ID
      */
     @GetMapping("/health/{ritualId}")
