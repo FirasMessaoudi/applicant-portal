@@ -101,6 +101,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           this.loading = false;
           this.isSubmit = false
         })).subscribe(user => {
+        this.setLanguage(user.preferredLanguage?.toLowerCase());
         console.log(user);
         clearInterval(this.timerInterval);
         // login successful if there's a jwt token in the response
@@ -112,7 +113,6 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('redirect to / page');
           clearInterval(this.timerInterval);
           this.getLatestApplicantRitualLite();
-          this.setLanguage(user.preferredLanguage?.startsWith('ar') ? 'ar-SA' : 'en-US');
           this.router.navigate(['/'], {replaceUrl: true});
         }
       }, error => {

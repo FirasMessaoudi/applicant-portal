@@ -269,6 +269,21 @@
                     #{$prop}-right: $length !important;
                 }
             }
+
+            @each $size, $length in $spacers {
+                @if $size != 0 {
+                  .mr#{$infix}-n#{$size},
+                  .mx#{$infix}-n#{$size} {
+                    margin-right: 0 !important;
+                    margin-left: -$length !important;
+                  }
+                  .ml#{$infix}-n#{$size},
+                  .mx#{$infix}-n#{$size} {
+                    margin-left: 0 !important;
+                    margin-right: -$length !important;
+                  }
+                }
+              }
         }
         .mr#{$infix}-auto {
             margin-right: 0 !important;
@@ -285,6 +300,8 @@
     }
 }
 
+
+
 @each $breakpoint in map-keys($grid-breakpoints) {
     @include media-breakpoint-up($breakpoint) {
         $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
@@ -298,13 +315,12 @@
 }
 
 
-}
+
 
 .was-validated .form-control:invalid, .form-control.is-invalid {
   background-position: left calc(0.43em + 0.215rem) center;
-
-  padding-left: calc($input-line-height + 0.86rem);
   padding-right: 0.86rem;
 
 }
 
+}

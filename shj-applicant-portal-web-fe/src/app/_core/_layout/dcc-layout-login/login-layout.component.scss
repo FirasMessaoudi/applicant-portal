@@ -5,9 +5,10 @@
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
+    min-height: 80vh;
     background-color: #fff;
     box-shadow: 0 5px 74px 55px rgba(73, 90, 103, 0.02);
-    @include media-breakpoint-up(sm) {
+
       position: absolute;
       border: 1px solid #eae2cf;
       background-repeat: no-repeat;
@@ -18,12 +19,10 @@
         background-image: url("assets/images/dots-pattern.png");
         background-position: right bottom;
       }
-    }
+    
 
 
-    @media  screen and (min-width: 768px)  and (max-height: 900px) {
-      margin-top: 300px;
-    }
+    
   }
 }
 
@@ -46,30 +45,3 @@
   background-size: cover;
 }
 
-.z-index {
-  display: flex;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-  width: 100%;
-
-  @include make-col(11);
-  @include media-breakpoint-up(md) {
-    width: 502px;
-}
-  /* @include media-breakpoint-up(md) {
-      @include make-col(10);
-  }
-  @include media-breakpoint-up(lg) {
-      @include make-col(8);
-  }
-  @include media-breakpoint-up(xl) {
-      @include make-col(6);
-  }
-  @include media-breakpoint-up(xxl) {
-      @include make-col(5);
-  }
-  @include media-breakpoint-up(xxxl) {
-      @include make-col(4);
-  } */
-}
