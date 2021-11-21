@@ -22,7 +22,7 @@
 </div>
 
 <div class="login__box">
-  <div class="text-center">
+  <div class="text-center my-4">
     <img src="assets/images/logo.png" alt="logo"/>
   </div>
 
@@ -32,7 +32,7 @@
       <span *ngIf="error?.status == 556">{{'login.user_already_logged_in' | translate }}</span>
       <span *ngIf="error?.status == 557">{{'login.user_is_deactivated' | translate }}</span>
     </div>
-    <h1 class="text-dcc-primary font-weight-bold mb-4 h3">
+    <h1 class="text-dcc-primary font-weight-bold mb-5 h4">
       {{ "login.header_title" | translate }}
     </h1>
 
@@ -102,7 +102,7 @@
         {{ "login.btn_login" | translate }}
       </button>
 
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between flex-row-reverse">
         <a [routerLink]="['/landing']" class="text-dcc-primary  mt-3" [hidden]="true">
           دخول المؤسسات
           <svg-icon styleClass="mx-2 flip" icon="arrow-left-light"></svg-icon>
@@ -115,7 +115,7 @@
 
     <div class="form-group mt-6 mb-0">
       <a routerLink="/register" (click)="refreshRegisterData()" class="btn btn-outline-dcc-primary btn-block">
-        {{ "login.btn_new_registration" | translate }}
+        <b>{{ "login.btn_new_registration" | translate }}</b>
       </a>
     </div>
   </form>

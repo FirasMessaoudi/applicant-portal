@@ -11,12 +11,12 @@
       position: absolute;
       border: 1px solid #eae2cf;
       background-repeat: no-repeat;
-      background-image: url("assets/images/dots-pattern.png");
-      background-position: right bottom;
+      background-image: url("assets/images/dots-pattern-rtl.png");
+      background-position: left bottom;
 
       [dir="rtl"] & {
-        background-image: url("assets/images/dots-pattern-rtl.png");
-        background-position: left bottom;
+        background-image: url("assets/images/dots-pattern.png");
+        background-position: right bottom;
       }
     }
 
