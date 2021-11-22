@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {catchError} from "rxjs/internal/operators";
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
 
@@ -38,6 +38,14 @@ export class NotificationService {
 
   getNotifications(): Observable<DetailedUserNotification[]> {
     return this.http.get<DetailedUserNotification[]>('/core/api/notification/list');
+  }
+
+  getTypedNotifications(type, pageNumber): Observable<any> {
+    let params = new HttpParams().set('page', pageNumber);
+    if (type?.length > 0) {
+      params = params.append('type', type);
+    }
+    return this.http.get<DetailedUserNotification[]>('/core/api/notification/list', {params: params});
   }
 
   /**

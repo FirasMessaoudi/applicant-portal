@@ -9,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -67,7 +70,7 @@ public class IntegrationService {
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
     private final String MEAL_TYPE_LOOKUP = "/ws/meal-type/list";
     private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
-    private  final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
+    private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
 
@@ -562,6 +565,21 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+
+    public Page<DetailedUserNotificationDto> findTypedUserNotificationsByUin(String uin, String type, Pageable pageable) {
+        WsResponse<Page<DetailedUserNotificationDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + uin + "?type=" + type +
+                     "&page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<RestResponsePage<DetailedUserNotificationDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notifications by user Id.", e);
+            return new PageImpl<>(Collections.emptyList(), pageable, 0);
+        }
+        return wsResponse.getBody();
+    }
+
     /**
      * Count user new notifications.
      *
@@ -771,6 +789,5 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
-
 
 }

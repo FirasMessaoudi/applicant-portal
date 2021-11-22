@@ -12,6 +12,7 @@ import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -48,9 +49,13 @@ public class NotificationController {
      * @param authentication the authenticated user
      */
     @GetMapping("/list")
-    public List<DetailedUserNotificationDto> findUserNotificationsByUin(Authentication authentication) {
+    public ResponseEntity<?> findUserNotificationsByUin(Authentication authentication,
+                                                        @RequestParam(required = false) EUserNotificationType type, Pageable pageable) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findUserNotificationsByUin(loggedInUserUin);
+        if (type != null) {
+            return ResponseEntity.ok(userService.findTypedUserNotificationsByUin(loggedInUserUin, type.name(), pageable));
+        }
+        return ResponseEntity.ok(userService.findUserNotificationsByUin(loggedInUserUin));
     }
 
     /**

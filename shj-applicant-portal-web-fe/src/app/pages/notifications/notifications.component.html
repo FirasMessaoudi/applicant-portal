@@ -13,32 +13,41 @@
 
   <ul ngbNav #nav="ngbNav" class="nav-tabs" [(activeId)]="activeId">
     <li [ngbNavItem]="1">
-      <a class="py-3 px-4 text-muted" ngbNavLink>{{"notification-management.private_notifications" | translate}}
+      <a class="py-3 px-4 text-muted" ngbNavLink
+         (click)="loadPage('USER_SPECIFIC', 0)"
+      >{{"notification-management.private_notifications" | translate}}
         ({{userNewNotificationsCount?.userSpecificNewNotificationsCount}})</a>
       <ng-template ngbNavContent>
 
         <!--Private notifications-->
-        <app-notification-list [notifications]="getPrivateNotifications()"></app-notification-list>
+        <app-notification-list [notifications]="notifications"></app-notification-list>
+        <app-notification-footer (onLoadPage)="loadPage('USER_SPECIFIC', $event)" [page]="page"></app-notification-footer>
 
       </ng-template>
     </li>
     <li [ngbNavItem]="2">
-      <a class="py-3 px-4 text-muted" ngbNavLink>{{"notification-management.public_notifications" | translate}}
+      <a class="py-3 px-4 text-muted" ngbNavLink
+         (click)="loadPage('GENERAL', 0)">{{"notification-management.public_notifications" | translate}}
         ({{userNewNotificationsCount?.userNotSpecificNewNotificationsCount}})</a>
       <ng-template ngbNavContent>
 
         <!--Public notifications-->
-        <app-notification-list [notifications]="getPublicNotifications()"></app-notification-list>
+        <app-notification-list [notifications]="notifications"></app-notification-list>
+        <app-notification-footer (onLoadPage)="loadPage('GENERAL', $event)"
+                                 [page]="page"></app-notification-footer>
 
       </ng-template>
     </li>
     <li [ngbNavItem]="3">
-      <a class="py-3 px-4 text-muted" ngbNavLink>{{"notification-management.view_all" | translate}}
+      <a class="py-3 px-4 text-muted" ngbNavLink
+         (click)="loadPage('ALL', 0)"
+      >{{"notification-management.view_all" | translate}}
         <svg-icon styleClass="fa-w-16 ml-2" icon="ballot"></svg-icon>
       </a>
       <ng-template ngbNavContent>
         <!--All notifications-->
         <app-notification-list [notifications]="notifications"></app-notification-list>
+        <app-notification-footer (onLoadPage)="loadPage('ALL', $event)" [page]="page"></app-notification-footer>
       </ng-template>
     </li>
   </ul>
