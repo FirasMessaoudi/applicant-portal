@@ -641,11 +641,22 @@ ngb-typeahead-window.dropdown-menu {
   box-shadow: $box-shadow;
 
   @include media-breakpoint-up(md) {
-    transform: translate(-98px, 60px) !important;
+    [dir="rtl"] & {
+      transform: translate(-98px, 60px) !important;
+    }
+    [dir="ltr"] & {
+      transform: translate(-238px, 60px) !important;
+    }
   }
   @include media-breakpoint-down(md) {
-    transform: translate(-84px, 50px) !important;
+    [dir="rtl"] & {
+      transform: translate(-84px, 50px) !important;
+    }
+    [dir="ltr"] & {
+      transform: translate(-259px, 50px) !important;
+    }
   }
+
 }
 
 .popover-body {
