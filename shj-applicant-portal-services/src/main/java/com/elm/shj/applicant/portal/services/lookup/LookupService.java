@@ -51,6 +51,9 @@ public class LookupService {
     private List<MealTypeLookupDto> mealTypes;
     private List<LanguageLookupDto> supportedLanguages;
 
+    private List<IncidentTypeLookupDto> incidentTypes;
+    private List<IncidentStatusLookupDto> incidentStatus;
+
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
     @SchedulerLock(name = "load-applicant-lookups-task")
@@ -77,6 +80,8 @@ public class LookupService {
         this.retrieveNotificationNames = integrationService.loadNotificationNames();
         this.mealTypes = integrationService.loadMealTypes();
         this.supportedLanguages = integrationService.loadSupportedLanguages();
+        this.incidentStatus = integrationService.loadIncidentStatus();
+        this.incidentTypes = integrationService.loadIncidentTypes();
 
     }
 
@@ -163,4 +168,12 @@ public class LookupService {
     public List<LanguageLookupDto> retrieveSupportedLanguages() {
         return this.supportedLanguages;
     }
+
+    public List<IncidentStatusLookupDto> retrieveIncidentStatus() {
+        return this.incidentStatus;
+    }
+    public List<IncidentTypeLookupDto> retrieveIncidentTypes() {
+        return this.incidentTypes;
+    }
+
 }

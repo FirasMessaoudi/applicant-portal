@@ -44,6 +44,8 @@ public class Navigation {
     // Logout
     public static final String API_AUTH_LOGOUT = API_AUTH + "/logout";
 
+    public static final String API_INTEGRATION_INCIDENTS = "/api/ws/incidents";
+
 
     private Navigation() {
         // private constructor to prevent construction
