@@ -73,6 +73,7 @@ public class IntegrationService {
     private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
+    private final String HOUSING_DETAILS_URL = "/ws/housing";
     private final String INCIDENT_LIST = "/ws/incident/list/";
     private final String INCIDENT_TYPE_LOOKUP_LOOKUP ="/ws/incident-status/list" ;
     private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-type/list" ;
@@ -793,6 +794,19 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public PackageHousingDto loadHousingDetails(String uin, long ritualId) {
+        WsResponse<PackageHousingDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(HOUSING_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<PackageHousingDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load housing details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
     /**
      * Find all list of incidents
      *
@@ -801,7 +815,7 @@ public class IntegrationService {
     public List<ApplicantIncidentDto> loadIncidents(long applicantRitualId) {
         WsResponse<List<ApplicantIncidentDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(INCIDENT_LIST+applicantRitualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(INCIDENT_LIST + applicantRitualId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<ApplicantIncidentDto>>>() {
                     });
         } catch (WsAuthenticationException e) {

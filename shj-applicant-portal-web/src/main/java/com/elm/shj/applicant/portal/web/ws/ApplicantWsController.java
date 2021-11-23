@@ -175,4 +175,13 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(companyDetails).build());
     }
+
+    @GetMapping("/housing-details/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findHousingDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        PackageHousingDto housingDetails = userService.findHousingDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(housingDetails).build());
+    }
 }
