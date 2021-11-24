@@ -45,7 +45,7 @@ public class Navigation {
     public static final String API_AUTH_LOGOUT = API_AUTH + "/logout";
     // Incidents
     public static final String API_INTEGRATION_INCIDENTS = "/api/ws/incidents";
-    // Incidents
+    // Chat contacts
     public static final String API_INTEGRATION_CHAT_CONTACTS = "/api/ws/chat-contact";
 
     private Navigation() {
