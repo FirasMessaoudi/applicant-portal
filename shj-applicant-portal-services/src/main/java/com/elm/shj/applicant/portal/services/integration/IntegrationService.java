@@ -9,8 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -67,10 +71,10 @@ public class IntegrationService {
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
     private final String MEAL_TYPE_LOOKUP = "/ws/meal-type/list";
     private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
-    private  final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
+    private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
-
+    private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
 
 
     private final WebClient webClient;
@@ -108,6 +112,10 @@ public class IntegrationService {
         if (bodyToSend == null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
+        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL) {
+            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
         }
         return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                 .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
@@ -764,6 +772,20 @@ public class IntegrationService {
         try {
             wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_UPDATE, HttpMethod.POST, userNotificationCategoryPreference,
                     new ParameterizedTypeReference<WsResponse<UserNotificationCategoryPreferenceDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+
+    public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
+        WsResponse<ApplicantIncidentDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantIncidentDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification names", e);
