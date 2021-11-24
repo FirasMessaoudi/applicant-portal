@@ -75,10 +75,9 @@ public class IntegrationService {
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
     private final String HOUSING_DETAILS_URL = "/ws/housing";
     private final String INCIDENT_LIST = "/ws/incident/list/";
-    private final String INCIDENT_TYPE_LOOKUP_LOOKUP ="/ws/incident-status/list" ;
-    private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-type/list" ;
-
-
+    private final String INCIDENT_TYPE_LOOKUP ="/ws/incident-type/list" ;
+    private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-status/list" ;
+    private final String CHAT_CONTACT_URL = "/ws/chat-contact";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -87,7 +86,6 @@ public class IntegrationService {
     private String integrationAccessUsername;
     @Value("${integration.access.password}")
     private String integrationAccessPassword;
-
 
     /**
      * Call an integration web service, authenticate first to get the token then do the actual call using the generated token.
@@ -574,7 +572,7 @@ public class IntegrationService {
         WsResponse<Page<DetailedUserNotificationDto>> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + uin + "?type=" + type +
-                     "&page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(), HttpMethod.GET, null,
+                            "&page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(), HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<RestResponsePage<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -762,9 +760,8 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-
     /**
-     * Find all supported languages lookup from command portal.
+     * Find all supported languages' lookup from command portal.
      *
      * @return all Supported Languages
      */
@@ -841,11 +838,29 @@ public class IntegrationService {
     public List<IncidentTypeLookupDto> loadIncidentTypes() {
         WsResponse<List<IncidentTypeLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(INCIDENT_TYPE_LOOKUP_LOOKUP, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(INCIDENT_TYPE_LOOKUP, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<IncidentTypeLookupDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get supported languages", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Find applicant chat contacts from command portal.
+     *
+     * @return all chat contacts by ritual ID
+     */
+    public List<ApplicantChatContactLiteDto> findApplicantChatContacts(String uin, Long applicantRitualId) {
+        WsResponse<List<ApplicantChatContactLiteDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + uin + "/" + applicantRitualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();

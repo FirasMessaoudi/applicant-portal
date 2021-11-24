@@ -16,7 +16,7 @@ import java.util.List;
  * Dto class for applicant incident domain.
  *
  * @author f.messaoudi
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Getter
 @Setter

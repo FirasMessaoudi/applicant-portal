@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Dto class for the company.
  *
  * @author Ahmed Elsayed
- * @since 1.1.0
+ * @since 1.0.0
  */
 
 @NoArgsConstructor

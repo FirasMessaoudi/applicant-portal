@@ -3,8 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
-import com.elm.shj.applicant.portal.services.incident.IncidentService;
+import com.elm.shj.applicant.portal.services.chat.ChatContactService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
- *  Controller for exposing notification web services for external party.
+ * Controller for exposing web services related to chat contacts for external party.
  *
- * @author f.messaoudi
- * @since 1.1.0
+ * @author Slim Ben Hadj
+ * @since 1.0.0
  */
 @CrossOrigin(
         originPatterns = "*",
@@ -30,24 +28,18 @@ import java.util.List;
 )
 @Slf4j
 @RestController
-@RequestMapping(Navigation.API_INTEGRATION_INCIDENTS)
+@RequestMapping(Navigation.API_INTEGRATION_CHAT_CONTACTS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class IncidentWsController {
+public class ChatContactWsController {
 
-    private final IncidentService incidentService;
+    private final ChatContactService chatContactService;
 
-    /**
-     * get all incidents by ritual id
-     *
-     * @param authentication the authenticated user
-     */
-
-    @GetMapping("/list/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findIncidents(@PathVariable long ritualId ,Authentication authentication) {
-        List<ApplicantIncidentDto> incidentDtos = incidentService.findIncidents(ritualId);
+    @GetMapping("/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findApplicantChatContactsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(incidentDtos).build());
+                        .body(chatContactService.findChatContactsByUinAndRitualId(loggedInUserUin, ritualId)).build());
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.Date;
  * Dto class for the Religious Occasions Day domain.
  *
  * @author salzoubi
- * @since 1.1.0
+ * @since 1.0.0
  */
 @NoArgsConstructor
 @Getter

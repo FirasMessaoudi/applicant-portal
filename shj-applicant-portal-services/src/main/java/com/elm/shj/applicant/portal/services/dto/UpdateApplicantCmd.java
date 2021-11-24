@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Update Applicant MVC Command
  *
  * @author Slim Ben Hadj
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Data
 @AllArgsConstructor

@@ -14,7 +14,7 @@ import java.util.Date;
  * Dto class for applicant package transportation
  *
  * @author firas messaoudi
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Data
 @NoArgsConstructor

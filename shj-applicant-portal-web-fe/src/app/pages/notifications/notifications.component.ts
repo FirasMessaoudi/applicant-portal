@@ -45,7 +45,6 @@ export class NotificationsComponent implements OnInit {
   loadPage(type: string, page) {
     // load data requests for param page
     this.listSubscription = this.notificationService.getTypedNotifications(type, page).subscribe(data => {
-      console.log(data);
       this.page = data;
       if (this.page != null) {
         this.pageArray = Array.from(this.pageCounter(this.page.totalPages));

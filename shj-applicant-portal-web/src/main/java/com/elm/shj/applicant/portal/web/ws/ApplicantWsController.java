@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
-import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -36,8 +35,8 @@ import java.util.Optional;
 @RequestMapping(Navigation.API_INTEGRATION_APPLICANT)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ApplicantWsController {
+
     private final UserService userService;
-    private final LookupService lookupService;
 
     /**
      * get user card details by his uin and ritual ID
@@ -52,7 +51,6 @@ public class ApplicantWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(card).build());
-
     }
 
     /**

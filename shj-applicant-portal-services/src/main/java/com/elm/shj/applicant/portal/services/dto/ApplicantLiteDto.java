@@ -14,7 +14,7 @@ import java.util.Date;
  * Dto class for the applicant lite domain.
  *
  * @author Slim Ben Hadj
- * @since 1.1.0
+ * @since 1.0.0
  */
 @NoArgsConstructor
 @Setter

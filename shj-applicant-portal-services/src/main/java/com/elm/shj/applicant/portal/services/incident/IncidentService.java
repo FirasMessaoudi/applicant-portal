@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2021 ELM. All rights reserved.
  */
-package com.elm.shj.applicant.portal.services.notification;
+package com.elm.shj.applicant.portal.services.incident;
 
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
