@@ -175,4 +175,13 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(companyDetails).build());
     }
+
+    @GetMapping("/find-by-uin/{uin}")
+    public ResponseEntity<WsResponse<?>> findApplicantBasicDetailsByUin(@PathVariable String uin, Authentication authentication) {
+        ApplicantLiteDto applicant = userService.findApplicantBasicDetailsByUin(uin);
+        if (applicant.getFullNameEn() == null) {
+            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, uin);      }
+        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(applicant).build());
+
+    }
 }

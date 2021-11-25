@@ -19,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Service handling calling command portal.
@@ -73,6 +74,7 @@ public class IntegrationService {
     private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
+    private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
 
 
 
@@ -790,4 +792,16 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {
+        WsResponse<ApplicantLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_BY_UIN+ "/" + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
 }

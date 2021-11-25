@@ -512,5 +512,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadCompanyDetails(uin, ritualId);
     }
 
+    public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {
+        ApplicantLiteDto applicantBasicDetailsByUin = integrationService.findApplicantBasicDetailsByUin(uin);
+        return applicantBasicDetailsByUin ;
+    }
 }
 
