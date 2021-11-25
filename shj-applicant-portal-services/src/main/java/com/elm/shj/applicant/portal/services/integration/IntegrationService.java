@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -74,6 +77,11 @@ public class IntegrationService {
     private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
+    private final String HOUSING_DETAILS_URL = "/ws/housing";
+    private final String INCIDENT_LIST = "/ws/incident/list/";
+    private final String INCIDENT_TYPE_LOOKUP ="/ws/incident-type/list" ;
+    private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-status/list" ;
+    private final String CHAT_CONTACT_URL = "/ws/chat-contact";
     private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
 
 
@@ -84,7 +92,6 @@ public class IntegrationService {
     private String integrationAccessUsername;
     @Value("${integration.access.password}")
     private String integrationAccessPassword;
-
 
     /**
      * Call an integration web service, authenticate first to get the token then do the actual call using the generated token.
@@ -570,6 +577,21 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+
+    public Page<DetailedUserNotificationDto> findTypedUserNotificationsByUin(String uin, String type, Pageable pageable) {
+        WsResponse<Page<DetailedUserNotificationDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + uin + "?type=" + type +
+                            "&page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(), HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<RestResponsePage<DetailedUserNotificationDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notifications by user Id.", e);
+            return new PageImpl<>(Collections.emptyList(), pageable, 0);
+        }
+        return wsResponse.getBody();
+    }
+
     /**
      * Count user new notifications.
      *
@@ -748,9 +770,8 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-
     /**
-     * Find all supported languages lookup from command portal.
+     * Find all supported languages' lookup from command portal.
      *
      * @return all Supported Languages
      */
@@ -794,5 +815,78 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public PackageHousingDto loadHousingDetails(String uin, long ritualId) {
+        WsResponse<PackageHousingDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(HOUSING_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<PackageHousingDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load housing details.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
 
+    /**
+     * Find all list of incidents
+     *
+     * @return list of incident
+     */
+    public List<ApplicantIncidentDto> loadIncidents(long applicantRitualId) {
+        WsResponse<List<ApplicantIncidentDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_LIST + applicantRitualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantIncidentDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get incidents", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<IncidentStatusLookupDto> loadIncidentStatus() {
+        WsResponse<List<IncidentStatusLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_STATUS_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<IncidentStatusLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get incident status", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<IncidentTypeLookupDto> loadIncidentTypes() {
+        WsResponse<List<IncidentTypeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_TYPE_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<IncidentTypeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get supported languages", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Find applicant chat contacts from command portal.
+     *
+     * @return all chat contacts by ritual ID
+     */
+    public List<ApplicantChatContactLiteDto> findApplicantChatContacts(String uin, Long applicantRitualId) {
+        WsResponse<List<ApplicantChatContactLiteDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + uin + "/" + applicantRitualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
 }

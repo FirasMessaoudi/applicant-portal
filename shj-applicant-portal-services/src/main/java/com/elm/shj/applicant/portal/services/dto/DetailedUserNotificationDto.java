@@ -9,7 +9,7 @@ import java.util.Date;
  * Dto for Notifications that will be returned for the user
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Builder
 @AllArgsConstructor

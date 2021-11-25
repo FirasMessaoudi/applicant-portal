@@ -15,7 +15,7 @@ import java.util.List;
  * Dto class for the Housing Zone .
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Data
 @NoArgsConstructor

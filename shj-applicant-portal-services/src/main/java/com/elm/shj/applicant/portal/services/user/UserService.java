@@ -501,11 +501,15 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.findUserNotificationsByUin(uin);
     }
 
+    public Page<DetailedUserNotificationDto> findTypedUserNotificationsByUin(String uin, String type, Pageable pageable) {
+        return integrationService.findTypedUserNotificationsByUin(uin, type, pageable);
+    }
+
     public int markUserNotificationAsRead(long notificationId) {
         return integrationService.markUserNotificationAsRead(notificationId);
     }
 
-    public CompanyLiteDto findCompanyDetailsByUinAndRitualId(String uin, Long ritualId) {
+    public CompanyLiteDto findCompanyDetailsByUinAndRitualId(String uin, long ritualId) {
         return integrationService.loadCompanyDetails(uin, ritualId);
     }
 
@@ -513,5 +517,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.createIncident(builder);
 
     }
+
+    public PackageHousingDto findHousingDetailsByUinAndRitualId(String uin, long ritualId) {
+        log.debug(uin);
+        log.debug(String.valueOf(ritualId));
+        return integrationService.loadHousingDetails(uin, ritualId);
+    }
+
 }
 

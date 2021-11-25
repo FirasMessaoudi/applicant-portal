@@ -18,9 +18,9 @@
   </div>
 </div>
 <header class="header-wrapper" [ngClass]="{ light_navbar: showNavbar }">
-  <div class="d-flex justify-content-between align-items-center w-100"
+  <div class="d-md-flex justify-content-between align-items-center w-100"
        [ngClass]="{ container: showNavbar, 'px-md-0': showNavbar }">
-    <div class="left-header d-flex">
+    <div class="left-header d-md-flex">
       <!--BACK BUTTON-->
       <a *ngIf="!showNavbar" class="d-block" (click)="goBack()" href="javascript:void(0);">
         <svg-icon styleClass="ml-4 mr-2 flip" icon="arrow-right"></svg-icon>
@@ -57,7 +57,7 @@
     <!--- PROFILE & SETTING-->
     <div class="nav-right">
       <ul class="nav-menus align-items-center" [ngClass]="{ 'mx-0': showNavbar }">
-        <li class="flex-center">
+        <li class="flex-grow-1 avatarH">
           <a class="nav-link d-flex align-items-center">
             <svg-icon styleClass="h1 text-gray-300 resetH" icon="user-circle"></svg-icon>
             <div class="mx-3 pt-2">
@@ -83,6 +83,7 @@
              href="javascript:void(0)"
              ngbTooltip="{{'header.notifications' | translate}}"
              id="notificationsLink"
+             [container]="'nav-menus'"
              (click)="loadNotifications()"
           >
             <svg-icon styleClass="fa-w-16 h4 resetH" icon="bell"></svg-icon>

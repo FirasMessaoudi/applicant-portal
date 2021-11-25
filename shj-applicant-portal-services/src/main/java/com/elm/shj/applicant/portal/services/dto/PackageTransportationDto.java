@@ -16,7 +16,7 @@ import java.util.List;
  * Dto class for the Package Transportation .
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Data
 @NoArgsConstructor

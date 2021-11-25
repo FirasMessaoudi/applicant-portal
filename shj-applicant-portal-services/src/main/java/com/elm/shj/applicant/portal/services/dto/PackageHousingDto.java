@@ -16,7 +16,7 @@ import java.util.List;
  * Dto class for the Package Housing  .
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Data
 @NoArgsConstructor
@@ -39,8 +39,8 @@ public class PackageHousingDto implements Serializable {
     private String addressEn;
     private String addressAr;
     private boolean isDefault;
-    private String lat;
-    private String lng;
+    private double lat;
+    private double lng;
     @JsonBackReference("packageCatering")
     private List<PackageCateringDto> packageCatering;
     @JsonBackReference("applicantPackageHousing")

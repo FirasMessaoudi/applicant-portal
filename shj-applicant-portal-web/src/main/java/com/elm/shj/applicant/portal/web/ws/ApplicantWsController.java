@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
-import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -40,6 +39,7 @@ import java.util.Optional;
 @RequestMapping(Navigation.API_INTEGRATION_APPLICANT)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ApplicantWsController {
+
     private final UserService userService;
     private final LookupService lookupService;
 
@@ -57,7 +57,6 @@ public class ApplicantWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(card).build());
-
     }
 
     /**
@@ -179,6 +178,15 @@ public class ApplicantWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(companyDetails).build());
+    }
+
+    @GetMapping("/housing-details/{ritualId}")
+    public ResponseEntity<WsResponse<?>> findHousingDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        PackageHousingDto housingDetails = userService.findHousingDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(housingDetails).build());
     }
 
 

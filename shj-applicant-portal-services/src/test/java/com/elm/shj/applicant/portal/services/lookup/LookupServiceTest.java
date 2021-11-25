@@ -20,7 +20,7 @@ import java.util.List;
  * Testing class for service {@link LookupService}
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
 public class LookupServiceTest {

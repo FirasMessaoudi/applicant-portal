@@ -639,6 +639,24 @@ ngb-typeahead-window.dropdown-menu {
   max-width: 385px;
   border: 0;
   box-shadow: $box-shadow;
+
+  @include media-breakpoint-up(md) {
+    [dir="rtl"] & {
+      transform: translate(-98px, 60px) !important;
+    }
+    [dir="ltr"] & {
+      transform: translate(-238px, 60px) !important;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    [dir="rtl"] & {
+      transform: translate(-84px, 50px) !important;
+    }
+    [dir="ltr"] & {
+      transform: translate(-259px, 50px) !important;
+    }
+  }
+
 }
 
 .popover-body {
@@ -680,4 +698,38 @@ ngb-typeahead-window.dropdown-menu {
 
 .text-black {
   color: #000;
+}
+
+
+
+.z-index {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+
+  
+  
+
+  :not(.register) &{
+
+    @include make-col(11);
+    @include media-breakpoint-up(md) {
+      width: 502px;
+    }
+  }
+  .register &{
+    width: 100%;
+    @include media-breakpoint-up(md) {
+      @include make-col(10);
+    }
+    @include media-breakpoint-up(lg) {
+        @include make-col(8);
+    }
+    @include media-breakpoint-up(xl) {
+        @include make-col(6);
+    }
+
+  }
 }

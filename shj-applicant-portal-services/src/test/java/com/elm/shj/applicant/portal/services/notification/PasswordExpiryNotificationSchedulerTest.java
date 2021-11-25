@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
  * Testing class for service {@link PasswordExpiryNotificationScheduler}
  *
  * @author Ahmed Ali
- * @since 1.1.0
+ * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
 public class PasswordExpiryNotificationSchedulerTest {

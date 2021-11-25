@@ -45,7 +45,12 @@
     @include my(3);
     @include mx(4);
     box-shadow: $box-shadow-sm;
-  align-items: baseline;
+    align-items: baseline;
+    width: 385px;
+}
+
+.avatarH{
+
 }
 
 .title__Page {
@@ -257,6 +262,7 @@ span.notif {
 }
 
 .dot_bg {
+    background-size: 25%;
     @include LTR {
         background: #f3f5f2 url(assets/images/public-body-bg-ltr.svg) no-repeat right bottom;
     }
@@ -299,3 +305,9 @@ body .btn-select{
   border: 0;
 }
 
+
+
+.btn-dcc-primary.disabled, .btn-dcc-primary:disabled {
+    background-color: #80A87E;
+    opacity: 1;
+}

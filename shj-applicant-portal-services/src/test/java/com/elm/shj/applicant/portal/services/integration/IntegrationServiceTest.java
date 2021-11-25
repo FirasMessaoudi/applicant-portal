@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
  * Testing class for service {@link IntegrationService}
  *
  * @author Ahmed Elsayed
- * @since 1.1.0
+ * @since 1.0.0
  */
 @ExtendWith(MockitoExtension.class)
 public class IntegrationServiceTest {
