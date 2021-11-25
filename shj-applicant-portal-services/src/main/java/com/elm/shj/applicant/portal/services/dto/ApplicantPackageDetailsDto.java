@@ -10,7 +10,7 @@ import java.util.List;
  * Dto class for the applicant package details domain.
  *
  * @author ahmed elsayed
- * @since 1.1.0
+ * @since 1.0.0
  */
 @NoArgsConstructor
 @Data

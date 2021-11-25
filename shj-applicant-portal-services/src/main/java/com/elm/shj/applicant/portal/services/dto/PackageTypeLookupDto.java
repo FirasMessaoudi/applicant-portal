@@ -13,7 +13,7 @@ import java.util.Date;
  * Dto class for the package type domain.
  *
  * @author Ahmed Elsayed
- * @since 1.1.0
+ * @since 1.0.0
  */
 @NoArgsConstructor
 @Data

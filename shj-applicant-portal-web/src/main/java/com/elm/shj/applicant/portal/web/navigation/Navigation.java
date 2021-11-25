@@ -43,7 +43,10 @@ public class Navigation {
     public static final String API_INTEGRATION_AUTH_LOGOUT = API_INTEGRATION_AUTH + "/logout";
     // Logout
     public static final String API_AUTH_LOGOUT = API_AUTH + "/logout";
-
+    // Incidents
+    public static final String API_INTEGRATION_INCIDENTS = "/api/ws/incidents";
+    // Chat contacts
+    public static final String API_INTEGRATION_CHAT_CONTACTS = "/api/ws/chat-contact";
 
     private Navigation() {
         // private constructor to prevent construction

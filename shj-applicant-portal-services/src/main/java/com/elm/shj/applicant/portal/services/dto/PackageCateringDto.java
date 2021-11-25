@@ -15,7 +15,7 @@ import java.util.List;
  * Dto class for the package catering domain.
  *
  * @author ahmed elsayed
- * @since 1.1.0
+ * @since 1.0.0
  */
 @NoArgsConstructor
 @Data

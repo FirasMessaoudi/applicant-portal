@@ -241,4 +241,22 @@ public class LookupWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(mealTypesLookup).build());
     }
+
+    @GetMapping("/incident-type/list")
+    public ResponseEntity<WsResponse<?>> listIncidentTypes(Authentication authentication) {
+        log.debug("list incident types...");
+        List<IncidentTypeLookupDto> incidentTypeLookupDtos = lookupService.retrieveIncidentTypes();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(incidentTypeLookupDtos).build());
+    }
+
+    @GetMapping("/incident-status/list")
+    public ResponseEntity<WsResponse<?>> listIncidentStatus(Authentication authentication) {
+        log.debug("list incident status...");
+        List<IncidentStatusLookupDto> incidentStatusLookupDtos = lookupService.retrieveIncidentStatus();
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(incidentStatusLookupDtos).build());
+    }
 }
