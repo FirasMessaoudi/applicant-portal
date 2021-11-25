@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2021 ELM. All rights reserved.
  */
@@ -12,9 +13,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Dto class for incident attachment domain.
+ * Dto class for applicant incident domain.
  *
- * @author f.messaoudi
+ * @author Ahmed Ali
  * @since 1.1.0
  */
 @Getter

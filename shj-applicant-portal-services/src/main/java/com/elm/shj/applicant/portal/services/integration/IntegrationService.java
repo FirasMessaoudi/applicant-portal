@@ -9,17 +9,20 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service handling calling command portal.
@@ -79,6 +82,7 @@ public class IntegrationService {
     private final String INCIDENT_TYPE_LOOKUP ="/ws/incident-type/list" ;
     private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-status/list" ;
     private final String CHAT_CONTACT_URL = "/ws/chat-contact";
+    private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
 
 
@@ -117,6 +121,10 @@ public class IntegrationService {
         if (bodyToSend == null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
+        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL) {
+            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
         }
         return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                 .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
@@ -576,7 +584,7 @@ public class IntegrationService {
         WsResponse<Page<DetailedUserNotificationDto>> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(NOTIFICATION_URL + "/" + uin + "?type=" + type +
-                     "&page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(), HttpMethod.GET, null,
+                            "&page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(), HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<RestResponsePage<DetailedUserNotificationDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -764,9 +772,8 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-
     /**
-     * Find all supported languages lookup from command portal.
+     * Find all supported languages' lookup from command portal.
      *
      * @return all Supported Languages
      */
@@ -788,6 +795,20 @@ public class IntegrationService {
         try {
             wsResponse = callIntegrationWs(NOTIFICATION_CATEGORY_UPDATE, HttpMethod.POST, userNotificationCategoryPreference,
                     new ParameterizedTypeReference<WsResponse<UserNotificationCategoryPreferenceDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+
+    public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
+        WsResponse<ApplicantIncidentDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantIncidentDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification names", e);

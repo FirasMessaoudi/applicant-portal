@@ -25,6 +25,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -510,6 +511,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public CompanyLiteDto findCompanyDetailsByUinAndRitualId(String uin, long ritualId) {
         return integrationService.loadCompanyDetails(uin, ritualId);
+    }
+
+    public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
+        return integrationService.createIncident(builder);
+
     }
 
     public PackageHousingDto findHousingDetailsByUinAndRitualId(String uin, long ritualId) {

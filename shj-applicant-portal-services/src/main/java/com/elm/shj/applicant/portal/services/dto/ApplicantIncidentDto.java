@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2021 ELM. All rights reserved.
  */
@@ -15,8 +16,8 @@ import java.util.List;
 /**
  * Dto class for applicant incident domain.
  *
- * @author f.messaoudi
- * @since 1.0.0
+ * @author Ahmed Ali
+ * @since 1.1.0
  */
 @Getter
 @Setter
@@ -29,12 +30,13 @@ public class ApplicantIncidentDto implements Serializable {
     @JsonBackReference(value = "applicantRitual")
     private ApplicantRitualDto applicantRitual;
     private String statusCode;
+    private String referenceNumber;
     private String typeCode;
     private String description;
     private Double locationLat;
     private Double locationLng;
     private String resolutionComment;
-    private List<IncidentAttachmentDto>  incidentAttachments;
+    private List<IncidentAttachmentDto> incidentAttachments;
     private Date creationDate;
     private Date updateDate;
 }

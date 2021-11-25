@@ -10,11 +10,15 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +42,7 @@ public class ApplicantWsController {
 
     private final UserService userService;
 
+
     /**
      * get user card details by his uin and ritual ID
      *
@@ -51,7 +56,6 @@ public class ApplicantWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(card).build());
-
     }
 
     /**
@@ -182,6 +186,29 @@ public class ApplicantWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(housingDetails).build());
+    }
+
+
+    /**
+     * Creates a new applicant incident
+     *
+     * @param applicantIncidentRequest applicant incident details
+     * @param incidentAttachment       the incident attachment
+     * @return WsResponse of  the persisted applicant incident
+     */
+    @PostMapping(value = "/create-incident", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<WsResponse<?>> createIncident(@RequestPart("incident") @Valid ApplicantIncidentDto applicantIncidentRequest,
+                                                        @RequestPart("attachment") MultipartFile incidentAttachment) throws Exception {
+
+        log.info("adding  applicant incident");
+
+
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("attachment", incidentAttachment.getResource());
+        builder.part("incident", applicantIncidentRequest);
+        builder.part("applicantRitual", applicantIncidentRequest.getApplicantRitual());
+        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(userService.createIncident(builder)).build());
+
     }
 
     @GetMapping("/find-by-uin/{uin}")
