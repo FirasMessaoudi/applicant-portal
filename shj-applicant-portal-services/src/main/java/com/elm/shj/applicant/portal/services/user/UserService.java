@@ -513,15 +513,14 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadCompanyDetails(uin, ritualId);
     }
 
-    public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
-        return integrationService.createIncident(builder);
-
-    }
-
     public PackageHousingDto findHousingDetailsByUinAndRitualId(String uin, long ritualId) {
         log.debug(uin);
         log.debug(String.valueOf(ritualId));
         return integrationService.loadHousingDetails(uin, ritualId);
+    }
+
+    public ApplicantRitualDto findApplicantRitual(String uin, long companyRitualId) {
+        return integrationService.findApplicantRitual(uin, companyRitualId);
     }
 
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {

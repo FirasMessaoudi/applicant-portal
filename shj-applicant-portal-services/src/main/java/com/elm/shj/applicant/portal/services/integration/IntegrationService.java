@@ -9,18 +9,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,8 +92,10 @@ public class IntegrationService {
     private final String INCIDENT_LIST = "/ws/incident/list/";
     private final String INCIDENT_TYPE_LOOKUP ="/ws/incident-type/list" ;
     private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-status/list" ;
+    private  final String INCIDENT_DOWNLOAD = "/ws/incidents/attachment/";
     private final String CHAT_CONTACT_URL = "/ws/chat-contact";
     private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
+    private final String APPLICANT_RITUAL_URL = "/ws/ritual/";
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
 
 
@@ -128,6 +141,25 @@ public class IntegrationService {
         }
         return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                 .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
+    }
+
+
+    public ByteArrayResource downloadFromWs (long id) throws WsAuthenticationException {
+        WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
+                .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
+                .retrieve().bodyToMono(WsResponse.class).block();
+        if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
+            // cannot authenticate, throw an exception
+            throw new WsAuthenticationException(accessTokenWsResponse.getBody());
+            // TODO: check available spring security exception to be reused instead.
+        }
+        WebClient  myWebClient = WebClient.builder()
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
+                .build();
+        return myWebClient.get().uri(commandIntegrationUrl + INCIDENT_DOWNLOAD+id)
+                .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                .retrieve().bodyToMono(ByteArrayResource.class).block();
+
     }
 
     /**
@@ -890,6 +922,30 @@ public class IntegrationService {
             return Collections.emptyList();
         }
         return wsResponse.getBody();
+    }
+
+    public ApplicantRitualDto findApplicantRitual(String uin, long companyRitualId) {
+        WsResponse<ApplicantRitualDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_RITUAL_URL + "/" + uin + "/" + companyRitualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantRitualDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load incidents.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    public byte[] getAttachment(long id) {
+        ByteArrayResource file ;
+        try {
+            file = downloadFromWs(id);
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to incident types", e);
+            return null;
+        }
+        return file.getByteArray();
     }
 
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {

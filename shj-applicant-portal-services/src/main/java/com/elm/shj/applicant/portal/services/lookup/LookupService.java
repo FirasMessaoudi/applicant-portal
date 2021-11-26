@@ -82,6 +82,7 @@ public class LookupService {
         this.supportedLanguages = integrationService.loadSupportedLanguages();
         this.incidentStatus = integrationService.loadIncidentStatus();
         this.incidentTypes = integrationService.loadIncidentTypes();
+
     }
 
     public List<RitualTypeLookupDto> retrieveRitualTypes() {

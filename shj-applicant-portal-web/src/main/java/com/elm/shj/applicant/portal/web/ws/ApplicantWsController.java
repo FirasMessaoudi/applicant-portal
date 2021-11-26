@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -187,27 +188,13 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(housingDetails).build());
     }
-
-
-    /**
-     * Creates a new applicant incident
-     *
-     * @param applicantIncidentRequest applicant incident details
-     * @param incidentAttachment       the incident attachment
-     * @return WsResponse of  the persisted applicant incident
-     */
-    @PostMapping(value = "/create-incident", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WsResponse<?>> createIncident(@RequestPart("incident") @Valid ApplicantIncidentDto applicantIncidentRequest,
-                                                        @RequestPart("attachment") MultipartFile incidentAttachment) throws Exception {
-
-        log.info("adding  applicant incident");
-
-
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("attachment", incidentAttachment.getResource());
-        builder.part("incident", applicantIncidentRequest);
-        builder.part("applicantRitual", applicantIncidentRequest.getApplicantRitual());
-        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(userService.createIncident(builder)).build());
+    @GetMapping("/ritual/{uin}/{companyRitualId}")
+    public ResponseEntity<WsResponse<?>> findApplicantRitual(@PathVariable Long uin, @PathVariable Long companyRitualId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin, companyRitualId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantRitualDto).build());
 
     }
 
