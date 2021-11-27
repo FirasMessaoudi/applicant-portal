@@ -43,6 +43,7 @@ public class IncidentWsController {
      * get all incidents by ritual id
      *
      * @param authentication the authenticated user
+     * @return the list of incidents
      */
 
     @GetMapping("/list/{ritualId}")
@@ -53,7 +54,12 @@ public class IncidentWsController {
                         .body(incidentDtos).build());
     }
 
-
+    /**
+     * download incident attachment by id
+     * @param id
+     * @param authentication
+     * @return the attachment as byte
+     */
     @GetMapping(value = "/download/{id}")
     public ResponseEntity<WsResponse<?>> downloadFile(@PathVariable long id,
                                                            Authentication authentication) {
@@ -62,30 +68,38 @@ public class IncidentWsController {
                         .body(incidentService.getAttachment(id)).build());
     }
 
+
     /**
-     * Creates a new applicant incident
-     *
-     * @param incidentAttachment       the incident attachment
-     * @return WsResponse of  the persisted applicant incident
+     * create new applicant incident
+     * @param typeCode
+     * @param description
+     * @param locationLat
+     * @param locationLng
+     * @param applicantRitualId
+     * @param incidentAttachment
+     * @return the created applicant_incident
+     * @throws Exception
      */
-    @PostMapping(value = "/create-incident/{typeCode}/{applicantRitualId}/{locationLat}/{locationLng}/{description}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/create-incident", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> createIncident(
-            @PathVariable("typeCode") String typeCode,
-            @PathVariable("description") String description,
-            @PathVariable("locationLat") double locationLat,
-            @PathVariable("locationLng") double locationLng,
-            @PathVariable("applicantRitualId") long applicantRitualId,
-            @RequestPart("attachment") MultipartFile incidentAttachment) throws Exception {
+            @RequestPart("typeCode") String typeCode,
+            @RequestPart("description") String description,
+            @RequestPart("locationLat") String locationLat,
+            @RequestPart("locationLng") String locationLng,
+            @RequestPart("applicantRitualId") String applicantRitualId,
+            @RequestPart(value = "attachment",required = false) MultipartFile incidentAttachment) throws Exception {
 
         log.info("adding  applicant incident");
+
         ApplicantIncidentDto incidentDto = new ApplicantIncidentDto();
         incidentDto.setTypeCode(typeCode);
-        incidentDto.setLocationLat(locationLat);
+        incidentDto.setLocationLat(Double.parseDouble(locationLat));
         incidentDto.setDescription(description);
-        incidentDto.setLocationLng(locationLng);
+        incidentDto.setLocationLng(Double.parseDouble(locationLng));
         ApplicantRitualDto applicantRitualDto = new ApplicantRitualDto();
-        applicantRitualDto.setId(applicantRitualId);
+        applicantRitualDto.setId(Long.parseLong(applicantRitualId));
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        if(incidentAttachment!=null && !incidentAttachment.isEmpty() && incidentAttachment.getSize()>0)
         builder.part("attachment", incidentAttachment.getResource());
         builder.part("incident", incidentDto);
         builder.part("applicantRitual", applicantRitualDto);

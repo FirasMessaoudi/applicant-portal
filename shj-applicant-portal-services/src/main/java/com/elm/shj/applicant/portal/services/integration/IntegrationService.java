@@ -143,13 +143,17 @@ public class IntegrationService {
                 .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
     }
 
-
+    /**
+     * Special web client for download attachment
+     * @param id
+     * @return
+     * @throws WsAuthenticationException
+     */
     public ByteArrayResource downloadFromWs (long id) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
         if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
-            // cannot authenticate, throw an exception
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
             // TODO: check available spring security exception to be reused instead.
         }
