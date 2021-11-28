@@ -519,8 +519,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadHousingDetails(uin, ritualId);
     }
 
-    public ApplicantRitualDto findApplicantRitual(String uin, long companyRitualId) {
-        return integrationService.findApplicantRitual(uin, companyRitualId);
+    public ApplicantRitualDto findApplicantRitual(String uin) {
+        CompanyRitualSeasonLiteDto companyRitualSeason = findLatestApplicantRitualSeasonByUin(uin);
+        return integrationService.findApplicantRitual(uin, companyRitualSeason.getId());
     }
 
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {

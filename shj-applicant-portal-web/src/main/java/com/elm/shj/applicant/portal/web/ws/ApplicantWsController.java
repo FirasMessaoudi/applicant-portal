@@ -188,10 +188,10 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(housingDetails).build());
     }
-    @GetMapping("/ritual/{uin}/{companyRitualId}")
-    public ResponseEntity<WsResponse<?>> findApplicantRitual(@PathVariable Long uin, @PathVariable Long companyRitualId, Authentication authentication) {
+    @GetMapping("/find-applicant-ritual")
+    public ResponseEntity<WsResponse<?>> findApplicantRitual(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin, companyRitualId);
+        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantRitualDto).build());
