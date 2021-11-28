@@ -5,19 +5,18 @@
     flex-direction: column;
     justify-content: space-around;
     width: 100%;
-    min-height: 80vh;
     background-color: #fff;
-    box-shadow: 0 5px 74px 55px rgba(73, 90, 103, 0.02);
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%);
 
       position: absolute;
-      border: 1px solid #eae2cf;
       background-repeat: no-repeat;
-      background-image: url("assets/images/dots-pattern-rtl.png");
-      background-position: left bottom;
+      background-image: url("assets/images/bi-dots-pattern-rtl.png");
+      background-position: right bottom;
+      background-size: 75%;
 
       [dir="rtl"] & {
-        background-image: url("assets/images/dots-pattern.png");
-        background-position: right bottom;
+        background-image: url("assets/images/bi-dots-pattern.png");
+        background-position: left bottom;
       }
     
 
