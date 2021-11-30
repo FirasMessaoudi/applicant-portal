@@ -936,6 +936,25 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    /**
+     * Updates user defined applicant chat contact.
+     *
+     * @return the updated chat contact
+     */
+    public ApplicantChatContactLiteDto updateChatContact(long id, MultipartBodyBuilder builder) {
+        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/update/" + id,
+                    HttpMethod.PUT, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant chat contact", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
     public ApplicantRitualDto findApplicantRitual(String uin, long companyRitualId) {
         WsResponse<ApplicantRitualDto> wsResponse = null;
         try {
