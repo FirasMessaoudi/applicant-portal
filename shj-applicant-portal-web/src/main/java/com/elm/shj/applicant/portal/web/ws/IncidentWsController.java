@@ -21,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 /**
- *  Controller for exposing notification web services for external party.
+ * Controller for exposing incidents web services for external party.
  *
  * @author f.messaoudi
  * @since 1.1.0
