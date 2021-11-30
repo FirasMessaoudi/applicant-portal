@@ -10,28 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -90,14 +80,13 @@ public class IntegrationService {
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
     private final String HOUSING_DETAILS_URL = "/ws/housing";
     private final String INCIDENT_LIST = "/ws/incident/list/";
-    private final String INCIDENT_TYPE_LOOKUP ="/ws/incident-type/list" ;
-    private final String INCIDENT_STATUS_LOOKUP ="/ws/incident-status/list" ;
-    private  final String INCIDENT_DOWNLOAD = "/ws/incidents/attachment/";
+    private final String INCIDENT_TYPE_LOOKUP = "/ws/incident-type/list";
+    private final String INCIDENT_STATUS_LOOKUP = "/ws/incident-status/list";
+    private final String INCIDENT_DOWNLOAD = "/ws/incidents/attachment/";
     private final String CHAT_CONTACT_URL = "/ws/chat-contact";
     private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
     private final String APPLICANT_RITUAL_URL = "/ws/ritual/";
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
-
 
 
     private final WebClient webClient;
@@ -134,7 +123,7 @@ public class IntegrationService {
         if (bodyToSend == null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
-        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL) {
+        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL || serviceRelativeUrl.contains(CHAT_CONTACT_URL)) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
@@ -145,11 +134,12 @@ public class IntegrationService {
 
     /**
      * Special web client for download attachment
+     *
      * @param id
      * @return
      * @throws WsAuthenticationException
      */
-    public ByteArrayResource downloadFromWs (long id) throws WsAuthenticationException {
+    public ByteArrayResource downloadFromWs(long id) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
@@ -157,13 +147,12 @@ public class IntegrationService {
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
             // TODO: check available spring security exception to be reused instead.
         }
-        WebClient  myWebClient = WebClient.builder()
+        WebClient myWebClient = WebClient.builder()
                 .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
                 .build();
-        return myWebClient.get().uri(commandIntegrationUrl + INCIDENT_DOWNLOAD+id)
+        return myWebClient.get().uri(commandIntegrationUrl + INCIDENT_DOWNLOAD + id)
                 .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                 .retrieve().bodyToMono(ByteArrayResource.class).block();
-
     }
 
     /**
@@ -847,7 +836,7 @@ public class IntegrationService {
                     new ParameterizedTypeReference<WsResponse<ApplicantIncidentDto>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to get notification names", e);
+            log.error("Cannot authenticate to create incident", e);
             return null;
         }
         return wsResponse.getBody();
@@ -928,6 +917,25 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    /**
+     * Create applicant chat contact.
+     *
+     * @return the persisted chat contact
+     */
+    public ApplicantChatContactLiteDto createChatContact(String uin, Long applicantRitualId, MultipartBodyBuilder builder) {
+        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create/" + uin + "/" + applicantRitualId,
+                    HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to create applicant chat contact", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
     public ApplicantRitualDto findApplicantRitual(String uin, long companyRitualId) {
         WsResponse<ApplicantRitualDto> wsResponse = null;
         try {
@@ -942,7 +950,7 @@ public class IntegrationService {
     }
 
     public byte[] getAttachment(long id) {
-        ByteArrayResource file ;
+        ByteArrayResource file;
         try {
             file = downloadFromWs(id);
         } catch (WsAuthenticationException e) {
@@ -955,7 +963,7 @@ public class IntegrationService {
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {
         WsResponse<ApplicantLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_BY_UIN+ "/" + uin, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(APPLICANT_BY_UIN + "/" + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {

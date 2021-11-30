@@ -4,10 +4,12 @@ import {
   AppLayoutComponent,
   DccLayoutLandingComponent,
   LoginLayoutComponent,
-  RegisterLayoutComponent
+  RegisterLayoutComponent,
+  BiLoginLayoutComponent
 } from '@core/_layout';
 import {APP_ROUTES} from '@core/routes/app-routes';
 import {LOGIN_ROUTES} from '@core/routes/auth-routes';
+import {BI_LOGIN_ROUTES} from '@core/routes/bi-auth-routes';
 
 import {QuicklinkModule, QuicklinkStrategy} from 'ngx-quicklink';
 import {AuthenticationGuard} from "@core/guards/authentication.guard";
@@ -28,6 +30,11 @@ const routes: Routes = [
     path: '',
     component: LoginLayoutComponent,
     children: LOGIN_ROUTES
+  },
+  {
+    path: 'bi',
+    component: BiLoginLayoutComponent,
+    children: BI_LOGIN_ROUTES
   },
   {
     path: '',

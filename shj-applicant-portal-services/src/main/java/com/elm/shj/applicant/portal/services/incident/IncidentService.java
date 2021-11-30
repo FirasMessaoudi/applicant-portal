@@ -4,16 +4,12 @@
 package com.elm.shj.applicant.portal.services.incident;
 
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
-import com.elm.shj.applicant.portal.services.integration.IncidentAttachmentVo;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
-import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -45,6 +41,5 @@ public class IncidentService {
 
     public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
         return integrationService.createIncident(builder);
-
     }
 }

@@ -356,11 +356,9 @@ public class UserManagementWsController {
             List<UserLocationDto> locationsList = location.get("location");
             locationsList.forEach(e -> e.setUserId(databaseUser.get().getId()));
             userLocationService.storeUserLocation(locationsList);
-            return ResponseEntity.ok(
+         return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
         }catch (Exception e){
-          e.printStackTrace();
-
           return ResponseEntity.ok(
                   WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                           .body(WsError.builder().error(WsError.EWsError.USER_NOT_FOUND.getCode()).referenceNumber(loggedInUserUin).build()).build());

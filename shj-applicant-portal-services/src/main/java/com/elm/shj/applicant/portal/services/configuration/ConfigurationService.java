@@ -24,19 +24,20 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ConfigurationService {
 
-    @Value("${send.user.location.period.in.minutes}")
-    private int userLocationPeriodInMinutes;
+
+    @Value("${send.user.location.distance}")
+    private int userLocationDistance;
 
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
-        configList.add(getUserLocationPeriodConfig());
+        configList.add(getUserLocationDistanceConfig());
         return configList;
     }
-    
-    private ConfigDto getUserLocationPeriodConfig(){
+
+    private ConfigDto getUserLocationDistanceConfig(){
         ConfigDto config = new ConfigDto();
-        config.setConfKey("send.user.location.period.in.minutes");
-        config.setConfValue(String.valueOf(userLocationPeriodInMinutes));
+        config.setConfKey("send.user.location.distance");
+        config.setConfValue(String.valueOf(userLocationDistance));
         return config;
     }
 }

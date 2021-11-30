@@ -1,0 +1,46 @@
+@import "variables";
+:host {
+  ::ng-deep router-outlet~* {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 1rem 3rem rgb(0 0 0 / 18%);
+
+      position: absolute;
+      background-repeat: no-repeat;
+      background-image: url("assets/images/bi-dots-pattern-rtl.png");
+      background-position: right bottom;
+      background-size: 75%;
+
+      [dir="rtl"] & {
+        background-image: url("assets/images/bi-dots-pattern.png");
+        background-position: left bottom;
+      }
+    
+
+
+    
+  }
+}
+
+.logo .title {
+  font-size: 1.5rem;
+  color: $dcc-primary;
+}
+
+.logo img {
+  height: 5rem;
+}
+
+.wrapper {
+  height: 100vh !important;
+}
+
+
+.bg-svg {
+  background: #fff url("assets/images/login-bg-2.jpg") no-repeat bottom left;
+  background-size: cover;
+}
+
