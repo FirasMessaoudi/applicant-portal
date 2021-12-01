@@ -69,7 +69,7 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> create(@PathVariable Long applicantRitualId,
                                                 @RequestPart String uin,
                                                 @RequestPart String alias,
-                                                @RequestPart String mobileNumber,
+                                                @RequestPart(required = false) String mobileNumber,
                                                 @RequestPart(value = "avatar", required = false) MultipartFile contactAvatarFile,
                                                 Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
