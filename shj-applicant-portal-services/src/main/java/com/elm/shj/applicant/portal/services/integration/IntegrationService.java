@@ -991,4 +991,25 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
+    /**
+     * Delete applicant chat contact.
+     *
+     * @return number of rows affected
+     */
+    public String deleteChatContact(String applicantUin, String contactUin) {
+        WsResponse<String> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + applicantUin + "/" + contactUin,
+                    HttpMethod.POST, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant chat contact", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+
 }

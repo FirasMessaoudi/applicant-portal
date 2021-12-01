@@ -112,4 +112,17 @@ public class ChatContactWsController {
                 .body(chatContactService.updateChatContact(id, builder)).build());
     }
 
+    /**
+     * delete user defined chat contact
+     *
+     * @return number of rows affected
+     */
+    @PostMapping("/delete/{applicantUin}/{contactUin}")
+    public ResponseEntity<WsResponse<?>> deleteApplicantChatContact(@PathVariable String applicantUin, @PathVariable String contactUin) {
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(chatContactService.deleteChatContact(applicantUin, contactUin)).build());
+    }
+
 }
