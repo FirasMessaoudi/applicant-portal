@@ -61,4 +61,23 @@ public class ChatContactService {
         return integrationService.createChatContact(uin, ritualId, builder);
     }
 
+    /**
+     * Updates user defined chat contact
+     *
+     * @param builder the multipart body builder
+     * @return updatedContact updated one
+     */
+    public ApplicantChatContactLiteDto updateChatContact(long id, MultipartBodyBuilder builder) {
+        return integrationService.updateChatContact(id, builder);
+    }
+
+    /**
+     * Delete user defined chat contact
+     *
+     * @return number of rows affected
+     */
+    public String deleteChatContact(String applicantUin, String contactUin) {
+        return integrationService.deleteChatContact(applicantUin, contactUin);
+    }
+
 }
