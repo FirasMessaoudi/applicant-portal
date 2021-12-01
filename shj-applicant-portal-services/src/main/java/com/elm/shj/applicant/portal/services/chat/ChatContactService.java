@@ -3,9 +3,10 @@
  */
 package com.elm.shj.applicant.portal.services.chat;
 
+import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,24 @@ public class ChatContactService {
     /**
      * List all chat contacts of a specific applicant.
      *
-     * @param uin the UIN of the applicant
+     * @param uin      the UIN of the applicant
      * @param ritualId the selected ritual ID
      * @return the list of chat contacts
      */
     public List<ApplicantChatContactLiteDto> findChatContactsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.findApplicantChatContacts(uin, ritualId);
+    }
+
+    public GenericWsResponse findOneApplicantByUinAndRitualId(String uin, Long ritualId, String applicantUin) {
+
+        WsResponse commandResponse = integrationService.findOneApplicantByUinAndRitualId(uin, ritualId, applicantUin);
+        GenericWsResponse genericWsResponse = new GenericWsResponse();
+        if (commandResponse.getStatus() == WsResponse.EWsResponseStatus.SUCCESS)
+            genericWsResponse.setStatus(GenericWsResponse.EWsResponseStatus.SUCCESS);
+        else
+            genericWsResponse.setStatus(GenericWsResponse.EWsResponseStatus.FAILURE);
+        genericWsResponse.setBody(commandResponse.getBody());
+        return genericWsResponse;
     }
 
     /**

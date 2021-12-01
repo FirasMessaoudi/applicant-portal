@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
+import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactVo;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -68,7 +69,7 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> create(@PathVariable Long applicantRitualId,
                                                 @RequestPart String uin,
                                                 @RequestPart String alias,
-                                                @RequestPart String mobileNumber,
+                                                @RequestPart( required = false) String mobileNumber,
                                                 @RequestPart(value = "avatar", required = false) MultipartFile contactAvatarFile,
                                                 Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
@@ -82,6 +83,17 @@ public class ChatContactWsController {
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                 .body(chatContactService.createChatContact(loggedInUserUin, applicantRitualId, builder)).build());
+    }
+
+    @GetMapping("find-one/{ritualId}/{applicantUin}")
+    public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication,
+                                                                       @PathVariable String applicantUin) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        GenericWsResponse response = chatContactService.findOneApplicantByUinAndRitualId(loggedInUserUin, ritualId, applicantUin);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatusCode())
+                        .body(response.getBody()).build());
+
     }
 
 }
