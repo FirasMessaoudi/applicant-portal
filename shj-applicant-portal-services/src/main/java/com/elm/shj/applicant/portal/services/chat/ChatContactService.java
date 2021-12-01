@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.services.chat;
 
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +45,25 @@ public class ChatContactService {
      */
     public ApplicantChatContactLiteDto createChatContact(String uin, Long ritualId, MultipartBodyBuilder builder) {
         return integrationService.createChatContact(uin, ritualId, builder);
+    }
+
+    /**
+     * Updates user defined chat contact
+     *
+     * @param builder the multipart body builder
+     * @return updatedContact updated one
+     */
+    public ApplicantChatContactLiteDto updateChatContact(long id, MultipartBodyBuilder builder) {
+        return integrationService.updateChatContact(id, builder);
+    }
+
+    /**
+     * Delete user defined chat contact
+     *
+     * @return number of rows affected
+     */
+    public String deleteChatContact(String applicantUin, String contactUin) {
+        return integrationService.deleteChatContact(applicantUin, contactUin);
     }
 
 }
