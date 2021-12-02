@@ -4,10 +4,12 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.dcc.foundation.commons.validation.SafeFile;
+import com.elm.shj.applicant.portal.services.applicant.ApplicantService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
 import com.elm.shj.applicant.portal.services.incident.IncidentService;
+import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +43,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class IncidentWsController {
     private final IncidentService incidentService;
+    private final UserService userService;
 
     /**
      * get all incidents by ritual id
@@ -48,9 +52,11 @@ public class IncidentWsController {
      * @return the list of incidents
      */
 
-    @GetMapping("/list/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findIncidents(@PathVariable long ritualId ,Authentication authentication) {
-        List<ApplicantIncidentDto> incidentDtos = incidentService.findIncidents(ritualId);
+    @GetMapping("/list")
+    public ResponseEntity<WsResponse<?>> findIncidents(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
+        List<ApplicantIncidentDto> incidentDtos = incidentService.findIncidents(applicantRitualDto.getId());
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(incidentDtos).build());
@@ -77,7 +83,6 @@ public class IncidentWsController {
      * @param description
      * @param locationLat
      * @param locationLng
-     * @param applicantRitualId
      * @param incidentAttachment
      * @return the created applicant_incident
      * @throws Exception
@@ -88,17 +93,18 @@ public class IncidentWsController {
             @RequestPart("description") String description,
             @RequestPart("locationLat") String locationLat,
             @RequestPart("locationLng") String locationLng,
-            @RequestPart("applicantRitualId") String applicantRitualId,
-            @RequestPart(value = "attachment",required = false) @SafeFile MultipartFile incidentAttachment) throws Exception {
+            @RequestPart(value = "attachment",required = false) @SafeFile MultipartFile incidentAttachment, Authentication authentication) throws Exception {
 
         log.info("adding  applicant incident");
        // log.info(incidentAttachment.getContentType());
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
         ApplicantIncidentLiteDto incidentDto = new ApplicantIncidentLiteDto();
         incidentDto.setTypeCode(typeCode);
         incidentDto.setLocationLat(Double.parseDouble(locationLat));
         incidentDto.setDescription(description);
         incidentDto.setLocationLng(Double.parseDouble(locationLng));
-        incidentDto.setApplicantRitualId(Long.parseLong(applicantRitualId));
+        incidentDto.setApplicantRitualId(applicantRitualDto.getId());
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         if(incidentAttachment!=null && !incidentAttachment.isEmpty() && incidentAttachment.getSize()>0)
         builder.part("attachment", incidentAttachment.getResource());
