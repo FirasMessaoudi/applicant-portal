@@ -960,9 +960,6 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification names", e);
             return null;
-        }catch (GenericResponseException e) {
-            log.error("Saleem GenericResponseException", e);
-            return e.clientResponse.bodyToMono(WsResponse.class).block();
         }
         return wsResponse;
     }
