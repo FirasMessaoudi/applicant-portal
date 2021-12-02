@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -109,7 +110,39 @@ public class IntegrationService {
      * @return WsResponse which contains status and body
      * @throws WsAuthenticationException thrown in case of failed authentication
      */
-    public <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
+    //TODO must do refactor
+    public <B, R> WsResponse callIntegrationWs2(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
+                                               ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
+        WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
+                .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
+                .retrieve().bodyToMono(WsResponse.class).block();
+        if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
+            throw new WsAuthenticationException(accessTokenWsResponse.getBody());
+        }
+
+
+            WebClient myWebClient = WebClient.builder()
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1000000))
+                    .build();
+            if (bodyToSend != null) {
+                return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                        .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend))
+                        .retrieve().bodyToMono(responseTypeReference).block();
+            }else{
+                return myWebClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
+                        .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                        .retrieve()
+                        .bodyToMono(WsResponse.class).block();
+
+            }
+
+
+    }
+
+        public <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
                                                ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
@@ -907,7 +940,7 @@ public class IntegrationService {
     public List<ApplicantChatContactLiteDto> findApplicantChatContacts(String uin, Long applicantRitualId) {
         WsResponse<List<ApplicantChatContactLiteDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + uin + "/" + applicantRitualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/" + uin + "/" + applicantRitualId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -915,6 +948,20 @@ public class IntegrationService {
             return Collections.emptyList();
         }
         return wsResponse.getBody();
+    }
+
+    public WsResponse findOneApplicantByUinAndRitualId(String uin, Long applicantRitualId ,String applicantUin) {
+        WsResponse wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL +"/find-one/" +  uin + "/" + applicantRitualId+ "/" + applicantUin,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return null;
+        }
+        return wsResponse;
     }
 
     /**
@@ -925,7 +972,7 @@ public class IntegrationService {
     public ApplicantChatContactLiteDto createChatContact(String uin, Long applicantRitualId, MultipartBodyBuilder builder) {
         WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create/" + uin + "/" + applicantRitualId,
+            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/" + uin + "/" + applicantRitualId,
                     HttpMethod.POST, builder.build(),
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
