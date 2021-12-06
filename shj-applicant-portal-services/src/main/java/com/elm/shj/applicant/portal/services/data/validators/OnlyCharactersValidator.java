@@ -17,7 +17,7 @@ import javax.validation.ConstraintValidatorContext;
 public class OnlyCharactersValidator implements ConstraintValidator<OnlyCharacters, Object> {
 
     private static final String REGEX_TPL = "^[${CHARSET}${NUMBERS}${SPECIALS}\\s-_]+$";
-    private static final String ARABIC_LETTERS_REGEX = "\\p{IsArabic}";
+    private static final String ARABIC_LETTERS_REGEX = "\\p{InArabic}";
     private static final String LATIN_LETTERS_REGEX = "\\p{IsLatin}";
     private static final String SPECIAL_REGEX = "\\.\\/";
     private static final String NUMBERS_REGEX = "\\p{N}";
