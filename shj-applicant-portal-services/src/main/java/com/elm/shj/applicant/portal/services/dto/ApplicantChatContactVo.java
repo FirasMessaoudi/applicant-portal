@@ -33,4 +33,9 @@ public class ApplicantChatContactVo implements Serializable {
     @Size(min = 5, max = 20)
     private String mobileNumber;
 
+    @Size(min = 1, max = 10)
+    private String countryPhonePrefix;
+
+    @Size(min = 2, max = 5)
+    private String countryCode;
 }

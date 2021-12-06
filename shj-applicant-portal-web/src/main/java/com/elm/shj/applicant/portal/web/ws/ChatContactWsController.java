@@ -70,10 +70,13 @@ public class ChatContactWsController {
                                                 @RequestPart String uin,
                                                 @RequestPart String alias,
                                                 @RequestPart(required = false) String mobileNumber,
+                                                @RequestPart(required = false) String countryPhonePrefix,
+                                                @RequestPart(required = false) String countryCode,
                                                 @RequestPart(value = "avatar", required = false) MultipartFile contactAvatarFile,
                                                 Authentication authentication) {
+        ApplicantChatContactVo contactVo = ApplicantChatContactVo.builder().uin(uin).alias(alias).mobileNumber(mobileNumber)
+                .countryPhonePrefix(countryPhonePrefix).countryCode(countryCode).build();
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantChatContactVo contactVo = ApplicantChatContactVo.builder().uin(uin).alias(alias).mobileNumber(mobileNumber).build();
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         if (contactAvatarFile != null && !contactAvatarFile.isEmpty() && contactAvatarFile.getSize() > 0) {
             builder.part("avatar", contactAvatarFile.getResource());
@@ -98,10 +101,13 @@ public class ChatContactWsController {
     @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> update(@PathVariable long id,
                                                 @RequestPart String alias,
-                                                @RequestPart String mobileNumber,
+                                                @RequestPart(required = false) String mobileNumber,
+                                                @RequestPart(required = false) String countryPhonePrefix,
+                                                @RequestPart(required = false) String countryCode,
                                                 @RequestPart(value = "avatar", required = false) MultipartFile contactAvatarFile,
                                                 Authentication authentication) {
-        ApplicantChatContactVo contactVo = ApplicantChatContactVo.builder().alias(alias).mobileNumber(mobileNumber).build();
+        ApplicantChatContactVo contactVo = ApplicantChatContactVo.builder().alias(alias).mobileNumber(mobileNumber)
+                .countryPhonePrefix(countryPhonePrefix).countryCode(countryCode).build();
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         if (contactAvatarFile != null && !contactAvatarFile.isEmpty() && contactAvatarFile.getSize() > 0) {
             builder.part("avatar", contactAvatarFile.getResource());
@@ -118,18 +124,18 @@ public class ChatContactWsController {
      *
      * @return number of rows affected
      */
-    @PostMapping("/delete/{applicantUin}/{contactUin}")
-    public ResponseEntity<WsResponse<?>> deleteApplicantChatContact(@PathVariable String applicantUin, @PathVariable String contactUin) {
+    @PostMapping("/delete/{applicantUin}/{contactUin}/{applicantRitualId}")
+    public ResponseEntity<WsResponse<?>> deleteApplicantChatContact(@PathVariable String applicantUin, @PathVariable String contactUin, @PathVariable String applicantRitualId) {
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.deleteChatContact(applicantUin, contactUin)).build());
+                .body(chatContactService.deleteChatContact(applicantUin, contactUin, applicantRitualId)).build());
     }
 
 
     @GetMapping("find-one/{ritualId}/{applicantUin}")
     public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication,
-                                                                       @PathVariable String applicantUin) {
+                                                                          @PathVariable String applicantUin) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         GenericWsResponse response = chatContactService.findOneApplicantByUinAndRitualId(loggedInUserUin, ritualId, applicantUin);
         return ResponseEntity.ok(

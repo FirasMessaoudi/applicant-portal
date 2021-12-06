@@ -35,6 +35,8 @@ public class ApplicantChatContactLiteDto implements Serializable {
     private String staffTitleCode;
     private String relationshipCode;
     private String mobileNumber;
+    private String countryPhonePrefix;
+    private String countryCode;
     private Boolean deleted;
     private Date creationDate;
     private Date updateDate;

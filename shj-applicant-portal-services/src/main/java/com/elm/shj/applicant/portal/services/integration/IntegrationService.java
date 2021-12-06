@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -1048,10 +1047,10 @@ public class IntegrationService {
      *
      * @return number of rows affected
      */
-    public String deleteChatContact(String applicantUin, String contactUin) {
+    public String deleteChatContact(String applicantUin, String contactUin, String applicantRitualId) {
         WsResponse<String> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + applicantUin + "/" + contactUin,
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + applicantUin + "/" + contactUin + "/" + applicantRitualId,
                     HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
