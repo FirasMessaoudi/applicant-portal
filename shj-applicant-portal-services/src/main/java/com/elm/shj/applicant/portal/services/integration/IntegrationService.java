@@ -23,6 +23,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -902,6 +903,9 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get incidents", e);
             return Collections.emptyList();
+        }
+        if(wsResponse==null){
+            return new ArrayList<>();
         }
         return wsResponse.getBody();
     }
