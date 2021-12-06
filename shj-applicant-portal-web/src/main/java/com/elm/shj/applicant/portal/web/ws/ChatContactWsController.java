@@ -124,12 +124,12 @@ public class ChatContactWsController {
      *
      * @return number of rows affected
      */
-    @PostMapping("/delete/{applicantUin}/{contactUin}")
-    public ResponseEntity<WsResponse<?>> deleteApplicantChatContact(@PathVariable String applicantUin, @PathVariable String contactUin) {
+    @PostMapping("/delete/{applicantUin}/{contactUin}/{applicantRitualId}")
+    public ResponseEntity<WsResponse<?>> deleteApplicantChatContact(@PathVariable String applicantUin, @PathVariable String contactUin, @PathVariable String applicantRitualId) {
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.deleteChatContact(applicantUin, contactUin)).build());
+                .body(chatContactService.deleteChatContact(applicantUin, contactUin, applicantRitualId)).build());
     }
 
 

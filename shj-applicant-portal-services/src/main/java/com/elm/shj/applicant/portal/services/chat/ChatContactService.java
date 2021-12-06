@@ -76,8 +76,8 @@ public class ChatContactService {
      *
      * @return number of rows affected
      */
-    public String deleteChatContact(String applicantUin, String contactUin) {
-        return integrationService.deleteChatContact(applicantUin, contactUin);
+    public String deleteChatContact(String applicantUin, String contactUin, String applicantRitualId) {
+        return integrationService.deleteChatContact(applicantUin, contactUin, applicantRitualId);
     }
 
 }
