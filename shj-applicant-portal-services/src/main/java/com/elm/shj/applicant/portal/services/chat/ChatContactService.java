@@ -5,6 +5,7 @@ package com.elm.shj.applicant.portal.services.chat;
 
 import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
+import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
@@ -80,4 +81,7 @@ public class ChatContactService {
         return integrationService.deleteChatContact(applicantUin, contactUin);
     }
 
+    public CompanyStaffLiteDto findStaffContactBySuinAndRitualId(String loggedInUserUin, Long ritualId, String suin) {
+        return integrationService.findStaffContact(loggedInUserUin, ritualId, suin);
+    }
 }
