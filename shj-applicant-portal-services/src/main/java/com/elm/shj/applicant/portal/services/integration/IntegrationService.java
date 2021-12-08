@@ -1062,4 +1062,16 @@ public class IntegrationService {
     }
 
 
+    public CompanyStaffLiteDto findStaffContact(String uin, Long ritualId, String suin) {
+        WsResponse<CompanyStaffLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/find-staff/" + ritualId + "/" + suin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<CompanyStaffLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get staff chat contact data", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
 }

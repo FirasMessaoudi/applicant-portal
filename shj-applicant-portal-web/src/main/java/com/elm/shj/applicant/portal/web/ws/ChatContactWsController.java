@@ -132,6 +132,17 @@ public class ChatContactWsController {
                 .body(chatContactService.deleteChatContact(applicantUin, contactUin)).build());
     }
 
+    @GetMapping("/find-staff/{ritualId}/{suin}")
+    public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable Long ritualId,
+                                                                          @PathVariable String suin,
+                                                                          Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(chatContactService.findStaffContactBySuinAndRitualId(loggedInUserUin, ritualId, suin)).build());
+    }
+
 
     @GetMapping("find-one/{ritualId}/{applicantUin}")
     public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication,
