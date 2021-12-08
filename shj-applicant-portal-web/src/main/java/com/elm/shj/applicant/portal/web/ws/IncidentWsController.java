@@ -91,8 +91,8 @@ public class IncidentWsController {
     public ResponseEntity<WsResponse<?>> createIncident(
             @RequestPart("typeCode") String typeCode,
             @RequestPart("description") String description,
-            @RequestPart("locationLat") String locationLat,
-            @RequestPart("locationLng") String locationLng,
+            @RequestPart(value = "locationLat", required = false) String locationLat,
+            @RequestPart(value = "locationLng", required = false) String locationLng,
             @RequestPart(value = "attachment",required = false) @SafeFile MultipartFile incidentAttachment, Authentication authentication) throws Exception {
 
         log.info("adding  applicant incident");
@@ -101,8 +101,10 @@ public class IncidentWsController {
         ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
         ApplicantIncidentLiteDto incidentDto = new ApplicantIncidentLiteDto();
         incidentDto.setTypeCode(typeCode);
+        if(locationLat !=null )
         incidentDto.setLocationLat(Double.parseDouble(locationLat));
         incidentDto.setDescription(description);
+        if(locationLng!=null)
         incidentDto.setLocationLng(Double.parseDouble(locationLng));
         incidentDto.setApplicantRitualId(applicantRitualDto.getId());
         MultipartBodyBuilder builder = new MultipartBodyBuilder();

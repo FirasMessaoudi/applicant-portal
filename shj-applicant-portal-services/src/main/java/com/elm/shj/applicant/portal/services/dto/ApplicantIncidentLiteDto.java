@@ -34,9 +34,7 @@ public class ApplicantIncidentLiteDto implements Serializable {
     @NotNull(message = "validation.data.constraints.msg.20001")
     @Size(min = 1, max = 500)
     private String description;
-    @NotNull(message = "validation.data.constraints.msg.20001")
     private Double locationLat;
-    @NotNull(message = "validation.data.constraints.msg.20001")
     private Double locationLng;
     private String resolutionComment;
     private List<IncidentAttachmentLiteDto> incidentAttachments;
