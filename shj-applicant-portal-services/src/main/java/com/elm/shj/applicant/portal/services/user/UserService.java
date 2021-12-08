@@ -32,7 +32,10 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service handling user management operations
@@ -474,7 +477,22 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long companyRitualSeasonId) {
-        return integrationService.loadApplicantPackageDetails(uin, companyRitualSeasonId);
+        ApplicantPackageDetailsDto applicantPackageDetails =  integrationService.loadApplicantPackageDetails(uin, companyRitualSeasonId);
+        String pattern = "MM-dd-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        Collections.sort(applicantPackageDetails.getApplicantPackageCaterings(), new Comparator<ApplicantPackageCateringDto>() {
+            @Override
+            public int compare(ApplicantPackageCateringDto o1, ApplicantPackageCateringDto o2) {
+                 String date1 = simpleDateFormat.format(o1.getPackageCatering().getPackageHousing().getValidityStart());
+                 String date2 = simpleDateFormat.format(o2.getPackageCatering().getPackageHousing().getValidityStart());
+                int res1 = date1.compareTo(date2);
+                if(res1!=0)
+                    return res1;
+                return o1.getPackageCatering().getMealTime().compareTo(o2.getPackageCatering().getMealTime());
+            }
+        });
+
+        return applicantPackageDetails;
     }
 
     public List<PackageCateringDto> findPackageCatering(String uin, long companyRitualSeasonId) {
