@@ -85,8 +85,21 @@ public class ChatContactWsController {
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.createChatContact(loggedInUserUin, applicantRitualId, builder)).build());
+                .body(chatContactService.createApplicantChatContact(loggedInUserUin, applicantRitualId, builder)).build());
     }
+
+
+    @PostMapping(value = "/create-staff/{applicantRitualId}/{contactUin}")
+    public ResponseEntity<WsResponse<?>> createStaff(@PathVariable Long applicantRitualId,
+                                                @PathVariable String contactUin,
+                                                Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(chatContactService.createStaffChatContact(loggedInUserUin, applicantRitualId, contactUin)).build());
+    }
+
 
     /**
      * Updates user defined chat contact
