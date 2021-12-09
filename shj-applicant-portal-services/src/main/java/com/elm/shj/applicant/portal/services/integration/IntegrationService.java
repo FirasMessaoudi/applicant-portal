@@ -972,11 +972,30 @@ public class IntegrationService {
      *
      * @return the persisted chat contact
      */
-    public ApplicantChatContactLiteDto createChatContact(String uin, Long applicantRitualId, MultipartBodyBuilder builder) {
+    public ApplicantChatContactLiteDto createApplicantChatContact(String uin, Long applicantRitualId, MultipartBodyBuilder builder) {
         WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/" + uin + "/" + applicantRitualId,
                     HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to create applicant chat contact", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Create staff chat contact.
+     *
+     * @return the persisted chat contact
+     */
+    public ApplicantChatContactLiteDto createStaffChatContact(String uin, Long applicantRitualId, String contactUin) {
+        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create-staff/" + uin + "/" + applicantRitualId + "/" + contactUin ,
+                    HttpMethod.POST,null,
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
