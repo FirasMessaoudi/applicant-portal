@@ -1069,7 +1069,7 @@ public class IntegrationService {
     public String deleteChatContact(String applicantUin, String contactUin) {
         WsResponse<String> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/" + applicantUin + "/" + contactUin,
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/delete/" + applicantUin + "/" + contactUin,
                     HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
