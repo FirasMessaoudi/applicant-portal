@@ -57,7 +57,7 @@
                 <div class="input-group flex-nowrap">
                     <div ngbDropdown #countryListDropdown="ngbDropdown" (openChange)="onOpenChange($event)" class="d-inline-block w-100">
                         <div class="input-group">
-                            <button class="btn btn-link ltr country-prefix-button" id="dropdown1" ngbDropdownToggle (click)="openTypeahead()" [disabled]="!this.contactsForm.enabled">
+                            <button class="btn btn-link ltr country-prefix-button" id="dropdown1" ngbDropdownToggle (click)="openTypeahead()">
                 <span
                   class="flag-icon flag-icon-{{
                     selectedCountryCode?.toLowerCase()
@@ -85,16 +85,6 @@
                     </div>
 
                     <div class="input-group-append">
-                        <button class="btn btn-outline-gray-300 shadow-none ml-1" type="button" ngbTooltip="{{ 'general.btn_edit' | translate }}" placement="top" *ngIf="contactsForm.disabled" (click)="setContactsEnabled()">
-              <svg-icon styleClass="fa-w-20" icon="edit"></svg-icon>
-            </button>
-
-                        <button class="btn btn-success shadow-none ml-1" type="button" ngbTooltip="{{ 'general.btn_save' | translate }}" placement="top" *ngIf="!contactsForm.disabled" (click)="onSubmit()">
-              <svg-icon styleClass="fa-w-18" icon="save"></svg-icon>
-            </button>
-                        <button class="btn btn-outline-gray-300 shadow-none ml-1" *ngIf="!contactsForm.disabled" (click)="setContactsDisabled()" type="button" ngbTooltip="{{ 'general.btn_cancel' | translate }}" placement="top">
-              <svg-icon styleClass="fa-w-14" icon="times"></svg-icon>
-            </button>
                     </div>
                 </div>
                 <small *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" class="text-danger mobile-number-errors">
@@ -151,7 +141,7 @@
     </form>
 
     <div class="d-flex flex-column flex-md-row pb-4 pt-2">
-        <button class="btn btn-dcc-primary px-5" (click)="finalSave()">حفظ</button>
+        <button class="btn btn-dcc-primary px-5" (click)="finalSave()"> {{ "general.btn_save" | translate }}</button>
     </div>
 </div>
 
