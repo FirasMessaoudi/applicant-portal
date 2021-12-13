@@ -139,7 +139,7 @@ export class SettingsComponent implements OnInit {
     this.enableEditLanguage = true;
     if (this.selectedLanguage != "" && this.selectedLanguage != this.currentLanguage) {
       this.setLanguage(this.selectedLanguage);
-      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en", this.authenticationService.currentUser.uin).subscribe(response => {
+      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en", this.authenticationService.currentUser.principal).subscribe(response => {
         if (response && response.errors) {
           this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
         } else {
@@ -147,11 +147,6 @@ export class SettingsComponent implements OnInit {
         }
       });
     }
-    this.enableEditLanguage = false;
-  }
-
-  cancelEditLanguage() {
-    this.selectedLanguage = this.currentLanguage;
     this.enableEditLanguage = false;
   }
 
@@ -183,8 +178,6 @@ export class SettingsComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.contactsForm.invalid) {
-
-      console.log(this.contactsForm.controls['mobileNumber'].errors);
       return;
     }
     console.log(this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.replace(/\s/g, ""))
