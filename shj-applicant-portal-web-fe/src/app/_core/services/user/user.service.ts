@@ -116,6 +116,7 @@ export class UserService {
    *   updates user preferred language.
    *
    * @param lang
+   * @param uin
    * @return {Observable<User>} The saved or updated user.
    */
   updatePreferredLang(lang: string, uin: string): Observable<any> {
