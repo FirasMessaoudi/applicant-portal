@@ -176,3 +176,6 @@ GO
 
 INSERT INTO sha_portal.sha_config (conf_key,conf_value) VALUES ('send.user.location.distance' ,'10')
 GO
+
+INSERT INTO sha_portal.sha_config (conf_key,conf_value) VALUES ('send.user.location.batch.size' ,'10')
+GO
