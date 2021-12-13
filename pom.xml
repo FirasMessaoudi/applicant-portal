@@ -164,6 +164,7 @@
         <jaxws-rt.version>2.3.3</jaxws-rt.version>
         <jaxb-impl.version>2.3.3</jaxb-impl.version>
         <jsch.version>0.1.55</jsch.version>
+        <log4j2.version>2.15.0</log4j2.version>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${basedir}/shj-applicant-portal-orm/target/jacoco-ut/jacoco.xml,${basedir}/shj-applicant-portal-services/target/jacoco-ut/jacoco.xml,${basedir}/shj-applicant-portal-web/target/jacoco-ut/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>

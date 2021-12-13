@@ -28,9 +28,13 @@ public class ConfigurationService {
     @Value("${send.user.location.distance}")
     private int userLocationDistance;
 
+    @Value("${send.user.location.batch.size}")
+    private int userLocationBatchSize;
+
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
         configList.add(getUserLocationDistanceConfig());
+        configList.add(getUserLocationBatchSizeConfig());
         return configList;
     }
 
@@ -38,6 +42,12 @@ public class ConfigurationService {
         ConfigDto config = new ConfigDto();
         config.setConfKey("send.user.location.distance");
         config.setConfValue(String.valueOf(userLocationDistance));
+        return config;
+    }
+    private ConfigDto getUserLocationBatchSizeConfig(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("send.user.location.batch.size");
+        config.setConfValue(String.valueOf(userLocationBatchSize));
         return config;
     }
 }
