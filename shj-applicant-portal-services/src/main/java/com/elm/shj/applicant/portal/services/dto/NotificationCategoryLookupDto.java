@@ -28,5 +28,6 @@ public class NotificationCategoryLookupDto implements Serializable {
     private String lang;
     private String label;
     private String sample;
+    private boolean mandatory;
     private Date creationDate;
 }
