@@ -53,13 +53,23 @@ public class ChatContactService {
     }
 
     /**
-     * Creates a new chat contact
+     * Creates a new applicant chat contact
      *
      * @param builder the multipart body builder
      * @return savedContact saved one
      */
-    public ApplicantChatContactLiteDto createChatContact(String uin, Long ritualId, MultipartBodyBuilder builder) {
-        return integrationService.createChatContact(uin, ritualId, builder);
+    public ApplicantChatContactLiteDto createApplicantChatContact(String uin, Long ritualId, MultipartBodyBuilder builder) {
+        return integrationService.createApplicantChatContact(uin, ritualId, builder);
+    }
+
+    /**
+     * Creates a new staff chat contact
+     *
+     * @param contactUin the SUIN
+     * @return savedContact saved one
+     */
+    public ApplicantChatContactLiteDto createStaffChatContact(String uin, Long ritualId, String contactUin) {
+        return integrationService.createStaffChatContact(uin, ritualId, contactUin);
     }
 
     /**

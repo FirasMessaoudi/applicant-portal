@@ -14,6 +14,7 @@ import {merge, Observable, Subject} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {Lookup} from "@model/lookup.model";
+import {ConfirmDialogService} from "@shared/components/confirm-dialog";
 
 @Component({
   selector: 'app-settings',
@@ -46,46 +47,46 @@ export class SettingsComponent implements OnInit {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  notificationsList=[
+  notificationsList = [
     {
-      id:0,
-      checked:true,
-      title:'عامة',
-      icon:'comment-alt-lines-light',
-      iconColor:'dcc-primary',
-      description:'احرص على حمل بطاقة الحج الخاصة بك عند اداء الشعائر'
+      id: 0,
+      checked: true,
+      title: 'عامة',
+      icon: 'comment-alt-lines-light',
+      iconColor: 'dcc-primary',
+      description: 'احرص على حمل بطاقة الحج الخاصة بك عند اداء الشعائر'
     },
     {
-      id:1,
-      checked:false,
-      title:'صحي',
-      icon:'heartbeat-light',
-      iconColor:'dcc-danger',
-      description:'في حالة ارتفاع درجة حرارتك فوق 38 درجة توجة الى اقرب نقطة صحية مباشرة'
+      id: 1,
+      checked: false,
+      title: 'صحي',
+      icon: 'heartbeat-light',
+      iconColor: 'dcc-danger',
+      description: 'في حالة ارتفاع درجة حرارتك فوق 38 درجة توجة الى اقرب نقطة صحية مباشرة'
     },
     {
-      id:2,
-      checked:true,
-      title:'شعيرة',
-      icon:'flag-light',
-      iconColor:'dcc-primary',
-      description:'طواف الإفاضة هو رُكن من أركان الحجّ لا يتمّ الحج إلّا بالإتيان به؛ ودليل ذلك قوله -تعالى-: (وَلْيَطَّوَّفُوا بِالْبَيْتِ الْعَتِيقِ)'
+      id: 2,
+      checked: true,
+      title: 'شعيرة',
+      icon: 'flag-light',
+      iconColor: 'dcc-primary',
+      description: 'طواف الإفاضة هو رُكن من أركان الحجّ لا يتمّ الحج إلّا بالإتيان به؛ ودليل ذلك قوله -تعالى-: (وَلْيَطَّوَّفُوا بِالْبَيْتِ الْعَتِيقِ)'
     },
     {
-      id:3,
-      checked:false,
-      title:'توعية عامة',
-      icon:'bullhorn-light',
-      iconColor:'dcc-blue',
-      description:'تجنب صعود الجبال والاماكن المرتفعة وتجنب المزاحمة والالتحام والافتراش في الطرقات'
+      id: 3,
+      checked: false,
+      title: 'توعية عامة',
+      icon: 'bullhorn-light',
+      iconColor: 'dcc-blue',
+      description: 'تجنب صعود الجبال والاماكن المرتفعة وتجنب المزاحمة والالتحام والافتراش في الطرقات'
     },
     {
-      id:0,
-      checked:false,
-      title:'دينية',
-      icon:'kaaba-light',
-      iconColor:'dcc-primary',
-      description:'ربنا تقبل منا إنك أنت السميع العليم.'
+      id: 0,
+      checked: false,
+      title: 'دينية',
+      icon: 'kaaba-light',
+      iconColor: 'dcc-primary',
+      description: 'ربنا تقبل منا إنك أنت السميع العليم.'
     },
 
   ]
@@ -100,6 +101,7 @@ export class SettingsComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private lookupsService: LookupService,
               private elRef: ElementRef,
+              private confirmDialogService: ConfirmDialogService,
               private router: Router) {
   }
 
@@ -108,7 +110,6 @@ export class SettingsComponent implements OnInit {
     this.selectedLanguage = this.currentLanguage;
     this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
       if (data && data.id) {
-        this.contactsForm.disable();
         this.contactsForm.controls['email'].setValue(data.email);
         this.contactsForm.controls['mobileNumber'].setValue(data.mobileNumber);
         this.originalMobileNo = data.mobileNumber
@@ -173,19 +174,6 @@ export class SettingsComponent implements OnInit {
     return this.contactsForm?.controls;
   }
 
-
-  setContactsEnabled() {
-    this.contactsForm.enable();
-  }
-
-  setContactsDisabled() {
-    this.contactsForm.disable();
-    this.contactsForm.controls['email'].setValue(this.originalEmail);
-    this.contactsForm.controls['mobileNumber'].setValue(this.originalMobileNo);
-    this.selectedCountryPrefix = this.originalCountryPrefix;
-    this.selectedCountryCode = this.originalCountryCode;
-  }
-
   onSubmit() {
     // trigger all validations
     Object.keys(this.contactsForm.controls).forEach(field => {
@@ -234,8 +222,6 @@ export class SettingsComponent implements OnInit {
         }
       })
 
-    } else {
-      this.contactsForm.disable();
     }
   }
 
@@ -271,7 +257,13 @@ export class SettingsComponent implements OnInit {
       this.elem.nativeElement.value = '';
     }
   }
-finalSave(){
-  this.updateUserLanguage();
-}
+
+  finalSave() {
+    this.confirmDialogService.confirm('settings.dialog_save_confirm_text', 'general.dialog_edit_title').then(confirm => {
+      if (confirm) {
+        this.updateUserLanguage();
+        this.onSubmit();
+      }
+    });
+  }
 }
