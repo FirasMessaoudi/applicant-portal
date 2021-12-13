@@ -41,7 +41,6 @@ public class ChatContactService {
     }
 
     public GenericWsResponse findOneApplicantByUinAndRitualId(String uin, Long ritualId, String applicantUin) {
-
         WsResponse commandResponse = integrationService.findOneApplicantByUinAndRitualId(uin, ritualId, applicantUin);
         GenericWsResponse genericWsResponse = new GenericWsResponse();
         if (commandResponse.getStatus() == WsResponse.EWsResponseStatus.SUCCESS)
