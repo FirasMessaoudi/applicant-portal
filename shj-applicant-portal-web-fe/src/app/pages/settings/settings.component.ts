@@ -180,7 +180,6 @@ export class SettingsComponent implements OnInit {
     if (this.contactsForm.invalid) {
       return;
     }
-    console.log(this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.replace(/\s/g, ""))
     if (this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.replace(/\s/g, "") ||
       this.originalEmail != this.contactsForm.controls['email'].value ||
       this.originalCountryCode.toUpperCase() != this.selectedCountryCode.toUpperCase()) {
@@ -194,8 +193,6 @@ export class SettingsComponent implements OnInit {
       this.userContacts.email = this.contactsForm.controls['email'].value;
       this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value.replace(reg1, "").replace(reg3, "");
       this.userContacts.countryPhonePrefix = this.selectedCountryPrefix.replace(reg2, "");
-
-      console.log(this.userContacts);
 
       this.userService.generateOTPForEditContact(this.userContacts).subscribe(response => {
         if (!response) {
