@@ -49,8 +49,13 @@ public class JpaUserLocation implements Serializable {
     @Column(name = "speed")
     private double speed;
 
+    @Column(name = "speed_accuracy")
+    private double speedAccuracy;
+    @Column(name = "location_accuracy")
+    private double locationAccuracy;
+
     @Column(name = "gps_time")
-    private LocalDateTime time;
+    private LocalDateTime gpsTime;
 
     @Transient
     private String timestamp;
@@ -64,7 +69,7 @@ public class JpaUserLocation implements Serializable {
     @PrePersist
     public void prePersist(){
         creationDate = new Date();
-        time = LocalDateTime.parse(timestamp.substring(0,timestamp.length()-1));
+
     }
 
     @PreUpdate

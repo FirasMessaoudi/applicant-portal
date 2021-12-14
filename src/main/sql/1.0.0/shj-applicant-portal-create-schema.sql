@@ -283,13 +283,11 @@ longitude DECIMAL(11, 8) ,
 altitude DECIMAL(10, 5),
 heading DECIMAL(10, 5),
 speed DECIMAL(7, 4),
+speed_accuracy DECIMAL(7, 4),
+location_accuracy DECIMAL(7, 4),
 gps_time smalldatetime null,
 creation_date smalldatetime not null default current_timestamp,
 update_date smalldatetime null,
 CONSTRAINT fk_sha_location_user FOREIGN KEY (user_id) REFERENCES sha_portal.sha_user (id)
 );
 GO
-
-
-
-

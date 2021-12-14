@@ -350,20 +350,22 @@ public class UserManagementWsController {
     @PostMapping("/store-user-locations")
     public ResponseEntity<WsResponse<?>> storeUserLocations(@RequestBody Map<String, List<UserLocationDto>> location, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-      try  {
+
 
             Optional<UserDto> databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin));
             List<UserLocationDto> locationsList = location.get("location");
             locationsList.forEach(e -> e.setUserId(databaseUser.get().getId()));
-            userLocationService.storeUserLocation(locationsList);
-         return ResponseEntity.ok(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
-        }catch (Exception e){
-          return ResponseEntity.ok(
-                  WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                          .body(WsError.builder().error(WsError.EWsError.USER_NOT_FOUND.getCode()).referenceNumber(loggedInUserUin).build()).build());
+          boolean isSaved = userLocationService.storeUserLocation(locationsList);
+          if(!isSaved){
+              return ResponseEntity.ok(
+                      WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                              .body(WsError.builder().error(WsError.EWsError.INVALID_LOCATION_ENTRIES.getCode()).referenceNumber(loggedInUserUin).build()).build());
 
-      }
+          }
+
+          return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
+
     }
 
     @PutMapping("/language/{lang}")
