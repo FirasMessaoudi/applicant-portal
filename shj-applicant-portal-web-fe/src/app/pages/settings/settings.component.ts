@@ -139,7 +139,7 @@ export class SettingsComponent implements OnInit {
     this.enableEditLanguage = true;
     if (this.selectedLanguage != "" && this.selectedLanguage != this.currentLanguage) {
       this.setLanguage(this.selectedLanguage);
-      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en", this.authenticationService.currentUser.uin).subscribe(response => {
+      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en", this.authenticationService.currentUser.principal).subscribe(response => {
         if (response && response.errors) {
           this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
         } else {
@@ -147,11 +147,6 @@ export class SettingsComponent implements OnInit {
         }
       });
     }
-    this.enableEditLanguage = false;
-  }
-
-  cancelEditLanguage() {
-    this.selectedLanguage = this.currentLanguage;
     this.enableEditLanguage = false;
   }
 
@@ -183,11 +178,8 @@ export class SettingsComponent implements OnInit {
 
     // stop here if form is invalid
     if (this.contactsForm.invalid) {
-
-      console.log(this.contactsForm.controls['mobileNumber'].errors);
       return;
     }
-    console.log(this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.replace(/\s/g, ""))
     if (this.originalMobileNo != this.contactsForm.controls['mobileNumber'].value.replace(/\s/g, "") ||
       this.originalEmail != this.contactsForm.controls['email'].value ||
       this.originalCountryCode.toUpperCase() != this.selectedCountryCode.toUpperCase()) {
@@ -201,8 +193,6 @@ export class SettingsComponent implements OnInit {
       this.userContacts.email = this.contactsForm.controls['email'].value;
       this.userContacts.mobileNumber = this.contactsForm.controls['mobileNumber'].value.replace(reg1, "").replace(reg3, "");
       this.userContacts.countryPhonePrefix = this.selectedCountryPrefix.replace(reg2, "");
-
-      console.log(this.userContacts);
 
       this.userService.generateOTPForEditContact(this.userContacts).subscribe(response => {
         if (!response) {
