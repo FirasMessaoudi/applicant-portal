@@ -6,8 +6,10 @@ package com.elm.shj.applicant.portal.services.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -18,6 +20,7 @@ import java.util.Date;
  */
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 public class UserLocationDto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -26,15 +29,20 @@ public class UserLocationDto implements Serializable {
 
     private long userId;
 
-    private double latitude;
+    private Double latitude;
 
-    private double longitude;
+    private Double longitude;
+
+    private Double altitude;
 
     private double heading;
 
     private double speed;
+    private double SpeedAccuracy;
+    private double locationAccuracy;
 
     private String timestamp;
+    private LocalDateTime gpsTime;
 
     private Date creationDate;
 }
