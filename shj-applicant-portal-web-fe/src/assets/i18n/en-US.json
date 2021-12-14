@@ -619,9 +619,9 @@
   },
   "notification-management": {
     "title": "Notifications",
-    "private_notifications": "Private notifications",
-    "public_notifications": "Public notifications",
-    "view_all": "View all",
-    "view_all_notifications": "View all notifications"
+    "private_notifications": "Private Notifications",
+    "public_notifications": "General Notifications",
+    "view_all": "View All",
+    "view_all_notifications": "View All Notifications"
   }
 }
