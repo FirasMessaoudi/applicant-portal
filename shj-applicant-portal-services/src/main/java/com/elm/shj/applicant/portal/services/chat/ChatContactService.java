@@ -90,7 +90,7 @@ public class ChatContactService {
         return integrationService.deleteChatContact(applicantUin, contactUin);
     }
 
-    public CompanyStaffLiteDto findStaffContactBySuinAndRitualId(String loggedInUserUin, Long ritualId, String suin) {
-        return integrationService.findStaffContact(loggedInUserUin, ritualId, suin);
+    public CompanyStaffLiteDto findStaffContactBySuinAndRitualId(String suin) {
+        return integrationService.findStaffContact(suin);
     }
 }
