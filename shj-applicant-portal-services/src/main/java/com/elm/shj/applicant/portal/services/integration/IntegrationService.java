@@ -1084,10 +1084,10 @@ public class IntegrationService {
     }
 
 
-    public CompanyStaffLiteDto findStaffContact(String uin, Long ritualId, String suin) {
+    public CompanyStaffLiteDto findStaffContact(String suin) {
         WsResponse<CompanyStaffLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/find-staff/" + ritualId + "/" + suin, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/find-staff/" + suin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<CompanyStaffLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
