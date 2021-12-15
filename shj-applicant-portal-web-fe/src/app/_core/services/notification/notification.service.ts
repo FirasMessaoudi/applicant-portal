@@ -15,6 +15,13 @@ export class NotificationService {
   private userNewNotificationsCountBehavior = new BehaviorSubject<UserNewNotificationsCount>(null);
   currentUserNewNotificationsCount = this.userNewNotificationsCountBehavior.asObservable();
 
+  private userNotificationsBehavior = new BehaviorSubject<DetailedUserNotification[]>(null);
+  currentUserNotifications = this.userNotificationsBehavior.asObservable();
+
+  updateUserNotifications(userNotifications: DetailedUserNotification[]) {
+    this.userNotificationsBehavior.next(userNotifications);
+  }
+
   constructor(private http: HttpClient) {
   }
 
@@ -51,7 +58,7 @@ export class NotificationService {
   /**
    * Count user new notifications.
    */
-  countUserNewNotifications() : Observable<any> {
+  countUserNewNotifications(): Observable<any> {
     return this.http.get('/core/api/notification/new-notifications-count');
   }
 

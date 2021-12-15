@@ -74,6 +74,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.loadUserNotifications();
     this.loadUserNewNotificationsCounts();
     this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
       this.userNewNotificationsCount = updatedCount;
@@ -100,8 +101,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   initializeUserNewNotificationsCountTimer() {
-    this.newNotificationsCountTimerInterval = setInterval(() =>
-    {this.loadUserNewNotificationsCounts()}, 120000);
+    this.newNotificationsCountTimerInterval = setInterval(() => {
+      this.loadUserNewNotificationsCounts();
+      this.loadUserNotifications();
+    }, 10000);
+  }
+
+  loadUserNotifications() {
+    this.notificationService.getNotifications().subscribe(notifications => {
+      this.notificationService.updateUserNotifications(notifications);
+      this.notifications = notifications;
+    });
   }
 
   loadUserNewNotificationsCounts() {
@@ -234,7 +244,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public scrollToTop(): void {
-     this.componentRef.directiveRef.scrollToTop();
+    this.componentRef.directiveRef.scrollToTop();
   }
 
   public scrollToLeft(): void {
@@ -242,7 +252,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   public scrollToRight(): void {
-     this.componentRef.directiveRef.scrollToRight();
+    this.componentRef.directiveRef.scrollToRight();
   }
 
   public scrollToBottom(): void {
