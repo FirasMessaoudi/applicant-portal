@@ -5,7 +5,9 @@ package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
+import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactVo;
+import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
@@ -91,13 +93,19 @@ public class ChatContactWsController {
 
     @PostMapping(value = "/create-staff/{applicantRitualId}/{contactUin}")
     public ResponseEntity<WsResponse<?>> createStaff(@PathVariable Long applicantRitualId,
-                                                @PathVariable String contactUin,
-                                                Authentication authentication) {
+                                                     @PathVariable String contactUin,
+                                                     Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantChatContactLiteDto staffChatContact = chatContactService.createStaffChatContact(loggedInUserUin, applicantRitualId, contactUin);
+        if(staffChatContact.getContactUin() == null){
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
+        }
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.createStaffChatContact(loggedInUserUin, applicantRitualId, contactUin)).build());
+                .body(staffChatContact).build());
     }
 
 
@@ -147,10 +155,16 @@ public class ChatContactWsController {
 
     @GetMapping("/find-staff/{suin}")
     public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable String suin) {
+        CompanyStaffLiteDto companyStaffLiteDto = chatContactService.findStaffContactBySuinAndRitualId(suin);
+        if(companyStaffLiteDto.getSuin() == null){
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
+        }
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.findStaffContactBySuinAndRitualId(suin)).build());
+                .body(companyStaffLiteDto).build());
     }
 
 
