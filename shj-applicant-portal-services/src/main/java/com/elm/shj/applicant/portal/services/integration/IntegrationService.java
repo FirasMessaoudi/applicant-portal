@@ -184,7 +184,7 @@ public class IntegrationService {
             // TODO: check available spring security exception to be reused instead.
         }
         WebClient myWebClient = WebClient.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 * 1024))
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(-1))
                 .build();
         return myWebClient.get().uri(commandIntegrationUrl + INCIDENT_DOWNLOAD + id)
                 .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
