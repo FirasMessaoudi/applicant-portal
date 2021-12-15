@@ -202,13 +202,15 @@ span.notif {
     .nav li {
         margin-right: 1.5rem;
         margin-left: 1.5rem;
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s ease-in-out;
         @extend .Elm-fontb;
         a {
             color: #777777;
         }
         &:hover {
-            border-bottom: 1px solid $dcc-primary;
-            transition: all 0.1s;
+            border-bottom-color: $dcc-primary;
+            
             a {
                 color: $dcc-primary;
             }
@@ -220,7 +222,7 @@ span.notif {
         a {
             color: $dcc-primary;
         }
-        border-bottom: 1px solid $dcc-primary;
+        border-bottom-color: $dcc-primary;
     }
 }
 
