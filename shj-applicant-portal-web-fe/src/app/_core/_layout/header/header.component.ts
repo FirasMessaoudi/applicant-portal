@@ -75,6 +75,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadUserNotifications();
+    this.notificationService.currentUserNotifications.subscribe(refreshedNotifications => {
+      this.notifications = refreshedNotifications;
+    });
     this.loadUserNewNotificationsCounts();
     this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
       this.userNewNotificationsCount = updatedCount;
@@ -104,13 +107,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.newNotificationsCountTimerInterval = setInterval(() => {
       this.loadUserNewNotificationsCounts();
       this.loadUserNotifications();
-    }, 10000);
+    }, 45000);
   }
 
   loadUserNotifications() {
     this.notificationService.getNotifications().subscribe(notifications => {
       this.notificationService.updateUserNotifications(notifications);
-      this.notifications = notifications;
+    });
+    this.notificationService.getTypedNotifications("ALL", 0).subscribe(page => {
+      this.notificationService.updateUserPaginatedNotifications(page.content);
+    });
+    this.notificationService.getTypedNotifications("USER_SPECIFIC", 0).subscribe(page => {
+      this.notificationService.updateUserSpecificNotifications(page.content);
+    });
+    this.notificationService.getTypedNotifications("GENERAL", 0).subscribe(page => {
+      this.notificationService.updateUserNotSpecificNotifications(page.content);
     });
   }
 
