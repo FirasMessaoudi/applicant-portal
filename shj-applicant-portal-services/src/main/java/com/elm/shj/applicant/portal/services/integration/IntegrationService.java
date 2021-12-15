@@ -154,7 +154,10 @@ public class IntegrationService {
         }
         // check if no body
         if (bodyToSend == null) {
-            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+            WebClient myWebClient = WebClient.builder()
+                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(-1))
+                    .build();
+            return myWebClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
         } else if (serviceRelativeUrl == INCIDENT_CREATE_URL || serviceRelativeUrl.contains(CHAT_CONTACT_URL)) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)

@@ -94,28 +94,30 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
         this.loading = false;
       });
 
-
-      this.cardService.findTafweejDetails(this.selectedApplicantRitual.id).subscribe(data => {
-        if (data) {
-          this.tafweejDetails = data;
-        } else {
-          this.toastr.error(this.translate.instant('general.route_item_not_found'),
-            this.translate.instant('general.dialog_error_title'));
-        }
-      });
-
-      this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual.id).subscribe(data => {
-        if (data) {
-          this.groupLeaders = data;
-        } else {
-          this.toastr.error(this.translate.instant('general.route_item_not_found'),
-            this.translate.instant('general.dialog_error_title'));
-        }
-      });
-
       this.applicantPackage = null;
-      this.loadUserPackageDetails();
     }
+  }
+
+  loadTafweejDetails() {
+    this.cardService.findTafweejDetails(this.selectedApplicantRitual.id).subscribe(data => {
+      if (data) {
+        this.tafweejDetails = data;
+      } else {
+        this.toastr.error(this.translate.instant('general.route_item_not_found'),
+          this.translate.instant('general.dialog_error_title'));
+      }
+    });
+  }
+
+  loadGroupLeaders() {
+    this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual.id).subscribe(data => {
+      if (data) {
+        this.groupLeaders = data;
+      } else {
+        this.toastr.error(this.translate.instant('general.route_item_not_found'),
+          this.translate.instant('general.dialog_error_title'));
+      }
+    });
   }
 
   loadUserPackageDetails() {
