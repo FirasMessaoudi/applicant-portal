@@ -7,6 +7,7 @@ import {Location} from '@angular/common'
 import {I18nService} from "@dcc-commons-ng/services";
 import {TranslateService} from "@ngx-translate/core";
 import {ToastService} from "@shared/components/toast";
+import {Lookup} from "@model/lookup.model";
 
 @Component({
   selector: 'app-change-password',
@@ -17,6 +18,11 @@ export class ChangePasswordComponent implements OnInit {
 
   changePasswordForm: FormGroup;
   loading = false;
+  localizedSupportedLanguages: Lookup[];
+  selectedLang: Lookup;
+  currentUser: any;
+  supportedLanguages: Lookup[];
+
   constructor(private router: Router,
               private i18nService: I18nService,
               private formBuilder: FormBuilder,
@@ -24,9 +30,11 @@ export class ChangePasswordComponent implements OnInit {
               private location: Location,
               private authenticationService: AuthenticationService,
               private translate: TranslateService,
-              private toastr: ToastService) { }
+              private toastr: ToastService) {
+  }
 
   ngOnInit() {
+    this.loadLookups();
     this.createForm();
   }
 
@@ -44,6 +52,20 @@ export class ChangePasswordComponent implements OnInit {
       newPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       newPasswordConfirm: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]]
     }, {validator: this.passwordMatchValidator});
+  }
+
+
+  loadLookups() {
+    this.authenticationService.findSupportedLanguages().subscribe(result => {
+      this.supportedLanguages = result;
+      this.localizedSupportedLanguages = this.supportedLanguages.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
+      //TODO:remove this second filtration when we have other supported languages
+      this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => (item.lang.toLowerCase() === "ar" || item.lang.toLowerCase() === "en"));
+      this.selectedLang = new Lookup();
+      this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.startsWith('ar') ? "ar" : "en"));
+      this.setLanguage(this.selectedLang.lang.toLowerCase());
+    });
+
   }
 
   // convenience getter for easy access to form fields
@@ -79,11 +101,21 @@ export class ChangePasswordComponent implements OnInit {
 
       } else {
         this.toastr.success(this.translate.instant('change-password.success_text'), this.translate.instant('change-password.title'));
-        this.logout();
+        this.currentUser = this.authenticationService.currentUser;
+        this.userService.updatePreferredLang(this.selectedLang.code, this.currentUser?.name).subscribe(response => {
+          this.logout();
+        });
+
       }
       this.loading = false;
 
     });
+  }
+
+  onLangSelect(lang) {
+
+    this.selectedLang = lang;
+    this.setLanguage(lang.lang.toLowerCase());
   }
 
   logout() {
