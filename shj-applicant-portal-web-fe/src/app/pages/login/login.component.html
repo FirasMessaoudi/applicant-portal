@@ -17,13 +17,13 @@
 
 <div class="login__box px-4 px-md-6 mb-4">
   <div>
-    <div class="lang_swtich_login mt-n5 ml-n6">
+    <div class="lang_swtich_login">
       <svg-icon styleClass="h4 text-light-gray" icon="globe"></svg-icon>
       <select class="text-muted pl-4" [(ngModel)]="selectedLang" (ngModelChange)="onLangSelect($event)">
         <option *ngFor="let lang of localizedSupportedLanguages" [ngValue]="lang"> {{lang.label}}  </option>
       </select>
     </div>
-    <div class="text-center mt-6 mb-4">
+    <div class="text-center my-4">
       <img src="assets/images/logo.png" alt="logo"/>
     </div>
   </div>

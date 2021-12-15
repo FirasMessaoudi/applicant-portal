@@ -25,7 +25,7 @@
     position: relative;
     height: 30px;
     width: 90px;
-    @include pt(2);
+    @include pt(3);
 
     select{
         position: absolute;
