@@ -34,13 +34,21 @@ export class NotificationsComponent implements OnInit {
     this.notificationService.currentUserNewNotificationsCount.subscribe(updatedCount => {
       this.userNewNotificationsCount = updatedCount;
     });
+    this.notificationService.currentUserPaginatedNotifications.subscribe(notifications => {
+      this.notifications = notifications;
+    });
+    this.notificationService.currentUserSpecificNotifications.subscribe(notifications => {
+      this.notifications = notifications;
+    });
+    this.notificationService.currentUserNotSpecificNotifications.subscribe(notifications => {
+      this.notifications = notifications;
+    });
     this.loadPage(this.ALL, 0);
   }
 
   ngOnDestroy() {
     this.listSubscription.unsubscribe();
   }
-
 
   loadPage(type: string, page) {
     // load data requests for param page
@@ -49,6 +57,15 @@ export class NotificationsComponent implements OnInit {
       if (this.page != null) {
         this.pageArray = Array.from(this.pageCounter(this.page.totalPages));
         this.notifications = this.page.content;
+        if (type == this.ALL && page === 0) {
+          this.notificationService.updateUserPaginatedNotifications(this.page.content);
+        }
+        if (type == "USER_SPECIFIC" && page === 0) {
+          this.notificationService.updateUserSpecificNotifications(this.page.content);
+        }
+        if (type == "GENERAL" && page === 0) {
+          this.notificationService.updateUserNotSpecificNotifications(this.page.content);
+        }
       }
     });
   }
