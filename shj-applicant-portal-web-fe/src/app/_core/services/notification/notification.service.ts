@@ -18,15 +18,36 @@ export class NotificationService {
   private userNotificationsBehavior = new BehaviorSubject<DetailedUserNotification[]>(null);
   currentUserNotifications = this.userNotificationsBehavior.asObservable();
 
-  updateUserNotifications(userNotifications: DetailedUserNotification[]) {
-    this.userNotificationsBehavior.next(userNotifications);
-  }
+  private userPaginatedNotificationsBehavior = new BehaviorSubject<DetailedUserNotification[]>(null);
+  currentUserPaginatedNotifications = this.userPaginatedNotificationsBehavior.asObservable();
+
+  private userSpecificNotificationsBehavior = new BehaviorSubject<DetailedUserNotification[]>(null);
+  currentUserSpecificNotifications = this.userSpecificNotificationsBehavior.asObservable();
+
+  private userNotSpecificNotificationsBehavior = new BehaviorSubject<DetailedUserNotification[]>(null);
+  currentUserNotSpecificNotifications = this.userNotSpecificNotificationsBehavior.asObservable();
 
   constructor(private http: HttpClient) {
   }
 
+  updateUserNotifications(userNotifications: DetailedUserNotification[]) {
+    this.userNotificationsBehavior.next(userNotifications);
+  }
+
   updateUserNewNotificationsCount(userNewNotificationsCount: UserNewNotificationsCount) {
     this.userNewNotificationsCountBehavior.next(userNewNotificationsCount);
+  }
+
+  updateUserPaginatedNotifications(userPaginatedNotifications: DetailedUserNotification[]) {
+    this.userPaginatedNotificationsBehavior.next(userPaginatedNotifications);
+  }
+
+  updateUserSpecificNotifications(userSpecificNotifications: DetailedUserNotification[]) {
+    this.userSpecificNotificationsBehavior.next(userSpecificNotifications);
+  }
+
+  updateUserNotSpecificNotifications(userNotSpecificNotifications: DetailedUserNotification[]) {
+    this.userNotSpecificNotificationsBehavior.next(userNotSpecificNotifications);
   }
 
   markAsRead(notificationId: number): Observable<any> {
