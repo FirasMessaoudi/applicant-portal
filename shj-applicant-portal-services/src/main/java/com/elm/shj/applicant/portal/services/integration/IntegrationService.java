@@ -121,9 +121,7 @@ public class IntegrationService {
         }
 
 
-            WebClient myWebClient = WebClient.builder()
-                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1000000))
-                    .build();
+
             if (bodyToSend != null) {
                 return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
                         .accept(MediaType.APPLICATION_JSON)
@@ -132,7 +130,7 @@ public class IntegrationService {
                         .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend))
                         .retrieve().bodyToMono(responseTypeReference).block();
             }else{
-                return myWebClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
+                return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
                         .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                         .retrieve()
                         .bodyToMono(WsResponse.class).block();
@@ -154,10 +152,8 @@ public class IntegrationService {
         }
         // check if no body
         if (bodyToSend == null) {
-            WebClient myWebClient = WebClient.builder()
-                    .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(-1))
-                    .build();
-            return myWebClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+
+            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
         } else if (serviceRelativeUrl == INCIDENT_CREATE_URL || serviceRelativeUrl.contains(CHAT_CONTACT_URL)) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
@@ -183,10 +179,8 @@ public class IntegrationService {
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
             // TODO: check available spring security exception to be reused instead.
         }
-        WebClient myWebClient = WebClient.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(-1))
-                .build();
-        return myWebClient.get().uri(commandIntegrationUrl + INCIDENT_DOWNLOAD + id)
+
+        return webClient.get().uri(commandIntegrationUrl + INCIDENT_DOWNLOAD + id)
                 .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                 .retrieve().bodyToMono(ByteArrayResource.class).block();
     }

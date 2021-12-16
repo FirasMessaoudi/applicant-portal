@@ -95,7 +95,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return WebClient.builder().defaultHeaders(httpHeaders -> {
             httpHeaders.setContentType(MediaType.APPLICATION_JSON);
             httpHeaders.set("CALLER-TYPE", "WEB-SERVICE");
-        }).build();
+        }).codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(-1)).build();
     }
 
     /**
@@ -113,7 +113,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 // disabling the CSRF - Cross Site Request Forgery
-                csrf().csrfTokenRepository(csrfTokenRepository())
+                        csrf().csrfTokenRepository(csrfTokenRepository())
                 .requireCsrfProtectionMatcher((HttpServletRequest request) -> {
                     // request methods allowed to be without CSRF
                     Pattern allowedMethods = Pattern.compile("^(GET|HEAD|TRACE)$");
