@@ -62,24 +62,52 @@
   }
 }
 
-.modal-body,
-.modal-footer,
-.modal-header {
-  @include p(3);
+/*=============================================================================
+    Modal
+================================================================================*/
+.modal-content{
+  @include p(5);
+}
+
+.modal-body{
+  @include py(4);
+  @include px(0);
 }
 
 .modal-header {
-  color: $dcc-primary;
-}
-
-.modalWidthItem {
-  min-width: 290px;
-}
-
-.modal-footer {
+  padding: 0;
   display: flex;
+  align-items: flex-end;
+
+  .modal-title{
+    font-weight: bold;
+    color: #0C4008;
+  }
+
+  .close {
+    outline: 0;
+    font-size: 2.5rem;
+    font-weight: 100;
+  }
+}
+
+.modal-footer{
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  background-color: $gray-100;
+  flex-direction: row-reverse;
+  background-color: $light;
+
+  button{
+    @include px(5);
+    min-width: 110px;
+  }
+}
+
+.modal-footer > * {
+  @include media-breakpoint-up(sm) {
+    margin: 0;
+  }
 }
 
 
