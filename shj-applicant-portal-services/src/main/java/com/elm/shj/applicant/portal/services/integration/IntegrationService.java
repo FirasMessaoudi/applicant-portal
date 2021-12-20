@@ -154,7 +154,7 @@ public class IntegrationService {
 
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
-        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL || serviceRelativeUrl.contains(CHAT_CONTACT_URL)) {
+        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL ) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
@@ -968,11 +968,11 @@ public class IntegrationService {
      *
      * @return the persisted chat contact
      */
-    public ApplicantChatContactLiteDto createApplicantChatContact(String uin, Long applicantRitualId, MultipartBodyBuilder builder) {
+    public ApplicantChatContactLiteDto createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
         WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/" + uin + "/" + applicantRitualId,
-                    HttpMethod.POST, builder.build(),
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create/"  + ritualId,
+                    HttpMethod.POST,  applicantChatContact,
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1006,11 +1006,11 @@ public class IntegrationService {
      *
      * @return the updated chat contact
      */
-    public ApplicantChatContactLiteDto updateChatContact(long id, MultipartBodyBuilder builder) {
+    public ApplicantChatContactLiteDto updateChatContact(long id, ApplicantChatContactLiteDto applicantChatContact) {
         WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/update/" + id,
-                    HttpMethod.PUT, builder.build(),
+                    HttpMethod.PUT, applicantChatContact,
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
