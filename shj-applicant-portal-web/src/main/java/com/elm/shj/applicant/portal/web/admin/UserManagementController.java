@@ -94,7 +94,7 @@ public class UserManagementController {
         log.debug("Handler for {}", "Search Users");
         if (roleId <= 0 && Long.parseLong(nin) == -1 && activated < 0) {
             return userService.findAllNotDeleted(pageable, jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L),
-                    jwtTokenService.retrieveUserRoleIdsFromToken(((JwtToken) authentication).getToken()).orElse(new HashSet<>()))
+                            jwtTokenService.retrieveUserRoleIdsFromToken(((JwtToken) authentication).getToken()).orElse(new HashSet<>()))
                     .map(UserManagementController::maskUserInfo);
         }
         Page<UserDto> usersPage = userService.searchByRoleStatusOrNin(pageable,
@@ -139,7 +139,6 @@ public class UserManagementController {
     public ApplicantMainDataDto findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findUserMainDataByUin(loggedInUserUin, ritualId).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
-
     }
 
     /**
@@ -150,7 +149,6 @@ public class UserManagementController {
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
         return userService.findApplicantRitualSeasons(loggedInUserUin);
-
     }
 
     /**
@@ -161,7 +159,6 @@ public class UserManagementController {
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
         return userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season);
-
     }
 
     /**
@@ -172,7 +169,6 @@ public class UserManagementController {
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
         String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
         return userService.findApplicantRitualLatestByUin(loggedInUserUin);
-
     }
 
     /**
@@ -388,31 +384,21 @@ public class UserManagementController {
     }
 
     /**
-     * Updates and existing user
+     * Updates user preferred language
      *
      * @param lang the preferred language to update user with
      * @return success if update done
      */
     @PutMapping("/language/{lang}/{uin}")
-    public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, @PathVariable String uin) {
+    public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, @PathVariable long uin) {
         log.debug("Handler for {}", "Update User preferred language");
-        String loggedInUserUin = uin;
-        UserDto databaseUser = null;
         try {
-            databaseUser = userService.findByUin(Long.parseLong(loggedInUserUin)).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + loggedInUserUin));
+            userService.updatePreferredLanguageInAdminPortal(uin, lang);
         } catch (Exception e) {
-            log.error("Error while find user in  updating user preferred language.", e);
-            return ResponseEntity.notFound().build();
+            log.error("Error while updating user preferred language.", e);
         }
-        // sets form fields to database user instance
-        databaseUser.setPreferredLanguage(lang);
-        try {
-            userService.save(databaseUser);
-        } catch (Exception e) {
-            log.error("Error while updating user contacts.", e);
-            return ResponseEntity.of(Optional.empty());
-        }
-        return ResponseEntity.ok(null);
+        userService.updatePreferredLanguage(uin, lang);
+        return ResponseEntity.ok(StringUtils.EMPTY);
     }
 
     /**

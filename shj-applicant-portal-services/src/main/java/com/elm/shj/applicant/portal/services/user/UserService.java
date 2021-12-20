@@ -236,6 +236,18 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     /**
+     * Update user preferred language
+     *
+     * @param uin the user uin
+     * @param lang the user preferred langauge
+     * @return Encoded avatar string
+     */
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+    public void updatePreferredLanguage(long uin, String lang) {
+        userRepository.updatePreferredLanguage(uin, lang);
+    }
+
+    /**
      * Creates a new user
      *
      * @param user the user information to save
@@ -463,7 +475,6 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         }
     }
 
-
     public ApplicantRitualLiteDto findApplicantRitualLatestByUin(String uin) {
         return integrationService.loadApplicantRitualLatestByUin(uin);
     }
@@ -543,8 +554,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {
-        ApplicantLiteDto applicantBasicDetailsByUin = integrationService.findApplicantBasicDetailsByUin(uin);
-        return applicantBasicDetailsByUin ;
+        return integrationService.findApplicantBasicDetailsByUin(uin);
+    }
+
+    public void updatePreferredLanguageInAdminPortal(long uin, String lang) {
+        integrationService.updatePreferredLanguage(uin, lang);
     }
 }
 

@@ -88,7 +88,7 @@ public class IntegrationService {
     private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
     private final String APPLICANT_RITUAL_URL = "/ws/ritual/";
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
-
+    private final String APPLICANT_PREFERRED_LANGUAGE = "/ws/applicant/language";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -112,7 +112,7 @@ public class IntegrationService {
      */
     //TODO must do refactor
     public <B, R> WsResponse callIntegrationWs2(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
-                                               ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
+                                                ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
@@ -121,26 +121,25 @@ public class IntegrationService {
         }
 
 
+        if (bodyToSend != null) {
+            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend))
+                    .retrieve().bodyToMono(responseTypeReference).block();
+        } else {
+            return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
+                    .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .retrieve()
+                    .bodyToMono(WsResponse.class).block();
 
-            if (bodyToSend != null) {
-                return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
-                        .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend))
-                        .retrieve().bodyToMono(responseTypeReference).block();
-            }else{
-                return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
-                        .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
-                        .retrieve()
-                        .bodyToMono(WsResponse.class).block();
-
-            }
+        }
 
 
     }
 
-        public <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
+    public <B, R> WsResponse callIntegrationWs(String serviceRelativeUrl, HttpMethod httpMethod, B bodyToSend,
                                                ParameterizedTypeReference<WsResponse<R>> responseTypeReference) throws WsAuthenticationException {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
@@ -900,7 +899,7 @@ public class IntegrationService {
             log.error("Cannot authenticate to get incidents", e);
             return Collections.emptyList();
         }
-        if(wsResponse==null){
+        if (wsResponse == null) {
             return new ArrayList<>();
         }
         return wsResponse.getBody();
@@ -950,10 +949,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public WsResponse findOneApplicantByUinAndRitualId(String uin, Long applicantRitualId ,String applicantUin) {
+    public WsResponse findOneApplicantByUinAndRitualId(String uin, Long applicantRitualId, String applicantUin) {
         WsResponse wsResponse = null;
         try {
-            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL +"/find-one/" +  uin + "/" + applicantRitualId+ "/" + applicantUin,
+            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/find-one/" + uin + "/" + applicantRitualId + "/" + applicantUin,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {
                     });
@@ -991,8 +990,8 @@ public class IntegrationService {
     public ApplicantChatContactLiteDto createStaffChatContact(String uin, Long applicantRitualId, String contactUin) {
         WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create-staff/" + uin + "/" + applicantRitualId + "/" + contactUin ,
-                    HttpMethod.POST,null,
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create-staff/" + uin + "/" + applicantRitualId + "/" + contactUin,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1089,5 +1088,16 @@ public class IntegrationService {
             return null;
         }
         return wsResponse.getBody();
+    }
+
+    public void updatePreferredLanguage(long uin, String lang) {
+        try {
+            callIntegrationWs(APPLICANT_PREFERRED_LANGUAGE + "/" + uin + "/" + lang,
+                    HttpMethod.PUT, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant preferred language", e);
+        }
     }
 }
