@@ -30,6 +30,20 @@ export class LookupService {
     return item?.description;
   }
 
+  localizedNotificationDescription(lookupItems: Lookup[], code: string): string {
+    let item: any = lookupItems.find(type => type.code === code && this.i18nService.language.startsWith(type.lang));
+    if (!item)
+      item = lookupItems.find(type => type.code === code && type.lang.startsWith(defaultLang));
+    return item?.sample;
+  }
+
+  localizedNotificationMandatory(lookupItems: Lookup[], code: string): boolean {
+    let item: any = lookupItems.find(type => type.code === code && this.i18nService.language.startsWith(type.lang));
+    if (!item)
+      item = lookupItems.find(type => type.code === code && type.lang.startsWith(defaultLang));
+    return item?.mandatory;
+  }
+
   loadGoogleMapKey(): Observable<any> {
     return this.http.get<any>('/core/api/lookup/map-key', {responseType: 'text' as 'json'});
   }
@@ -39,5 +53,9 @@ export class LookupService {
     if (!items)
       items = lookupItems.filter(value => value.lang.startsWith(defaultLang));
     return items;
+  }
+
+  localizedItemsByLang(lookupItems: any[]): any[] {
+    return lookupItems.filter(value => this.i18nService.language.startsWith(value.lang));
   }
 }

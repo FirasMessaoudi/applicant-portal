@@ -190,4 +190,11 @@ public class LookupController {
         return lookupService.retrieveMealTypes();
     }
 
+    @GetMapping("/notification-category/list")
+    public List<NotificationCategoryLookupDto> listNotificationCategories(Authentication authentication) {
+        log.debug("notification category list...");
+        return lookupService.retrieveNotificationCategories();
+    }
+
+
 }

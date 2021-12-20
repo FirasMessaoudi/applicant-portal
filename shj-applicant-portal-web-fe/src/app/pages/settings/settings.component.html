@@ -109,22 +109,29 @@
             <p>قم بتحديد نوع الإشعارات التي تصل إليك</p>
 
             <div class="row mt-4">
-                <div *ngFor="let notification of notificationsList" class="col-md-4 col-12 mb-4 notification_card">
-                    <div class="card h-100">
-                        <div class="p-3 card-header bg-white d-flex align-items-baseline justify-content-between">
-                            <h5 class="card-title text-black mb-md-0 mt-md-2">
+                <div
+                  *ngFor="let notification of preferenceIsLoaded? notificationsListPreference:lookupService().localizedItemsByLang(notificationsListLookup)"
+                  class="col-md-4 col-12 mb-4 notification_card">
+                  <div class="card h-100">
+                    <div class="p-3 card-header bg-white d-flex align-items-baseline justify-content-between">
+                      <h5 class="card-title text-black mb-md-0 mt-md-2">
                                 <span [class]="
                     'notification_header_icon notification_' +
-                    notification.iconColor
+                    getCategoryColor(preferenceIsLoaded? notification.categoryCode :notification.code)
                   ">
                   <svg-icon
-                    [styleClass]="'text-' + notification.iconColor"
-                    [icon]="notification.icon"
+                    [styleClass]="'text-' + getCategoryColor(preferenceIsLoaded? notification.categoryCode :notification.code)"
+                    [icon]="getCategoryIcon(preferenceIsLoaded? notification.categoryCode :notification.code)"
                   ></svg-icon>
-                </span> {{ notification.title }}
-                            </h5>
+                </span> {{ lookupService().localizedLabel(notificationsListLookup, preferenceIsLoaded?
+                        notification.categoryCode :notification.code)}}
+                      </h5>
                             <div class="custom-control custom-checkbox my-1 mx-0 px-0">
-                                <input type="checkbox" class="custom-control-input" [id]="'notification_' + notification.id" [checked]="notification.checked" />
+                              <input type="checkbox"
+                                     (change)="updateUserNotificationCategory($event, preferenceIsLoaded? notification.categoryCode :notification.code)"
+                                     [disabled]="lookupService().localizedNotificationMandatory(notificationsListLookup, preferenceIsLoaded? notification.categoryCode :notification.code)"
+                                     class="custom-control-input" [id]="'notification_' + notification.id"
+                                     [checked]="notification.enabled == null ? true: notification.enabled"/>
                                 <label class="custom-control-label pointer" [for]="'notification_' + notification.id">
                 </label>
                             </div>
@@ -132,7 +139,9 @@
 
                         <div class="p-3 card-body">
                             <p class="card-text">مثال</p>
-                            <p class="card-text">{{ notification.description }}</p>
+                          <p class="card-text">{{
+                            lookupService().localizedNotificationDescription(notificationsListLookup,
+                            preferenceIsLoaded? notification.categoryCode :notification.code) }}</p>
                         </div>
                     </div>
                 </div>
@@ -155,6 +164,6 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary">{{ "general.btn_cancel" | translate }}</button>
         <button type="button" class="btn btn-dcc-primary"> حفظ التعديلات</button>
-        
+
     </div>
 </ng-template>
