@@ -66,6 +66,8 @@
                   {{selectedRitualSeason?.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, selectedRitualSeason?.ritualSeason?.ritualTypeCode) : ""}}
                   <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
                   {{selectedRitualSeason?.ritualSeason?.seasonYear}}
+                  ({{selectedRitualSeason?.ritualSeason?.seasonStart | hijriDateFormat}}
+                  - {{selectedRitualSeason?.ritualSeason?.seasonEnd | hijriDateFormat}})
                 </a>
               </small>
             </div>
@@ -158,12 +160,19 @@
               <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
               {{s.ritualSeason?.seasonYear}}
               <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}}
-                )</span>
+                )
+              </span>
             </div>
             <div>
               <svg-icon *ngIf="s.selected" class="check-circle" styleClass="fa2x mr-2" icon="check-circle"></svg-icon>
             </div>
           </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <small class="ml-3 ">
+              ({{s?.ritualSeason?.seasonStart | hijriDateFormat}} - {{s?.ritualSeason?.seasonEnd | hijriDateFormat}})
+            </small>
+          </div>
+
         </td>
       </tr>
     </table>
