@@ -37,7 +37,6 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     List<JpaUser> findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
 
-
     @Modifying
     @Query("update JpaUser user set user.deleted = true, user.actionDate = CURRENT_TIMESTAMP where user.id =:userId")
     void markDeleted(@Param("userId") long userId);
@@ -54,6 +53,10 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
     @Query("update JpaUser user set user.passwordHash = :passwordHash, user.changePasswordRequired = false, " +
             "user.updateDate = CURRENT_TIMESTAMP where user.uin =:idNumber")
     void updatePassword(@Param("idNumber") long idNumber, @Param("passwordHash") String passwordHash);
+
+    @Modifying
+    @Query("update JpaUser user set user.preferredLanguage = :lang, user.updateDate = CURRENT_TIMESTAMP where user.uin =:uin")
+    void updatePreferredLanguage(@Param("uin") long uin, @Param("lang") String lang);
 
     @Modifying
     @Query("update JpaUser user set user.avatar = :avatar, user.updateDate = CURRENT_TIMESTAMP  where user.id =:userId")

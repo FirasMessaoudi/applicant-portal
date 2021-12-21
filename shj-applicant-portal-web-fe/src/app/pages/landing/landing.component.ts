@@ -69,7 +69,7 @@ export class LandingComponent implements OnInit {
 
 
 open() {
-  const modalRef = this.modalService.open(ModalContentComponent, { size: 'xl' });
+  const modalRef = this.modalService.open(ModalContentComponent, { size: 'lg' });
   modalRef.componentInstance.name = 'World';
 }
 

@@ -13,7 +13,7 @@ export class StepThreeComponent {
   constructor(private modalService: NgbModal) { }
 
   openDisciples() {
-    const modalRef = this.modalService.open(ModalDisciplesComponent, { size: 'xl' });
+    const modalRef = this.modalService.open(ModalDisciplesComponent, { size: 'lg' });
   }
 
 }

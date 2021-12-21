@@ -18,6 +18,8 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Main controller for user notifications
  *
@@ -76,8 +78,22 @@ public class NotificationController {
      * @return updated userNotificationCategoryPreference
      */
     @PostMapping("/update-user-notification-category-preference")
-    public ResponseEntity<UserNotificationCategoryPreferenceDto> updateUserNotificationCategoryPreference(@RequestBody UserNotificationCategoryPreferenceDto userNotificationCategoryPreference) {
+    public ResponseEntity<UserNotificationCategoryPreferenceDto> updateUserNotificationCategoryPreference(@RequestBody UserNotificationCategoryPreferenceDto userNotificationCategoryPreference, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        userNotificationCategoryPreference.setUserId(loggedInUserUin);
         UserNotificationCategoryPreferenceDto userNotificationCategoryPreferenceUpdated = notificationService.save(userNotificationCategoryPreference);
         return ResponseEntity.ok(userNotificationCategoryPreferenceUpdated);
+    }
+
+    /**
+     * get user notification category preference
+     *
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/notifications/category-preference")
+    public ResponseEntity<List<UserNotificationCategoryPreferenceDto>> findUserNotificationCategoryPreference(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<UserNotificationCategoryPreferenceDto> userNotificationCategoryPreferenceDtos = notificationService.findUserNotificationCategoryPreference(loggedInUserUin);
+        return ResponseEntity.ok(userNotificationCategoryPreferenceDtos);
     }
 }

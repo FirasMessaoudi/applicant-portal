@@ -1,9 +1,12 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, of} from "rxjs";
 import {catchError} from "rxjs/internal/operators";
-import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpParams, HttpEvent,} from "@angular/common/http";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
+import { NotificationCategory } from '@app/_shared/model/notification-category.model';
+import { Lookup } from '@app/_shared/model/lookup.model';
+import { UserNotificationCategoryPreference } from '@app/_shared/model/user-notification-category-preference.model';
 
 
 /**
@@ -82,5 +85,26 @@ export class NotificationService {
   countUserNewNotifications(): Observable<any> {
     return this.http.get('/core/api/notification/new-notifications-count');
   }
+
+    loadNotificationCategoryLookup(): Observable<NotificationCategory[]> {
+      return this.http.get<any>('/core/api/lookup/notification-category/list');
+  }
+
+  loadNotificationCategoryPreference(): Observable<UserNotificationCategoryPreference[]> {
+    return this.http.get<any>('/core/api/notification/notifications/category-preference');
+}
+
+updateNotificationCategory(category: UserNotificationCategoryPreference): Observable<UserNotificationCategoryPreference[]> {
+  return this.http.post('/core/api/notification/update-user-notification-category-preference', category)
+  .pipe(catchError((error: HttpErrorResponse) => {
+
+    if (error.hasOwnProperty('error')) {
+
+      return of(error.error);
+    } else {
+      console.error('An error happen while updating user notification category preferences : ' + error);
+      return of(error);
+    }
+  }));}
 
 }

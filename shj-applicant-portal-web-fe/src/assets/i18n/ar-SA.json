@@ -144,7 +144,11 @@
     "settings": "الإعدادات",
     "edit-contacts": "تعديل جهات الاتصال",
     "search_country_dialing_code": "ابحث عن البلد أو رمز الاتصال",
-    "dialog_save_confirm_text": "هل أنت متأكد من أنك تريد تعديل الإعدادات ؟"
+    "dialog_save_confirm_text": "هل أنت متأكد من أنك تريد تعديل الإعدادات ؟",
+    "save_button": "حفظ التعديلات",
+    "notifications": "التنبيهات",
+    "select_notifications": "قم بتحديد نوع الإشعارات التي تصل إليك",
+    "example": "مثال"
   },
   "home": {
     "title": "الصفحة الرئيسية",

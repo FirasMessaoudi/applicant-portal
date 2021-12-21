@@ -5,6 +5,7 @@ package com.elm.shj.applicant.portal.services.chat;
 
 import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
+import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactVo;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
@@ -54,11 +55,10 @@ public class ChatContactService {
     /**
      * Creates a new applicant chat contact
      *
-     * @param builder the multipart body builder
      * @return savedContact saved one
      */
-    public ApplicantChatContactLiteDto createApplicantChatContact(String uin, Long ritualId, MultipartBodyBuilder builder) {
-        return integrationService.createApplicantChatContact(uin, ritualId, builder);
+    public ApplicantChatContactLiteDto createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
+        return integrationService.createApplicantChatContact( ritualId, applicantChatContact);
     }
 
     /**
@@ -74,11 +74,11 @@ public class ChatContactService {
     /**
      * Updates user defined chat contact
      *
-     * @param builder the multipart body builder
+     * @param applicantChatContact
      * @return updatedContact updated one
      */
-    public ApplicantChatContactLiteDto updateChatContact(long id, MultipartBodyBuilder builder) {
-        return integrationService.updateChatContact(id, builder);
+    public ApplicantChatContactLiteDto updateApplicantChatContact(long id, ApplicantChatContactLiteDto applicantChatContact) {
+        return integrationService.updateChatContact(id, applicantChatContact);
     }
 
     /**

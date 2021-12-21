@@ -6,20 +6,16 @@ package com.elm.shj.applicant.portal.web.ws;
 import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactVo;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Controller for exposing web services related to chat contacts for external party.
@@ -57,37 +53,21 @@ public class ChatContactWsController {
     }
 
     /**
-     * Creates a new chat contact
+     * Creates a new chat contact of type applicant
      *
-     * @param applicantRitualId the selected ritual ID
-     * @param uin               the UIN of the chat contact applicant
-     * @param alias             the alias of the chat contact applicant
-     * @param mobileNumber      the mobile number of the chat contact applicant
-     * @param contactAvatarFile the chat contact avatar file
-     * @param authentication    the authenticated user
      * @return savedContact saved one
      */
-    @PostMapping(value = "/create/{applicantRitualId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WsResponse<?>> create(@PathVariable Long applicantRitualId,
-                                                @RequestPart String uin,
-                                                @RequestPart String alias,
-                                                @RequestPart(required = false) String mobileNumber,
-                                                @RequestPart(required = false) String countryPhonePrefix,
-                                                @RequestPart(required = false) String countryCode,
-                                                @RequestPart(value = "avatar", required = false) MultipartFile contactAvatarFile,
-                                                Authentication authentication) {
-        ApplicantChatContactVo contactVo = ApplicantChatContactVo.builder().uin(uin).alias(alias).mobileNumber(mobileNumber)
-                .countryPhonePrefix(countryPhonePrefix).countryCode(countryCode).build();
+    @PostMapping(value = "/create/{ritualId}")
+    public ResponseEntity<WsResponse<?>> createApplicant(
+            @PathVariable Long ritualId, @RequestBody ApplicantChatContactLiteDto applicantChatContact,
+
+            Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        if (contactAvatarFile != null && !contactAvatarFile.isEmpty() && contactAvatarFile.getSize() > 0) {
-            builder.part("avatar", contactAvatarFile.getResource());
-        }
-        builder.part("contact", contactVo);
+        applicantChatContact.setApplicantUin(loggedInUserUin);
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.createApplicantChatContact(loggedInUserUin, applicantRitualId, builder)).build());
+                .body(chatContactService.createApplicantChatContact(ritualId, applicantChatContact)).build());
     }
 
 
@@ -97,7 +77,7 @@ public class ChatContactWsController {
                                                      Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         ApplicantChatContactLiteDto staffChatContact = chatContactService.createStaffChatContact(loggedInUserUin, applicantRitualId, contactUin);
-        if(staffChatContact.getContactUin() == null){
+        if (staffChatContact.getContactUin() == null) {
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
@@ -110,34 +90,22 @@ public class ChatContactWsController {
 
 
     /**
-     * Updates user defined chat contact
+     * Updates user defined chat contact of type applicant
      *
      * @param id                the ID number of the chat contact to be updated
-     * @param alias             the alias of the chat contact applicant
-     * @param mobileNumber      the mobile number of the chat contact applicant
-     * @param contactAvatarFile the chat contact avatar file
+     * @param applicantChatContact             the chat contact applicant
      * @param authentication    the authenticated user
      * @return updatedContact updatedOne one
      */
-    @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WsResponse<?>> update(@PathVariable long id,
-                                                @RequestPart String alias,
-                                                @RequestPart(required = false) String mobileNumber,
-                                                @RequestPart(required = false) String countryPhonePrefix,
-                                                @RequestPart(required = false) String countryCode,
-                                                @RequestPart(value = "avatar", required = false) MultipartFile contactAvatarFile,
+    @PutMapping(value = "/update/{id}")
+    public ResponseEntity<WsResponse<?>> update(@PathVariable long id
+            , @RequestBody ApplicantChatContactLiteDto applicantChatContact,
                                                 Authentication authentication) {
-        ApplicantChatContactVo contactVo = ApplicantChatContactVo.builder().alias(alias).mobileNumber(mobileNumber)
-                .countryPhonePrefix(countryPhonePrefix).countryCode(countryCode).build();
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        if (contactAvatarFile != null && !contactAvatarFile.isEmpty() && contactAvatarFile.getSize() > 0) {
-            builder.part("avatar", contactAvatarFile.getResource());
-        }
-        builder.part("contact", contactVo);
+
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.updateChatContact(id, builder)).build());
+                .body(chatContactService.updateApplicantChatContact(id, applicantChatContact)).build());
     }
 
     /**
@@ -156,7 +124,7 @@ public class ChatContactWsController {
     @GetMapping("/find-staff/{suin}")
     public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable String suin) {
         CompanyStaffLiteDto companyStaffLiteDto = chatContactService.findStaffContactBySuinAndRitualId(suin);
-        if(companyStaffLiteDto.getSuin() == null){
+        if (companyStaffLiteDto.getSuin() == null) {
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());

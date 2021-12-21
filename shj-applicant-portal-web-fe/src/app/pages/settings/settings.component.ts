@@ -15,6 +15,9 @@ import {filter, map} from 'rxjs/operators';
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {Lookup} from "@model/lookup.model";
 import {ConfirmDialogService} from "@shared/components/confirm-dialog";
+import { NotificationService } from '@app/_core/services/notification/notification.service';
+import { NotificationCategory } from '@app/_shared/model/notification-category.model';
+import { UserNotificationCategoryPreference } from '@app/_shared/model/user-notification-category-preference.model';
 
 @Component({
   selector: 'app-settings',
@@ -27,6 +30,10 @@ export class SettingsComponent implements OnInit {
   selectedSeason: number;
   selectedApplicantRitual: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
+  notificationsList: any[]=[];
+  notificationsListLookup : any[]=[];
+  notificationsListPreference : UserNotificationCategoryPreference[]=[];
+  preferenceIsLoaded: boolean = false;
   enableEditLanguage = false;
   selectedLanguage = "";
   contactsForm: FormGroup;
@@ -47,7 +54,7 @@ export class SettingsComponent implements OnInit {
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-  notificationsList = [
+/*   notificationsList = [
     {
       id: 0,
       checked: true,
@@ -89,7 +96,7 @@ export class SettingsComponent implements OnInit {
       description: 'ربنا تقبل منا إنك أنت السميع العليم.'
     },
 
-  ]
+  ] */
 
   constructor(private modalService: NgbModal,
               private userService: UserService,
@@ -101,12 +108,14 @@ export class SettingsComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private lookupsService: LookupService,
               private elRef: ElementRef,
+              private notificationService: NotificationService,
               private confirmDialogService: ConfirmDialogService,
               private router: Router) {
   }
 
   ngOnInit() {
     this.loadLookups();
+    this.loadUserNotificationCategory();
     this.selectedLanguage = this.currentLanguage;
     this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
       if (data && data.id) {
@@ -133,6 +142,10 @@ export class SettingsComponent implements OnInit {
 
   setLanguage(language: string) {
     this.i18nService.language = language;
+  }
+
+  lookupService(): LookupService {
+    return this.lookupsService;
   }
 
   updateUserLanguage() {
@@ -163,6 +176,87 @@ export class SettingsComponent implements OnInit {
       this.countries = result;
     });
   }
+
+  async loadNotificationCategory(){
+    this.notificationService.loadNotificationCategoryLookup().subscribe(result=>{
+      this.notificationsListLookup = result;
+      console.log(this.notificationsList);
+    })
+  }
+
+ async loadNotificationCaotegoryPreference(){
+    this.notificationService.loadNotificationCategoryPreference().subscribe(result=>{
+      if(result.length == this.lookupService().localizedItemsByLang(this.notificationsListLookup).length){
+        console.log(result.length);
+        console.log(this.lookupService().localizedItemsByLang(this.notificationsListLookup).length);
+        this.preferenceIsLoaded = true;
+        this.notificationsListPreference = result;}
+    })
+  }
+
+  async updateNotificationCaotegoryPreference(){
+    
+  }
+
+  updateUserNotificationCategory(event, code: string){
+        console.log(event.target.checked);
+        console.log(code);
+        if(this.preferenceIsLoaded){
+          console.log(this.notificationsListPreference.find((e)=>e.categoryCode==code));
+          let notificationCategory:UserNotificationCategoryPreference = this.notificationsListPreference.find((e)=>e.categoryCode==code);
+          notificationCategory.enabled = event.target.checked;
+          console.log(notificationCategory);
+          this.notificationService.updateNotificationCategory(notificationCategory).subscribe(result =>{
+            console.log(result);
+          }) 
+        }else{
+          this.lookupService().localizedItemsByLang(this.notificationsListLookup).forEach(value=>{
+            this.notificationService.updateNotificationCategory(new UserNotificationCategoryPreference(value.code, value.code == code ? event.target.checked :true)).subscribe(result =>{
+              console.log(result);
+            });
+          });
+          this.loadNotificationCaotegoryPreference();
+        }
+      }
+
+   async loadUserNotificationCategory(){
+    await this.loadNotificationCategory();
+    await this.loadNotificationCaotegoryPreference();
+  }
+
+  getCategoryIcon(code: string){
+    switch (code) {
+    case 'GENERAL':
+        return 'comment-alt-lines-light';
+    case 'HEALTH':
+        return 'heartbeat-light';
+    case 'RELIGIOUS':
+        return 'kaaba-light';
+    case 'RITUAL':
+        return 'flag-light';
+    case 'GENERAL_AWARENESS':
+        return 'bullhorn-light';
+  }}
+
+  getCategoryColor(code: string){
+    switch (code) {
+    case 'GENERAL':
+        return 'dcc-primary';
+    case 'HEALTH':
+        return 'dcc-danger';
+    case 'RELIGIOUS':
+        return 'dcc-primary';
+    case 'RITUAL':
+        return 'dcc-primary';
+    case 'GENERAL_AWARENESS':
+        return 'dcc-blue';
+  }}
+
+  filterNotificationCategory(list: NotificationCategory[]){
+    return list.filter(e=> this.i18nService.language.startsWith(e.lang));
+  }
+
+
 
   // convenience getter for easy access to form fields
   get f() {

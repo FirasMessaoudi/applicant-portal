@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h3 class="mb-0">طلب تقديم لبرنامج حساب المواطن</h3>
+  <h4 class="modal-title">طلب تقديم لبرنامج حساب المواطن</h4>
 </div>
 <div class="modal-body">
   <div class="d-flex">
@@ -38,7 +38,7 @@
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-light" aria-label="Close"
+  <button type="button" class="btn btn-outline-secondary" aria-label="Close"
     (click)="activeModal.dismiss('Cross click')">عودة</button>
-  <button type="button" class="btn btn-dcc-primary px-4" (click)="activeModal.close()" [routerLink]="['/new-request']">تقديم الطلب</button>
+  <button type="button" class="btn btn-dcc-primary" (click)="activeModal.close()" [routerLink]="['/new-request']">تقديم الطلب</button>
 </div>

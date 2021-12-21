@@ -143,6 +143,8 @@ export class HajjRitualsComponent implements OnInit {
   loadLookups() {
     this.cardService.findRitualStepsLabels().subscribe(result => {
       this.ritualStepLabels = result;
+      console.log(this.ritualStepLabels);
+
     });
     this.cardService.findTransportationType().subscribe(result => {
       this.transportationTypes = result;
