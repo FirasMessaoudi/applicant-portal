@@ -164,7 +164,7 @@ VALUES ('otp.expiry.minutes', '5'),
 GO
 
 -- add lookup loading scheduler cron
-INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('scheduler.load.lookups.cron', '0 0/45 * * * *');
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('scheduler.load.lookups.cron', '0 0 22 * * *');
 GO
 
 -- add  password expiry notification scheduler cron
