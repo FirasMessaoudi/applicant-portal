@@ -37,6 +37,7 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class IntegrationService {
 
+    private final String APPLICANT_PACKAGE_RITUAL_URL = "/ws/applicant/applicant-ritual-seasons/";
     private final String COMMAND_INTEGRATION_AUTH_URL = "/ws/auth";
     /* lookups relative URLs */
     private final String RITUAL_TYPES_LOOKUP_URL = "/ws/ritual-type/list";
@@ -1099,5 +1100,18 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to update applicant preferred language", e);
         }
+    }
+
+    public List<ApplicantPackageVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
+        WsResponse<List<ApplicantPackageVo>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_PACKAGE_RITUAL_URL + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantPackageVo>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get list of applicant package", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 }
