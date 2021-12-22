@@ -5,7 +5,9 @@ package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
+import com.elm.shj.applicant.portal.services.chat.ChatMessageService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
+import com.elm.shj.applicant.portal.services.dto.ChatMessageLiteDto;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -16,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controller for exposing web services related to chat contacts for external party.
@@ -36,6 +40,7 @@ import org.springframework.web.bind.annotation.*;
 public class ChatContactWsController {
 
     private final ChatContactService chatContactService;
+    private final ChatMessageService chatMessageService;
 
     /**
      * List all chat contacts of a specific applicant by ritual ID.
@@ -144,6 +149,19 @@ public class ChatContactWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(response.getStatusCode())
                         .body(response.getBody()).build());
+
+    }
+
+    @GetMapping("/chat-list")
+    public ResponseEntity<WsResponse<?>> listChatContactsWithLatestMessage(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<ChatMessageLiteDto> chatMessageList = chatMessageService.listChatContactsWithLatestMessage(loggedInUserUin);
+
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(chatMessageList).build());
+
 
     }
 

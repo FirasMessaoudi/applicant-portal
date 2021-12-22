@@ -89,6 +89,7 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_URL = "/ws/ritual/";
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
     private final String APPLICANT_PREFERRED_LANGUAGE = "/ws/applicant/language";
+    private final String CHAT_LIST_URL = "/ws/chat-contact/chat-list";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -1099,5 +1100,21 @@ public class IntegrationService {
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to update applicant preferred language", e);
         }
+    }
+
+
+
+    public List<ChatMessageLiteDto> listChatContactsWithLatestMessage(String uin) {
+        WsResponse<List<ChatMessageLiteDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs2(CHAT_LIST_URL + "/" + uin ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 }
