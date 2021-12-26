@@ -7,6 +7,7 @@ import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
 import com.elm.shj.applicant.portal.services.chat.ChatMessageService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
+import com.elm.shj.applicant.portal.services.dto.ChatMessageDto;
 import com.elm.shj.applicant.portal.services.dto.ChatMessageLiteDto;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -163,6 +164,17 @@ public class ChatContactWsController {
                 .body(chatMessageList).build());
 
 
+    }
+
+    @PostMapping("/save-chat-message")
+    public ResponseEntity<WsResponse<?>> saveSenderMessage(Authentication authentication, @RequestBody ChatMessageDto chatMessage) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        log.debug(chatMessage.getText());
+        ChatMessageDto Message = chatMessageService.saveMessage(chatMessage);
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(Message).build());
     }
 
 }

@@ -25,7 +25,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -34,8 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Service handling user management operations
@@ -559,6 +556,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public void updatePreferredLanguageInAdminPortal(long uin, String lang) {
         integrationService.updatePreferredLanguage(uin, lang);
+    }
+
+    public List<ApplicantPackageVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
+        return integrationService.findApplicantPackageAndRitualSeasonByUin(uin);
     }
 }
 

@@ -4,22 +4,17 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
-import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -202,8 +197,19 @@ public class ApplicantWsController {
     public ResponseEntity<WsResponse<?>> findApplicantBasicDetailsByUin(@PathVariable String uin, Authentication authentication) {
         ApplicantLiteDto applicant = userService.findApplicantBasicDetailsByUin(uin);
         if (applicant.getFullNameEn() == null) {
-            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, uin);      }
+            return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, uin);
+        }
         return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(applicant).build());
+
+    }
+
+    @GetMapping("/find-applicant-ritual-seasons")
+    public ResponseEntity<WsResponse<?>> findApplicantPackageRitualSeasons(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        List<ApplicantPackageVo> applicantPackageRituals = userService.findApplicantPackageAndRitualSeasonByUin(Long.parseLong(loggedInUserUin));
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(applicantPackageRituals).build());
 
     }
 }
