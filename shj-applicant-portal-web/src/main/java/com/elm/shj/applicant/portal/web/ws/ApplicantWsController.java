@@ -206,7 +206,7 @@ public class ApplicantWsController {
     @GetMapping("/find-applicant-ritual-seasons")
     public ResponseEntity<WsResponse<?>> findApplicantPackageRitualSeasons(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<ApplicantPackageVo> applicantPackageRituals = userService.findApplicantPackageAndRitualSeasonByUin(Long.parseLong(loggedInUserUin));
+        List<ApplicantRitualSeasonVo> applicantPackageRituals = userService.findApplicantPackageAndRitualSeasonByUin(Long.parseLong(loggedInUserUin));
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(applicantPackageRituals).build());

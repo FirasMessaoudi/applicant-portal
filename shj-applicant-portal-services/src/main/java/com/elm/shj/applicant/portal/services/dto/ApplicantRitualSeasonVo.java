@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicantPackageVo {
+public class ApplicantRitualSeasonVo {
     private Long id;
     private String applicantUin;
     private Date startDate;

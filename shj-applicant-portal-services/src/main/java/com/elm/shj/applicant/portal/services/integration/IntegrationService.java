@@ -1103,11 +1103,11 @@ public class IntegrationService {
         }
     }
 
-    public List<ApplicantPackageVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
-        WsResponse<List<ApplicantPackageVo>> wsResponse = null;
+    public List<ApplicantRitualSeasonVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
+        WsResponse<List<ApplicantRitualSeasonVo>> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(APPLICANT_PACKAGE_RITUAL_URL + uin, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<ApplicantPackageVo>>>() {
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantRitualSeasonVo>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get list of applicant package", e);
