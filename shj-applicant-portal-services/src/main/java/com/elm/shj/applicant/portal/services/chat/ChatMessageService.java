@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.chat;
 
+import com.elm.shj.applicant.portal.services.dto.ChatMessageDto;
 import com.elm.shj.applicant.portal.services.dto.ChatMessageLiteDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,11 @@ public class ChatMessageService {
 
     private final IntegrationService integrationService;
 
-    public List<ChatMessageLiteDto> listChatContactsWithLatestMessage(String uin){
+    public List<ChatMessageLiteDto> listChatContactsWithLatestMessage(String uin) {
         return integrationService.listChatContactsWithLatestMessage(uin);
+    }
+
+    public ChatMessageDto saveMessage(ChatMessageDto chatMessage) {
+        return integrationService.saveSenderMessage(chatMessage);
     }
 }

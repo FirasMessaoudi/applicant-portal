@@ -1121,13 +1121,32 @@ public class IntegrationService {
     public List<ChatMessageLiteDto> listChatContactsWithLatestMessage(String uin) {
         WsResponse<List<ChatMessageLiteDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs2(CHAT_LIST_URL + "/" + uin ,
+            wsResponse = callIntegrationWs2(CHAT_LIST_URL + "/" + uin,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification names", e);
             return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * save user chat message.
+     *
+     * @return the saved chat message
+     */
+    public ChatMessageDto saveSenderMessage(ChatMessageDto chatMessage) {
+        WsResponse<ChatMessageDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/save-chat-message",
+                    HttpMethod.POST, chatMessage,
+                    new ParameterizedTypeReference<WsResponse<ChatMessageDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant chat contact", e);
+            return null;
         }
         return wsResponse.getBody();
     }
