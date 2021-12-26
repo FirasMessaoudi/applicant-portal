@@ -577,4 +577,24 @@ public class UserManagementController {
         return userService.findAllApplicantRitualSeasonByUin(loggedInUserUin);
     }
 
+    /**
+     * get user latest ritual season lite by uin
+     */
+    @GetMapping("/applicant-ritual-season/latest")
+    public ApplicantRitualSeasonVo findLatestApplicantRitualSeason(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findLatestApplicantRitualSeason(Long.parseLong(loggedInUserUin));
+    }
+
+    /**
+     * get all ritual season lite by uin
+     *
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/applicant-ritual-season")
+    public List<ApplicantRitualSeasonVo> findAllApplicantRitualSeason(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantPackageAndRitualSeasonByUin(Long.parseLong(loggedInUserUin));
+    }
+
 }
