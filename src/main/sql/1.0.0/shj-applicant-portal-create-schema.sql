@@ -11,30 +11,30 @@ GO
 if not exists (select * from sys.tables where name = 'sha_user')
 create table sha_portal.sha_user
   (
-    id 						    int not null primary key identity(1,1),
-    user_name 				    nvarchar(50) not null,
+    id 						    int             not null primary key identity(1,1),
+    user_name 				    nvarchar(50)    not null,
     full_name_ar                nvarchar(150),
     full_name_en                varchar(150),
-    uin                         bigint  not null,
+    uin                         bigint          not null,
     nin 						bigint ,
-    gender 					   nvarchar(1) ,
-    mobile_number 			int not null,
+    gender 					    nvarchar(1) ,
+    mobile_number 			    int             not null,
     date_of_birth_gregorian 	date,
-    date_of_birth_hijri 		int null default 0,
-    password_hash				nvarchar(256) not null,
-    email 					nvarchar(256),
-    subtribe_name 			nvarchar(100) null default '',
-    activated       			bit default 0,
-    deleted       			bit default 0,
-    blocked       			bit default 0,
-    block_date 				smalldatetime null,
-    number_of_tries       	bit default 0,
-    preferred_language       	nvarchar(2) default 'en',
-    change_password_required  bit default 0,
-    last_login_date 			smalldatetime null,
-    creation_date 			smalldatetime not null default current_timestamp,
-    update_date 				smalldatetime null,
-    avatar					nvarchar(max),
+    date_of_birth_hijri 		int             null default 0,
+    password_hash				nvarchar(256)   not null,
+    email 					    nvarchar(256),
+    subtribe_name 			    nvarchar(100)   null default '',
+    activated       			bit             default 0,
+    deleted       			    bit             default 0,
+    blocked       			    bit             default 0,
+    block_date 				    smalldatetime   null,
+    number_of_tries       	    bit             default 0,
+    preferred_language       	nvarchar(2)     null,
+    change_password_required    bit             default 0,
+    last_login_date 			smalldatetime   null,
+    creation_date 			    smalldatetime   not null default current_timestamp,
+    update_date 				smalldatetime   null,
+    avatar					    nvarchar(max),
     constraint sha_user_user_name_unique unique (user_name),
     constraint sha_user_nin_unique unique (uin)
   );
@@ -44,9 +44,9 @@ GO
 if not exists (select * from sys.tables where name = 'sha_user_authorities')
 create table sha_portal.sha_user_authorities
   (
-    id 		int not null primary key identity(1,1),
-    user_id 	int not null,
-    authority nvarchar(50) not null,
+    id 		    int             not null primary key identity(1,1),
+    user_id 	int             not null,
+    authority   nvarchar(50)    not null,
     constraint fk_sha_authorities_users foreign key(user_id) references sha_portal.sha_user(id)
   );
 GO
@@ -56,11 +56,11 @@ GO
 if not exists (select * from sys.tables where name = 'sha_config')
 create table sha_portal.sha_config
   (
-    id            int not null primary key identity(1,1),
-    conf_key    	nvarchar(250) not null,
-    conf_value    nvarchar(250) not null,
-    creation_date smalldatetime not null default current_timestamp,
-    update_date 	smalldatetime null,
+    id              int             not null primary key identity(1,1),
+    conf_key    	nvarchar(250)   not null,
+    conf_value      nvarchar(250)   not null,
+    creation_date   smalldatetime   not null default current_timestamp,
+    update_date 	smalldatetime   null,
     constraint sha_config_key_unique unique (conf_key)
   );
 GO
@@ -135,10 +135,10 @@ GO
 if not exists (select * from sys.tables where name = 'sha_user_role')
 create table sha_portal.sha_user_role
 (
-    id int PRIMARY KEY NOT NULL identity(1,1),
-    name_arabic nvarchar(50) NOT NULL,
-    name_english nvarchar(50) NOT NULL,
-    creation_date smalldatetime not null default current_timestamp
+    id              int PRIMARY KEY NOT NULL identity(1,1),
+    name_arabic     nvarchar(50) NOT NULL,
+    name_english    nvarchar(50) NOT NULL,
+    creation_date   smalldatetime not null default current_timestamp
 );
 GO
 --------------------------------------------------------
