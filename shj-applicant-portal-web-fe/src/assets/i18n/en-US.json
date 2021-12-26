@@ -240,6 +240,7 @@
     "header_title": "Login",
     "side_info": "The DCC template aims to unify efforts and standardize the way we implement our products in ELM.\n          It can reduce efforts related to common project activities like project structure, technology stack, error handling strategy, coding standards, ...\n          In our last survey, effort saved can go up to 20% of the total project effort.",
     "title": "Login",
+    "confirmation_title": "Login Confirmation",
     "btn_login": "Login",
     "btn_new_registration": "Don't have an account? Register now.",
     "btn_forgot_password": "Forgot Password",
