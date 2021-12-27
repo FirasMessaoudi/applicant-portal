@@ -277,4 +277,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.newNotificationsCountTimerInterval);
   }
+
+  getNotificationCount(){
+    let nb = this.userNewNotificationsCount?.userSpecificNewNotificationsCount + this.userNewNotificationsCount?.userNotSpecificNewNotificationsCount;
+    if(nb>99){
+      return '99+';
+    }else {
+      return nb;
+    }
+  }
 }

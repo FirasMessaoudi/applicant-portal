@@ -558,8 +558,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         integrationService.updatePreferredLanguage(uin, lang);
     }
 
-    public List<ApplicantPackageVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
+    public List<ApplicantRitualSeasonVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
         return integrationService.findApplicantPackageAndRitualSeasonByUin(uin);
+    }
+
+    public ApplicantRitualSeasonVo findLatestApplicantRitualSeason(long uin) {
+        return integrationService.findLatestApplicantRitualSeason(uin);
     }
 }
 
