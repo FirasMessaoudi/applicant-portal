@@ -68,8 +68,6 @@ public class ChatContactWsController {
             @PathVariable Long ritualId, @RequestBody ApplicantChatContactLiteDto applicantChatContact,
 
             Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        applicantChatContact.setApplicantUin(loggedInUserUin);
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
