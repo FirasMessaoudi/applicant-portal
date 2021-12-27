@@ -1132,6 +1132,20 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public List<ChatMessageDto> listMessages(long contactId) {
+        WsResponse<List<ChatMessageDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/messages/" + contactId,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ChatMessageDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
     /**
      * save user chat message.
      *

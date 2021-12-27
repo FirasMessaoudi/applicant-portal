@@ -50,7 +50,7 @@ public class ChatContactWsController {
      * @param authentication the authenticated user
      * @return the list of chat contacts
      */
-    @GetMapping("/{ritualId}")
+    @GetMapping("/list/{ritualId}")
     public ResponseEntity<WsResponse<?>> findChatContactsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return ResponseEntity.ok(
@@ -157,6 +157,18 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> listChatContactsWithLatestMessage(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         List<ChatMessageLiteDto> chatMessageList = chatMessageService.listChatContactsWithLatestMessage(loggedInUserUin);
+
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(chatMessageList).build());
+
+
+    }
+
+    @GetMapping("/messages/{contactId}")
+    public ResponseEntity<WsResponse<?>> listMessages(@PathVariable long contactId) {
+        List<ChatMessageDto> chatMessageList = chatMessageService.listMessages(contactId);
 
         return ResponseEntity.ok(WsResponse
                 .builder()
