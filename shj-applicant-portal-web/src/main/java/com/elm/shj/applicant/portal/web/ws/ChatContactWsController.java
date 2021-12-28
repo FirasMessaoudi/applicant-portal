@@ -201,10 +201,11 @@ public class ChatContactWsController {
 
     }
 
-    @PostMapping("/save-chat-message")
-    public ResponseEntity<WsResponse<?>> saveSenderMessage(Authentication authentication, @RequestBody ChatMessageDto chatMessage) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        log.debug(chatMessage.getText());
+    @PostMapping("/save-chat-message/{senderId}/{receiverId}")
+    public ResponseEntity<WsResponse<?>> saveSenderMessage(@RequestBody ChatMessageDto chatMessage, @PathVariable long senderId, @PathVariable long receiverId) {
+        log.debug(Long.toString(chatMessage.getReceiver().getId()));
+        chatMessage.getSender().setId(senderId);
+        chatMessage.getReceiver().setId(receiverId);
         ChatMessageDto Message = chatMessageService.saveMessage(chatMessage);
         return ResponseEntity.ok(WsResponse
                 .builder()
