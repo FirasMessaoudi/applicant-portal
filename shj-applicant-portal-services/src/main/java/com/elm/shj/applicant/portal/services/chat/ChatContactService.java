@@ -5,14 +5,12 @@ package com.elm.shj.applicant.portal.services.chat;
 
 import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactVo;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,7 +56,17 @@ public class ChatContactService {
      * @return savedContact saved one
      */
     public ApplicantChatContactLiteDto createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
-        return integrationService.createApplicantChatContact( ritualId, applicantChatContact);
+        return integrationService.createApplicantChatContact(ritualId, applicantChatContact);
+    }
+
+    /**
+     * Creates a new staff chat contact
+     *
+     * @param contactUin the SUIN
+     * @return savedContact saved one
+     */
+    public ApplicantChatContactLiteDto findApplicantChatByApplicantUinAndContactUin(String applicantUin, String contactUin) {
+        return integrationService.findApplicantChatContact(applicantUin, contactUin);
     }
 
     /**

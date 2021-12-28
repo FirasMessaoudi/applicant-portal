@@ -1188,4 +1188,19 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
+    public ApplicantChatContactLiteDto findApplicantChatContact(String applicantUin, String contactUin) {
+        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/find/" + applicantUin + "/" + contactUin,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get list of applicant ritual", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
 }
