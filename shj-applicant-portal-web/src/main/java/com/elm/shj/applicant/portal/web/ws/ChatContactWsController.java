@@ -71,6 +71,27 @@ public class ChatContactWsController {
         if (applicantChatContactLiteDto.getContactUin() == null)
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_ALREADY_EXIST.getCode()).build()).build());
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(applicantChatContactLiteDto).build());
+    }
+
+    /**
+     * Creates a new chat contact of type applicant
+     *
+     * @return savedContact saved one
+     */
+    @GetMapping(value = "/find/{applicantUin}/{contactUin}")
+    public ResponseEntity<WsResponse<?>> findApplicantChatByApplicantUinAndContactUin(
+            @PathVariable String applicantUin,
+            @PathVariable String contactUin,
+            Authentication authentication) {
+        ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.findApplicantChatByApplicantUinAndContactUin(applicantUin, contactUin);
+        if (applicantChatContactLiteDto.getContactUin() == null)
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
         return ResponseEntity.ok(WsResponse
                 .builder()
