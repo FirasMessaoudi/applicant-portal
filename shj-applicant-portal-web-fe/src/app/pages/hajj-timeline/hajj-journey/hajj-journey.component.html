@@ -31,23 +31,22 @@
       <div class="tl-d">
         <div class="pl-2 pl-md-0 row align-items-start">
           <h4 class="h6 mb-3 col-12 col-md-2">{{ step.day }} {{ ("hijri-months." + step.month) | translate}}</h4>
-          <div class="col-12 col-md-7 col-lg-8 d-flex flex-column">
+          <div class="col-12 col-md-12 col-lg-12 d-flex flex-column">
             <div class="row mb-2 mb-md-0" *ngFor="let internalStep of step.value">
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-md-5">
                 <p>
-                  {{ lookupService.localizedDescription(ritualStepsLookups, internalStep?.stepCode)}}
+                  {{ lookupService.localizedSummary(ritualStepsLookups, internalStep?.stepCode)}}
                 </p>
               </div>
-              <div class="col-12 col-md-6">
+              <div class="col-12 col-md-5">
                 <p class="Elm-fontb">
                   <b>{{ lookupService.localizedLabel(ritualStepsLookups, internalStep?.stepCode)}}</b>
                 </p>
               </div>
+              <div class="col-12 col-md-2 text-md-left view_action_hide">
+                <a class="btn btn-outline-dcc-primary mr-2" (click)="showDetails(internalStep?.stepCode)" >{{ "haj-journey.view_daily_activities" | translate }}</a>
+              </div>
             </div>
-          </div>
-          <div class="col-12 col-lg-2 col-md-3 text-md-center view_action_hide">
-            <a class="btn btn-outline-dcc-primary mr-2"
-               routerLink="/hajj-journey/details">{{ "haj-journey.view_daily_activities" | translate }}</a>
           </div>
         </div>
       </div>

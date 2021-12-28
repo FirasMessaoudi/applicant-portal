@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpEvent} from "@angular/common/http";
 import {catchError} from "rxjs/internal/operators";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {Lookup} from "@model/lookup.model";
 
@@ -11,7 +11,10 @@ import {Lookup} from "@model/lookup.model";
 export class RitualTimelineService{
   private baseUrl:string
   private dummyUrl:string= '/core/api/users/tafweej/'
+  public ritualStepDescriptionSubject: BehaviorSubject<any> = new BehaviorSubject<any>({});
+
   constructor(private http:HttpClient) {
+    this.ritualStepDescriptionSubject.asObservable()
   }
 
   loadRitualSteps(ritualId: number):Observable<CompanyRitualMainDataStep[]> {
@@ -33,4 +36,9 @@ export class RitualTimelineService{
   loadRitualTypes():Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/ritual-type/list');
   }
+
+  getRitualStepDescriptionSubject(data: string ){
+    this.ritualStepDescriptionSubject.next(data)
+  }
+
 }
