@@ -66,12 +66,16 @@ public class ChatContactWsController {
     @PostMapping(value = "/create/{ritualId}")
     public ResponseEntity<WsResponse<?>> createApplicant(
             @PathVariable Long ritualId, @RequestBody ApplicantChatContactLiteDto applicantChatContact,
-
             Authentication authentication) {
+        ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
+        if (applicantChatContactLiteDto.getContactUin() == null)
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.createApplicantChatContact(ritualId, applicantChatContact)).build());
+                .body(applicantChatContactLiteDto).build());
     }
 
 
