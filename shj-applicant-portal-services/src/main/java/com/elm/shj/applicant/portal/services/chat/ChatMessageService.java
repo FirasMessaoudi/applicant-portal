@@ -35,7 +35,7 @@ public class ChatMessageService {
         return integrationService.saveSenderMessage(chatMessage);
     }
 
-    public List<ChatMessageDto> listMessages(long contactId) {
-        return integrationService.listMessages(contactId);
+    public List<ChatMessageDto> listMessages(int page, int limit, long contactId) {
+        return integrationService.listMessages(page, limit, contactId);
     }
 }
