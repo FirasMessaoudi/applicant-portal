@@ -4,12 +4,10 @@ import {AuthenticationService, CardService, UserService} from '@app/_core/servic
 import {I18nService} from "@dcc-commons-ng/services";
 import {Location} from "@angular/common";
 import {$animations} from "@shared/animate/animate.animations";
-import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {OtpStorage} from "@pages/otp/otp.storage";
-import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
 import {DetailedUserNotification} from "@model/detailed-user-notification.model";
 import {NotificationService} from "@core/services/notification/notification.service";
 import {UserNewNotificationsCount} from "@model/user-new-notifications-count.model";
@@ -17,6 +15,8 @@ import * as momentjs from 'moment';
 import * as moment_ from 'moment-hijri';
 
 import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
+import {UtilityService} from "@core/utilities/utility.service";
+import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 
 const momentHijri = moment_;
 
@@ -39,11 +39,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isActive: boolean;
   routerDisabled = true;
-  selectedApplicantRitual: ApplicantRitualLite;
-  selectedRitualSeason: CompanyRitualSeasonLite;
-  latestRitualSeason: CompanyRitualSeasonLite;
+  selectedApplicantRitual: ApplicantRitualPackage;
+  latestApplicantRitualPackage: ApplicantRitualPackage;
   ritualTypes: Lookup[] = [];
-  seasons: CompanyRitualSeasonLite[];
+  applicantRitualPackages: ApplicantRitualPackage[];
   showAlert: boolean;
   currentHijriYear: number;
   notifications: DetailedUserNotification[] = [];
@@ -62,7 +61,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     public userService: UserService,
     private cardService: CardService,
     private otpStorage: OtpStorage,
-    private lookupsService: LookupService) {
+    private lookupsService: LookupService,
+    private utilityService: UtilityService
+  ) {
   }
 
   get currentLanguage(): string {
@@ -90,16 +91,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.otpStorage.ritualSeasonSubject.subscribe(data => {
       if (data) {
-        this.selectedRitualSeason = data;
-        this.latestRitualSeason = data;
+        this.selectedApplicantRitual = data;
+        this.latestApplicantRitualPackage = data;
       }
     });
 
-    this.selectedRitualSeason = JSON.parse((localStorage.getItem('selectedRitualSeason')));
-    this.latestRitualSeason = JSON.parse((localStorage.getItem('latestRitualSeason')));
+    this.selectedApplicantRitual = JSON.parse((localStorage.getItem('selectedRitualSeason')));
+    this.latestApplicantRitualPackage = JSON.parse((localStorage.getItem('latestRitualSeason')));
 
-    if (this.selectedRitualSeason?.id && this.latestRitualSeason?.id) {
-      this.showAlert = this.selectedRitualSeason?.id !== this.latestRitualSeason?.id;
+    if (this.selectedApplicantRitual?.id && this.latestApplicantRitualPackage?.id) {
+      this.showAlert = this.selectedApplicantRitual?.id !== this.latestApplicantRitualPackage?.id;
     }
   }
 
@@ -156,7 +157,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   open(content) {
-    this.seasons.forEach(s => s.id === this.selectedRitualSeason.id ? s.selected = true : s.selected = false);
+    this.applicantRitualPackages.forEach(s => s.id === this.selectedApplicantRitual.id ? s.selected = true : s.selected = false);
     this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
       centered: true,
@@ -165,7 +166,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      this.seasons.forEach(s => s.id === this.selectedRitualSeason.id ? s.selected = true : s.selected = false);
+      this.applicantRitualPackages.forEach(s => s.id === this.selectedApplicantRitual.id ? s.selected = true : s.selected = false);
     });
   }
 
@@ -191,25 +192,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   listRitualSeasons() {
-    this.userService.listRitualSeasons().subscribe(data => {
-      this.seasons = data;
+    this.userService.getListApplicantRitualPackage().subscribe(data => {
+      this.applicantRitualPackages = data;
     });
   }
 
   confirm() {
-    this.selectedRitualSeason = this.seasons.find(s => s.selected === true);
-    this.showAlert = this.selectedRitualSeason.id !== this.latestRitualSeason.id;
-    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedRitualSeason));
-    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedRitualSeason));
-    this.userService.changeSelectedApplicantRitual(this.selectedRitualSeason);
+    this.selectedApplicantRitual = this.applicantRitualPackages.find(s => s.selected === true);
+    this.showAlert = this.selectedApplicantRitual.id !== this.latestApplicantRitualPackage.id;
+    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedApplicantRitual));
+    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedApplicantRitual));
+    this.userService.changeSelectedApplicantRitual(this.selectedApplicantRitual);
     this.modalService.dismissAll();
   }
 
   backToLatestRitualSeason() {
-    this.selectedRitualSeason = JSON.parse(localStorage.getItem('latestRitualSeason'));
-    this.seasons.forEach(s => s.id === this.selectedRitualSeason.id ? s.selected = true : s.selected = false);
-    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedRitualSeason));
-    this.userService.changeSelectedApplicantRitual(this.selectedRitualSeason);
+    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('latestRitualSeason'));
+    this.applicantRitualPackages.forEach(s => s.id === this.selectedApplicantRitual.id ? s.selected = true : s.selected = false);
+    localStorage.setItem('selectedRitualSeason', JSON.stringify(this.selectedApplicantRitual));
+    this.userService.changeSelectedApplicantRitual(this.selectedApplicantRitual);
     this.showAlert = false;
   }
 
@@ -218,7 +219,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   selectSeason(season) {
-    this.seasons.forEach(s => s.id === season ? s.selected = true : s.selected = false);
+    this.applicantRitualPackages.forEach(s => s.id === season ? s.selected = true : s.selected = false);
   }
 
   getRelativeTime(date: Date) {
@@ -285,5 +286,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }else {
       return nb;
     }
+  }
+
+  getHijriDate(date: Date, seasonYear: number){
+    let dateString = this.utilityService.GetHijriDate(new Date(date));
+    console.log(dateString);
+    return dateString;
   }
 }

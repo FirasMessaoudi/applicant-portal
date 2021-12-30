@@ -10,7 +10,6 @@ import com.elm.shj.applicant.portal.services.user.UserLocationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
-import com.elm.shj.applicant.portal.web.admin.UserLocationsCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -242,58 +241,6 @@ public class UserManagementWsController {
                         .body(returnedApplicant).build());
     }
 
-
-    /**
-     * get user ritual seasons by uin
-     */
-    @GetMapping("/ritual-seasons")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualSeasonsByUin(Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<Integer> seasons = userService.findApplicantRitualSeasons(loggedInUserUin);
-
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(seasons).build());
-    }
-
-    /**
-     * get user ritual lite by seasons and uin
-     */
-    @GetMapping("/ritual-lite/{season}")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualByUinAndSeasons(Authentication authentication, @PathVariable int season) {
-
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<ApplicantRitualLiteDto> applicantRitualLites = userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season);
-
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(applicantRitualLites).build());
-    }
-
-    /**
-     * get user latest ritual lite by uin
-     */
-    @GetMapping("/ritual-lite/latest")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualByUinAndSeasons(Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantRitualLiteDto ritualLiteDto = userService.findApplicantRitualLatestByUin(loggedInUserUin);
-
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(ritualLiteDto).build());
-    }
-
-    /**
-     * get user latest ritual season lite by uin
-     */
-    @GetMapping("/ritual-season/latest")
-    public ResponseEntity<WsResponse<?>> findLatestApplicantRitualSeasonByUin(Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        CompanyRitualSeasonLiteDto ritualSeason = userService.findLatestApplicantRitualSeasonByUin(loggedInUserUin);
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(ritualSeason).build());
-    }
 
     /**
      * get user Tafweej details by uin and ritual ID

@@ -1,6 +1,9 @@
-import { Injectable } from "@angular/core";
-import { FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import {Injectable} from "@angular/core";
+import {FormGroup} from "@angular/forms";
+import {Router} from "@angular/router";
+import * as moment_ from 'moment-hijri';
+
+const momentHijri = moment_;
 
 @Injectable({
   providedIn: "root"
@@ -134,5 +137,19 @@ export class UtilityService {
   // generate 4 digit randome number
   getRandomId() {
     return Math.floor(1000 + Math.random() * 9000);
+  }
+
+
+   GetHijriDate(dateTime) {
+    let dayOfYear = Math.floor((dateTime - new Date(dateTime.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24))
+    let hijriDate = ((dateTime.getFullYear() - 621.5643) * 365.24225 + dayOfYear) / 354.36707
+    let hijriYear = Math.floor(hijriDate)
+    let hijriMonth = Math.ceil((hijriDate - Math.floor(hijriDate)) * 354.36707 / 29.530589)
+    let hijriDay = Math.floor((hijriDate - Math.floor(hijriDate)) * 354.36707 % 29.530589)
+    return hijriYear.toString()+this.minTwoDigits(hijriMonth)+this.minTwoDigits(hijriDay);
+  }
+
+   minTwoDigits(n) {
+    return (n < 10 ? '0' : '') + n;
   }
 }

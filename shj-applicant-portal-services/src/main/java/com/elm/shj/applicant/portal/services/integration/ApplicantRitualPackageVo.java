@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) 2020 ELM. All rights reserved.
  */
-package com.elm.shj.applicant.portal.services.dto;
+package com.elm.shj.applicant.portal.services.integration;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicantRitualSeasonVo {
+public class ApplicantRitualPackageVo {
     private Long id;
     private String applicantUin;
     private Date startDate;

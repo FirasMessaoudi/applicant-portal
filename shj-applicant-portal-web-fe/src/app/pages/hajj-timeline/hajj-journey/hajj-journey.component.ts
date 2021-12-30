@@ -6,7 +6,7 @@ import * as moment_ from 'moment-hijri';
 import {LookupService} from "@core/utilities/lookup.service";
 import {Lookup} from "@model/lookup.model";
 import {hijriMonth} from "@shared/helpers/hijri-month.helper";
-import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
+import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 
 const momentHijri = moment_;
 
@@ -19,7 +19,7 @@ export class HajjJourneyComponent implements OnInit {
 
   private ritualSteps: CompanyRitualMainDataStep[] = [];
   ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string; }[];
-  selectedRitualSeason: CompanyRitualSeasonLite;
+  selectedApplicantRitual: ApplicantRitualPackage;
   lookupService: LookupService;
   ritualStepsLookups: Lookup[] = [];
 
@@ -29,9 +29,9 @@ export class HajjJourneyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLookups();
-    this.selectedRitualSeason = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
 
-    if (!this.selectedRitualSeason) {
+    if (!this.selectedApplicantRitual) {
       this.loadApplicantRitualFromService();
     } else {
       this.loadRitualSteps();
@@ -50,7 +50,7 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadRitualSteps() {
-    this.ritualTimelineService.loadRitualSteps(this.selectedRitualSeason.id).subscribe(
+    this.ritualTimelineService.loadRitualSteps(this.selectedApplicantRitual?.companyRitualSeasonId).subscribe(
       result => {
         this.ritualSteps = result;
         this.ritualStepsMap = groupByArray(this.ritualSteps);
@@ -67,7 +67,7 @@ export class HajjJourneyComponent implements OnInit {
 
   loadApplicantRitualFromService() {
     this.userService.selectedApplicantRitual.subscribe(season => {
-      this.selectedRitualSeason = season;
+      this.selectedApplicantRitual = season;
       this.loadRitualSteps();
     })
   }

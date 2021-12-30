@@ -90,8 +90,8 @@ public class IntegrationService {
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
     private final String APPLICANT_PREFERRED_LANGUAGE = "/ws/applicant/language";
     private final String CHAT_LIST_URL = "/ws/chat-contact/chat-list";
-    private final String APPLICANT_PACKAGE_RITUAL_URL = "/ws/applicant/applicant-ritual-seasons/";
-    private final String LATEST_APPLICANT_RITUAL_SEASON__URL = "/ws/applicant/latest-ritual-season/";
+    private final String APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/";
+    private final String LATEST_APPLICANT_RITUAL_PACKAGE__URL = "/ws/applicant/ritual-package/latest/";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -351,10 +351,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public ApplicantHealthLiteDto loadApplicantHealthDetails(String uin, Long ritualId) {
+    public ApplicantHealthLiteDto loadApplicantHealthDetails(String uin, Long applicantPackageId) {
         WsResponse<ApplicantHealthLiteDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_HEALTH_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(APPLICANT_HEALTH_DETAILS_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantHealthLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -364,10 +364,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public ApplicantMainDataDto loadUserMainData(String uin, long ritualId) {
+    public ApplicantMainDataDto loadUserMainData(String uin, long applicantPackageId) {
         WsResponse<ApplicantMainDataDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_MAIN_DATA_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(APPLICANT_MAIN_DATA_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantMainDataDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -400,10 +400,10 @@ public class IntegrationService {
      *
      * @return
      */
-    public ApplicantPackageDetailsDto loadApplicantPackageDetails(String uin, long companyRitualSeasonId) {
+    public ApplicantPackageDetailsDto loadApplicantPackageDetails(String uin, long applicantPackageId) {
         WsResponse<ApplicantPackageDetailsDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_PACKAGE_URL + "/" + uin + "/" + companyRitualSeasonId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(APPLICANT_PACKAGE_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantPackageDetailsDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1023,10 +1023,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public ApplicantRitualDto findApplicantRitual(String uin, long companyRitualId) {
+    public ApplicantRitualDto findApplicantRitual(String uin, long applicantPackageId) {
         WsResponse<ApplicantRitualDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_RITUAL_URL + "/" + uin + "/" + companyRitualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(APPLICANT_RITUAL_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantRitualDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1109,11 +1109,11 @@ public class IntegrationService {
      * @param uin
      * @return
      */
-    public List<ApplicantRitualSeasonVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
-        WsResponse<List<ApplicantRitualSeasonVo>> wsResponse = null;
+    public List<ApplicantRitualPackageVo> findApplicantRitualPackageByUin(long uin) {
+        WsResponse<List<ApplicantRitualPackageVo>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_PACKAGE_RITUAL_URL + uin, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<ApplicantRitualSeasonVo>>>() {
+            wsResponse = callIntegrationWs(APPLICANT_RITUAL_PACKAGE_URL + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantRitualPackageVo>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get list of applicant ritual", e);
@@ -1162,11 +1162,11 @@ public class IntegrationService {
      * @param uin
      * @return
      */
-    public ApplicantRitualSeasonVo findLatestApplicantRitualSeason(long uin) {
-        WsResponse<ApplicantRitualSeasonVo> wsResponse = null;
+    public ApplicantRitualPackageVo findLatestApplicantRitualPackageByUin(long uin) {
+        WsResponse<ApplicantRitualPackageVo> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(LATEST_APPLICANT_RITUAL_SEASON__URL + uin, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<ApplicantRitualSeasonVo>>() {
+            wsResponse = callIntegrationWs(LATEST_APPLICANT_RITUAL_PACKAGE__URL + uin, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantRitualPackageVo>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get list of applicant ritual", e);

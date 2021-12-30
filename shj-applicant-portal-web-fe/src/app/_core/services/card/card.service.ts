@@ -47,8 +47,8 @@ export class CardService {
    *
    * @return {Observable<ApplicantMainData>} The card identified by cardId.
    */
-  findMainProfile(ritualId): Observable<ApplicantMainData> {
-    return this.http.get<any>('/core/api/users/main-data/' + ritualId).pipe(
+  findMainProfile(applicantPackageId): Observable<ApplicantMainData> {
+    return this.http.get<any>('/core/api/users/main-data/' + applicantPackageId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -59,8 +59,8 @@ export class CardService {
   }
 
 
-  findPackageDetails(companyRitualSeasonId): Observable<ApplicantPackageDetails> {
-    return this.http.get<any>('/core/api/users/package/details/' + companyRitualSeasonId).pipe(
+  findPackageDetails(applicantPackageId): Observable<ApplicantPackageDetails> {
+    return this.http.get<any>('/core/api/users/package/details/' + applicantPackageId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -75,8 +75,8 @@ export class CardService {
    *
    * @return {Observable<ApplicantHealth>}
    */
-  findHealthDetails(ritualId: number): Observable<ApplicantHealth> {
-    return this.http.get<any>('/core/api/users/health/' + ritualId).pipe(
+  findHealthDetails(applicantPackageId: number): Observable<ApplicantHealth> {
+    return this.http.get<any>('/core/api/users/health/' + applicantPackageId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -91,8 +91,8 @@ export class CardService {
    *
    * @return {Observable<ApplicantRitualCard>}
    */
-  findCardDetails(ritualId: number): Observable<ApplicantRitualCard> {
-    return this.http.get<any>('/core/api/users/details/' + ritualId).pipe(
+  findCardDetails(applicantPackageId: number): Observable<ApplicantRitualCard> {
+    return this.http.get<any>('/core/api/users/details/' + applicantPackageId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -151,8 +151,8 @@ export class CardService {
    *
    * @return {Observable<CompanyRitualMainDataStep>}
    */
-  findTafweejDetails(ritualId: number): Observable<CompanyRitualMainDataStep[]> {
-    return this.http.get<any>('/core/api/users/tafweej/' + ritualId).pipe(
+  findTafweejDetails(companyRitualSeasonId: number): Observable<CompanyRitualMainDataStep[]> {
+    return this.http.get<any>('/core/api/users/tafweej/' + companyRitualSeasonId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -163,8 +163,8 @@ export class CardService {
     );
   }
 
-  findGroupLeadersDetails(ritualId: number): Observable<GroupLeader[]> {
-    return this.http.get<any>('/core/api/users/company_staff/' + ritualId).pipe(
+  findGroupLeadersDetails(companyRitualSeasonId: number): Observable<GroupLeader[]> {
+    return this.http.get<any>('/core/api/users/company_staff/' + companyRitualSeasonId).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);

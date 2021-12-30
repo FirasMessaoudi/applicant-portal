@@ -8,6 +8,7 @@ import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.integration.ApplicantRitualPackageVo;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -135,76 +136,46 @@ public class UserManagementController {
     /**
      * get user main data by uin and ritualId
      */
-    @GetMapping("/main-data/{ritualId}")
-    public ApplicantMainDataDto findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
+    @GetMapping("/main-data/{applicantPackageId}")
+    public ApplicantMainDataDto findUserMainDataByUin(@PathVariable long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findUserMainDataByUin(loggedInUserUin, ritualId).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
-    }
-
-    /**
-     * get user ritual seasons by uin
-     */
-    @GetMapping("/ritual-seasons")
-    public List<Integer> findApplicantRitualSeasonsByUin() {
-        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
-        return userService.findApplicantRitualSeasons(loggedInUserUin);
-    }
-
-    /**
-     * get user ritual lite by seasons and uin
-     */
-    @GetMapping("/ritual-lite/{season}")
-    public List<ApplicantRitualLiteDto> findApplicantRitualByUinAndSeasons(@PathVariable int season) {
-        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
-        return userService.findApplicantRitualByUinAndSeasons(loggedInUserUin, season);
-    }
-
-    /**
-     * get user latest ritual lite by uin
-     */
-    @GetMapping("/ritual-lite/latest")
-    public ApplicantRitualLiteDto findApplicantRitualByUinAndSeasons() {
-        JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUserUin = ((User) loggedInUser.getPrincipal()).getUsername();
-        return userService.findApplicantRitualLatestByUin(loggedInUserUin);
+        return userService.findUserMainDataByUin(loggedInUserUin, applicantPackageId).orElseThrow(() -> new UsernameNotFoundException("No user found with Uin " + loggedInUserUin));
     }
 
     /**
      * get user health details by uin and ritual ID
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param applicantPackageId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/health/{ritualId}")
-    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/health/{applicantPackageId}")
+    public ApplicantHealthLiteDto findApplicantHealthDetailsByUinAndRitualId(@PathVariable Long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantHealthDetailsByUinAndRitualId(loggedInUserUin, ritualId).get();
+        return userService.findApplicantHealthDetailsByUinAndApplicantPackageId(loggedInUserUin, applicantPackageId).get();
     }
 
     /**
      * get user card details by his uin and ritual ID
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param applicantPackageId       the ID of the selected applicant's package
      * @param authentication the authenticated user
      */
-    @GetMapping("/details/{ritualId}")
-    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/details/{applicantPackageId}")
+    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(@PathVariable Long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, applicantPackageId);
     }
 
     /**
      * get user package details by his uin and companyRitualSeasonId
      *
-     * @param companyRitualSeasonId the ID of the selected applicant's company Ritual Season Id
+     * @param applicantPackageId the ID of the selected applicant's package Id
      * @param authentication        the authenticated user
      */
-    @GetMapping("/package/details/{companyRitualSeasonId}")
-    public ApplicantPackageDetailsDto findApplicantPackageDetails(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    @GetMapping("/package/details/{applicantPackageId}")
+    public ApplicantPackageDetailsDto findApplicantPackageDetails(@PathVariable Long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantPackageDetails(loggedInUserUin, companyRitualSeasonId);
+        return userService.findApplicantPackageDetails(loggedInUserUin, applicantPackageId);
     }
 
     /**
@@ -536,25 +507,25 @@ public class UserManagementController {
     /**
      * get user Tafweej details by uin and ritual ID
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param companyRitualSeasonId       the ID of the selected companyRitualSeason
      * @param authentication the authenticated user
      */
-    @GetMapping("/tafweej/{ritualId}")
-    public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/tafweej/{companyRitualSeasonId}")
+    public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        return userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, companyRitualSeasonId);
     }
 
     /**
      * get user Group Leaders details by uin and ritual ID
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/company_staff/{ritualId}")
-    public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndSeasonId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/company_staff/{companyRitualSeasonId}")
+    public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, ritualId);
+        return userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, companyRitualSeasonId);
     }
 
     /**
@@ -578,21 +549,21 @@ public class UserManagementController {
     }
 
     /**
-     * get user latest ritual season lite by uin
+     * get user latest applicant ritual season lite by uin
      */
-    @GetMapping("/applicant-ritual-season/latest")
-    public ApplicantRitualSeasonVo findLatestApplicantRitualSeason(Authentication authentication) {
+    @GetMapping("/ritual-package/latest")
+    public ApplicantRitualPackageVo findLatestApplicantRitualPackage(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findLatestApplicantRitualSeason(Long.parseLong(loggedInUserUin));
     }
 
     /**
-     * get all ritual season lite by uin
+     * get all applicant ritual season by uin
      *
      * @param authentication the authenticated user
      */
-    @GetMapping("/applicant-ritual-season")
-    public List<ApplicantRitualSeasonVo> findAllApplicantRitualSeason(Authentication authentication) {
+    @GetMapping("/ritual-package")
+    public List<ApplicantRitualPackageVo> findApplicantRitualPackage(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findApplicantPackageAndRitualSeasonByUin(Long.parseLong(loggedInUserUin));
     }

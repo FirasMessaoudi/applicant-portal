@@ -10,7 +10,7 @@ import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
-import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import com.elm.shj.applicant.portal.services.integration.ApplicantRitualPackageVo;
 import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -408,8 +408,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return smsSent || emailSent;
     }
 
-    public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long ritualId) {
-        return Optional.ofNullable(integrationService.loadUserMainData(uin, ritualId));
+    public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long applicantPackageId) {
+        return Optional.ofNullable(integrationService.loadUserMainData(uin, applicantPackageId));
     }
 
     public List<Integer> findApplicantRitualSeasons(String uin) {
@@ -476,7 +476,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadApplicantRitualLatestByUin(uin);
     }
 
-    public Optional<ApplicantHealthLiteDto> findApplicantHealthDetailsByUinAndRitualId(String uin, Long ritualId) {
+    public Optional<ApplicantHealthLiteDto> findApplicantHealthDetailsByUinAndApplicantPackageId(String uin, Long ritualId) {
         return Optional.ofNullable(integrationService.loadApplicantHealthDetails(uin, ritualId));
     }
 
@@ -484,8 +484,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadApplicantCardDetails(uin, ritualId);
     }
 
-    public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long companyRitualSeasonId) {
-        ApplicantPackageDetailsDto applicantPackageDetails =  integrationService.loadApplicantPackageDetails(uin, companyRitualSeasonId);
+    public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long applicantPackageId) {
+        ApplicantPackageDetailsDto applicantPackageDetails =  integrationService.loadApplicantPackageDetails(uin, applicantPackageId);
         String pattern = "MM-dd-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Collections.sort(applicantPackageDetails.getApplicantPackageCaterings(), new Comparator<ApplicantPackageCateringDto>() {
@@ -546,8 +546,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public ApplicantRitualDto findApplicantRitual(String uin) {
-        CompanyRitualSeasonLiteDto companyRitualSeason = findLatestApplicantRitualSeasonByUin(uin);
-        return integrationService.findApplicantRitual(uin, companyRitualSeason.getId());
+        ApplicantRitualPackageVo applicantRitualPackageVo = findLatestApplicantRitualSeason(Long.parseLong(uin));
+        return integrationService.findApplicantRitual(uin, applicantRitualPackageVo.getId());
     }
 
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {
@@ -558,12 +558,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         integrationService.updatePreferredLanguage(uin, lang);
     }
 
-    public List<ApplicantRitualSeasonVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
-        return integrationService.findApplicantPackageAndRitualSeasonByUin(uin);
+    public List<ApplicantRitualPackageVo> findApplicantPackageAndRitualSeasonByUin(long uin) {
+        return integrationService.findApplicantRitualPackageByUin(uin);
     }
 
-    public ApplicantRitualSeasonVo findLatestApplicantRitualSeason(long uin) {
-        return integrationService.findLatestApplicantRitualSeason(uin);
+    public ApplicantRitualPackageVo findLatestApplicantRitualSeason(long uin) {
+        return integrationService.findLatestApplicantRitualPackageByUin(uin);
     }
 }
 

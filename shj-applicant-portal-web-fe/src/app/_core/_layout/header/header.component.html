@@ -4,9 +4,9 @@
     <div>
       <svg-icon class="mr-3" styleClass="fa" icon="lightbulb-exclamation"></svg-icon>
       <span>{{'header.alert_text' | translate}}</span>
-      {{selectedRitualSeason?.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, selectedRitualSeason?.ritualSeason?.ritualTypeCode) : ""}}
+      {{selectedApplicantRitual?.typeCode ? lookupService().localizedLabel(ritualTypes, selectedApplicantRitual?.typeCode) : ""}}
       <span>{{'header.season' | translate}}</span>
-      {{selectedRitualSeason?.ritualSeason?.seasonYear}}
+      {{selectedApplicantRitual?.seasonYear}}
     </div>
     <a class="reset-btn noArrow py-1 px-3" (click)="backToLatestRitualSeason()">
       <span>{{'header.alert_button_text' | translate}}</span>
@@ -63,11 +63,11 @@
               </h6>
               <small class="mb-2">
                 <a class="text-black-50" (click)="open(showEditRitual)" href="javascript:void(0)">
-                  {{selectedRitualSeason?.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, selectedRitualSeason?.ritualSeason?.ritualTypeCode) : ""}}
+                  {{selectedApplicantRitual?.typeCode ? lookupService().localizedLabel(ritualTypes, selectedApplicantRitual?.typeCode) : ""}}
                   <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
-                  {{selectedRitualSeason?.ritualSeason?.seasonYear}}
-                  ({{selectedRitualSeason?.ritualSeason?.seasonStart | hijriDateFormat}}
-                  - {{selectedRitualSeason?.ritualSeason?.seasonEnd | hijriDateFormat}})
+                  {{selectedApplicantRitual?.seasonYear}}
+                  ({{ getHijriDate(selectedApplicantRitual?.startDate,selectedApplicantRitual?.seasonYear) | hijriDateFormat}}
+                  - {{getHijriDate(selectedApplicantRitual?.endDate,selectedApplicantRitual?.seasonYear) | hijriDateFormat}})
                 </a>
               </small>
             </div>
@@ -152,14 +152,14 @@
   </div>
   <div class="modal-body">
     <table class="w-100">
-      <tr class="table-row" *ngFor="let index = index; let s of seasons">
+      <tr class="table-row" *ngFor="let index = index; let s of applicantRitualPackages">
         <td class="ritual-season p-lg-3" (click)="selectSeason(s.id)">
           <div class="d-flex justify-content-between align-items-center">
             <div class="ml-3 ritual-item">
-              {{s.ritualSeason?.ritualTypeCode ? lookupService().localizedLabel(ritualTypes, s.ritualSeason?.ritualTypeCode) : ""}}
+              {{s.typeCode ? lookupService().localizedLabel(ritualTypes, s?.typeCode) : ""}}
               <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
-              {{s.ritualSeason?.seasonYear}}
-              <span *ngIf="s.ritualSeason?.seasonYear === currentHijriYear">({{'header.current_year' | translate}}
+              {{s?.seasonYear}}
+              <span *ngIf="s?.seasonYear === currentHijriYear">({{'header.current_year' | translate}}
                 )
               </span>
             </div>
@@ -169,7 +169,7 @@
           </div>
           <div class="d-flex justify-content-between align-items-center">
             <small class="ml-3 ">
-              ({{s?.ritualSeason?.seasonStart | hijriDateFormat}} - {{s?.ritualSeason?.seasonEnd | hijriDateFormat}})
+              ({{ getHijriDate(s?.startDate,s?.seasonYear) | hijriDateFormat}} - {{getHijriDate(s?.endDate, s?.seasonYear) | hijriDateFormat}})
             </small>
           </div>
 

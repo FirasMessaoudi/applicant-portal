@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {CardService, UserService} from "@core/services";
-import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
@@ -8,6 +7,7 @@ import {LookupService} from "@core/utilities/lookup.service";
 import {ApplicantRitualCard} from "@model/applicant-ritual-card";
 import {CountryLookup} from "@model/country-lookup.model";
 import {Lookup} from "@model/lookup.model";
+import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 
 @Component({
   selector: 'app-badge',
@@ -16,7 +16,7 @@ import {Lookup} from "@model/lookup.model";
 })
 export class BadgeComponent implements OnInit {
 
-  selectedApplicantRitual: ApplicantRitualLite;
+  selectedApplicantRitual: ApplicantRitualPackage;
   cardDetails: ApplicantRitualCard;
   countries: CountryLookup[] = [];
   ritualTypes: Lookup[] = [];

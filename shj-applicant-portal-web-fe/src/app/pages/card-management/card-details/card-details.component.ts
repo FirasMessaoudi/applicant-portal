@@ -10,13 +10,13 @@ import {LookupService} from "@core/utilities/lookup.service";
 import {CountryLookup} from "@model/country-lookup.model";
 import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {Language} from "@model/enum/language.enum";
-import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {ApplicantHealth} from "@model/applicant-health.model";
 import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
 import {CardStatus} from "@model/enum/card-status.enum";
 import {DigitalIdStatus} from "@model/enum/digital-id-status.enum";
+import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 
 @Component({
   selector: 'app-card-details',
@@ -49,7 +49,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   cardStatuses: Lookup[];
   immunizations: Lookup[];
   languageNativeName = Language;
-  selectedApplicantRitual: ApplicantRitualLite;
+  selectedApplicantRitual: ApplicantRitualPackage;
   activeId = 1;
   tabsHeader = [
     "card-management.main_details",
@@ -110,7 +110,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadGroupLeaders() {
-    this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual.id).subscribe(data => {
+    this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual.companyRitualSeasonId).subscribe(data => {
       if (data) {
         this.groupLeaders = data;
       } else {

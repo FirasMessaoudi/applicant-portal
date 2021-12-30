@@ -8,7 +8,7 @@ import {UserStatus} from "@model/user-status.model";
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {UserContacts} from "@model/UserContacts.model";
 import {CookieService} from "ngx-cookie-service";
-import {CompanyRitualSeasonLite} from "@model/company-ritual-season-lite.model";
+import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -225,29 +225,12 @@ export class UserService {
       }));
   }
 
-  /**
-   * List all ritual seasons per applicant
-   *
-   * @return {Observable} The returned season list.
-   */
-  listRitualSeasons(): Observable<CompanyRitualSeasonLite[]> {
-    return this.http.get<CompanyRitualSeasonLite[]>('/core/api/users/ritual-season');
+  getListApplicantRitualPackage(): Observable<ApplicantRitualPackage[]>{
+    return this.http.get<ApplicantRitualPackage[]>('/core/api/users/ritual-package')
   }
 
-  getLatestRitualSeason(): Observable<CompanyRitualSeasonLite> {
-    return this.http.get<CompanyRitualSeasonLite>('/core/api/users/ritual-season/latest');
-  }
-
-  getApplicantSeason(): Observable<number []> {
-    return this.http.get<number []>('/core/api/users/ritual-seasons');
-  }
-
-  getApplicantRitualLiteBySeason(season : number): Observable<ApplicantRitualLite []> {
-    return this.http.get<ApplicantRitualLite []>('/core/api/users/ritual-lite/'+season);
-  }
-
-  getLatestApplicantRitualLite(): Observable<ApplicantRitualLite> {
-    return this.http.get<ApplicantRitualLite>('/core/api/users/ritual-lite/latest');
+  getLatestApplicantRitualPackage(): Observable<ApplicantRitualPackage>{
+    return this.http.get<ApplicantRitualPackage>('/core/api/users/ritual-package/latest')
   }
 
 
