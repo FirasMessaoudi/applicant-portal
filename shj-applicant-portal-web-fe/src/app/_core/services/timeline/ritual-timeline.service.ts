@@ -11,10 +11,10 @@ import {Lookup} from "@model/lookup.model";
 export class RitualTimelineService{
   private baseUrl:string
   private dummyUrl:string= '/core/api/users/tafweej/'
-  public ritualStepDescriptionSubject: BehaviorSubject<any> = new BehaviorSubject<any>({});
+  public ritualStepSubject: BehaviorSubject<any> = new BehaviorSubject<any>({});
 
   constructor(private http:HttpClient) {
-    this.ritualStepDescriptionSubject.asObservable()
+    this.ritualStepSubject.asObservable()
   }
 
   loadRitualSteps(ritualId: number):Observable<CompanyRitualMainDataStep[]> {
@@ -37,8 +37,8 @@ export class RitualTimelineService{
     return this.http.get<any>('/core/api/lookup/ritual-type/list');
   }
 
-  getRitualStepDescriptionSubject(data: string ){
-    this.ritualStepDescriptionSubject.next(data)
+  getRitualStepSubject(data: any ){
+    this.ritualStepSubject.next(data)
   }
 
 }

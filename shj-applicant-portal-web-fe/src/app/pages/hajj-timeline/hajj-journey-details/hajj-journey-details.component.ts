@@ -12,13 +12,17 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class HajjJourneyDetailsComponent implements OnInit {
 
   ritualStepDescription:string
+  stepDay:string
+  stepMonth:string
 
   constructor(  private location: Location, private ritualTimelineService: RitualTimelineService,private route: ActivatedRoute,
   private router: Router) { }
 
   ngOnInit(): void {
-    this.ritualTimelineService.ritualStepDescriptionSubject?.subscribe(data=>{
-      this.ritualStepDescription=data;
+    this.ritualTimelineService.ritualStepSubject?.subscribe(data=>{
+      this.ritualStepDescription=data.stepDescription;
+      this.stepDay = data.stepDay;
+      this.stepMonth = data.stepMonth;
     })
   }
   goBack() {
