@@ -50,7 +50,7 @@ public class ChatContactWsController {
      * @param authentication the authenticated user
      * @return the list of chat contacts
      */
-    @GetMapping("/{ritualId}")
+    @GetMapping("/list/{ritualId}")
     public ResponseEntity<WsResponse<?>> findChatContactsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return ResponseEntity.ok(
@@ -66,14 +66,37 @@ public class ChatContactWsController {
     @PostMapping(value = "/create/{ritualId}")
     public ResponseEntity<WsResponse<?>> createApplicant(
             @PathVariable Long ritualId, @RequestBody ApplicantChatContactLiteDto applicantChatContact,
-
             Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        applicantChatContact.setApplicantUin(loggedInUserUin);
+        ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
+        if (applicantChatContactLiteDto.getContactUin() == null)
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_ALREADY_EXIST.getCode()).build()).build());
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(chatContactService.createApplicantChatContact(ritualId, applicantChatContact)).build());
+                .body(applicantChatContactLiteDto).build());
+    }
+
+    /**
+     * Creates a new chat contact of type applicant
+     *
+     * @return savedContact saved one
+     */
+    @GetMapping(value = "/find/{applicantUin}/{contactUin}")
+    public ResponseEntity<WsResponse<?>> findApplicantChatByApplicantUinAndContactUin(
+            @PathVariable String applicantUin,
+            @PathVariable String contactUin,
+            Authentication authentication) {
+        ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.findApplicantChatByApplicantUinAndContactUin(applicantUin, contactUin);
+        if (applicantChatContactLiteDto.getContactUin() == null)
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(applicantChatContactLiteDto).build());
     }
 
 
@@ -166,10 +189,25 @@ public class ChatContactWsController {
 
     }
 
-    @PostMapping("/save-chat-message")
-    public ResponseEntity<WsResponse<?>> saveSenderMessage(Authentication authentication, @RequestBody ChatMessageDto chatMessage) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        log.debug(chatMessage.getText());
+    @GetMapping("/messages/{contactId}")
+    public ResponseEntity<WsResponse<?>> listMessages(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                      @RequestParam(value = "limit", defaultValue = "0") int limit,
+                                                      @PathVariable long contactId) {
+        List<ChatMessageDto> chatMessageList = chatMessageService.listMessages(page, limit, contactId);
+
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(chatMessageList).build());
+
+
+    }
+
+    @PostMapping("/save-chat-message/{senderId}/{receiverId}")
+    public ResponseEntity<WsResponse<?>> saveSenderMessage(@RequestBody ChatMessageDto chatMessage, @PathVariable long senderId, @PathVariable long receiverId) {
+        log.debug(Long.toString(chatMessage.getReceiver().getId()));
+        chatMessage.getSender().setId(senderId);
+        chatMessage.getReceiver().setId(receiverId);
         ChatMessageDto Message = chatMessageService.saveMessage(chatMessage);
         return ResponseEntity.ok(WsResponse
                 .builder()

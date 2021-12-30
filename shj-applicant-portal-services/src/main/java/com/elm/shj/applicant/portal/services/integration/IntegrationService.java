@@ -1138,6 +1138,20 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public List<ChatMessageDto> listMessages(int page, int limit, long contactId) {
+        WsResponse<List<ChatMessageDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/messages/" + contactId + "?page=" + page + "&limit=" + limit,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ChatMessageDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get notification names", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
     /**
      * save user chat message.
      *
@@ -1174,4 +1188,19 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
+    public ApplicantChatContactLiteDto findApplicantChatContact(String applicantUin, String contactUin) {
+        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/find/" + applicantUin + "/" + contactUin,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get list of applicant ritual", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
 }

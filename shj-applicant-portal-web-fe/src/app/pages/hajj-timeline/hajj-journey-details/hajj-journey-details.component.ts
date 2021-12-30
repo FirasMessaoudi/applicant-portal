@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import {Location} from "@angular/common";
+import {RitualTimelineService} from "@core/services/timeline/ritual-timeline.service";
+import {ActivatedRoute, Router} from "@angular/router";
+
 
 @Component({
   selector: 'app-hajj-journey-details',
@@ -8,12 +11,22 @@ import {Location} from "@angular/common";
 })
 export class HajjJourneyDetailsComponent implements OnInit {
 
-  constructor(  private location: Location,) { }
+  ritualStepDescription:string
+  stepDay:string
+  stepMonth:string
+
+  constructor(  private location: Location, private ritualTimelineService: RitualTimelineService,private route: ActivatedRoute,
+  private router: Router) { }
 
   ngOnInit(): void {
+    this.ritualTimelineService.ritualStepSubject?.subscribe(data=>{
+      this.ritualStepDescription=data.stepDescription;
+      this.stepDay = data.stepDay;
+      this.stepMonth = data.stepMonth;
+    })
   }
   goBack() {
-    this.location.back();
+    this.router.navigate(['/hajj-journey/list'], {replaceUrl: true});
   }
 
 }

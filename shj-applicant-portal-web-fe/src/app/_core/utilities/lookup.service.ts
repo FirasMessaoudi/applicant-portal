@@ -30,6 +30,13 @@ export class LookupService {
     return item?.description;
   }
 
+  localizedSummary(lookupItems: Lookup[], code: string): string {
+    let item: Lookup = lookupItems.find(type => type.code === code && this.i18nService.language.startsWith(type.lang));
+    if (!item)
+      item = lookupItems.find(type => type.code === code && type.lang.startsWith(defaultLang));
+    return item?.summary;
+  }
+
   localizedNotificationDescription(lookupItems: Lookup[], code: string): string {
     let item: any = lookupItems.find(type => type.code === code && this.i18nService.language.startsWith(type.lang));
     if (!item)

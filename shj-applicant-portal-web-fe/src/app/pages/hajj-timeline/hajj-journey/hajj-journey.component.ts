@@ -7,6 +7,7 @@ import {LookupService} from "@core/utilities/lookup.service";
 import {Lookup} from "@model/lookup.model";
 import {hijriMonth} from "@shared/helpers/hijri-month.helper";
 import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
+import {ActivatedRoute, Router} from "@angular/router";
 
 const momentHijri = moment_;
 
@@ -23,7 +24,8 @@ export class HajjJourneyComponent implements OnInit {
   lookupService: LookupService;
   ritualStepsLookups: Lookup[] = [];
 
-  constructor(private ritualTimelineService: RitualTimelineService, private userService: UserService, lookupService: LookupService) {
+  constructor(private ritualTimelineService: RitualTimelineService, private userService: UserService, lookupService: LookupService,  private route: ActivatedRoute,
+              private router: Router) {
     this.lookupService = lookupService;
   }
 
@@ -71,6 +73,16 @@ export class HajjJourneyComponent implements OnInit {
       this.loadRitualSteps();
     })
   }
+
+  showDetails(stepCode: string, stepDay: any , stepMonth: any){
+
+
+    let description = this.lookupService.localizedSummary(this.ritualStepsLookups, stepCode)
+    let step = {stepDescription:description, stepDay:stepDay , stepMonth:stepMonth }
+      this.ritualTimelineService.getRitualStepSubject(step)
+    this.router.navigate(['/hajj-journey/details'], {replaceUrl: true});
+  }
+
 }
 
 function groupByArray(xs: CompanyRitualMainDataStep[]) {

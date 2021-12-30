@@ -4,7 +4,7 @@ export class Lookup {
   lang: string;
   label: string;
   description: string;
-
+  summary: string;
   constructor() {
 
   }
