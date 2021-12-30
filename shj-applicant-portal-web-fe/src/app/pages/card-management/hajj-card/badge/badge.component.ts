@@ -16,7 +16,7 @@ import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 })
 export class BadgeComponent implements OnInit {
 
-  selectedApplicantRitual: ApplicantRitualPackage;
+  selectedApplicantRitualPackage: ApplicantRitualPackage;
   cardDetails: ApplicantRitualCard;
   countries: CountryLookup[] = [];
   ritualTypes: Lookup[] = [];
@@ -33,13 +33,13 @@ export class BadgeComponent implements OnInit {
   ngOnInit(): void {
     this.loadLookups();
 
-    this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
-      this.selectedApplicantRitual = selectedApplicantRitual;
+    this.userService.selectedApplicantRitualPackage.subscribe(selectedApplicantRitualPackage => {
+      this.selectedApplicantRitualPackage = selectedApplicantRitualPackage;
     });
 
-    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+    this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));
 
-    this.cardService.findCardDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+    this.cardService.findCardDetails(this.selectedApplicantRitualPackage?.applicantPackageId).subscribe(data => {
       if (data) {
         this.cardDetails = data;
       } else {

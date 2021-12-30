@@ -49,7 +49,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   cardStatuses: Lookup[];
   immunizations: Lookup[];
   languageNativeName = Language;
-  selectedApplicantRitual: ApplicantRitualPackage;
+  selectedApplicantRitualPackage: ApplicantRitualPackage;
   activeId = 1;
   tabsHeader = [
     "card-management.main_details",
@@ -71,9 +71,9 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
-      this.selectedApplicantRitual = selectedApplicantRitual;
-      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+    this.userService.selectedApplicantRitualPackage.subscribe(selectedApplicantRitualPackage => {
+      this.selectedApplicantRitualPackage = selectedApplicantRitualPackage;
+      this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));
 
       this.loadLookups();
       this.loadUserDetails();
@@ -82,9 +82,9 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadUserDetails() {
-    if (this.selectedApplicantRitual) {
+    if (this.selectedApplicantRitualPackage) {
       this.loading = true;
-      this.cardService.findMainProfile(this.selectedApplicantRitual?.id).subscribe(data => {
+      this.cardService.findMainProfile(this.selectedApplicantRitualPackage?.applicantPackageId).subscribe(data => {
         if (data) {
           this.applicant = data;
         } else {
@@ -95,11 +95,12 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
       });
 
       this.applicantPackage = null;
+      this.healthDetails = null;
     }
   }
 
   loadTafweejDetails() {
-    this.cardService.findTafweejDetails(this.selectedApplicantRitual.id).subscribe(data => {
+    this.cardService.findTafweejDetails(this.selectedApplicantRitualPackage.companyRitualSeasonId).subscribe(data => {
       if (data) {
         this.tafweejDetails = data;
       } else {
@@ -110,7 +111,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadGroupLeaders() {
-    this.cardService.findGroupLeadersDetails(this.selectedApplicantRitual.companyRitualSeasonId).subscribe(data => {
+    this.cardService.findGroupLeadersDetails(this.selectedApplicantRitualPackage.companyRitualSeasonId).subscribe(data => {
       if (data) {
         this.groupLeaders = data;
       } else {
@@ -123,7 +124,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   loadUserPackageDetails() {
     if (this.applicantPackage == null) {
 
-      this.cardService.findPackageDetails(this.selectedApplicantRitual.id).subscribe(data => {
+      this.cardService.findPackageDetails(this.selectedApplicantRitualPackage.applicantPackageId).subscribe(data => {
         if (data) {
           this.applicantPackage = data;
         } else {
@@ -137,7 +138,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
   loadHealthDetails() {
     if (this.healthDetails == null) {
-      this.cardService.findHealthDetails(this.selectedApplicantRitual?.id).subscribe(data => {
+      this.cardService.findHealthDetails(this.selectedApplicantRitualPackage?.applicantPackageId).subscribe(data => {
         if (data) {
           this.healthDetails = data;
         } else {

@@ -11,6 +11,7 @@ import com.elm.shj.applicant.portal.orm.repository.UserRepository;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.generic.GenericService;
 import com.elm.shj.applicant.portal.services.integration.ApplicantRitualPackageVo;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -547,7 +548,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantRitualDto findApplicantRitual(String uin) {
         ApplicantRitualPackageVo applicantRitualPackageVo = findLatestApplicantRitualSeason(Long.parseLong(uin));
-        return integrationService.findApplicantRitual(uin, applicantRitualPackageVo.getId());
+        return integrationService.findApplicantRitual(uin, applicantRitualPackageVo.getApplicantPackageId());
     }
 
     public ApplicantLiteDto findApplicantBasicDetailsByUin(String uin) {

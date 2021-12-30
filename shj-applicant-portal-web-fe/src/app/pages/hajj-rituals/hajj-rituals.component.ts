@@ -31,7 +31,7 @@ export class HajjRitualsComponent implements OnInit {
   transportationTypes: Lookup[] = [];
   ritualStepLabels = [];
   selectedMarker: Marker;
-  selectedApplicantRitual: ApplicantRitualPackage;
+  selectedApplicantRitualPackage: ApplicantRitualPackage;
   mapIsReady = false;
   @ViewChild('ritualStepDom') ritualStepDom: ElementRef;
   mapOptions: google.maps.MapOptions = {
@@ -56,9 +56,9 @@ export class HajjRitualsComponent implements OnInit {
   ngOnInit(): void {
     this.loadMapkey();
     this.loadLookups();
-    this.userService.selectedApplicantRitual.subscribe(season => {
-      this.selectedApplicantRitual = season;
-      this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+    this.userService.selectedApplicantRitualPackage.subscribe(season => {
+      this.selectedApplicantRitualPackage = season;
+      this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));
       this.findRitualSteps();
     });
   }
@@ -111,7 +111,7 @@ export class HajjRitualsComponent implements OnInit {
   }
 
   findRitualSteps() {
-    this.cardService.findTafweejDetails(this.selectedApplicantRitual?.companyRitualSeasonId).subscribe(data => {
+    this.cardService.findTafweejDetails(this.selectedApplicantRitualPackage?.companyRitualSeasonId).subscribe(data => {
       if (data) {
         const today = new Date();
         this.ritualsSteps = data;

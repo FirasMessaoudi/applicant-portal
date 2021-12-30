@@ -15,9 +15,9 @@ import {filter, map} from 'rxjs/operators';
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {Lookup} from "@model/lookup.model";
 import {ConfirmDialogService} from "@shared/components/confirm-dialog";
-import { NotificationService } from '@app/_core/services/notification/notification.service';
-import { NotificationCategory } from '@app/_shared/model/notification-category.model';
-import { UserNotificationCategoryPreference } from '@app/_shared/model/user-notification-category-preference.model';
+import {NotificationService} from '@app/_core/services/notification/notification.service';
+import {NotificationCategory} from '@app/_shared/model/notification-category.model';
+import {UserNotificationCategoryPreference} from '@app/_shared/model/user-notification-category-preference.model';
 
 @Component({
   selector: 'app-settings',
@@ -28,7 +28,7 @@ export class SettingsComponent implements OnInit {
   seasons: number [] = [];
   applicantRituals: ApplicantRitualLite [] = [];
   selectedSeason: number;
-  selectedApplicantRitual: ApplicantRitualLite;
+  selectedApplicantRitualPackage: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
   notificationsList: any[]=[];
   notificationsListLookup : any[]=[];
@@ -195,7 +195,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async updateNotificationCaotegoryPreference(){
-    
+
   }
 
   updateUserNotificationCategory(event, code: string){
@@ -208,7 +208,7 @@ export class SettingsComponent implements OnInit {
           console.log(notificationCategory);
           this.notificationService.updateNotificationCategory(notificationCategory).subscribe(result =>{
             console.log(result);
-          }) 
+          })
         }else{
           this.lookupService().localizedItemsByLang(this.notificationsListLookup).forEach(value=>{
             this.notificationService.updateNotificationCategory(new UserNotificationCategoryPreference(value.code, value.code == code ? event.target.checked :true)).subscribe(result =>{

@@ -112,7 +112,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           console.log('redirect to / page');
           clearInterval(this.timerInterval);
-          this.getLatestApplicantRitualLite();
+          this.getLatestApplicantRitualPackage();
           this.router.navigate(['/'], {replaceUrl: true});
         }
       }, error => {
@@ -228,17 +228,14 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 1000);
   }
 
-  getLatestApplicantRitualLite() {
-    localStorage.removeItem('selectedSeason');
-    localStorage.removeItem('selectedApplicantRitual');
-    localStorage.removeItem('selectedRitualSeason');
-
+  getLatestApplicantRitualPackage() {
+    localStorage.removeItem('selectedApplicantRitualPackage');
     this.userService.getLatestApplicantRitualPackage().subscribe(applicantRitualPackage => {
       if (applicantRitualPackage) {
-        this.otpStorage.ritualSeasonSubject.next(applicantRitualPackage);
+        this.otpStorage.applicantRitualPackageSubject.next(applicantRitualPackage);
         let applicantRitualPackageStr = JSON.stringify(applicantRitualPackage);
-        localStorage.setItem('selectedRitualSeason', applicantRitualPackageStr);
-        localStorage.setItem('latestRitualSeason', applicantRitualPackageStr);
+        localStorage.setItem('selectedApplicantRitualPackage', applicantRitualPackageStr);
+        localStorage.setItem('latestApplicantRitualPackage', applicantRitualPackageStr);
         this.userService.changeSelectedApplicantRitual(applicantRitualPackage);
       }
     });

@@ -1,5 +1,5 @@
 export class ApplicantRitualPackage {
-  id: number;
+  applicantPackageId: number;
   seasonYear: number;
   startDate: Date;
   endDate: Date;

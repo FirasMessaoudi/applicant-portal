@@ -20,7 +20,7 @@ export class HajjJourneyComponent implements OnInit {
 
   private ritualSteps: CompanyRitualMainDataStep[] = [];
   ritualStepsMap: { key: Date, value: CompanyRitualMainDataStep[], isActive: boolean, day: string, month: string; }[];
-  selectedApplicantRitual: ApplicantRitualPackage;
+  selectedApplicantRitualPackage: ApplicantRitualPackage;
   lookupService: LookupService;
   ritualStepsLookups: Lookup[] = [];
 
@@ -31,9 +31,9 @@ export class HajjJourneyComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadLookups();
-    this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
+    this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));
 
-    if (!this.selectedApplicantRitual) {
+    if (!this.selectedApplicantRitualPackage) {
       this.loadApplicantRitualFromService();
     } else {
       this.loadRitualSteps();
@@ -52,7 +52,7 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadRitualSteps() {
-    this.ritualTimelineService.loadRitualSteps(this.selectedApplicantRitual?.companyRitualSeasonId).subscribe(
+    this.ritualTimelineService.loadRitualSteps(this.selectedApplicantRitualPackage?.companyRitualSeasonId).subscribe(
       result => {
         this.ritualSteps = result;
         this.ritualStepsMap = groupByArray(this.ritualSteps);
@@ -68,8 +68,8 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadApplicantRitualFromService() {
-    this.userService.selectedApplicantRitual.subscribe(season => {
-      this.selectedApplicantRitual = season;
+    this.userService.selectedApplicantRitualPackage.subscribe(season => {
+      this.selectedApplicantRitualPackage = season;
       this.loadRitualSteps();
     })
   }

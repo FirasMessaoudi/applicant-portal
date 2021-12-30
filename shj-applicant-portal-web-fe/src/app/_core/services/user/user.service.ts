@@ -18,17 +18,17 @@ export const DEFAULT_MAX_USER_AGE = 16;
 @Injectable()
 export class UserService {
 
-  public selectedApplicantRitual: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  public selectedApplicantRitualPackage: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   seasons: number[] = [];
   applicantRituals: ApplicantRitualLite[] = [];
 
   constructor(private http: HttpClient, private cookieService: CookieService) {
-    this.selectedApplicantRitual.asObservable();
+    this.selectedApplicantRitualPackage.asObservable();
   }
 
-  public changeSelectedApplicantRitual(selectedApplicantRitual: any) {
-    this.selectedApplicantRitual.next(selectedApplicantRitual);
+  public changeSelectedApplicantRitual(selectedApplicantRitualPackage: any) {
+    this.selectedApplicantRitualPackage.next(selectedApplicantRitualPackage);
   }
 
   /**
