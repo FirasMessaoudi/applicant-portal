@@ -1138,10 +1138,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public List<ChatMessageDto> listMessages(int page, int limit, long contactId) {
+    public List<ChatMessageDto> listMessages(int page, int limit, long contactId, long time) {
         WsResponse<List<ChatMessageDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/messages/" + contactId + "?page=" + page + "&limit=" + limit,
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/messages/" + contactId + "?page=" + page + "&limit=" + limit + "&time=" + time,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<ChatMessageDto>>>() {
                     });
