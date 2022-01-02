@@ -64,10 +64,13 @@ public class ChatContactWsController {
      * @return savedContact saved one
      */
     @PostMapping(value = "/create/{ritualId}")
-    public ResponseEntity<WsResponse<?>> createApplicant(
-            @PathVariable Long ritualId, @RequestBody ApplicantChatContactLiteDto applicantChatContact,
-            Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> createApplicant(@PathVariable Long ritualId,
+                                                         @RequestBody ApplicantChatContactLiteDto applicantChatContact,
+                                                         Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        applicantChatContact.setApplicantUin(loggedInUserUin);
         ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
+        //TODO CHECK THE VALIDATION BELOW
         if (applicantChatContactLiteDto.getContactUin() == null)
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
@@ -84,10 +87,9 @@ public class ChatContactWsController {
      * @return savedContact saved one
      */
     @GetMapping(value = "/find/{applicantUin}/{contactUin}")
-    public ResponseEntity<WsResponse<?>> findApplicantChatByApplicantUinAndContactUin(
-            @PathVariable String applicantUin,
-            @PathVariable String contactUin,
-            Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findApplicantChatByApplicantUinAndContactUin(@PathVariable String applicantUin,
+                                                                                      @PathVariable String contactUin,
+                                                                                      Authentication authentication) {
         ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.findApplicantChatByApplicantUinAndContactUin(applicantUin, contactUin);
         if (applicantChatContactLiteDto.getContactUin() == null)
             return ResponseEntity.ok(
@@ -121,9 +123,9 @@ public class ChatContactWsController {
     /**
      * Updates user defined chat contact of type applicant
      *
-     * @param id                the ID number of the chat contact to be updated
-     * @param applicantChatContact             the chat contact applicant
-     * @param authentication    the authenticated user
+     * @param id                   the ID number of the chat contact to be updated
+     * @param applicantChatContact the chat contact applicant
+     * @param authentication       the authenticated user
      * @return updatedContact updatedOne one
      */
     @PutMapping(value = "/update/{id}")
