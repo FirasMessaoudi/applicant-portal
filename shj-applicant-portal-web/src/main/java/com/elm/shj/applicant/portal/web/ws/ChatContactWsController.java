@@ -192,8 +192,9 @@ public class ChatContactWsController {
     @GetMapping("/messages/{contactId}")
     public ResponseEntity<WsResponse<?>> listMessages(@RequestParam(value = "page", defaultValue = "0") int page,
                                                       @RequestParam(value = "limit", defaultValue = "0") int limit,
-                                                      @PathVariable long contactId) {
-        List<ChatMessageDto> chatMessageList = chatMessageService.listMessages(page, limit, contactId);
+                                                      @PathVariable long contactId,
+                                                      @RequestParam(value = "time", defaultValue = "0") long time) {
+        List<ChatMessageDto> chatMessageList = chatMessageService.listMessages(page, limit, contactId, time);
 
         return ResponseEntity.ok(WsResponse
                 .builder()
