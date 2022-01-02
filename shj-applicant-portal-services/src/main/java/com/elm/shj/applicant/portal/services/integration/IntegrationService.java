@@ -70,7 +70,6 @@ public class IntegrationService {
     private final String NOTIFICATION_CATEGORY_PREFERENCE_URL = NOTIFICATION_URL + "/user-notification-category-preference/";
     private final String PASSWORD_EXPIRY_NOTIFICATION_URL = NOTIFICATION_URL + "/password-expiry";
     private final String MARK_NOTIFICATIONS_READ_URL = NOTIFICATION_URL + "/mark-as-read";
-
     private final String COMPANY_DETAILS_URL = "/ws/company-details";
     private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
@@ -123,7 +122,6 @@ public class IntegrationService {
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
         }
 
-
         if (bodyToSend != null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
                     .accept(MediaType.APPLICATION_JSON)
@@ -136,7 +134,6 @@ public class IntegrationService {
                     .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve()
                     .bodyToMono(WsResponse.class).block();
-
         }
 
 

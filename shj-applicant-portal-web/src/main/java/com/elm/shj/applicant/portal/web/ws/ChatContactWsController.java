@@ -129,10 +129,9 @@ public class ChatContactWsController {
      * @return updatedContact updatedOne one
      */
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<WsResponse<?>> update(@PathVariable long id
-            , @RequestBody ApplicantChatContactLiteDto applicantChatContact,
+    public ResponseEntity<WsResponse<?>> update(@PathVariable long id,
+                                                @RequestBody ApplicantChatContactLiteDto applicantChatContact,
                                                 Authentication authentication) {
-
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
@@ -175,7 +174,6 @@ public class ChatContactWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(response.getStatusCode())
                         .body(response.getBody()).build());
-
     }
 
     @GetMapping("/chat-list")
