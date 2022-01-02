@@ -77,7 +77,7 @@ export class HajjJourneyComponent implements OnInit {
   showDetails(stepCode: string, stepDay: any , stepMonth: any){
 
 
-    let description = this.lookupService.localizedSummary(this.ritualStepsLookups, stepCode)
+    let description = this.lookupService.localizedDescription(this.ritualStepsLookups, stepCode)
     let step = {stepDescription:description, stepDay:stepDay , stepMonth:stepMonth }
       this.ritualTimelineService.getRitualStepSubject(step)
     this.router.navigate(['/hajj-journey/details'], {replaceUrl: true});
