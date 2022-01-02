@@ -71,13 +71,11 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.loadLookups();
     this.userService.selectedApplicantRitual.subscribe(selectedApplicantRitual => {
       this.selectedApplicantRitual = selectedApplicantRitual;
       this.selectedApplicantRitual = JSON.parse(localStorage.getItem('selectedRitualSeason'));
-
-      this.loadLookups();
       this.loadUserDetails();
-
     });
   }
 
