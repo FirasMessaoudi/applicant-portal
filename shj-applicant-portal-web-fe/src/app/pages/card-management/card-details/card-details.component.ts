@@ -77,7 +77,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
       this.loadLookups();
       this.loadUserDetails();
-
     });
   }
 
