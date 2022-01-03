@@ -68,7 +68,7 @@ public class ChatContactWsController {
                                                          @RequestBody ApplicantChatContactLiteDto applicantChatContact,
                                                          Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        applicantChatContact.setApplicantUin(loggedInUserUin);
+        //applicantChatContact.setApplicantUin(loggedInUserUin);
         com.elm.shj.applicant.portal.services.integration.WsResponse response = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
         return ResponseEntity.ok(
                 WsResponse.builder().status(response.getStatusCode())
