@@ -38,4 +38,7 @@ public class WsResponse<T> implements Serializable {
 
     private EWsResponseStatus status = EWsResponseStatus.SUCCESS;
     private T body;
+    public int getStatusCode(){
+        return status.code;
+    }
 }
