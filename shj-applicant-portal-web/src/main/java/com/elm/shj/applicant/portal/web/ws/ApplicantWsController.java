@@ -41,24 +41,24 @@ public class ApplicantWsController {
 
 
     /**
-     * get user card details by his uin and ritual ID
+     * get user card details by his uin and applicant package ID
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param applicantPackageId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/card-details/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findApplicantCardDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/card-details/{applicantPackageId}")
+    public ResponseEntity<WsResponse<?>> findApplicantCardDetailsByUinAndApplicantPackageId(@PathVariable Long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantRitualCardLiteDto card = userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        ApplicantRitualCardLiteDto card = userService.findApplicantCardDetailsByUinAndApplicantPackageId(loggedInUserUin, applicantPackageId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(card).build());
     }
 
     /**
-     * get user package details by his uin and companyRitualSeasonId
+     * get user package details by his uin and applicantPackageId
      *
-     * @param applicantPackageId the ID of the selected applicant's company Ritual Season Id
+     * @param applicantPackageId the ID of the selected applicant's package id
      * @param authentication        the authenticated user
      */
     @GetMapping("/package/details/{applicantPackageId}")
@@ -88,7 +88,7 @@ public class ApplicantWsController {
     }
 
     /**
-     * get user health details by uin and ritual ID
+     * get user health details by uin and applicant package ID
      */
     @GetMapping("/health/{applicantPackageId}")
     public ResponseEntity<WsResponse<?>> findApplicantHealthDetailsByUinAndApplicantPackageId(@PathVariable Long applicantPackageId, Authentication authentication) {
@@ -103,7 +103,7 @@ public class ApplicantWsController {
     }
 
     /**
-     * get user main data by uin and ritualId
+     * get user main data by uin and applicantPackageId
      */
     @GetMapping("/main-data/{applicantPackageId}")
     public ResponseEntity<WsResponse<?>> findUserMainDataByUin(@PathVariable long applicantPackageId, Authentication authentication) {
@@ -118,15 +118,15 @@ public class ApplicantWsController {
     }
 
     /**
-     * get user Tafweej details by uin and ritual ID
+     * get user Tafweej details by uin and companyRitualSeasonId
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/tafweej/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/tafweej/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());
@@ -134,15 +134,15 @@ public class ApplicantWsController {
 
 
     /**
-     * get user Group Leaders details by uin and ritual ID
+     * get user Group Leaders details by uin and companyRitualSeasonId
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/company-staff/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findRelatedEmployeesByApplicantUinAndSeasonId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/company-staff/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<CompanyStaffDto> employees = userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, ritualId);
+        List<CompanyStaffDto> employees = userService.findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(employees).build());
@@ -155,19 +155,19 @@ public class ApplicantWsController {
                         .body(WsError.builder().error(errorCode.getCode()).referenceNumber(reference).build()).build());
     }
 
-    @GetMapping("/company-details/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findApplicantCompanyDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/company-details/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findApplicantCompanyDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        CompanyLiteDto companyDetails = userService.findCompanyDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        CompanyLiteDto companyDetails = userService.findCompanyDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(companyDetails).build());
     }
 
-    @GetMapping("/housing-details/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findHousingDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/housing-details/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findHousingDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        PackageHousingDto housingDetails = userService.findHousingDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        PackageHousingDto housingDetails = userService.findHousingDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(housingDetails).build());
@@ -195,7 +195,7 @@ public class ApplicantWsController {
     /**
      *
      * @param authentication
-     * @return latest applicant ritual season
+     * @return latest applicant ritual package
      */
     @GetMapping("/ritual-package/latest")
     public ResponseEntity<WsResponse<?>> findLatestApplicantRitualSeason(Authentication authentication) {

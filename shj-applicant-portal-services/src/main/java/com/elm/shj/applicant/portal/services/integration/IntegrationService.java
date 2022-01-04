@@ -871,10 +871,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public PackageHousingDto loadHousingDetails(String uin, long ritualId) {
+    public PackageHousingDto loadHousingDetails(String uin, long companyRitualSeasonId) {
         WsResponse<PackageHousingDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(HOUSING_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(HOUSING_DETAILS_URL + "/" + uin + "/" + companyRitualSeasonId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<PackageHousingDto>>() {
                     });
         } catch (WsAuthenticationException e) {

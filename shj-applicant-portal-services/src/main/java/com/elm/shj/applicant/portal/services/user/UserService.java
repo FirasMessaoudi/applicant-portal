@@ -481,8 +481,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return Optional.ofNullable(integrationService.loadApplicantHealthDetails(uin, ritualId));
     }
 
-    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(String uin, Long ritualId) {
-        return integrationService.loadApplicantCardDetails(uin, ritualId);
+    public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndApplicantPackageId(String uin, Long applicantPackageId) {
+        return integrationService.loadApplicantCardDetails(uin, applicantPackageId);
     }
 
     public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long applicantPackageId) {
@@ -508,12 +508,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadPackageCatering(uin, companyRitualSeasonId);
     }
 
-    public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(String uin, Long ritualId) {
-       return  integrationService.loadApplicantTafweejDetails(uin, ritualId);
+    public List<CompanyRitualStepMainDataDto> findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(String uin, Long companyRitualSeasonId) {
+       return  integrationService.loadApplicantTafweejDetails(uin, companyRitualSeasonId);
     }
 
-    public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndSeasonId(String uin, Long ritualId) {
-        return integrationService.loadApplicantRelatedEmployeesDetails(uin, ritualId);
+    public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(String uin, Long companyRitualSeasonId) {
+        return integrationService.loadApplicantRelatedEmployeesDetails(uin, companyRitualSeasonId);
     }
 
     public CompanyRitualSeasonLiteDto findLatestApplicantRitualSeasonByUin(String uin) {
@@ -536,11 +536,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.markUserNotificationAsRead(notificationId);
     }
 
-    public CompanyLiteDto findCompanyDetailsByUinAndRitualId(String uin, long ritualId) {
-        return integrationService.loadCompanyDetails(uin, ritualId);
+    public CompanyLiteDto findCompanyDetailsByUinAndCompanyRitualSeasonId(String uin, long companyRitualSeasonId) {
+        return integrationService.loadCompanyDetails(uin, companyRitualSeasonId);
     }
 
-    public PackageHousingDto findHousingDetailsByUinAndRitualId(String uin, long ritualId) {
+    public PackageHousingDto findHousingDetailsByUinAndCompanyRitualSeasonId(String uin, long ritualId) {
         log.debug(uin);
         log.debug(String.valueOf(ritualId));
         return integrationService.loadHousingDetails(uin, ritualId);

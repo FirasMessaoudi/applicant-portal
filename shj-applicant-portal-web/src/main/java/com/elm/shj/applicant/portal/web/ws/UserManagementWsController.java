@@ -159,12 +159,12 @@ public class UserManagementWsController {
     }
 
     /**
-     * get user main data by uin and ritualId
+     * get user main data by uin and applicantPackageId
      */
-    @GetMapping("/main-data/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findUserMainDataByUin(@PathVariable long ritualId, Authentication authentication) {
+    @GetMapping("/main-data/{applicantPackageId}")
+    public ResponseEntity<WsResponse<?>> findUserMainDataByUin(@PathVariable long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        Optional<ApplicantMainDataDto> applicantMainDataDto = userService.findUserMainDataByUin(loggedInUserUin, ritualId);
+        Optional<ApplicantMainDataDto> applicantMainDataDto = userService.findUserMainDataByUin(loggedInUserUin, applicantPackageId);
         if (!applicantMainDataDto.isPresent()) {
             return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
         }
@@ -245,13 +245,13 @@ public class UserManagementWsController {
     /**
      * get user Tafweej details by uin and ritual ID
      *
-     * @param ritualId       the ID of the selected applicant's ritual
+     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/tafweej/{ritualId}")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication) {
+    @GetMapping("/tafweej/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, ritualId);
+        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());
