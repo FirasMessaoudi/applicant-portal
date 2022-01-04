@@ -125,10 +125,10 @@ public class IntegrationService {
         if (bodyToSend != null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
                     .accept(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .contentType(MediaType.APPLICATION_JSON)
                     .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
-                    .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend))
-                    .retrieve().bodyToMono(responseTypeReference).block();
+                    .body(BodyInserters.fromValue(bodyToSend))
+                    .retrieve().bodyToMono(WsResponse.class).block();
         } else {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
                     .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
@@ -968,10 +968,10 @@ public class IntegrationService {
      *
      * @return the persisted chat contact
      */
-    public ApplicantChatContactLiteDto createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
-        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+    public WsResponse createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
+        WsResponse wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create/"  + ritualId,
+            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/"  + ritualId,
                     HttpMethod.POST,  applicantChatContact,
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
@@ -979,7 +979,7 @@ public class IntegrationService {
             log.error("Cannot authenticate to create applicant chat contact", e);
             return null;
         }
-        return wsResponse.getBody();
+        return wsResponse;
     }
 
     /**

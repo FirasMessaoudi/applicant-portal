@@ -67,18 +67,10 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> createApplicant(@PathVariable Long ritualId,
                                                          @RequestBody ApplicantChatContactLiteDto applicantChatContact,
                                                          Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        applicantChatContact.setApplicantUin(loggedInUserUin);
-        ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
-        //TODO CHECK THE VALIDATION BELOW
-        if (applicantChatContactLiteDto.getContactUin() == null)
-            return ResponseEntity.ok(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_ALREADY_EXIST.getCode()).build()).build());
-        return ResponseEntity.ok(WsResponse
-                .builder()
-                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(applicantChatContactLiteDto).build());
+        com.elm.shj.applicant.portal.services.integration.WsResponse response = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatusCode())
+                        .body(response.getBody()).build());
     }
 
     /**

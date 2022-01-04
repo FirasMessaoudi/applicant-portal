@@ -176,7 +176,7 @@
                                                 <p style="font-size: 14px; margin: 0; color: #707070">
                                                     You requested a reset password in Shaaer platform. You can login to
                                                     the system using the following
-                                                    Smart id number <#setting number_format="0" />${user.uin}<#setting number_format="" />
+                                                    Shaaer id number <#setting number_format="0" />${user.uin}<#setting number_format="" />
                                                     and the temporary password sent to your mobile
                                                 </p>
                                             </td>

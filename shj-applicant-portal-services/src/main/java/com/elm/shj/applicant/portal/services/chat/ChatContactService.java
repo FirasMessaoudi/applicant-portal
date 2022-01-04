@@ -55,7 +55,7 @@ public class ChatContactService {
      *
      * @return savedContact saved one
      */
-    public ApplicantChatContactLiteDto createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
+    public WsResponse createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
         return integrationService.createApplicantChatContact(ritualId, applicantChatContact);
     }
 
