@@ -163,7 +163,7 @@ public class UserManagementController {
     @GetMapping("/details/{applicantPackageId}")
     public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndRitualId(@PathVariable Long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantCardDetailsByUinAndRitualId(loggedInUserUin, applicantPackageId);
+        return userService.findApplicantCardDetailsByUinAndApplicantPackageId(loggedInUserUin, applicantPackageId);
     }
 
     /**
@@ -513,7 +513,7 @@ public class UserManagementController {
     @GetMapping("/tafweej/{companyRitualSeasonId}")
     public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantTafweejDetailsByUinAndRitualId(loggedInUserUin, companyRitualSeasonId);
+        return userService.findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
     }
 
     /**
@@ -525,7 +525,7 @@ public class UserManagementController {
     @GetMapping("/company_staff/{companyRitualSeasonId}")
     public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findRelatedEmployeesByApplicantUinAndSeasonId(loggedInUserUin, companyRitualSeasonId);
+        return userService.findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
     }
 
     /**
