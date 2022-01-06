@@ -23,7 +23,7 @@
     <tbody>
     <tr *ngFor = "let groupLeader of groupLeaders">
       <td class="ltr">{{ groupLeader.idNumber }}</td>
-      <td class="ltr">{{ groupLeader.fullNameAr }}</td>
+      <td class="ltr">{{currentLanguage.startsWith("en") ? groupLeader.fullNameEn : groupLeader.fullNameAr}}</td>
       <td class="ltr">{{ groupLeader.mobileNumber }}</td>
       <td class="ltr">{{ lookupService.localizedLabel(groupLeaderTitleLookups, groupLeader?.titleCode)}}</td>
     </tr>

@@ -9,11 +9,14 @@ export class Position {
 }
 
 export class MapOptions {
-  icon: String;
+  icon: any;
 
-  constructor(icon: String) {
+  constructor(iconURL: String) {
     //this.icon = '../../../assets/images/svg-icons/map-marker-light.svg'
-    this.icon = icon;
+    this.icon = {
+      url: iconURL, // url
+      scaledSize: new google.maps.Size(50, 50), // scaled size
+    };
   }
 }
 

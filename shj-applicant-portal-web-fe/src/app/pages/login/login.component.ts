@@ -150,7 +150,7 @@ export class LoginComponent implements OnInit {
       this.supportedLanguages = result;
       this.localizedSupportedLanguages = this.supportedLanguages.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
     //TODO:remove this second filtration when we have other supported languages
-      this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => (item.lang.toLowerCase() === "ar" || item.lang.toLowerCase() === "en"));
+      //this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => (item.lang.toLowerCase() === "ar" || item.lang.toLowerCase() === "en"));
       this.selectedLang = new Lookup();
       this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.startsWith('ar') ? "ar" : "en"));
       this.setLanguage(this.selectedLang.lang.toLowerCase());

@@ -127,7 +127,7 @@ export class HajjRitualsComponent implements OnInit {
         });
         this.markers = this.ritualsSteps.map(step => {
           let marker = new Marker(step.id, new Position(step.locationLat, step.locationLng), step.stepCode,
-            new MapOptions('assets/images/svg-icons/map-marker-light.svg'));
+            new MapOptions('assets/images/svg-icons/map-marker-alt-solid.svg'));
           return marker;
         })
         const bounds = this.getBounds(this.markers);
