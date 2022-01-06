@@ -90,7 +90,7 @@ public class IntegrationService {
     private final String APPLICANT_PREFERRED_LANGUAGE = "/ws/applicant/language";
     private final String CHAT_LIST_URL = "/ws/chat-contact/chat-list";
     private final String APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/";
-    private final String LATEST_APPLICANT_RITUAL_PACKAGE__URL = "/ws/applicant/ritual-package/latest/";
+    private final String LATEST_APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/latest/";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -1176,7 +1176,7 @@ public class IntegrationService {
     public ApplicantRitualPackageVo findLatestApplicantRitualPackageByUin(long uin) {
         WsResponse<ApplicantRitualPackageVo> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(LATEST_APPLICANT_RITUAL_PACKAGE__URL + uin, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(LATEST_APPLICANT_RITUAL_PACKAGE_URL + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantRitualPackageVo>>() {
                     });
         } catch (WsAuthenticationException e) {
