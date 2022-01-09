@@ -109,7 +109,10 @@ public class IncidentWsController {
         if (incidentAttachment != null && !incidentAttachment.isEmpty() && incidentAttachment.getSize() > 0)
             builder.part("attachment", incidentAttachment.getResource());
         builder.part("incident", incidentDto);
-        return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(incidentService.createIncident(builder)).build());
+        com.elm.shj.applicant.portal.services.integration.WsResponse response = incidentService.createIncident(builder);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatusCode())
+                        .body(response.getBody()).build());
     }
 
 }
