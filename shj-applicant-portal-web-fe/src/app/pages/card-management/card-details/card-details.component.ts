@@ -99,7 +99,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadTafweejDetails() {
-    this.cardService.findTafweejDetails(this.selectedApplicantRitualPackage.companyRitualSeasonId).subscribe(data => {
+    this.cardService.findTafweejDetails().subscribe(data => {
       if (data) {
         this.tafweejDetails = data;
       } else {

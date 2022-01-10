@@ -504,12 +504,12 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return applicantPackageDetails;
     }
 
-    public List<PackageCateringDto> findPackageCatering(String uin, long companyRitualSeasonId) {
-        return integrationService.loadPackageCatering(uin, companyRitualSeasonId);
+    public List<ApplicantPackageCateringDto> findPackageCatering(String uin, long applicantPackageId) {
+        return integrationService.loadPackageCatering(uin, applicantPackageId);
     }
 
-    public List<CompanyRitualStepMainDataDto> findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(String uin, Long companyRitualSeasonId) {
-       return  integrationService.loadApplicantTafweejDetails(uin, companyRitualSeasonId);
+    public List<CompanyRitualStepMainDataDto> findApplicantRitualStepsDetailsByUin(String uin) {
+       return  integrationService.loadApplicantTafweejDetails(uin);
     }
 
     public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(String uin, Long companyRitualSeasonId) {
@@ -540,10 +540,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.loadCompanyDetails(uin, companyRitualSeasonId);
     }
 
-    public PackageHousingDto findHousingDetailsByUinAndCompanyRitualSeasonId(String uin, long ritualId) {
-        log.debug(uin);
-        log.debug(String.valueOf(ritualId));
-        return integrationService.loadHousingDetails(uin, ritualId);
+    public PackageHousingDto findHousingDetailsByUinAndApplicantPackageId(String uin, long applicantPackageId) {
+        return integrationService.loadHousingDetails(uin, applicantPackageId);
     }
 
     public ApplicantRitualDto findApplicantRitual(String uin) {

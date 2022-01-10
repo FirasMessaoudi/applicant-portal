@@ -416,11 +416,11 @@ public class IntegrationService {
      *
      * @return
      */
-    public List<PackageCateringDto> loadPackageCatering(String uin, long companyRitualSeasonId) {
-        WsResponse<List<PackageCateringDto>> wsResponse = null;
+    public List<ApplicantPackageCateringDto> loadPackageCatering(String uin, long applicantPackageId) {
+        WsResponse<List<ApplicantPackageCateringDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(PACKAGE_CATERING_URL + "/" + uin + "/" + companyRitualSeasonId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<PackageCateringDto>>>() {
+            wsResponse = callIntegrationWs(PACKAGE_CATERING_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantPackageCateringDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load Package Catering.", e);
@@ -497,10 +497,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public List<CompanyRitualStepMainDataDto> loadApplicantTafweejDetails(String uin, Long ritualId) {
+    public List<CompanyRitualStepMainDataDto> loadApplicantTafweejDetails(String uin) {
         WsResponse<List<CompanyRitualStepMainDataDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(APPLICANT_TAFWEEJ_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(APPLICANT_TAFWEEJ_DETAILS_URL + "/" + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<CompanyRitualStepMainDataDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -871,10 +871,10 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public PackageHousingDto loadHousingDetails(String uin, long companyRitualSeasonId) {
+    public PackageHousingDto loadHousingDetails(String uin, long applicantPackageId) {
         WsResponse<PackageHousingDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(HOUSING_DETAILS_URL + "/" + uin + "/" + companyRitualSeasonId, HttpMethod.GET, null,
+            wsResponse = callIntegrationWs(HOUSING_DETAILS_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<PackageHousingDto>>() {
                     });
         } catch (WsAuthenticationException e) {

@@ -74,13 +74,13 @@ public class ApplicantWsController {
     /**
      * get user package catering event if there is no applicant package catering by his uin and companyRitualSeasonId
      *
-     * @param companyRitualSeasonId the ID of the selected applicant's company Ritual Season Id
+     * @param applicantPackageId the ID of the selected applicant's package id
      * @param authentication        the authenticated user
      */
-    @GetMapping("/package/catering/{companyRitualSeasonId}")
-    public ResponseEntity<WsResponse<?>> findPackageCatering(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    @GetMapping("/package/catering/{applicantPackageId}")
+    public ResponseEntity<WsResponse<?>> findPackageCatering(@PathVariable Long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<PackageCateringDto> packageCateringList = userService.findPackageCatering(loggedInUserUin, companyRitualSeasonId);
+        List<ApplicantPackageCateringDto> packageCateringList = userService.findPackageCatering(loggedInUserUin, applicantPackageId);
 
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
@@ -118,15 +118,14 @@ public class ApplicantWsController {
     }
 
     /**
-     * get user Tafweej details by uin and companyRitualSeasonId
+     * get user Tafweej details by uin
      *
-     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/tafweej/{companyRitualSeasonId}")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    @GetMapping("/tafweej")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUin(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
+        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantRitualStepsDetailsByUin(loggedInUserUin);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());
@@ -164,10 +163,10 @@ public class ApplicantWsController {
                         .body(companyDetails).build());
     }
 
-    @GetMapping("/housing-details/{companyRitualSeasonId}")
-    public ResponseEntity<WsResponse<?>> findHousingDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    @GetMapping("/housing-details/{applicantPackageId}")
+    public ResponseEntity<WsResponse<?>> findHousingDetailsByUinAndApplicantPackageId(@PathVariable long applicantPackageId, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        PackageHousingDto housingDetails = userService.findHousingDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
+        PackageHousingDto housingDetails = userService.findHousingDetailsByUinAndApplicantPackageId(loggedInUserUin, applicantPackageId);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(housingDetails).build());

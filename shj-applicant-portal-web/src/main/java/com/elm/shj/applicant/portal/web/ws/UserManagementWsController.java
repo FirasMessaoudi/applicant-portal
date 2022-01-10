@@ -243,15 +243,14 @@ public class UserManagementWsController {
 
 
     /**
-     * get user Tafweej details by uin and ritual ID
+     * get user Tafweej details by uin
      *
-     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
      * @param authentication the authenticated user
      */
-    @GetMapping("/tafweej/{companyRitualSeasonId}")
-    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    @GetMapping("/tafweej")
+    public ResponseEntity<WsResponse<?>> findApplicantRitualStepsDetailsByUin( Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
+        List<CompanyRitualStepMainDataDto> ritualSteps = userService.findApplicantRitualStepsDetailsByUin(loggedInUserUin);
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(ritualSteps).build());

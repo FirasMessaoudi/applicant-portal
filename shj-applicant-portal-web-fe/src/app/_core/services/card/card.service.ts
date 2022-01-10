@@ -151,8 +151,8 @@ export class CardService {
    *
    * @return {Observable<CompanyRitualMainDataStep>}
    */
-  findTafweejDetails(companyRitualSeasonId: number): Observable<CompanyRitualMainDataStep[]> {
-    return this.http.get<any>('/core/api/users/tafweej/' + companyRitualSeasonId).pipe(
+  findTafweejDetails(): Observable<CompanyRitualMainDataStep[]> {
+    return this.http.get<any>('/core/api/users/tafweej').pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
@@ -204,7 +204,6 @@ export class CardService {
   findTransportationTypes(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/transportation-type/list');
   }
-
   findDigitalIdStatuses(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/digital-id-status/list');
   }

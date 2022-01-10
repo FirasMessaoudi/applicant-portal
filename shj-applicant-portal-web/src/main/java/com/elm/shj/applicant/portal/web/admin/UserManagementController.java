@@ -505,15 +505,14 @@ public class UserManagementController {
     }
 
     /**
-     * get user Tafweej details by uin and ritual ID
+     * get user Tafweej details by uin
      *
-     * @param companyRitualSeasonId       the ID of the selected companyRitualSeason
      * @param authentication the authenticated user
      */
-    @GetMapping("/tafweej/{companyRitualSeasonId}")
-    public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUinAndRitualId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+    @GetMapping("/tafweej")
+    public List<CompanyRitualStepMainDataDto> findApplicantTafweejDetailsByUin(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantRitualStepsDetailsByUinAndCompanyRitualSeasonId(loggedInUserUin, companyRitualSeasonId);
+        return userService.findApplicantRitualStepsDetailsByUin(loggedInUserUin);
     }
 
     /**
