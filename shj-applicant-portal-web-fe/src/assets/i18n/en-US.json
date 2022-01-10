@@ -128,7 +128,7 @@
     "my_dashboard": "My Dashboard",
     "my_program": "My Program",
     "ritual_schedule": "Ritual Schedule",
-    "alert_button_text": "Back to lastest season data",
+    "alert_button_text": "Back to latest season data",
     "change_ritual_modal_title": "Choose the Hajj or Umrah season you want to view data",
     "change_ritual_modal_caution": "All data displayed will be affected by this change",
     "notifications": "Notifications",
@@ -144,11 +144,12 @@
     "settings": "Settings",
     "edit-contacts": "Edit Contacts",
     "search_country_dialing_code": "Search country or dialing code",
-    "dialog_save_confirm_text": "Are you sure you want to modify the settings ?",
+    "dialog_save_confirm_text": "Are you sure you want to modify the settings?",
     "save_button": "Save Settings",
     "notifications": "Notifications",
     "select_notifications": "Select the type of notifications you receive",
-    "example": "example"
+    "example": "Example",
+    "otp_title": "Update Contacts Confirmation"
   },
   "home": {
     "title": "Home",
@@ -240,7 +241,7 @@
     "header_title": "Login",
     "side_info": "The DCC template aims to unify efforts and standardize the way we implement our products in ELM.\n          It can reduce efforts related to common project activities like project structure, technology stack, error handling strategy, coding standards, ...\n          In our last survey, effort saved can go up to 20% of the total project effort.",
     "title": "Login",
-    "confirmation_title": "Login Confirmation",
+    "otp_title": "Login Confirmation",
     "btn_login": "Login",
     "btn_new_registration": "Don't have an account? Register now.",
     "btn_forgot_password": "Forgot Password",
@@ -267,7 +268,8 @@
     "user_already_registered": "Applicant already registered please you can login or request reset password",
     "registered_successfully": "You have been registered successfully",
     "email_will_be_sent": "an email will be sent to you with your registration details",
-    "update_user_failed_in_admin_portal": "An error occurred while trying to store your data. Please contact the admin"
+    "update_user_failed_in_admin_portal": "An error occurred while trying to store your data. Please contact the admin",
+    "otp_title": "Registration Confirmation"
   },
   "change-password": {
     "title": "Change Password",

@@ -5,6 +5,7 @@ package com.elm.shj.applicant.portal.services.incident;
 
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class IncidentService {
         return this.integrationService.getAttachment(id);
     }
 
-    public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
+    public WsResponse createIncident(MultipartBodyBuilder builder) {
         return integrationService.createIncident(builder);
     }
 }

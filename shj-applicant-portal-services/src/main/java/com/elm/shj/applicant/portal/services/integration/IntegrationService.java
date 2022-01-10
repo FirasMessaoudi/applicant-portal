@@ -157,7 +157,7 @@ public class IntegrationService {
         } else if (serviceRelativeUrl == INCIDENT_CREATE_URL ) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
-                    .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
+                    .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(WsResponse.class).block();
         }
         return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                 .body(BodyInserters.fromValue(bodyToSend)).retrieve().bodyToMono(responseTypeReference).block();
@@ -858,8 +858,8 @@ public class IntegrationService {
     }
 
 
-    public ApplicantIncidentDto createIncident(MultipartBodyBuilder builder) {
-        WsResponse<ApplicantIncidentDto> wsResponse = null;
+    public WsResponse createIncident(MultipartBodyBuilder builder) {
+        WsResponse wsResponse = null;
         try {
             wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
                     new ParameterizedTypeReference<WsResponse<ApplicantIncidentDto>>() {
@@ -868,7 +868,7 @@ public class IntegrationService {
             log.error("Cannot authenticate to create incident", e);
             return null;
         }
-        return wsResponse.getBody();
+        return wsResponse;
     }
 
     public PackageHousingDto loadHousingDetails(String uin, long applicantPackageId) {
