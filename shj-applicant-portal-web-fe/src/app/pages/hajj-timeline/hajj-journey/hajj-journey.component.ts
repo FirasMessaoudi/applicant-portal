@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {RitualTimelineService} from "@core/services/timeline/ritual-timeline.service";
-import {UserService} from "@core/services";
+import {CardService, UserService} from "@core/services";
 import * as moment_ from 'moment-hijri';
 import {LookupService} from "@core/utilities/lookup.service";
 import {Lookup} from "@model/lookup.model";
@@ -25,7 +25,7 @@ export class HajjJourneyComponent implements OnInit {
   ritualStepsLookups: Lookup[] = [];
 
   constructor(private ritualTimelineService: RitualTimelineService, private userService: UserService, lookupService: LookupService,  private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router, private cardService: CardService) {
     this.lookupService = lookupService;
   }
 
@@ -52,7 +52,7 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   loadRitualSteps() {
-    this.ritualTimelineService.loadRitualSteps(this.selectedApplicantRitualPackage?.companyRitualSeasonId).subscribe(
+    this.cardService.findTafweejDetails().subscribe(
       result => {
         this.ritualSteps = result;
         this.ritualStepsMap = groupByArray(this.ritualSteps);
