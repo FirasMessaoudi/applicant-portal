@@ -1,6 +1,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.dto.*;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
