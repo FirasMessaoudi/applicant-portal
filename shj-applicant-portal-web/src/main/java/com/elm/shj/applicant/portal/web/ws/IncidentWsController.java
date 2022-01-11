@@ -8,6 +8,7 @@ import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
 import com.elm.shj.applicant.portal.services.incident.IncidentService;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
@@ -109,9 +110,9 @@ public class IncidentWsController {
         if (incidentAttachment != null && !incidentAttachment.isEmpty() && incidentAttachment.getSize() > 0)
             builder.part("attachment", incidentAttachment.getResource());
         builder.part("incident", incidentDto);
-        com.elm.shj.applicant.portal.services.integration.WsResponse response = incidentService.createIncident(builder);
+        WsResponse response = incidentService.createIncident(builder);
         return ResponseEntity.ok(
-                WsResponse.builder().status(response.getStatusCode())
+                WsResponse.builder().status(response.getStatus())
                         .body(response.getBody()).build());
     }
 

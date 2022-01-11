@@ -7,6 +7,7 @@ import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
 import com.elm.shj.applicant.portal.services.dto.UpdateApplicantCmd;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;

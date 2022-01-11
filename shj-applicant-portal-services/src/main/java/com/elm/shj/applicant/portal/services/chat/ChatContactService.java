@@ -3,7 +3,6 @@
  */
 package com.elm.shj.applicant.portal.services.chat;
 
-import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
@@ -39,15 +38,8 @@ public class ChatContactService {
         return integrationService.findApplicantChatContacts(uin, ritualId);
     }
 
-    public GenericWsResponse findOneApplicantByUinAndRitualId(String uin, Long ritualId, String applicantUin) {
-        WsResponse commandResponse = integrationService.findOneApplicantByUinAndRitualId(uin, ritualId, applicantUin);
-        GenericWsResponse genericWsResponse = new GenericWsResponse();
-        if (commandResponse.getStatus() == WsResponse.EWsResponseStatus.SUCCESS)
-            genericWsResponse.setStatus(GenericWsResponse.EWsResponseStatus.SUCCESS);
-        else
-            genericWsResponse.setStatus(GenericWsResponse.EWsResponseStatus.FAILURE);
-        genericWsResponse.setBody(commandResponse.getBody());
-        return genericWsResponse;
+    public WsResponse findOneApplicantByUinAndRitualId(String uin, Long ritualId, String applicantUin) {
+        return integrationService.findOneApplicantByUinAndRitualId(uin, ritualId, applicantUin);
     }
 
     /**

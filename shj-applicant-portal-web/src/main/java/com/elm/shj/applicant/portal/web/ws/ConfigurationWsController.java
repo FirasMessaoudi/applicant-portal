@@ -5,6 +5,7 @@ package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.configuration.ConfigurationService;
 import com.elm.shj.applicant.portal.services.dto.ConfigDto;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Controller for exposing web services related to configurations for external party.
@@ -37,7 +41,7 @@ public class ConfigurationWsController {
     private final ConfigurationService configurationService;
 
     @GetMapping("/list")
-    public ResponseEntity<WsResponse<?>> getMobileConfigurationsList( Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> getMobileConfigurationsList(Authentication authentication) {
         List<ConfigDto> configList =configurationService.getMobileConfigurationsList();
 
         return ResponseEntity.ok(

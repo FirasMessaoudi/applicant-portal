@@ -309,7 +309,7 @@ public class UserServiceTest {
         command.setUin(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
         WsResponse wsResponse = new WsResponse();
-        wsResponse.setStatus(WsResponse.EWsResponseStatus.FAILURE);
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.FAILURE.getCode());
         wsResponse.setBody(null);
         when(integrationService.callIntegrationWs(contains("/ws/verify"), eq(HttpMethod.POST), any(), any())).thenReturn(wsResponse);
         assertNull(serviceToTest.verify(command));
@@ -324,7 +324,7 @@ public class UserServiceTest {
         command.setUin(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
         WsResponse wsResponse = new WsResponse();
-        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS);
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS.getCode());
         wsResponse.setBody(applicantLiteDto);
         when(integrationService.callIntegrationWs(contains("/ws/verify"), eq(HttpMethod.POST), any(), any())).thenReturn(wsResponse);
         assertEquals(applicantLiteDto, serviceToTest.verify(command));
@@ -338,7 +338,7 @@ public class UserServiceTest {
         applicantLiteDto.setMobileNumber(TEST_MOBILE);
         applicantLiteDto.setEmail(TEST_EMAIL);
         WsResponse wsResponse = new WsResponse();
-        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS);
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS.getCode());
         wsResponse.setBody(applicantLiteDto);
         when(integrationService.callIntegrationWs(contains("/ws/update"), eq(HttpMethod.POST), any(), any())).thenReturn(wsResponse);
         assertEquals(wsResponse.getBody(), serviceToTest.updateUserInAdminPortal(applicant));

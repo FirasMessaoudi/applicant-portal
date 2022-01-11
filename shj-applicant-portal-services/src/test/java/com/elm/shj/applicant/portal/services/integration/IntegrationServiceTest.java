@@ -54,7 +54,7 @@ public class IntegrationServiceTest {
         configWebClient();
 
         WsResponse<String> accessTokenWsResponse = new WsResponse<>();
-        accessTokenWsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS);
+        accessTokenWsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS.getCode());
         accessTokenWsResponse.setBody("TOKEN");
 
         when(responseSpecMock.bodyToMono(WsResponse.class))
@@ -67,7 +67,7 @@ public class IntegrationServiceTest {
         ApplicantMainDataDto applicantMainDataDto = new ApplicantMainDataDto();
 
         WsResponse<ApplicantMainDataDto> wsResponse = new WsResponse<>();
-        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS);
+        wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS.getCode());
         wsResponse.setBody(applicantMainDataDto);
 
         mockWebClientResponse(wsResponse, new ParameterizedTypeReference<WsResponse<ApplicantMainDataDto>>() {

@@ -3,13 +3,13 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.orm.entity.GenericWsResponse;
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
 import com.elm.shj.applicant.portal.services.chat.ChatMessageService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ChatMessageDto;
 import com.elm.shj.applicant.portal.services.dto.ChatMessageLiteDto;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
@@ -67,9 +67,9 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> createApplicant(@PathVariable Long ritualId,
                                                          @RequestBody ApplicantChatContactLiteDto applicantChatContact,
                                                          Authentication authentication) {
-        com.elm.shj.applicant.portal.services.integration.WsResponse response = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
+        WsResponse response = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
         return ResponseEntity.ok(
-                WsResponse.builder().status(response.getStatusCode())
+                WsResponse.builder().status(response.getStatus())
                         .body(response.getBody()).build());
     }
 
@@ -162,9 +162,9 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> findOneApplicantByUinAndRitualId(@PathVariable Long ritualId, Authentication authentication,
                                                                           @PathVariable String applicantUin) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        GenericWsResponse response = chatContactService.findOneApplicantByUinAndRitualId(loggedInUserUin, ritualId, applicantUin);
+        com.elm.shj.applicant.portal.services.integration.WsResponse response = chatContactService.findOneApplicantByUinAndRitualId(loggedInUserUin, ritualId, applicantUin);
         return ResponseEntity.ok(
-                WsResponse.builder().status(response.getStatusCode())
+                WsResponse.builder().status(response.getStatus())
                         .body(response.getBody()).build());
     }
 

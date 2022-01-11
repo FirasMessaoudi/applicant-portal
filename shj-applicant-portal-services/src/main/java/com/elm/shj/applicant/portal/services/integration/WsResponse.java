@@ -3,9 +3,10 @@
  */
 package com.elm.shj.applicant.portal.services.integration;
 
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.io.Serializable;
 
@@ -15,9 +16,10 @@ import java.io.Serializable;
  * @author ahmad flaifel
  * @since 1.0.0
  */
-@Getter
-@Setter
+@Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
+@AllArgsConstructor
 public class WsResponse<T> implements Serializable {
 
     private static final long serialVersionUID = -8577435158782277864L;
@@ -31,14 +33,11 @@ public class WsResponse<T> implements Serializable {
             this.code = code;
         }
 
-        int getCode() {
+        public int getCode() {
             return code;
         }
     }
 
-    private EWsResponseStatus status = EWsResponseStatus.SUCCESS;
+    private int status = EWsResponseStatus.SUCCESS.getCode();
     private T body;
-    public int getStatusCode(){
-        return status.code;
-    }
 }

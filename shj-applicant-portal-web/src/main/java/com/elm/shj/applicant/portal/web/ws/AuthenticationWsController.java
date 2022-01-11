@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
 import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;

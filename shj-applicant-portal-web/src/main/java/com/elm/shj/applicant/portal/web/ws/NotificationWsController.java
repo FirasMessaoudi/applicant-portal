@@ -6,10 +6,10 @@ package com.elm.shj.applicant.portal.web.ws;
 import com.elm.shj.applicant.portal.services.dto.DetailedUserNotificationDto;
 import com.elm.shj.applicant.portal.services.dto.UserNotificationCategoryPreferenceDto;
 import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCountVo;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.notification.NotificationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
-import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**

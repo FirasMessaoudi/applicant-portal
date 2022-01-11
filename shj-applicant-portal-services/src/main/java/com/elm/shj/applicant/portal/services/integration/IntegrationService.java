@@ -118,14 +118,12 @@ public class IntegrationService {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
-        if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
+        if (WsResponse.EWsResponseStatus.FAILURE.getCode() == accessTokenWsResponse.getStatus()) {
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
         }
 
         if (bodyToSend != null) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl)
-                    .accept(MediaType.APPLICATION_JSON)
-                    .contentType(MediaType.APPLICATION_JSON)
                     .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .body(BodyInserters.fromValue(bodyToSend))
                     .retrieve().bodyToMono(WsResponse.class).block();
@@ -144,7 +142,7 @@ public class IntegrationService {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
-        if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
+        if (WsResponse.EWsResponseStatus.FAILURE.getCode() == accessTokenWsResponse.getStatus()) {
             // cannot authenticate, throw an exception
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
             // TODO: check available spring security exception to be reused instead.
@@ -174,7 +172,7 @@ public class IntegrationService {
         WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
                 .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
                 .retrieve().bodyToMono(WsResponse.class).block();
-        if (WsResponse.EWsResponseStatus.FAILURE == accessTokenWsResponse.getStatus()) {
+        if (WsResponse.EWsResponseStatus.FAILURE.getCode() == accessTokenWsResponse.getStatus()) {
             throw new WsAuthenticationException(accessTokenWsResponse.getBody());
             // TODO: check available spring security exception to be reused instead.
         }
