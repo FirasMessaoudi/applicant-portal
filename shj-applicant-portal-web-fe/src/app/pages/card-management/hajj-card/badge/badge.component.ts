@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CardService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
@@ -21,6 +21,8 @@ export class BadgeComponent implements OnInit {
   countries: CountryLookup[] = [];
   ritualTypes: Lookup[] = [];
   url: any = 'assets/images/default-avatar.svg';
+  @Input() uin = '';
+  @Input() cardStatus = '';
 
   constructor(private toastr: ToastService,
               private cardService: CardService,

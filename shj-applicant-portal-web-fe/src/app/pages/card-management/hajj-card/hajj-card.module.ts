@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { HajjCardRoutingModule } from './hajj-card-routing.module';
-import { HajjCardComponent } from './hajj-card.component';
-import { BadgeComponent } from './badge/badge.component';
-import { SharedModule } from '@shared/shared.module';
+import {HajjCardRoutingModule} from './hajj-card-routing.module';
+import {HajjCardComponent} from './hajj-card.component';
+import {BadgeComponent} from './badge/badge.component';
+import {SharedModule} from '@shared/shared.module';
+import {QRCodeModule} from "angularx-qrcode";
 
 
 @NgModule({
@@ -12,7 +13,9 @@ import { SharedModule } from '@shared/shared.module';
   imports: [
     CommonModule,
     HajjCardRoutingModule,
-    SharedModule
+    SharedModule,
+    QRCodeModule
+
   ],
   exports:[
     BadgeComponent
