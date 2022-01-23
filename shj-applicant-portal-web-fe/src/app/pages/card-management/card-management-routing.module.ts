@@ -6,7 +6,7 @@ import {HajjCardComponent} from '@pages/card-management/hajj-card/hajj-card.comp
 
 const routes: Routes = [
   {path: 'cards/details/:id', component: CardDetailsComponent, canActivate: [AuthenticationGuard]},
-  {path: 'cards/hajj-card/:id', component: HajjCardComponent, canActivate: [AuthenticationGuard]}
+  {path: 'cards/hajj-card/:uin/:cardStatus', component: HajjCardComponent, canActivate: [AuthenticationGuard]}
 ];
 
 @NgModule({
