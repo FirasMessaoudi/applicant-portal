@@ -985,7 +985,7 @@ public class IntegrationService {
      *
      * @return the persisted chat contact
      */
-    public ApplicantChatContactLiteDto createStaffChatContact(String uin, Long applicantRitualId, String contactUin) {
+    public WsResponse createStaffChatContact(String uin, Long applicantRitualId, String contactUin) {
         WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create-staff/" + uin + "/" + applicantRitualId + "/" + contactUin,
@@ -996,7 +996,7 @@ public class IntegrationService {
             log.error("Cannot authenticate to create applicant chat contact", e);
             return null;
         }
-        return wsResponse.getBody();
+        return wsResponse;
     }
 
     /**
