@@ -14,6 +14,7 @@ import {ConfirmDialogComponent} from "@shared/components/confirm-dialog";
 import {DateAgoPipe} from '@shared/pipes/date/date-ago/date-ago.pipe';
 import {DateFormatPipe} from '@shared/pipes/date/date-format.pipe';
 import {HijriFormatPipe} from '@shared/pipes/date/hijri-format.pipe';
+import {DateTimeFormatPipe} from '@shared/pipes/date/date-time-format.pipe';
 
 
 import {ToastsContainer} from './components/toast';
@@ -51,7 +52,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MonthDayHijriFormatPipe,
     IbanStatusPipe,
     ArabicNumberPipe,
-    NotificationListComponent
+    NotificationListComponent,
+    DateTimeFormatPipe
   ],
   imports: [
     CommonModule,
@@ -69,7 +71,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     RouterModule
   ],
   providers: [
-    DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule,
+    DateAgoPipe, DatePipe, DateFormatPipe, HijriFormatPipe, MonthDayHijriFormatPipe, NgxCaptchaModule, DateTimeFormatPipe,
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
@@ -99,6 +101,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NgxIntlTelInputModule,
     PerfectScrollbarModule,
     NotificationListComponent,
+    DateTimeFormatPipe,
     RouterModule
   ],
   entryComponents: [

@@ -537,7 +537,10 @@
     "DINNER": "Dinner",
     "package_details": "Package Details",
     "status_active": "Active",
-    "my_card": "My Card"
+    "my_card": "My Card",
+    "staff_id": "Staff ID Number",
+    "staff_name": "Staff Name",
+    "staff_title": "Staff Title"
   },
   "program-management": {
     "transportation_type": "Transportation type",
