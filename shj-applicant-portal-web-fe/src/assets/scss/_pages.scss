@@ -95,7 +95,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row-reverse;
   background-color: $light;
 
   button{
@@ -760,4 +759,12 @@ ngb-typeahead-window.dropdown-menu {
     }
 
   }
+}
+
+
+.qrcode_wrapper{
+  display: flex;
+  align-items: center;
+  background-color: #ebf1eb;
+  width: 100%;
 }
