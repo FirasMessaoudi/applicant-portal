@@ -538,7 +538,10 @@
     "DINNER": "عشاء",
     "package_details": "بيانات الباقة",
     "status_active": "نشط",
-    "my_card": "بطاقتي"
+    "my_card": "بطاقتي",
+    "staff_id": "Staff ID Number",
+    "staff_name": "Staff Name",
+    "staff_title": "Staff Title"
   },
   "program-management": {
     "transportation_type": "طريقة التنقل",

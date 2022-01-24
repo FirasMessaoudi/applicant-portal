@@ -447,7 +447,7 @@
     "hamlah": "Hamlah",
     "motawef": "Al Motawef",
     "applicant_shaaer_id": "Shaaer ID",
-    "card_number": "Card Serial Number",
+    "card_number": "Card Serial NO.",
     "card_status": "Card Status",
     "applicant_shaaer_id_status": "Shaaer ID Status",
     "nationality": "Nationality",
@@ -537,7 +537,10 @@
     "DINNER": "Dinner",
     "package_details": "Package Details",
     "status_active": "Active",
-    "my_card": "My Card"
+    "my_card": "My Card",
+    "staff_id": "Staff ID Number",
+    "staff_name": "Staff Name",
+    "staff_title": "Staff Title"
   },
   "program-management": {
     "transportation_type": "Transportation type",

@@ -99,16 +99,12 @@ public class ChatContactWsController {
                                                      @PathVariable String contactUin,
                                                      Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantChatContactLiteDto staffChatContact = chatContactService.createStaffChatContact(loggedInUserUin, applicantRitualId, contactUin);
-        if (staffChatContact.getContactUin() == null) {
-            return ResponseEntity.ok(
-                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
-        }
+        WsResponse response = chatContactService.createStaffChatContact(loggedInUserUin, applicantRitualId, contactUin);
+
         return ResponseEntity.ok(WsResponse
                 .builder()
-                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(staffChatContact).build());
+                .status(response.getStatus())
+                .body(response.getBody()).build());
     }
 
 

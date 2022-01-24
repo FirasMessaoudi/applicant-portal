@@ -67,7 +67,7 @@ public class ChatContactService {
      * @param contactUin the SUIN
      * @return savedContact saved one
      */
-    public ApplicantChatContactLiteDto createStaffChatContact(String uin, Long ritualId, String contactUin) {
+    public WsResponse createStaffChatContact(String uin, Long ritualId, String contactUin) {
         return integrationService.createStaffChatContact(uin, ritualId, contactUin);
     }
 

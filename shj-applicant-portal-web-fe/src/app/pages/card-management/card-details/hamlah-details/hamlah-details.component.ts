@@ -43,4 +43,13 @@ export class HamlahDetailsComponent implements OnInit {
    var result= mealTime.split(":",2)
     return result[0]+":"+result[1];
   }
+
+  removeSecondsAddAmPm(mealTime: any) {
+    var result= mealTime.split(":",2)
+    var timeAmPm =  result[0] >= 12 ? 'PM' : 'AM';
+    result[0] = result[0] % 12;
+    result[0] = result[0] ? result[0] : 12; // the hour '0' should be '12'
+    var strTime = result[0] + ':' + result[1] + ' ' + timeAmPm;
+    return strTime;
+  }
 }
