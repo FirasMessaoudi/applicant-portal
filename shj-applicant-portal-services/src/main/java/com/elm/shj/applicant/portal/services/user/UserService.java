@@ -276,6 +276,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         user.setUserRoles(userRoles);
         // save user information
         UserDto savedUser = save(user);
+        //  add relatives as contacts if not found
+        createApplicantRelativesChatContacts(user.getUin());
         passwordHistoryService.addUserPasswordHistory(savedUser.getId(), DEFFAULT_HISTORY_PASSWORD);
         // user created successfully, send SMS notification which contains the temporary password
         boolean smsSent = notifyRegisteredUser(savedUser);
@@ -444,6 +446,23 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
             return null;
         } else {
             return wsResponse.getBody();
+        }
+    }
+
+    void createApplicantRelativesChatContacts(Long applicantUin) {
+        WsResponse<ApplicantLiteDto> wsResponse = null;
+        final String url = "/ws/create-relatives-chat-contact";
+        try {
+            wsResponse = integrationService.callIntegrationWs(url, HttpMethod.POST, String.valueOf(applicantUin), new ParameterizedTypeReference<WsResponse<Object>>() {
+            });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to verify applicant.", e);
+
+        } catch (Exception ex) {
+            log.error("error while trying to create Applicant Relatives As Chat Contacts .", ex);
+        }
+        if (WsResponse.EWsResponseStatus.FAILURE.equals(wsResponse.getStatus())) {
+            log.error("error while trying to create Applicant Relatives As Chat Contacts .");
         }
     }
 

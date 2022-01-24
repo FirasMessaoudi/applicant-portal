@@ -270,27 +270,31 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
     this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
-      if (response) {
+      if (response && response.fullNameEn) {
         this.user = response;
         this.fillRegistrationForm();
-        let applicantMobileNumber;
-        if (response.hasLocalMobileNumber) {
+        if (this.user.mobileNumber) {
+          let applicantMobileNumber;
           this.selectedCountryCode = this.SAUDI_COUNTRY_CODE.toLowerCase();
-          applicantMobileNumber = this.user.mobileNumber.substring(this.user.mobileNumber.length - 9);
-          this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
-        } else {
-          this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
-          let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase()).countryPhonePrefix;
-          if (this.user.mobileNumber.startsWith('00')) {
-            console.log("starts with 00")
-            this.user.mobileNumber = this.user.mobileNumber.substring(2);
+          if (response.hasLocalMobileNumber) {
+            applicantMobileNumber = this.user.mobileNumber.substring(this.user.mobileNumber.length - 9);
+            this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
+          } else {
+            if (this.user.countryCode) {
+              this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
+            }
+            let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase()).countryPhonePrefix;
+            if (this.user.mobileNumber.startsWith('00')) {
+              console.log("starts with 00")
+              this.user.mobileNumber = this.user.mobileNumber.substring(2);
+            }
+            applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
+            this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
           }
-          applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
-          this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
-        }
+          this.originalMobileNo = applicantMobileNumber;
 
+        }
         this.isApplicantVerified = true;
-        this.originalMobileNo = applicantMobileNumber;
         this.registerForm.markAsUntouched();
 
       } else {
