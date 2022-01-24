@@ -50,6 +50,7 @@
     "@types/chart.js": "^2.9.20",
     "angular-archwizard": "^6.1.0",
     "angular2-text-mask": "^9.0.0",
+    "angularx-qrcode": "~2.3.5",
     "bootstrap": "^4.5.0",
     "camunda-dmn-moddle": "^1.1.0",
     "chart.js": "^2.9.3",
