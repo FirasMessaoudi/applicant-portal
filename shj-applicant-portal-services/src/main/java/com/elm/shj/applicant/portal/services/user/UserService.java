@@ -442,7 +442,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } catch (Exception ex) {
             return null;
         }
-        if (WsResponse.EWsResponseStatus.FAILURE.equals(wsResponse.getStatus())) {
+        if (WsResponse.EWsResponseStatus.FAILURE.getCode() == wsResponse.getStatus()) {
             return null;
         } else {
             return wsResponse.getBody();
