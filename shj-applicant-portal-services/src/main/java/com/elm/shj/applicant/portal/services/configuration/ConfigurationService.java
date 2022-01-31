@@ -31,10 +31,14 @@ public class ConfigurationService {
     @Value("${send.user.location.batch.size}")
     private int userLocationBatchSize;
 
+    @Value("${google.map.key}")
+    private String googleMapKey;
+
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
         configList.add(getUserLocationDistanceConfig());
         configList.add(getUserLocationBatchSizeConfig());
+        configList.add(getGoogleMapKeyConfig());
         return configList;
     }
 
@@ -48,6 +52,12 @@ public class ConfigurationService {
         ConfigDto config = new ConfigDto();
         config.setConfKey("send.user.location.batch.size");
         config.setConfValue(String.valueOf(userLocationBatchSize));
+        return config;
+    }
+    private ConfigDto getGoogleMapKeyConfig(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("google.map.key");
+        config.setConfValue(String.valueOf(googleMapKey));
         return config;
     }
 }

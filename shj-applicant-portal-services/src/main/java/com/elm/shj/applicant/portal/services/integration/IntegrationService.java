@@ -91,6 +91,7 @@ public class IntegrationService {
     private final String CHAT_LIST_URL = "/ws/chat-contact/chat-list";
     private final String APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/";
     private final String LATEST_APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/latest/";
+    private final String MOBILE_LOGIN_URL = "/ws/applicant/mobile-login/";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -152,7 +153,7 @@ public class IntegrationService {
 
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
-        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL ) {
+        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(WsResponse.class).block();
@@ -969,8 +970,8 @@ public class IntegrationService {
     public WsResponse createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
         WsResponse wsResponse = null;
         try {
-            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/"  + ritualId,
-                    HttpMethod.POST,  applicantChatContact,
+            wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/" + ritualId,
+                    HttpMethod.POST, applicantChatContact,
                     new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1100,7 +1101,6 @@ public class IntegrationService {
     }
 
     /**
-     *
      * @param uin
      * @return
      */
@@ -1116,7 +1116,6 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
-
 
 
     public List<ChatMessageLiteDto> listChatContactsWithLatestMessage(String uin) {
@@ -1167,7 +1166,6 @@ public class IntegrationService {
     }
 
     /**
-     *
      * @param uin
      * @return
      */
@@ -1198,4 +1196,16 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public void updateLoggedInFlag(Long uin, boolean mobileLoggedIn) {
+        try {
+            callIntegrationWs(MOBILE_LOGIN_URL + uin + "/" + mobileLoggedIn,
+                    HttpMethod.PUT, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant mobile login flag", e);
+
+        }
+
+    }
 }

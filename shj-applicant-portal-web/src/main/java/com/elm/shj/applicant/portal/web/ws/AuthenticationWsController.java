@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
 import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
@@ -23,6 +24,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,7 +53,7 @@ public class AuthenticationWsController {
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     private final OtpAuthenticationProvider otpAuthenticationProvider;
     private final JwtTokenService jwtTokenService;
-
+    private final IntegrationService integrationService;
     @Value("${login.simultaneous.enabled}")
     private boolean simultaneousLoginEnabled;
 
@@ -85,7 +87,6 @@ public class AuthenticationWsController {
     @PostMapping("/otp")
     public ResponseEntity<WsResponse<?>> otpForLogin(@RequestBody Map<String, String> credentials, HttpServletResponse response) {
         log.debug("OTP request handler");
-
         JwtToken authentication = (JwtToken) jwtAuthenticationProvider
                 .authenticate(new UsernamePasswordAuthenticationToken(credentials.get("idNumber"), credentials.get("otp")));
 
@@ -98,6 +99,9 @@ public class AuthenticationWsController {
         JwtToken jwtToken = new JwtToken(null, ((UsernamePasswordAuthenticationToken) authentication.getPrincipal()).getName(),
                 authentication.getAuthorities(), authentication.isPasswordExpired(), authentication.getFirstName(),
                 authentication.getLastName(), authentication.getId(), authentication.getUserRoles());
+
+        long loggedInUserUin = Long.parseLong(credentials.get("idNumber"));
+        integrationService.updateLoggedInFlag(loggedInUserUin, true);
 
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(jwtToken).build());
@@ -116,6 +120,8 @@ public class AuthenticationWsController {
         log.debug("Logout request handler");
         // if the authentication exists, then clear it
         if (!simultaneousLoginEnabled && authentication instanceof JwtToken) {
+            String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+            integrationService.updateLoggedInFlag(Long.parseLong(loggedInUserUin), false);
             jwtTokenService.invalidateToken(((JwtToken) authentication).getToken());
         }
         // clear security context anyway...

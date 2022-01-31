@@ -4,10 +4,14 @@
 package com.elm.shj.applicant.portal.web.security.jwt;
 
 import com.elm.shj.applicant.portal.services.dto.EChannel;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.user.UserService;
+import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceUtils;
 import org.springframework.security.core.Authentication;
@@ -67,6 +71,8 @@ public class JwtTokenService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private IntegrationService integrationService;
 
     public String generateToken(long idNumber, List<String> grantedAuthorities, long userId,
                                 boolean passwordExpired, Set<Long> userRoleIds, HttpServletRequest request) {
@@ -97,31 +103,55 @@ public class JwtTokenService {
 
         return
                 // retrieve token
-                retrieveToken(request).map(token ->
-                        // retrieve username
-                        retrieveIdNumberFromToken(token).map(idNumber -> {
-                                    if (!userService.hasToken(idNumber)) {
-                                        throw new ExpiredJwtException(null, null, "The token you provided has expired!");
-                                    }
-                                    // retrieve expiration date
-                                    return retrieveExpirationDateFromToken(token).map(expirationDate -> {
-                                        if (new Date().after(expirationDate)) {
+                retrieveToken(request).map(token -> {
+                            // retrieve username
+                            return retrieveIdNumberFromToken(token).map(idNumber -> {
+                                        if (!userService.hasToken(idNumber)) {
+                                            integrationService.updateLoggedInFlag(idNumber, false);
                                             throw new ExpiredJwtException(null, null, "The token you provided has expired!");
                                         }
-                                        // retrieve authorities
-                                        // retrieve password expiry flag
-                                        return retrieveGrantedAuthoritiesFromToken(token).flatMap(
-                                                grantedAuthorities -> retrievePasswordExpirationFlagFromToken(token).map(passExpired -> {
-                                            if (checkPasswordExpiryFlag && Boolean.TRUE.equals(passExpired)) {
-                                                return null;
+                                        // retrieve expiration date
+                                        return retrieveExpirationDateFromToken(token).map(expirationDate -> {
+                                            if (new Date().after(expirationDate)) {
+                                                integrationService.updateLoggedInFlag(idNumber, false);
+                                                throw new ExpiredJwtException(null, null, "The token you provided has expired!");
                                             }
-                                            return new JwtToken(token, new User(Long.toString(idNumber), "<CONFIDENTIAL>",
-                                                    grantedAuthorities), grantedAuthorities, Boolean.TRUE.equals(passExpired));
-                                        })).orElse(null);
-                                    }).orElseThrow(() -> new MalformedJwtException("The token you provided is malformed!"));
-                                }
-                        ).orElseThrow(() -> new MalformedJwtException("The token you provided is malformed!"))
+                                            // retrieve authorities
+                                            // retrieve password expiry flag
+                                            return retrieveGrantedAuthoritiesFromToken(token).flatMap(
+                                                    grantedAuthorities -> retrievePasswordExpirationFlagFromToken(token).map(passExpired -> {
+                                                        if (checkPasswordExpiryFlag && Boolean.TRUE.equals(passExpired)) {
+                                                            integrationService.updateLoggedInFlag(idNumber, false);
+                                                            return null;
+                                                        }
+                                                        return new JwtToken(token, new User(Long.toString(idNumber), "<CONFIDENTIAL>",
+                                                                grantedAuthorities), grantedAuthorities, Boolean.TRUE.equals(passExpired));
+                                                    })).orElse(null);
+                                        }).orElseThrow(() -> {
+                                            integrationService.updateLoggedInFlag(idNumber, false);
+                                            return new MalformedJwtException("The token you provided is malformed!");});
+                                    }
+                            ).orElseThrow(() -> {
+                                if (request.getRequestURI().contains(Navigation.API_INTEGRATION))
+                                    integrationService.updateLoggedInFlag(Long.parseLong(getIdNumberFromExpiredToken(token)), false);
+                                return new MalformedJwtException("The token you provided is malformed!222");
+                            });
+                        }
                 ).orElse(null);
+
+    }
+
+    private String getIdNumberFromExpiredToken(String token) {
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String[] parts = token.split("\\."); // Splitting header, payload and signature
+        String idNumber;
+        try {
+            JSONObject payLoad = new JSONObject(new String(decoder.decode(parts[1])));
+            idNumber = (String) payLoad.get("sub");
+        } catch (JSONException e) {
+            idNumber = null;
+        }
+        return idNumber;
     }
 
     /**
@@ -174,6 +204,7 @@ public class JwtTokenService {
 
     /**
      * Gets user roles from the token
+     *
      * @param token
      * @return
      */
@@ -217,6 +248,7 @@ public class JwtTokenService {
 
     /**
      * Gets the user role ids from the token
+     *
      * @param token
      * @return
      */
