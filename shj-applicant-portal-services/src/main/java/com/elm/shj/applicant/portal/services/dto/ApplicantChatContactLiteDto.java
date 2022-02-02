@@ -33,6 +33,7 @@ public class ApplicantChatContactLiteDto implements Serializable {
     @NotBlank(message = "validation.data.validation.field.required")
     private String alias;
     private String avatar;
+    //TODO why using wrapper type
     private Boolean systemDefined;
     private String staffTitleCode;
     private String relationshipCode;

@@ -25,7 +25,7 @@ public class ChatMessageDto implements Serializable {
 
     private long id;
     private String text;
-    private ChatMessageTypeLookupDto type;
+    private String type;
     private String contentFilePath;
     private ApplicantChatContactLiteDto sender;
     private ApplicantChatContactLiteDto receiver;
