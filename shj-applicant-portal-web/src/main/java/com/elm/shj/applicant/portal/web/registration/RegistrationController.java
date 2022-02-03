@@ -49,8 +49,8 @@ public class RegistrationController {
     private static final int UPDATE_FAILED_IN_ADMIN_PORTAL = 563;
 
 
-    @PostMapping("/{needToUpdate}")
-    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @PathVariable("needToUpdate") boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
+    @PostMapping
+    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam String pin) throws JSONException {
 
         if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
             return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
@@ -59,17 +59,13 @@ public class RegistrationController {
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        if (needToUpdateInAdminPortal) {
-            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
 
-            ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
-            if (returnedApplicant == null) {
-                log.debug("Update failed in admin portal for applicant with Uin {}", user.getUin());
-                return ResponseEntity.status(UPDATE_FAILED_IN_ADMIN_PORTAL).build();
-            }
+        ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
+        if (returnedApplicant == null) {
+            log.debug("Update failed in admin portal for applicant with Uin {}", user.getUin());
+            return ResponseEntity.status(UPDATE_FAILED_IN_ADMIN_PORTAL).build();
         }
-
-
         UserDto createdUser = userService.createUser(user);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
         return ResponseEntity.ok(createdUser);
