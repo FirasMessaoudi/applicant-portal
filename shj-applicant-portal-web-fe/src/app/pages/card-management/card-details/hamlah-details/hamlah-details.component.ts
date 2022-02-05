@@ -52,4 +52,18 @@ export class HamlahDetailsComponent implements OnInit {
     var strTime = result[0] + ':' + result[1] + ' ' + timeAmPm;
     return strTime;
   }
+
+  getTransportationIcon(transportationType:string){
+    if(transportationType == "CAR"){
+      return "car-solid";
+    } else if(transportationType == "BUS"){
+      return "bus-solid";
+    } else if(transportationType == "TRAIN"){
+      return "train-solid";
+    } else if(transportationType == "AIRPLANE"){
+      return "plane-departure-solid";
+    } else {
+      return "";
+    }
+  }
 }

@@ -167,6 +167,7 @@
       <tbody>
       <tr *ngFor="let transportation of applicantPackage?.applicantPackageTransportations">
         <td class="ltr">
+          <svg-icon styleClass="fa-w-20" icon={{getTransportationIcon(transportation?.packageTransportation?.typeCode)}}></svg-icon>
           {{
           transportation?.packageTransportation?.typeCode
             ? lookupService().localizedLabel(
