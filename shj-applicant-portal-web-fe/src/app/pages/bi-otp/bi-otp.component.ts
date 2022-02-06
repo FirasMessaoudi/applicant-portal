@@ -125,7 +125,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
     } else if (this.previousUrl == "/register") {
-      this.registerService.validateOtpThenRegister(this.otpData, this.updateAdminRequired, pin)
+      this.registerService.validateOtpThenRegister(this.otpData, pin)
         .pipe(finalize(() => {
           this.otpForm.markAsPristine();
           this.loading = false;
