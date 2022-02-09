@@ -62,12 +62,11 @@
                 {{ currentUser?.firstName }} {{ currentUser?.lastName }}
               </h6>
               <small class="mb-2">
-                <a class="text-black-50" (click)="open(showEditRitual)" href="javascript:void(0)">
+                <a class="text-black-50" (click)="open(showEditRitual)" href="javascript:void(0)" ngbTooltip="{{ getHijriDate(selectedApplicantRitualPackage?.startDate,selectedApplicantRitualPackage?.seasonYear) | hijriDateFormat}} - {{getHijriDate(selectedApplicantRitualPackage?.endDate,selectedApplicantRitualPackage?.seasonYear) | hijriDateFormat}}" placement="bottom">
                   {{selectedApplicantRitualPackage?.typeCode ? lookupService().localizedLabel(ritualTypes, selectedApplicantRitualPackage?.typeCode) : ""}}
                   <span *ngIf="currentLanguage.startsWith('ar')">عام</span>
                   {{selectedApplicantRitualPackage?.seasonYear}}
-                  ({{ getHijriDate(selectedApplicantRitualPackage?.startDate,selectedApplicantRitualPackage?.seasonYear) | hijriDateFormat}}
-                  - {{getHijriDate(selectedApplicantRitualPackage?.endDate,selectedApplicantRitualPackage?.seasonYear) | hijriDateFormat}})
+                  <svg-icon icon="more"></svg-icon>
                 </a>
               </small>
             </div>
