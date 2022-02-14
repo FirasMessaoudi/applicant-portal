@@ -273,21 +273,3 @@ create table sha_portal.sha_scheduled_tasks_lock
 );
 
 GO
-if not exists (select * from sys.tables where name = 'sha_user_location')
-create table sha_portal.sha_user_location
-(
-id int PRIMARY KEY NOT NULL identity(1,1),
-user_id int NOT NULL,
-latitude DECIMAL(10, 8) ,
-longitude DECIMAL(11, 8) ,
-altitude DECIMAL(10, 5),
-heading DECIMAL(10, 5),
-speed DECIMAL(7, 4),
-speed_accuracy DECIMAL(7, 4),
-location_accuracy DECIMAL(7, 4),
-gps_time smalldatetime null,
-creation_date smalldatetime not null default current_timestamp,
-update_date smalldatetime null,
-CONSTRAINT fk_sha_location_user FOREIGN KEY (user_id) REFERENCES sha_portal.sha_user (id)
-);
-GO
