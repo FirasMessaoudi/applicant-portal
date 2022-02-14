@@ -23,6 +23,15 @@
   cursor: pointer;
 }
 
+
+.form-group{
+
+  .form-control-plaintext{
+    padding: 0;
+  }
+
+}
+
 .custom-control-label {
   font-size: 1.1rem;
   // font-weight: 600;
@@ -767,4 +776,10 @@ ngb-typeahead-window.dropdown-menu {
   align-items: center;
   background-color: #ebf1eb;
   width: 100%;
+}
+
+
+.custom-checkbox .custom-control-input:not(:disabled):checked ~ .custom-control-label::after,
+.custom-checkbox .custom-control-input:not(:disabled):checked ~ .custom-control-label::before{
+  background-color: $dcc-primary;
 }
