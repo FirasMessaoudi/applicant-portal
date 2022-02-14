@@ -336,18 +336,4 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
 
     }
 
-    @Test
-    public void test_store_user_locations_success() throws Exception {
-        String url = Navigation.API_INTEGRATION_USERS + "/user_locations";
-
-        UserLocationsCmd userLocationsCmd = new UserLocationsCmd();
-
-        mockMvc.perform(get(url).cookie(tokenCookie).with(csrf())).andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.body.status", is(0)));
-
-
-        verify(userLocationService, times(1)).storeUserLocation(anyList());
-
-    }
-
 }

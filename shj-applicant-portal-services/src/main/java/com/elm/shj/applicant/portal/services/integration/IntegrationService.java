@@ -92,6 +92,7 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/";
     private final String LATEST_APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/latest/";
     private final String MOBILE_LOGIN_URL = "/ws/applicant/mobile-login/";
+    private final String STORE_USER_LOCATIONS = "/ws/store-user-locations";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -1207,5 +1208,17 @@ public class IntegrationService {
 
         }
 
+    }
+
+    public WsResponse storeUserLocation(List<UserLocationDto> locations) {
+        WsResponse<Boolean> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(STORE_USER_LOCATIONS, HttpMethod.POST, locations,
+                    new ParameterizedTypeReference<WsResponse<Boolean>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to send store user locations Request", e);
+        }
+        return wsResponse;
     }
 }
