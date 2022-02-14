@@ -300,7 +300,7 @@ public class UserManagementWsController {
         List<UserLocationDto> locationsList = location.get("location");
         locationsList.forEach(e -> {
             e.setUserId(loggedInUserUin);
-            e.setUserType(EUserType.STAFF.name());
+            e.setUserType(EUserType.APPLICANT.name());
         });
         WsResponse wsResponse = userLocationService.storeUserLocation(locationsList);
         return ResponseEntity.ok(
