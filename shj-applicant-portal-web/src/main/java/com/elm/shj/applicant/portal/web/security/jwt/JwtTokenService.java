@@ -106,14 +106,17 @@ public class JwtTokenService {
                 retrieveToken(request).map(token -> {
                             // retrieve username
                             return retrieveIdNumberFromToken(token).map(idNumber -> {
+
                                         if (!userService.hasToken(idNumber)) {
-                                            integrationService.updateLoggedInFlag(idNumber, false);
+                                            if (request.getRequestURI().contains(Navigation.API_INTEGRATION))
+                                                integrationService.updateLoggedInFlag(idNumber, false);
                                             throw new ExpiredJwtException(null, null, "The token you provided has expired!");
                                         }
                                         // retrieve expiration date
                                         return retrieveExpirationDateFromToken(token).map(expirationDate -> {
                                             if (new Date().after(expirationDate)) {
-                                                integrationService.updateLoggedInFlag(idNumber, false);
+                                                if (request.getRequestURI().contains(Navigation.API_INTEGRATION))
+                                                    integrationService.updateLoggedInFlag(idNumber, false);
                                                 throw new ExpiredJwtException(null, null, "The token you provided has expired!");
                                             }
                                             // retrieve authorities
@@ -121,15 +124,18 @@ public class JwtTokenService {
                                             return retrieveGrantedAuthoritiesFromToken(token).flatMap(
                                                     grantedAuthorities -> retrievePasswordExpirationFlagFromToken(token).map(passExpired -> {
                                                         if (checkPasswordExpiryFlag && Boolean.TRUE.equals(passExpired)) {
-                                                            integrationService.updateLoggedInFlag(idNumber, false);
+                                                            if (request.getRequestURI().contains(Navigation.API_INTEGRATION))
+                                                                integrationService.updateLoggedInFlag(idNumber, false);
                                                             return null;
                                                         }
                                                         return new JwtToken(token, new User(Long.toString(idNumber), "<CONFIDENTIAL>",
                                                                 grantedAuthorities), grantedAuthorities, Boolean.TRUE.equals(passExpired));
                                                     })).orElse(null);
                                         }).orElseThrow(() -> {
-                                            integrationService.updateLoggedInFlag(idNumber, false);
-                                            return new MalformedJwtException("The token you provided is malformed!");});
+                                            if (request.getRequestURI().contains(Navigation.API_INTEGRATION))
+                                                integrationService.updateLoggedInFlag(idNumber, false);
+                                            return new MalformedJwtException("The token you provided is malformed!");
+                                        });
                                     }
                             ).orElseThrow(() -> {
                                 if (request.getRequestURI().contains(Navigation.API_INTEGRATION))
