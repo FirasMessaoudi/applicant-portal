@@ -29,5 +29,8 @@ public class ChatMessageLiteDto implements Serializable {
     private String contactUin;
     private String messageText;
     private Date sentDate;
+    private Date receivedDate;
+    private Date readDate;
     private boolean deleted;
+    private long unreadMessagesCount;
 }
