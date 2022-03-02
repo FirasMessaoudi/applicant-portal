@@ -34,11 +34,15 @@ public class ConfigurationService {
     @Value("${google.map.key}")
     private String googleMapKey;
 
+    @Value("${tracking.user.location}")
+    private String enableUserLocationTracking;
+
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
         configList.add(getUserLocationDistanceConfig());
         configList.add(getUserLocationBatchSizeConfig());
         configList.add(getGoogleMapKeyConfig());
+        configList.add(getEnableUserLocationTracking());
         return configList;
     }
 
@@ -58,6 +62,13 @@ public class ConfigurationService {
         ConfigDto config = new ConfigDto();
         config.setConfKey("google.map.key");
         config.setConfValue(String.valueOf(googleMapKey));
+        return config;
+    }
+
+    public ConfigDto getEnableUserLocationTracking(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("tracking.user.location");
+        config.setConfValue(String.valueOf(enableUserLocationTracking));
         return config;
     }
 }
