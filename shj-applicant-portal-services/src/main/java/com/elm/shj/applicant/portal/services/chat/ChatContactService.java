@@ -3,7 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.chat;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
+import com.elm.shj.applicant.portal.services.dto.ChatContactLiteDto;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
@@ -34,7 +34,7 @@ public class ChatContactService {
      * @param ritualId the selected ritual ID
      * @return the list of chat contacts
      */
-    public List<ApplicantChatContactLiteDto> findChatContactsByUinAndRitualId(String uin, Long ritualId) {
+    public List<ChatContactLiteDto> findChatContactsByUinAndRitualId(String uin, Long ritualId) {
         return integrationService.findApplicantChatContacts(uin, ritualId);
     }
 
@@ -47,7 +47,7 @@ public class ChatContactService {
      *
      * @return savedContact saved one
      */
-    public WsResponse createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
+    public WsResponse createApplicantChatContact(Long ritualId, ChatContactLiteDto applicantChatContact) {
         return integrationService.createApplicantChatContact(ritualId, applicantChatContact);
     }
 
@@ -57,7 +57,7 @@ public class ChatContactService {
      * @param contactUin the SUIN
      * @return savedContact saved one
      */
-    public ApplicantChatContactLiteDto findApplicantChatByApplicantUinAndContactUin(String applicantUin, String contactUin) {
+    public ChatContactLiteDto findApplicantChatByApplicantUinAndContactUin(String applicantUin, String contactUin) {
         return integrationService.findApplicantChatContact(applicantUin, contactUin);
     }
 
@@ -77,7 +77,7 @@ public class ChatContactService {
      * @param applicantChatContact
      * @return updatedContact updated one
      */
-    public ApplicantChatContactLiteDto updateApplicantChatContact(long id, ApplicantChatContactLiteDto applicantChatContact) {
+    public ChatContactLiteDto updateApplicantChatContact(long id, ChatContactLiteDto applicantChatContact) {
         return integrationService.updateChatContact(id, applicantChatContact);
     }
 
