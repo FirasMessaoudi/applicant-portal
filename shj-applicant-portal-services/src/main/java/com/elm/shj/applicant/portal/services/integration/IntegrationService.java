@@ -936,11 +936,11 @@ public class IntegrationService {
      *
      * @return all chat contacts by ritual ID
      */
-    public List<ApplicantChatContactLiteDto> findApplicantChatContacts(String uin, Long applicantRitualId) {
-        WsResponse<List<ApplicantChatContactLiteDto>> wsResponse = null;
+    public List<ChatContactLiteDto> findApplicantChatContacts(String uin, Long applicantRitualId) {
+        WsResponse<List<ChatContactLiteDto>> wsResponse = null;
         try {
             wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/" + uin + "/" + applicantRitualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
+                    new ParameterizedTypeReference<WsResponse<List<ChatContactLiteDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification names", e);
@@ -968,12 +968,12 @@ public class IntegrationService {
      *
      * @return the persisted chat contact
      */
-    public WsResponse createApplicantChatContact(Long ritualId, ApplicantChatContactLiteDto applicantChatContact) {
+    public WsResponse createApplicantChatContact(Long ritualId, ChatContactLiteDto applicantChatContact) {
         WsResponse wsResponse = null;
         try {
             wsResponse = callIntegrationWs2(CHAT_CONTACT_URL + "/create/" + ritualId,
                     HttpMethod.POST, applicantChatContact,
-                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    new ParameterizedTypeReference<WsResponse<ChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to create applicant chat contact", e);
@@ -988,11 +988,11 @@ public class IntegrationService {
      * @return the persisted chat contact
      */
     public WsResponse createStaffChatContact(String uin, Long applicantRitualId, String contactUin) {
-        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+        WsResponse<ChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/create-staff/" + uin + "/" + applicantRitualId + "/" + contactUin,
                     HttpMethod.POST, null,
-                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    new ParameterizedTypeReference<WsResponse<ChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to create applicant chat contact", e);
@@ -1006,12 +1006,12 @@ public class IntegrationService {
      *
      * @return the updated chat contact
      */
-    public ApplicantChatContactLiteDto updateChatContact(long id, ApplicantChatContactLiteDto applicantChatContact) {
-        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+    public ChatContactLiteDto updateChatContact(long id, ChatContactLiteDto applicantChatContact) {
+        WsResponse<ChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/update/" + id,
                     HttpMethod.PUT, applicantChatContact,
-                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    new ParameterizedTypeReference<WsResponse<ChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to update applicant chat contact", e);
@@ -1124,7 +1124,7 @@ public class IntegrationService {
         try {
             wsResponse = callIntegrationWs2(CHAT_LIST_URL + "/" + uin,
                     HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<ApplicantChatContactLiteDto>>>() {
+                    new ParameterizedTypeReference<WsResponse<List<ChatContactLiteDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get notification names", e);
@@ -1183,12 +1183,12 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
-    public ApplicantChatContactLiteDto findApplicantChatContact(String applicantUin, String contactUin) {
-        WsResponse<ApplicantChatContactLiteDto> wsResponse = null;
+    public ChatContactLiteDto findApplicantChatContact(String applicantUin, String contactUin) {
+        WsResponse<ChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/find/" + applicantUin + "/" + contactUin,
                     HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<ApplicantChatContactLiteDto>>() {
+                    new ParameterizedTypeReference<WsResponse<ChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get list of applicant ritual", e);

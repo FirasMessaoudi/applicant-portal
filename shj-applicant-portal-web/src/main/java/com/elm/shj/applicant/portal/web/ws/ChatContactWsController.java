@@ -5,7 +5,7 @@ package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.shj.applicant.portal.services.chat.ChatContactService;
 import com.elm.shj.applicant.portal.services.chat.ChatMessageService;
-import com.elm.shj.applicant.portal.services.dto.ApplicantChatContactLiteDto;
+import com.elm.shj.applicant.portal.services.dto.ChatContactLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ChatMessageDto;
 import com.elm.shj.applicant.portal.services.dto.ChatMessageLiteDto;
 import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
@@ -65,7 +65,7 @@ public class ChatContactWsController {
      */
     @PostMapping(value = "/create/{ritualId}")
     public ResponseEntity<WsResponse<?>> createApplicant(@PathVariable Long ritualId,
-                                                         @RequestBody ApplicantChatContactLiteDto applicantChatContact,
+                                                         @RequestBody ChatContactLiteDto applicantChatContact,
                                                          Authentication authentication) {
         WsResponse response = chatContactService.createApplicantChatContact(ritualId, applicantChatContact);
         return ResponseEntity.ok(
@@ -82,15 +82,15 @@ public class ChatContactWsController {
     public ResponseEntity<WsResponse<?>> findApplicantChatByApplicantUinAndContactUin(@PathVariable String applicantUin,
                                                                                       @PathVariable String contactUin,
                                                                                       Authentication authentication) {
-        ApplicantChatContactLiteDto applicantChatContactLiteDto = chatContactService.findApplicantChatByApplicantUinAndContactUin(applicantUin, contactUin);
-        if (applicantChatContactLiteDto.getContactUin() == null)
+        ChatContactLiteDto ChatContactLiteDto = chatContactService.findApplicantChatByApplicantUinAndContactUin(applicantUin, contactUin);
+        if (ChatContactLiteDto.getContactDigitalId() == null)
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.APPLICANT_CHAT_CONTACT_NOT_FOUND.getCode()).build()).build());
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                .body(applicantChatContactLiteDto).build());
+                .body(ChatContactLiteDto).build());
     }
 
 
@@ -118,7 +118,7 @@ public class ChatContactWsController {
      */
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<WsResponse<?>> update(@PathVariable long id,
-                                                @RequestBody ApplicantChatContactLiteDto applicantChatContact,
+                                                @RequestBody ChatContactLiteDto applicantChatContact,
                                                 Authentication authentication) {
         return ResponseEntity.ok(WsResponse
                 .builder()

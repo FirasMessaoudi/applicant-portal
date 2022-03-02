@@ -20,13 +20,13 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ApplicantChatContactLiteDto implements Serializable {
+public class ChatContactLiteDto implements Serializable {
 
     private static final long serialVersionUID = -3274483957064433720L;
 
     private long id;
-    private String applicantUin;
-    private String contactUin;
+    private String digitalId;
+    private String contactDigitalId;
     private String contactFullNameAr;
     private String contactFullNameEn;
     private Long typeId;

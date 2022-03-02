@@ -20,11 +20,11 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
-public class ApplicantChatContactVo implements Serializable {
+public class ChatContactVo implements Serializable {
 
     private static final long serialVersionUID = -8147938876661428572L;
 
-    private String uin;
+    private String digitalId;
 
     @NotNull(message = "validation.data.constraints.msg.20001")
     private String alias;
