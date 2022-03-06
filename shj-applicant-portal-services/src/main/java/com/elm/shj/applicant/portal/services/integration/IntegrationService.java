@@ -362,7 +362,7 @@ public class IntegrationService {
     }
 
     public ApplicantMainDataDto loadUserMainData(String uin, long applicantPackageId) {
-        WsResponse<ApplicantMainDataDto> wsResponse = null;
+        WsResponse<ApplicantMainDataDto> wsResponse;
         try {
             wsResponse = callIntegrationWs(APPLICANT_MAIN_DATA_URL + "/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantMainDataDto>>() {
@@ -1171,7 +1171,7 @@ public class IntegrationService {
      * @return
      */
     public ApplicantRitualPackageVo findLatestApplicantRitualPackageByUin(long uin) {
-        WsResponse<ApplicantRitualPackageVo> wsResponse = null;
+        WsResponse<ApplicantRitualPackageVo> wsResponse;
         try {
             wsResponse = callIntegrationWs(LATEST_APPLICANT_RITUAL_PACKAGE_URL + uin, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<ApplicantRitualPackageVo>>() {
