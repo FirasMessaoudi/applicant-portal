@@ -93,4 +93,6 @@ public class ChatContactService {
     public CompanyStaffLiteDto findStaffContactBySuinAndRitualId(String suin) {
         return integrationService.findStaffContact(suin);
     }
+
+
 }

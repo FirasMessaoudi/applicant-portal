@@ -25,12 +25,29 @@ public class ChatMessageLiteDto implements Serializable {
 
 
     private static final long serialVersionUID = -8662150540665387521L;
-    private long contactId;
-    private String contactUin;
+    private long id;
+    private String digitalId;
+    private String contactDigitalId;
+    private String contactFullNameAr;
+    private String contactFullNameEn;
+    private long typeId;
+    private String alias;
+    private String avatar;
+    private boolean systemDefined;
+    private String staffTitleCode;
+    private String relationshipCode;
+    private String mobileNumber;
+    private String countryPhonePrefix;
+    private String countryCode;
+    private boolean autoAdded;
+    private Long applicantRitualId;
+    private Date creationDate;
+    private Date updateDate;
+    private String statusCode;
+    private boolean deleted;
     private String messageText;
     private Date sentDate;
     private Date receivedDate;
     private Date readDate;
-    private boolean deleted;
     private long unreadMessagesCount;
 }

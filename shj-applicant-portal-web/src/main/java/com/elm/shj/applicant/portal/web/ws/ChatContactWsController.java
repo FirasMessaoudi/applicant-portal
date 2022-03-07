@@ -192,16 +192,21 @@ public class ChatContactWsController {
 
     }
 
-    @PostMapping("/save-chat-message/{senderId}/{receiverId}")
-    public ResponseEntity<WsResponse<?>> saveSenderMessage(@RequestBody ChatMessageDto chatMessage, @PathVariable long senderId, @PathVariable long receiverId) {
-        log.debug(Long.toString(chatMessage.getReceiver().getId()));
-        chatMessage.getSender().setId(senderId);
-        chatMessage.getReceiver().setId(receiverId);
+    @PostMapping("/save-chat-message")
+    public ResponseEntity<WsResponse<?>> saveSenderMessage(@RequestBody ChatMessageDto chatMessage) {
         ChatMessageDto Message = chatMessageService.saveMessage(chatMessage);
         return ResponseEntity.ok(WsResponse
                 .builder()
                 .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                 .body(Message).build());
+    }
+
+    @PutMapping(value = "/read-chat-messages/{chatContactId}")
+    public ResponseEntity<WsResponse<?>> markChatMessageAsRead(@PathVariable long chatContactId) {
+        chatMessageService.markChatMessageAsRead(chatContactId);
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).build());
     }
 
 }

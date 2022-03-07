@@ -1155,7 +1155,7 @@ public class IntegrationService {
     public ChatMessageDto saveSenderMessage(ChatMessageDto chatMessage) {
         WsResponse<ChatMessageDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/save-chat-message",
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/v2/save-chat-message",
                     HttpMethod.POST, chatMessage,
                     new ParameterizedTypeReference<WsResponse<ChatMessageDto>>() {
                     });
@@ -1218,6 +1218,19 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to send store user locations Request", e);
+        }
+        return wsResponse;
+    }
+
+    public WsResponse<String> markChatMessageAsRead(long chatContactId) {
+        WsResponse<String> wsResponse= null;
+        try {
+            wsResponse=  callIntegrationWs(CHAT_CONTACT_URL + "/read-chat-messages/" + chatContactId ,
+                    HttpMethod.PUT, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant preferred language", e);
         }
         return wsResponse;
     }
