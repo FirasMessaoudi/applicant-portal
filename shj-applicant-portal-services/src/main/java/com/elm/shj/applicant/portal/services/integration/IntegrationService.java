@@ -93,6 +93,7 @@ public class IntegrationService {
     private final String LATEST_APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/latest/";
     private final String MOBILE_LOGIN_URL = "/ws/applicant/mobile-login/";
     private final String STORE_USER_LOCATIONS = "/ws/store-user-locations";
+    private final String SURVEY_URL = "/ws/survey";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -1155,7 +1156,7 @@ public class IntegrationService {
     public ChatMessageDto saveSenderMessage(ChatMessageDto chatMessage) {
         WsResponse<ChatMessageDto> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/v2/save-chat-message",
+            wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/save-chat-message",
                     HttpMethod.POST, chatMessage,
                     new ParameterizedTypeReference<WsResponse<ChatMessageDto>>() {
                     });
@@ -1230,7 +1231,21 @@ public class IntegrationService {
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to update applicant preferred language", e);
+            log.error("Cannot authenticate to mark chat message as read", e);
+        }
+        return wsResponse;
+    }
+
+    public WsResponse findSurveyByDigitalIdAndSurveyType(String digitalId, String surveyType) {
+        WsResponse<List<SurveyQuestionLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(SURVEY_URL + "/get/" + digitalId +"/"+ surveyType,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<SurveyQuestionLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get survey", e);
+            return null;
         }
         return wsResponse;
     }

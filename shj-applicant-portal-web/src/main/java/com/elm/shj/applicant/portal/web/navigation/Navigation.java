@@ -47,6 +47,7 @@ public class Navigation {
     public static final String API_INTEGRATION_INCIDENTS = "/api/ws/incidents";
     // Chat contacts
     public static final String API_INTEGRATION_CHAT_CONTACTS = "/api/ws/chat-contact";
+    public static final String API_INTEGRATION_SURVEY = "/api/ws/survey";
 
     private Navigation() {
         // private constructor to prevent construction
