@@ -507,7 +507,7 @@ public class IntegrationService {
             log.error("Cannot authenticate to load applicant health details.", e);
             return null;
         }
-        return wsResponse.getBody();
+        return wsResponse.getBody()!=null?wsResponse.getBody(): Collections.emptyList();
     }
 
     public List<CompanyStaffDto> loadApplicantRelatedEmployeesDetails(String uin, Long ritualId) {
