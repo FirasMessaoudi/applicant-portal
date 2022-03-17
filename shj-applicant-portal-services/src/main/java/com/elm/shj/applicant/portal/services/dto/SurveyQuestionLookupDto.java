@@ -34,4 +34,6 @@ public class SurveyQuestionLookupDto implements Serializable {
 
     private SurveyTypeLookupDto surveyType;
 
+    private int questionIndex;
+
 }
