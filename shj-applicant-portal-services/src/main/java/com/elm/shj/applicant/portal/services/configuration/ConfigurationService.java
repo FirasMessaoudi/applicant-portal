@@ -37,12 +37,16 @@ public class ConfigurationService {
     @Value("${user.location.tracking.enabled}")
     private String userLocationTrackingEnabled;
 
+    @Value("${emergency.phone.number}")
+    private String emergencyPhoneNumber;
+
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
         configList.add(getUserLocationDistanceConfig());
         configList.add(getUserLocationBatchSizeConfig());
         configList.add(getGoogleMapKeyConfig());
         configList.add(getUserLocationTrackingEnabled());
+        configList.add(getEmergencyPhoneNumber());
         return configList;
     }
 
@@ -69,6 +73,11 @@ public class ConfigurationService {
         ConfigDto config = new ConfigDto();
         config.setConfKey("user.location.tracking.enabled");
         config.setConfValue(String.valueOf(userLocationTrackingEnabled));
+        return config;
+    } public ConfigDto getEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("emergency.phone.number");
+        config.setConfValue(String.valueOf(emergencyPhoneNumber));
         return config;
     }
 }

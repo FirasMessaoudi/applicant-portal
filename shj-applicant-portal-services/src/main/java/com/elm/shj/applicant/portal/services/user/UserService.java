@@ -583,5 +583,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public ApplicantRitualPackageVo findLatestApplicantRitualSeason(long uin) {
         return integrationService.findLatestApplicantRitualPackageByUin(uin);
     }
+
+    public WsResponse findGroupLeaderByUinAndSeasonId(String uin, Long companyRitualSeasonId) {
+        return integrationService.loadGroupLeaderByUinAndSeasonId(uin, companyRitualSeasonId);
+    }
 }
 

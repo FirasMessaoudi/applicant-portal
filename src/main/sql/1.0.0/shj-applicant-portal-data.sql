@@ -182,3 +182,6 @@ GO
 
 INSERT INTO sha_portal.sha_config (conf_key,conf_value) VALUES ('user.location.tracking.enabled' ,'false')
 GO
+
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('emergency.phone.number', '0512312345');
+GO

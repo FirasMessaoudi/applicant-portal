@@ -1249,4 +1249,17 @@ public class IntegrationService {
         }
         return wsResponse;
     }
+
+    public WsResponse loadGroupLeaderByUinAndSeasonId(String uin, Long ritualId) {
+        WsResponse<CompanyStaffDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(  "/ws/find/company-staff/group-leader/" + uin + "/" + ritualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<CompanyStaffDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load group leader.", e);
+            return null;
+        }
+        return wsResponse;
+    }
 }

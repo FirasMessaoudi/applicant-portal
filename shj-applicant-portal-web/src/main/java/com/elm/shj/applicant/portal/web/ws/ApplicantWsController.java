@@ -148,6 +148,20 @@ public class ApplicantWsController {
                         .body(employees).build());
     }
 
+    /**
+     * get user Group Leaders details by uin and companyRitualSeasonId
+     *
+     * @param companyRitualSeasonId       the ID of the selected applicant's ritual
+     * @param authentication the authenticated user
+     */
+    @GetMapping("/find/company-staff/group-leader/{companyRitualSeasonId}")
+    public ResponseEntity<WsResponse<?>> findGroupLeaderByUinAndSeasonId(@PathVariable Long companyRitualSeasonId, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        WsResponse wsResponse = userService.findGroupLeaderByUinAndSeasonId(loggedInUserUin, companyRitualSeasonId);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+    }
+
 
     private ResponseEntity<WsResponse<?>> generateFailResponse(WsError.EWsError errorCode, String reference) {
         return ResponseEntity.ok(
