@@ -32,7 +32,7 @@ public class SurveyQuestionLookupDto implements Serializable {
 
     private Date creationDate;
 
-    private SurveyTypeLookupDto surveyType;
+    private String surveyTypeCode;
 
     private int questionIndex;
 

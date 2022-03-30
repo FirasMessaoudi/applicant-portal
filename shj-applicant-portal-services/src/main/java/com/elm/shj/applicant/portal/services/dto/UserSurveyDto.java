@@ -26,7 +26,7 @@ public class UserSurveyDto implements Serializable {
 
     String digitalId;
 
-    private SurveyTypeLookupDto surveyType;
+    private String surveyType;
 
     private Date creationDate;
 
