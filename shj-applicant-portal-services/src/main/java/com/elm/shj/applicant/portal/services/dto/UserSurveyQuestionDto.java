@@ -26,9 +26,9 @@ public class UserSurveyQuestionDto implements Serializable {
 
     private UserSurveyDto userSurvey;
 
-    private SurveyQuestionLookupDto surveyQuestion;
+    private String surveyQuestion;
 
-    private String code;
+    private int rate;
 
     private Date creationDate;
 

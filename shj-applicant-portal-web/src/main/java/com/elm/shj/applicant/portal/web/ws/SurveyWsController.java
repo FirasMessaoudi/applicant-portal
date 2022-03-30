@@ -3,12 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.services.chat.ChatContactService;
-import com.elm.shj.applicant.portal.services.chat.ChatMessageService;
-import com.elm.shj.applicant.portal.services.dto.ChatContactLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ChatMessageDto;
-import com.elm.shj.applicant.portal.services.dto.ChatMessageLiteDto;
-import com.elm.shj.applicant.portal.services.dto.CompanyStaffLiteDto;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.survey.UserSurveyService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -17,11 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Controller for exposing web services related to survey for external party.
@@ -44,11 +38,33 @@ public class SurveyWsController {
     private final UserSurveyService userSurveyService;
 
 
-    @GetMapping("/get/{surveyType}")
+    @GetMapping("/find-survey/{surveyType}")
     public ResponseEntity<WsResponse<?>> findSurveyByDigitalIdAndSurveyType(@PathVariable("surveyType") String surveyType, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         WsResponse wsResponse = userSurveyService.findSurveyByDigitalIdAndSurveyType(loggedInUserUin, surveyType);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+    }
+
+    @PostMapping(value = "/submit-survey")
+    public ResponseEntity<WsResponse<?>> createUserSurvey(@RequestBody SurveyFormDto surveyFormDto, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        UserSurveyDto userSurveyDto=new UserSurveyDto();
+        userSurveyDto.setSurveyType(surveyFormDto.getSurveyType());
+        userSurveyDto.setDigitalId(loggedInUserUin);
+        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        builder.part("userSurvey", userSurveyDto);
+        builder.part("userSurveyQuestions", surveyFormDto.getUserSurveyQuestions());
+        WsResponse response = userSurveyService.submitUserSurvey(builder);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatus())
+                        .body(response.getBody()).build());
+    }
+    @GetMapping("/findRating/{userSurveyId}")
+    public ResponseEntity<WsResponse<?>> findQuestionRatingByUserSurveyId(@PathVariable("userSurveyId") long  userSurveyId)
+    {
+        WsResponse wsResponse = userSurveyService.findQuestionRatingByUserSurveyId(userSurveyId);
+        return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+
     }
 
 
