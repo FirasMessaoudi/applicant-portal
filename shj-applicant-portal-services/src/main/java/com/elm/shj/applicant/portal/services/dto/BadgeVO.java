@@ -9,7 +9,7 @@ import lombok.*;
  * Badge value object.
  *
  * @author salzoubi
- * @since 1.0.0
+ * @since 1.1.0
  */
 @Getter
 @Setter
