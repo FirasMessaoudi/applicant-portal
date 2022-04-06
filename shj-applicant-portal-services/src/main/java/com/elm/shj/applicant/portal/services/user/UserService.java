@@ -503,6 +503,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public ApplicantRitualCardLiteDto findApplicantCardDetailsByUinAndApplicantPackageId(String uin, Long applicantPackageId) {
         return integrationService.loadApplicantCardDetails(uin, applicantPackageId);
     }
+    public WsResponse generateApplicantCardImage(String uin) {
+        return integrationService.generateApplicantCardImage(uin);
+    }
 
     public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long applicantPackageId) {
         ApplicantPackageDetailsDto applicantPackageDetails =  integrationService.loadApplicantPackageDetails(uin, applicantPackageId);
