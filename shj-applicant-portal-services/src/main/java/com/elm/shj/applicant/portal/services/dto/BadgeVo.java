@@ -3,22 +3,19 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 /**
  * Badge value object.
  *
- * @author ahmad flaifel
- * @since 1.1.0
+ * @author salzoubi
+ * @since 1.0.0
  */
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class BadgeVO {
-
+@AllArgsConstructor
+public class BadgeVo {
     private String badgeImage;
 }
