@@ -1308,17 +1308,4 @@ public class IntegrationService {
         return null;
     }
 
-
-    public WsResponse generateApplicantCardImage(String uin) {
-        WsResponse<BadgeVo> wsResponse = null;
-        try {
-            wsResponse = callIntegrationWs(  "/ws/card-image/" + uin, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<BadgeVo>>() {
-                    });
-        } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to generate applicant card image.", e);
-            return null;
-        }
-        return wsResponse;
-    }
 }

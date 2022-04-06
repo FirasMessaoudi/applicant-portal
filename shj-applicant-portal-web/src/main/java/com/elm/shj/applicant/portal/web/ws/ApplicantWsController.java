@@ -220,13 +220,4 @@ public class ApplicantWsController {
                         .body(applicantRituals).build());
 
     }
-
-    @GetMapping("/card-image")
-    public ResponseEntity<WsResponse<?>> generateApplicantCardImage(Authentication authentication) {
-        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        WsResponse wsResponse = userService.generateApplicantCardImage(loggedInUserUin);
-        return ResponseEntity.ok(
-                WsResponse.builder().status(wsResponse.getStatus())
-                        .body(wsResponse.getBody()).build());
-    }
 }
