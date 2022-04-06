@@ -211,4 +211,10 @@ export class CardService {
   findHealthImmunizations(): Observable<Lookup[]> {
     return this.http.get<any>('/core/api/lookup/health-immunization/list');
   }
+
+  findApplicantBadge(): Observable<any>{
+    return this.http.get<any>('/core/api/users/badge');
+  }
+
+
 }

@@ -8,6 +8,7 @@ import {ApplicantRitualCard} from "@model/applicant-ritual-card";
 import {CountryLookup} from "@model/country-lookup.model";
 import {Lookup} from "@model/lookup.model";
 import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
+import {DomSanitizer, SafeResourceUrl} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-badge',
@@ -21,6 +22,7 @@ export class BadgeComponent implements OnInit {
   countries: CountryLookup[] = [];
   ritualTypes: Lookup[] = [];
   url: any = 'assets/images/default-avatar.svg';
+  badgeImage: SafeResourceUrl;
   @Input() uin = '';
   @Input() cardStatus = '';
 
@@ -28,12 +30,22 @@ export class BadgeComponent implements OnInit {
               private cardService: CardService,
               private translate: TranslateService,
               private i18nService: I18nService,
+              private _sanitizer: DomSanitizer,
               private lookupsService: LookupService,
               private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.loadLookups();
+    this.cardService.findApplicantBadge().subscribe(
+      res=>{
+        console.log(res);
+        if(res!=null){
+          this.badgeImage = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,'
+            + res.badgeImage);
+        }
+      }
+    )
 
     this.userService.selectedApplicantRitualPackage.subscribe(selectedApplicantRitualPackage => {
       this.selectedApplicantRitualPackage = selectedApplicantRitualPackage;

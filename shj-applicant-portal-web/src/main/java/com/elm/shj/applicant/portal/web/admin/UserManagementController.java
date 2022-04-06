@@ -567,4 +567,11 @@ public class UserManagementController {
         return userService.findApplicantPackageAndRitualSeasonByUin(Long.parseLong(loggedInUserUin));
     }
 
+
+    @GetMapping("/badge")
+    public BadgeVO findApplicantBadge(Authentication authentication){
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantBadge(loggedInUserUin);
+    }
+
 }

@@ -94,6 +94,7 @@ public class IntegrationService {
     private final String MOBILE_LOGIN_URL = "/ws/applicant/mobile-login/";
     private final String STORE_USER_LOCATIONS = "/ws/store-user-locations";
     private final String SURVEY_URL = "/ws/survey";
+    private final String BADGE_URL = "/ws/badge";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -1288,6 +1289,23 @@ public class IntegrationService {
             return null;
         }
         return wsResponse;
+    }
+
+    public BadgeVO findApplicantBadge(String loggedInUserUin) {
+        WsResponse<BadgeVO> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(BADGE_URL + "/generate/"+loggedInUserUin,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<BadgeVO>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant chat contact", e);
+            return null;
+        }
+        if(wsResponse!=null) {
+            return wsResponse.getBody();
+        }
+        return null;
     }
 
 
