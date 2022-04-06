@@ -9,13 +9,14 @@ import lombok.*;
  * Badge value object.
  *
  * @author salzoubi
- * @since 1.1.0
+ * @since 1.0.0
  */
+
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BadgeVo {
+public class BadgeVO {
     private String badgeImage;
 }
