@@ -1310,10 +1310,10 @@ public class IntegrationService {
 
 
     public WsResponse generateApplicantCardImage(String uin) {
-        WsResponse<BadgeVo> wsResponse = null;
+        WsResponse<BadgeVO> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(  "/ws/card-image/" + uin, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<BadgeVo>>() {
+                    new ParameterizedTypeReference<WsResponse<BadgeVO>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to generate applicant card image.", e);
