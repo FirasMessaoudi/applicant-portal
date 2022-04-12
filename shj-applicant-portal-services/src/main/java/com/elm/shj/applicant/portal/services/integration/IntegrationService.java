@@ -94,6 +94,9 @@ public class IntegrationService {
     private final String MOBILE_LOGIN_URL = "/ws/applicant/mobile-login/";
     private final String STORE_USER_LOCATIONS = "/ws/store-user-locations";
     private final String SURVEY_URL = "/ws/survey";
+    private final String SUPPLICATION_URL="/ws/supplications";
+
+
     private final String BADGE_URL = "/ws/badge";
 
     private final WebClient webClient;
@@ -1277,6 +1280,30 @@ public class IntegrationService {
         }
         return wsResponse;
     }
+
+
+    /**
+     * finds supplication by type
+     *
+     * @param type the type of supplication to find supplications for
+     * @return the supplications by type
+     */
+    public  WsResponse findSupplicationsByType( String type ) {
+        WsResponse<List<SupplicationLookupDto>> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(SUPPLICATION_URL + "/findSupplications/" + type ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<SupplicationLookupDto>>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get supplications", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+
+
 
     public WsResponse loadGroupLeaderByUinAndSeasonId(String uin, Long ritualId) {
         WsResponse<CompanyStaffDto> wsResponse = null;
