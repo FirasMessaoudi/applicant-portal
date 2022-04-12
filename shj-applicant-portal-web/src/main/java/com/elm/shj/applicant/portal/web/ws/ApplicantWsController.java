@@ -226,6 +226,6 @@ public class ApplicantWsController {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(userService.findApplicantBadge(loggedInUserUin)).build());
+                        .body(userService.findApplicantBadge(loggedInUserUin,true)).build());
     }
 }

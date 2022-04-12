@@ -571,7 +571,7 @@ public class UserManagementController {
     @GetMapping("/badge")
     public BadgeVO findApplicantBadge(Authentication authentication){
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        return userService.findApplicantBadge(loggedInUserUin);
+        return userService.findApplicantBadge(loggedInUserUin,true);
     }
 
 }
