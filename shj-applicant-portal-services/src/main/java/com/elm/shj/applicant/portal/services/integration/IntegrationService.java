@@ -98,6 +98,7 @@ public class IntegrationService {
 
 
     private final String BADGE_URL = "/ws/badge";
+    private final String ROSARY_URL = "/ws/rosary";
 
     private final WebClient webClient;
     @Value("${admin.portal.url}")
@@ -1333,6 +1334,62 @@ public class IntegrationService {
             return wsResponse.getBody();
         }
         return null;
+    }
+
+    public  WsResponse findRosarySupplicationsByDigitalId(String digitalId) {
+        WsResponse<List<Integer>> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL + "/find-rosary-supplications/" + digitalId  ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantSupplicationDto>>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get rosary supplication", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+    public  WsResponse deleteSupplication(long id) {
+        WsResponse<ApplicantSupplicationDto> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL + "/delete-supplication/"+ id ,
+                    HttpMethod.PUT, null,
+                    new ParameterizedTypeReference<WsResponse<Integer>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to delete supplication ", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+    public  WsResponse resetSupplicationNumber(long id) {
+        WsResponse<ApplicantSupplicationDto> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL + "/reset-supplication-number/"+ id ,
+                    HttpMethod.PUT, null,
+                    new ParameterizedTypeReference<WsResponse<Integer>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to modify supplication ", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+    public  WsResponse updateSupplicationNumbers(long id,int total,int last) {
+        WsResponse<ApplicantSupplicationDto> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL + "/update-supplication-numbers/"+ id + "/" + total  + "/" + last,
+                    HttpMethod.PUT, null,
+                    new ParameterizedTypeReference<WsResponse<Integer>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to modify supplication ", e);
+            return null;
+        }
+        return wsResponse;
     }
 
 }
