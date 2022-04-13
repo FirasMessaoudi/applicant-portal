@@ -1319,10 +1319,10 @@ public class IntegrationService {
         return wsResponse;
     }
 
-    public BadgeVO findApplicantBadge(String loggedInUserUin) {
+    public BadgeVO findApplicantBadge(String loggedInUserUin,boolean withQr) {
         WsResponse<BadgeVO> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(BADGE_URL + "/generate/"+loggedInUserUin,
+            wsResponse = callIntegrationWs(BADGE_URL + "/generate/"+loggedInUserUin+"/"+withQr,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<BadgeVO>>() {
                     });
