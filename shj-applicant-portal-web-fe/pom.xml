@@ -52,6 +52,7 @@
               <arguments>
                 <argument>install</argument>
                 <argument>--no-package-lock</argument>
+                <argument>--legacy-peer-deps</argument>
               </arguments>
               <environmentVariables>
                 <PUPPETEER_SKIP_CHROMIUM_DOWNLOAD>true</PUPPETEER_SKIP_CHROMIUM_DOWNLOAD>
