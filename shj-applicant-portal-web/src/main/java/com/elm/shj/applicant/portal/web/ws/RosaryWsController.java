@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
+import com.elm.shj.applicant.portal.services.dto.SupplicationUserCounterDto;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.rosary.RosaryService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -34,10 +35,21 @@ import org.springframework.web.bind.annotation.*;
 public class RosaryWsController {
     private final RosaryService rosaryService;
 
-    @GetMapping("/find-rosary-supplications")
-    public ResponseEntity<WsResponse<?>> findRosarySupplicationsByDigitalId( Authentication authentication) {
+    @GetMapping("/find-user-supplications")
+    public ResponseEntity<WsResponse<?>> findUserSupplicationsByDigitalId( Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        WsResponse wsResponse = rosaryService.findRosarySupplicationsByDigitalId(loggedInUserUin);
+        WsResponse wsResponse = rosaryService.findUserSupplicationsByDigitalId(loggedInUserUin);
+        return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+    }
+    @GetMapping("/find-supplications-lookup")
+    public ResponseEntity<WsResponse<?>> findSupplicationsLookup() {
+        WsResponse wsResponse = rosaryService.findSuggestedSupplicationLookup();
+        return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+    }
+    @GetMapping("/find-supplications-user-counter")
+    public ResponseEntity<WsResponse<?>> findSupplicationsUserCounterByDigitalId( Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        WsResponse wsResponse = rosaryService.findSupplicationsUserCounterByDigitalId(loggedInUserUin);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
     @PutMapping("/delete-supplication/{id}")
@@ -46,13 +58,22 @@ public class RosaryWsController {
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
     @PutMapping("/reset-supplication-number/{id}")
-    public  ResponseEntity<WsResponse<?>> resetSupplicationNumber(@PathVariable("id") long id ){
+    public  ResponseEntity<WsResponse<?>> resetSupplicationCounter(@PathVariable("id") long id ){
         WsResponse wsResponse = rosaryService.resetSupplicationNumber(id);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
     @PutMapping("/update-supplication-numbers/{id}/{total}/{last}")
-    public  ResponseEntity<WsResponse<?>> updateSupplicationNumbers(@PathVariable("id") long id,@PathVariable("total") int total,@PathVariable("last") int last){
+    public  ResponseEntity<WsResponse<?>> updateSupplicationCounter(@PathVariable("id") long id, @PathVariable("total") int total, @PathVariable("last") int last){
         WsResponse wsResponse = rosaryService.updateSupplicationNumbers(id,total,last);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+    }
+    @PostMapping("/save-supplication-user-counter")
+    public ResponseEntity<WsResponse<?>> saveSupplicationCounter(@RequestBody SupplicationUserCounterDto supplicationUserCounterDto, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        supplicationUserCounterDto.setDigitalId(loggedInUserUin);
+        WsResponse response =rosaryService.createSupplicationCounter(supplicationUserCounterDto);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatus())
+                        .body(response.getBody()).build());
     }
 }

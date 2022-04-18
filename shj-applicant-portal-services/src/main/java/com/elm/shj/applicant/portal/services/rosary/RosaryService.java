@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.rosary;
 
+import com.elm.shj.applicant.portal.services.dto.SupplicationUserCounterDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,14 @@ public class RosaryService {
 
     private final IntegrationService integrationService;
 
-    public WsResponse findRosarySupplicationsByDigitalId(String digitalId) {
-        return integrationService.findRosarySupplicationsByDigitalId(digitalId);
+    public WsResponse findUserSupplicationsByDigitalId(String digitalId) {
+        return integrationService.findUserSupplicationsByDigitalId(digitalId);
+    }
+    public WsResponse findSuggestedSupplicationLookup() {
+        return integrationService.findSuggestedSupplicationLookup();
+    }
+    public WsResponse findSupplicationsUserCounterByDigitalId(String digitalId) {
+        return integrationService.findSupplicationsUserCounterByDigitalId(digitalId);
     }
     public WsResponse deleteSupplication(long id) {
         return integrationService.deleteSupplication(id);
@@ -33,6 +40,9 @@ public class RosaryService {
         return integrationService.resetSupplicationNumber(id);
     }
     public WsResponse updateSupplicationNumbers(long id,int total,int last) {
-        return integrationService.updateSupplicationNumbers(id,total,last);
+        return integrationService.updateSupplicationCounter(id,total,last);
+    }
+    public WsResponse createSupplicationCounter(SupplicationUserCounterDto supplicationUserCounterDto){
+        return integrationService.createSupplicationCounter(supplicationUserCounterDto);
     }
 }

@@ -1336,12 +1336,12 @@ public class IntegrationService {
         return null;
     }
 
-    public  WsResponse findRosarySupplicationsByDigitalId(String digitalId) {
+    public  WsResponse findUserSupplicationsByDigitalId(String digitalId) {
         WsResponse<List<Integer>> wsResponse = null ;
         try {
-            wsResponse = callIntegrationWs(ROSARY_URL + "/find-rosary-supplications/" + digitalId  ,
+            wsResponse = callIntegrationWs(ROSARY_URL + "/find-user-supplications/" + digitalId  ,
                     HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<ApplicantSupplicationDto>>>() {
+                    new ParameterizedTypeReference<WsResponse<List<UserSupplicationDto>>>() {
                     });
         }catch  (WsAuthenticationException e) {
             log.error("Cannot authenticate to get rosary supplication", e);
@@ -1349,9 +1349,35 @@ public class IntegrationService {
         }
         return wsResponse;
     }
+    public  WsResponse findSuggestedSupplicationLookup() {
+        WsResponse<List<Integer>> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL + "/find-supplications-lookup" ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<SuggestedSupplicationLookupDto>>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get list supplication lookup", e);
+            return null;
+        }
+        return wsResponse;
+    }
+    public  WsResponse findSupplicationsUserCounterByDigitalId(String digitalId) {
+        WsResponse<List<Integer>> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL + "/find-supplications-user-counter/" + digitalId  ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<SupplicationUserCounterDto>>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get supplication counter", e);
+            return null;
+        }
+        return wsResponse;
+    }
 
     public  WsResponse deleteSupplication(long id) {
-        WsResponse<ApplicantSupplicationDto> wsResponse = null ;
+        WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/delete-supplication/"+ id ,
                     HttpMethod.PUT, null,
@@ -1365,7 +1391,7 @@ public class IntegrationService {
     }
 
     public  WsResponse resetSupplicationNumber(long id) {
-        WsResponse<ApplicantSupplicationDto> wsResponse = null ;
+        WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/reset-supplication-number/"+ id ,
                     HttpMethod.PUT, null,
@@ -1378,8 +1404,8 @@ public class IntegrationService {
         return wsResponse;
     }
 
-    public  WsResponse updateSupplicationNumbers(long id,int total,int last) {
-        WsResponse<ApplicantSupplicationDto> wsResponse = null ;
+    public  WsResponse updateSupplicationCounter(long id, int total, int last) {
+        WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/update-supplication-numbers/"+ id + "/" + total  + "/" + last,
                     HttpMethod.PUT, null,
@@ -1387,6 +1413,18 @@ public class IntegrationService {
                     });
         }catch  (WsAuthenticationException e) {
             log.error("Cannot authenticate to modify supplication ", e);
+            return null;
+        }
+        return wsResponse;
+    }
+    public WsResponse createSupplicationCounter(SupplicationUserCounterDto supplicationUserCounterDto) {
+        WsResponse wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(ROSARY_URL+ "/save-supplication-user-counter", HttpMethod.POST, supplicationUserCounterDto,
+                    new ParameterizedTypeReference<WsResponse<SupplicationUserCounterDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to create supplication counter", e);
             return null;
         }
         return wsResponse;

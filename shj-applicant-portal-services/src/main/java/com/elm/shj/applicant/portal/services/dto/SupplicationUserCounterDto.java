@@ -4,11 +4,11 @@
 package com.elm.shj.applicant.portal.services.dto;
 
 import lombok.*;
+
 import java.io.Serializable;
 import java.util.Date;
-
 /**
- * Dto class for the applicant supplication domain.
+ * Dto class for the  supplication user counter domain.
  *
  * @author r.chebbi
  * @since 1.1.0
@@ -18,16 +18,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ApplicantSupplicationDto implements Serializable {
-
-
-    private static final long serialVersionUID = -3222780724069191509L;
+public class SupplicationUserCounterDto implements Serializable {
+    private static final long serialVersionUID = -7365367821511565081L;
     private long id;
+    private String code;
     private String digitalId;
-    private String labelAr;
-    private String labelEn;
-    private int totalSupplication;
-    private int lastSupplicationNumber;
-    private boolean deleted;
+    private boolean suggested;
+    private int supplicationTotalCount;
+    private int supplicationLastCount;
     private Date creationDate;
+    private Date updateDate;
 }
