@@ -92,6 +92,7 @@ public class IntegrationService {
     private final String APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/";
     private final String LATEST_APPLICANT_RITUAL_PACKAGE_URL = "/ws/applicant/ritual-package/latest/";
     private final String MOBILE_LOGIN_URL = "/ws/applicant/mobile-login/";
+    private final String MOBILE_REGISTER_URL = "/ws/applicant/save-register-event/";
     private final String STORE_USER_LOCATIONS = "/ws/store-user-locations";
     private final String SURVEY_URL = "/ws/survey";
     private final String SUPPLICATION_URL="/ws/supplications";
@@ -1420,7 +1421,7 @@ public class IntegrationService {
     public WsResponse createSupplicationCounter(SupplicationUserCounterDto supplicationUserCounterDto) {
         WsResponse wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(ROSARY_URL+ "/save-supplication-user-counter", HttpMethod.POST, supplicationUserCounterDto,
+            wsResponse = callIntegrationWs(ROSARY_URL + "/save-supplication-user-counter", HttpMethod.POST, supplicationUserCounterDto,
                     new ParameterizedTypeReference<WsResponse<SupplicationUserCounterDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1429,5 +1430,19 @@ public class IntegrationService {
         }
         return wsResponse;
     }
+
+    public void storeSignupAction(Long uin) {
+        try {
+            callIntegrationWs(MOBILE_REGISTER_URL + uin,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant mobile login flag", e);
+
+        }
+
+    }
+
 
 }

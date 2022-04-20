@@ -7,6 +7,7 @@ import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
 import com.elm.shj.applicant.portal.services.dto.UpdateApplicantCmd;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
+import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -45,6 +46,7 @@ public class RegistrationWsController {
 
     private final UserService userService;
     private final OtpService otpService;
+    private final IntegrationService integrationService;
 
 
     @PostMapping("/verify")
@@ -112,13 +114,16 @@ public class RegistrationWsController {
             if (returnedApplicant == null)
                 return ResponseEntity.ok(
                         WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                                .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(user.getUin()+"").build()).build());
+                                .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(user.getUin() + "").build()).build());
 
         }
 
 
         UserDto createdUser = userService.createUser(user);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
+        // store the action in mobile audit log
+        integrationService.storeSignupAction(createdUser.getUin());
+
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(createdUser).build());
     }
