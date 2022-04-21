@@ -1293,7 +1293,7 @@ public class IntegrationService {
     public  WsResponse findSupplicationsByType( String type ) {
         WsResponse<List<SupplicationLookupDto>> wsResponse = null ;
         try {
-            wsResponse = callIntegrationWs(SUPPLICATION_URL + "/findSupplications/" + type ,
+            wsResponse = callIntegrationWs(SUPPLICATION_URL + "/find/" + type ,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<SupplicationLookupDto>>>() {
                     });
