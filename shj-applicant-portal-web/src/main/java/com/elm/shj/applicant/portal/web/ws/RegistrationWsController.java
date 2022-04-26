@@ -116,6 +116,8 @@ public class RegistrationWsController {
                         WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                                 .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(user.getUin() + "").build()).build());
 
+        }else{
+            userService.markAsRegistered(String.valueOf(user.getUin()));
         }
 
 

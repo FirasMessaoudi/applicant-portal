@@ -491,6 +491,25 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
             return wsResponse.getBody();
         }
     }
+    public Integer markAsRegistered(String  uin) {
+
+        WsResponse<Integer> wsResponse = null;
+        final String url = "/ws/mark-as-registered";
+        try {
+            wsResponse = integrationService.callIntegrationWs(url, HttpMethod.POST, uin, new ParameterizedTypeReference<WsResponse<Integer>>() {
+            });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant.", e);
+            return null;
+        } catch (Exception ex) {
+            return null;
+        }
+        if (WsResponse.EWsResponseStatus.FAILURE.getCode() == wsResponse.getStatus()) {
+            return null;
+        } else {
+            return wsResponse.getBody();
+        }
+    }
 
     public ApplicantRitualLiteDto findApplicantRitualLatestByUin(String uin) {
         return integrationService.loadApplicantRitualLatestByUin(uin);
