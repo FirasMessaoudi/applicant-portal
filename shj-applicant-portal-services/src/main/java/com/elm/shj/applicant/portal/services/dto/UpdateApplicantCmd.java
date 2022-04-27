@@ -38,5 +38,7 @@ public class UpdateApplicantCmd implements Serializable {
     private String countryCode;
     private int dateOfBirthHijri;
 
+    private String channel;
+
 
 }

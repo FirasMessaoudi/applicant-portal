@@ -3,10 +3,7 @@
  */
 package com.elm.shj.applicant.portal.web.ws;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
-import com.elm.shj.applicant.portal.services.dto.UpdateApplicantCmd;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
@@ -108,7 +105,7 @@ public class RegistrationWsController {
 
         }
         if (needToUpdateInAdminPortal) {
-            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
+            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri(), EChannel.MOBILE.name());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
             if (returnedApplicant == null)
@@ -117,7 +114,7 @@ public class RegistrationWsController {
                                 .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(user.getUin() + "").build()).build());
 
         }else{
-            userService.markAsRegistered(String.valueOf(user.getUin()));
+            userService.markAsRegistered(String.valueOf(user.getUin()), EChannel.MOBILE.name());
         }
 
 

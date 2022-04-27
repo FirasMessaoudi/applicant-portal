@@ -333,7 +333,7 @@ public class UserServiceTest {
 
     @Test
     public void test_update_applicant_by_uin() throws WsAuthenticationException {
-        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, TEST_MOBILE, TEST_COUNTRY_CODE, TEST_DATE_OG_BIRTH_HIGRI);
+        UpdateApplicantCmd applicant = new UpdateApplicantCmd(String.valueOf(TEST_UIN), TEST_EMAIL, TEST_MOBILE, TEST_COUNTRY_CODE, TEST_DATE_OG_BIRTH_HIGRI, EChannel.WEB.name());
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
         applicantLiteDto.setMobileNumber(TEST_MOBILE);
         applicantLiteDto.setEmail(TEST_EMAIL);

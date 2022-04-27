@@ -491,10 +491,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
             return wsResponse.getBody();
         }
     }
-    public Integer markAsRegistered(String  uin) {
+    public Integer markAsRegistered(String  uin, String channel) {
 
         WsResponse<Integer> wsResponse = null;
-        final String url = "/ws/mark-as-registered";
+        final String url = "/ws/mark-as-registered/" + channel;
         try {
             wsResponse = integrationService.callIntegrationWs(url, HttpMethod.POST, uin, new ParameterizedTypeReference<WsResponse<Integer>>() {
             });
