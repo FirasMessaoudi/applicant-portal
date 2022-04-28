@@ -30,4 +30,6 @@ public class UserSurveyDto implements Serializable {
 
     private Date creationDate;
 
+    private Date surveyDate;
+
 }

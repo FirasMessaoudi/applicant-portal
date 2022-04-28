@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.survey;
 
+import com.elm.shj.applicant.portal.services.dto.SurveyFormDto;
 import com.elm.shj.applicant.portal.services.dto.UserSurveyDto;
 import com.elm.shj.applicant.portal.services.dto.UserSurveyQuestionDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
@@ -31,8 +32,8 @@ public class UserSurveyService {
     public WsResponse findSurveyByDigitalIdAndSurveyType(String digitalId, String surveyType) {
         return integrationService.findSurveyByDigitalIdAndSurveyType(digitalId, surveyType);
     }
-    public WsResponse submitUserSurvey(MultipartBodyBuilder builder) {
-        return integrationService.submitUserSurvey(builder);
+    public WsResponse submitUserSurvey(SurveyFormDto surveyFormDto) {
+        return integrationService.submitUserSurvey(surveyFormDto);
     }
     public WsResponse findQuestionRatingByUserSurveyId(long userSurveyId ) {
         return integrationService.findQuestionRatingByUserSurveyId(userSurveyId);

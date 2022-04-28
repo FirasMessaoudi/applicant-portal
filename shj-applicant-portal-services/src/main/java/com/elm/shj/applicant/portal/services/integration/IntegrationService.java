@@ -161,7 +161,7 @@ public class IntegrationService {
 
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
-        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL || serviceRelativeUrl.contains(SURVEY_URL)) {
+        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(WsResponse.class).block();
@@ -1245,7 +1245,7 @@ public class IntegrationService {
     public WsResponse findSurveyByDigitalIdAndSurveyType(String digitalId, String surveyType) {
         WsResponse<List<SurveyQuestionLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(SURVEY_URL + "/find-survey/" + digitalId +"/"+ surveyType,
+            wsResponse = callIntegrationWs(SURVEY_URL + "/find-applicant-survey/" + digitalId +"/"+ surveyType,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<SurveyQuestionLookupDto>>>() {
                     });
@@ -1253,13 +1253,13 @@ public class IntegrationService {
             log.error("Cannot authenticate to get survey", e);
             return null;
         }
-        return wsResponse;
+       return wsResponse;
     }
 
-    public WsResponse submitUserSurvey(MultipartBodyBuilder builder) {
+    public WsResponse submitUserSurvey(SurveyFormDto surveyFormDto) {
         WsResponse wsResponse;
         try {
-            wsResponse = callIntegrationWs(SURVEY_URL+"/submit-survey", HttpMethod.POST,builder.build(),
+            wsResponse = callIntegrationWs(SURVEY_URL+"/submit-survey", HttpMethod.POST,surveyFormDto,
                     new ParameterizedTypeReference<WsResponse<UserSurveyDto>>() {
                     });
         } catch (WsAuthenticationException e) {
