@@ -6,6 +6,7 @@ package com.elm.shj.applicant.portal.web.ws;
 import com.elm.shj.applicant.portal.services.configuration.ConfigurationService;
 import com.elm.shj.applicant.portal.services.dto.ConfigDto;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
+import com.elm.shj.applicant.portal.services.lookup.LookupService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,7 @@ import java.util.List;
 public class ConfigurationWsController {
 
     private final ConfigurationService configurationService;
+    private final LookupService lookupService;
 
     @GetMapping("/list")
     public ResponseEntity<WsResponse<?>> getMobileConfigurationsList(Authentication authentication) {
@@ -47,5 +49,16 @@ public class ConfigurationWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(configList).build());
+    }
+
+    @GetMapping("/google-maps/api-radius")
+    public ResponseEntity loadGoogleMapsRadiusSearch() {
+        log.debug("load google maps api radius...");
+        return ResponseEntity.ok(WsResponse
+                .builder()
+                .status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                .body(configurationService.retrieveGoogleMapsRadiusSearch()).build());
+
+
     }
 }

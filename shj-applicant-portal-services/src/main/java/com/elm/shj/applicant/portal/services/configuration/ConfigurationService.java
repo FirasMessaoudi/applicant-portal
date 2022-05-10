@@ -24,6 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ConfigurationService {
 
+    @Value("${google.maps.radius.search}")
+    private String googleMapsRadiusSearch ;
 
     @Value("${send.user.location.distance}")
     private int userLocationDistance;
@@ -79,5 +81,10 @@ public class ConfigurationService {
         config.setConfKey("emergency.phone.number");
         config.setConfValue(String.valueOf(emergencyPhoneNumber));
         return config;
+    }
+
+
+    public String retrieveGoogleMapsRadiusSearch() {
+        return this.googleMapsRadiusSearch;
     }
 }
