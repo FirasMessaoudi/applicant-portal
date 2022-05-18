@@ -185,3 +185,6 @@ GO
 
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('emergency.phone.number', '0512312345');
 GO
+
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('google.maps.radius.search', '5000');
+GO
