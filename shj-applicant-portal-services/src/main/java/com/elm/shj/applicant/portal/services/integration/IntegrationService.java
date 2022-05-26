@@ -1245,7 +1245,7 @@ public class IntegrationService {
     public WsResponse findSurveyByDigitalIdAndSurveyType(String digitalId, String surveyType) {
         WsResponse<List<SurveyQuestionLookupDto>> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(SURVEY_URL + "/find-applicant-survey/" + digitalId +"/"+ surveyType,
+            wsResponse = callIntegrationWs2(SURVEY_URL + "/find-applicant-survey/" + digitalId +"/"+ surveyType,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<SurveyQuestionLookupDto>>>() {
                     });
