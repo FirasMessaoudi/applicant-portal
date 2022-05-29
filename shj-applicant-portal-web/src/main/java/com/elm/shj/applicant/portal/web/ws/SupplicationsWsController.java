@@ -26,12 +26,22 @@ public class SupplicationsWsController {
 
     private final SupplicationsService supplicationsService ;
 
-    @GetMapping("/findSupplicationsByType/{type}")
-    public ResponseEntity<WsResponse<?>> findSupplicationsByType(@PathVariable("type") String type)
+    @GetMapping("/findSupplicationsByCodeAndLang/{code}/{lang}")
+    public ResponseEntity<WsResponse<?>> findSupplicationsByType(@PathVariable("code") String code, @PathVariable("lang") String lang)
     {
-        WsResponse wsResponse = supplicationsService.findSupplicationsByType(type);
+        WsResponse wsResponse = supplicationsService.findSupplicationsByCodeAndLang(code, lang );
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
 
     }
+
+    @GetMapping("/findSupplicationType")
+    public ResponseEntity<WsResponse<?>> findSupplicationsType()
+    {
+        WsResponse wsResponse = supplicationsService.findSupplicationType();
+        return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
+
+    }
+
+
 
 }

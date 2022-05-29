@@ -1285,17 +1285,36 @@ public class IntegrationService {
 
 
     /**
-     * finds supplication by type
+     * finds supplication by code and lang
      *
-     * @param type the type of supplication to find supplications for
-     * @return the supplications by type
+     * @param code the code of supplication to find supplications for
+     * @param lang the language of supplication to find supplications for
+     * @return the supplications by code and lang
      */
-    public  WsResponse findSupplicationsByType( String type ) {
+    public  WsResponse findSupplicationsByCodeAndLang( String code, String lang) {
         WsResponse<List<SupplicationLookupDto>> wsResponse = null ;
         try {
-            wsResponse = callIntegrationWs(SUPPLICATION_URL + "/find/" + type ,
+            wsResponse = callIntegrationWs(SUPPLICATION_URL + "/find/" + code +"/" + lang ,
                     HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<SupplicationLookupDto>>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get supplications", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+    ////////
+    /**
+     * finds supplication type
+     */
+    public  WsResponse findSupplicationType() {
+        WsResponse<List<SupplicationTypeLookupDto>> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(SUPPLICATION_URL + "/findSupplicationType/" ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<SupplicationTypeLookupDto>>>() {
                     });
         }catch  (WsAuthenticationException e) {
             log.error("Cannot authenticate to get supplications", e);
