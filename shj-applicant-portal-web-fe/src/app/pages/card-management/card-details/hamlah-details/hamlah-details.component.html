@@ -13,10 +13,10 @@
       <label class="col-form-label">{{'card-management.package_type' | translate}}</label>
       <span class="form-control-plaintext ">
                 {{
-        applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.typeCode
+        applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.packageTypeCode
           ? lookupService().localizedLabel(
           packageTypes,
-          applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.typeCode
+          applicantPackage?.applicantPackageHousings[0]?.packageHousing?.ritualPackage?.packageTypeCode
           )
           : ''
         }}

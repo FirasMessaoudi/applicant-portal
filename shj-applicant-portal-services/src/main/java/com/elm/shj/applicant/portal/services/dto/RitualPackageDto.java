@@ -28,7 +28,7 @@ public class RitualPackageDto implements Serializable {
     private static final long serialVersionUID = 811079397522626616L;
     private long id;
     @NotNull(message = "validation.data.constraints.msg.20001")
-    private String typeCode;
+    private String packageTypeCode;
     private float price;
     private String departureCity;
     private int countryId;

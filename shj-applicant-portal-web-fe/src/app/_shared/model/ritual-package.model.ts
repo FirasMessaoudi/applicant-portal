@@ -1,7 +1,7 @@
 export class RitualPackage {
 
     id: number;
-    typeCode: String;
+    packageTypeCode: String;
     departureCity: String;
     countryId: number;
 
