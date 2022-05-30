@@ -20,9 +20,15 @@ public class SupplicationsService {
     private final IntegrationService integrationService;
 
 
-    public WsResponse findSupplicationsByType(String type) {
+    public WsResponse findSupplicationsByCodeAndLang(String code, String lang ) {
 
-        return integrationService.findSupplicationsByType(type);
+        return integrationService.findSupplicationsByCodeAndLang(code , lang );
+    }
+
+
+    public WsResponse findSupplicationType() {
+
+        return integrationService.findSupplicationType();
     }
 
 }

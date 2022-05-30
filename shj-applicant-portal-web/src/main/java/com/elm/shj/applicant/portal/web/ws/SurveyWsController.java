@@ -48,13 +48,8 @@ public class SurveyWsController {
     @PostMapping(value = "/submit-survey")
     public ResponseEntity<WsResponse<?>> createUserSurvey(@RequestBody SurveyFormDto surveyFormDto, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        UserSurveyDto userSurveyDto=new UserSurveyDto();
-        userSurveyDto.setSurveyType(surveyFormDto.getSurveyType());
-        userSurveyDto.setDigitalId(loggedInUserUin);
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        builder.part("userSurvey", userSurveyDto);
-        builder.part("userSurveyQuestions", surveyFormDto.getUserSurveyQuestions());
-        WsResponse response = userSurveyService.submitUserSurvey(builder);
+        surveyFormDto.getUserSurvey().setDigitalId(loggedInUserUin);
+        WsResponse response = userSurveyService.submitUserSurvey(surveyFormDto);
         return ResponseEntity.ok(
                 WsResponse.builder().status(response.getStatus())
                         .body(response.getBody()).build());

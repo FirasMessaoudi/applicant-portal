@@ -6,10 +6,7 @@ package com.elm.shj.applicant.portal.web.registration;
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
-import com.elm.shj.applicant.portal.services.dto.ApplicantLiteDto;
-import com.elm.shj.applicant.portal.services.dto.UpdateApplicantCmd;
-import com.elm.shj.applicant.portal.services.dto.UserDto;
-import com.elm.shj.applicant.portal.services.dto.ValidateApplicantCmd;
+import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -59,7 +56,7 @@ public class RegistrationController {
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri(), EChannel.WEB.name());
 
         ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
         if (returnedApplicant == null) {
