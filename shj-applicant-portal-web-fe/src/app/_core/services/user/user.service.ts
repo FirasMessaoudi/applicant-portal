@@ -9,6 +9,7 @@ import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
 import {UserContacts} from "@model/UserContacts.model";
 import {CookieService} from "ngx-cookie-service";
 import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
+import {EmergencyData} from "@model/emergency-data.model";
 
 export const DEFAULT_MAX_USER_AGE = 16;
 
@@ -50,6 +51,28 @@ export class UserService {
    */
   find(userId: number): Observable<any> {
     return this.http.get<any>('/core/api/users/find/' + userId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
+
+  findApplicantEmergencyContact(): Observable<any> {
+    return this.http.get<any>('/core/api/users/emergency-contact/get' ).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
+
+  updateApplicantEmergencyContact(emergencyData:EmergencyData): Observable<any> {
+    return this.http.put<any>('/core/api/users/emergency-contact/update',emergencyData ).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);

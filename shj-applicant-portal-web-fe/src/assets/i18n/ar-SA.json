@@ -24,6 +24,7 @@
     "password-history": "يجب أن تختلف كلمة المرور الجديدة عن كلمات المرور السابقة",
     "password-contains-username": "يجب أن لا تحتوي كلمة المرور على اسم المستخدم",
     "invalid": "القيمة التي أدخلتها غير صحيحة"
+
   },
   "general": {
     "app_name": "منتج علم",
@@ -149,7 +150,8 @@
     "notifications": "التنبيهات",
     "select_notifications": "قم بتحديد نوع الإشعارات التي تصل إليك",
     "example": "مثال",
-    "otp_title": "تأكيد تعديل بيانات الاتصال"
+    "otp_title": "تأكيد تعديل بيانات الاتصال",
+    "emergency_data": "بيانات الطوارئ"
   },
   "home": {
     "title": "الصفحة الرئيسية",
@@ -634,5 +636,11 @@
     "public_notifications": "تنبيهات عامة",
     "view_all": "عرض الكل",
     "view_all_notifications": "عرض كل التنبيهات"
+  },
+  "emergency_data": {
+    "mobile_number": "رقم هاتف الطوارئ",
+    "contact_name": "الاسم",
+    "update_fail_empty": "رقم هاتف الطوارئ او الاسم فارغ"
+
   }
 }

@@ -18,6 +18,7 @@ import {ConfirmDialogService} from "@shared/components/confirm-dialog";
 import {NotificationService} from '@app/_core/services/notification/notification.service';
 import {NotificationCategory} from '@app/_shared/model/notification-category.model';
 import {UserNotificationCategoryPreference} from '@app/_shared/model/user-notification-category-preference.model';
+import {EmergencyData} from "@model/emergency-data.model";
 
 @Component({
   selector: 'app-settings',
@@ -30,9 +31,9 @@ export class SettingsComponent implements OnInit {
   selectedSeason: number;
   selectedApplicantRitualPackage: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
-  notificationsList: any[]=[];
-  notificationsListLookup : any[]=[];
-  notificationsListPreference : UserNotificationCategoryPreference[]=[];
+  notificationsList: any[] = [];
+  notificationsListLookup: any[] = [];
+  notificationsListPreference: UserNotificationCategoryPreference[] = [];
   preferenceIsLoaded: boolean = false;
   enableEditLanguage = false;
   selectedLanguage = "";
@@ -51,52 +52,63 @@ export class SettingsComponent implements OnInit {
   elem: ElementRef;
   @ViewChild('countryListDropdown')
   countryListDropdown: NgbDropdown;
+  @ViewChild('countryListDropdown2')
+  countryListDropdown2: NgbDropdown;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
 
-/*   notificationsList = [
-    {
-      id: 0,
-      checked: true,
-      title: 'عامة',
-      icon: 'comment-alt-lines-light',
-      iconColor: 'dcc-primary',
-      description: 'احرص على حمل بطاقة الحج الخاصة بك عند اداء الشعائر'
-    },
-    {
-      id: 1,
-      checked: false,
-      title: 'صحي',
-      icon: 'heartbeat-light',
-      iconColor: 'dcc-danger',
-      description: 'في حالة ارتفاع درجة حرارتك فوق 38 درجة توجة الى اقرب نقطة صحية مباشرة'
-    },
-    {
-      id: 2,
-      checked: true,
-      title: 'شعيرة',
-      icon: 'flag-light',
-      iconColor: 'dcc-primary',
-      description: 'طواف الإفاضة هو رُكن من أركان الحجّ لا يتمّ الحج إلّا بالإتيان به؛ ودليل ذلك قوله -تعالى-: (وَلْيَطَّوَّفُوا بِالْبَيْتِ الْعَتِيقِ)'
-    },
-    {
-      id: 3,
-      checked: false,
-      title: 'توعية عامة',
-      icon: 'bullhorn-light',
-      iconColor: 'dcc-blue',
-      description: 'تجنب صعود الجبال والاماكن المرتفعة وتجنب المزاحمة والالتحام والافتراش في الطرقات'
-    },
-    {
-      id: 0,
-      checked: false,
-      title: 'دينية',
-      icon: 'kaaba-light',
-      iconColor: 'dcc-primary',
-      description: 'ربنا تقبل منا إنك أنت السميع العليم.'
-    },
+  emergencyDataForm: FormGroup;
+  emergencyDataOriginalContactName: any;
+  emergencyDataOriginalMobileNo: any;
+  emergencyDataOriginalCountryCode: any;
+  emergencyDataOriginalCountryPrefix: any;
+  emergencyDataSelectedCountryCode;
+  emergencyDataSelectedCountryPrefix: any;
+  emergencyData: EmergencyData = new EmergencyData();
 
-  ] */
+  /*   notificationsList = [
+      {
+        id: 0,
+        checked: true,
+        title: 'عامة',
+        icon: 'comment-alt-lines-light',
+        iconColor: 'dcc-primary',
+        description: 'احرص على حمل بطاقة الحج الخاصة بك عند اداء الشعائر'
+      },
+      {
+        id: 1,
+        checked: false,
+        title: 'صحي',
+        icon: 'heartbeat-light',
+        iconColor: 'dcc-danger',
+        description: 'في حالة ارتفاع درجة حرارتك فوق 38 درجة توجة الى اقرب نقطة صحية مباشرة'
+      },
+      {
+        id: 2,
+        checked: true,
+        title: 'شعيرة',
+        icon: 'flag-light',
+        iconColor: 'dcc-primary',
+        description: 'طواف الإفاضة هو رُكن من أركان الحجّ لا يتمّ الحج إلّا بالإتيان به؛ ودليل ذلك قوله -تعالى-: (وَلْيَطَّوَّفُوا بِالْبَيْتِ الْعَتِيقِ)'
+      },
+      {
+        id: 3,
+        checked: false,
+        title: 'توعية عامة',
+        icon: 'bullhorn-light',
+        iconColor: 'dcc-blue',
+        description: 'تجنب صعود الجبال والاماكن المرتفعة وتجنب المزاحمة والالتحام والافتراش في الطرقات'
+      },
+      {
+        id: 0,
+        checked: false,
+        title: 'دينية',
+        icon: 'kaaba-light',
+        iconColor: 'dcc-primary',
+        description: 'ربنا تقبل منا إنك أنت السميع العليم.'
+      },
+
+    ] */
 
   constructor(private modalService: NgbModal,
               private userService: UserService,
@@ -114,6 +126,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.loadLookups();
     this.loadUserNotificationCategory();
     this.selectedLanguage = this.currentLanguage;
@@ -133,7 +146,26 @@ export class SettingsComponent implements OnInit {
       }
     });
 
+    this.userService.findApplicantEmergencyContact().subscribe(data => {
+      if (data) {
+
+        this.emergencyDataForm.controls['emergencyContactName'].setValue(data.body.emergencyContactName);
+        this.emergencyDataForm.controls['emergencyContactMobileNumber'].setValue(data.body.emergencyContactMobileNumber.substring(4));
+        this.emergencyDataOriginalMobileNo = data.body.emergencyContactMobileNumber.substring(4);
+        this.emergencyDataOriginalContactName = data.email;
+        this.emergencyDataOriginalCountryCode = data?.countryCode?.toLowerCase();
+        this.emergencyDataSelectedCountryCode = data?.countryCode?.toLowerCase();
+        this.emergencyDataOriginalCountryPrefix = data.body.emergencyContactMobileNumber.substring(0, 4);
+        this.emergencyDataSelectedCountryPrefix = data.body.emergencyContactMobileNumber.substring(0, 4);
+      } else {
+
+        this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
+          this.translate.instant('general.dialog_error_title'));
+      }
+    });
+
     this.createForm();
+    this.createEmergencyDataForm();
   }
 
   get currentLanguage(): string {
@@ -170,6 +202,13 @@ export class SettingsComponent implements OnInit {
     });
   }
 
+  private createEmergencyDataForm() {
+    this.emergencyDataForm = this.formBuilder.group({
+      emergencyContactName: ['', []],
+      emergencyContactMobileNumber: ['', [Validators.maxLength(16),Validators.pattern("^[0-9]*$")]],
+    });
+  }
+
   loadLookups() {
     this.cardService.findCountries().subscribe(result => {
       result.forEach(c => c.countryPhonePrefix = '+' + c.countryPhonePrefix);
@@ -177,90 +216,92 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  async loadNotificationCategory(){
-    this.notificationService.loadNotificationCategoryLookup().subscribe(result=>{
+  async loadNotificationCategory() {
+    this.notificationService.loadNotificationCategoryLookup().subscribe(result => {
       this.notificationsListLookup = result;
-      console.log(this.notificationsList);
+
     })
   }
 
- async loadNotificationCaotegoryPreference(){
-    this.notificationService.loadNotificationCategoryPreference().subscribe(result=>{
-      if(result.length == this.lookupService().localizedItemsByLang(this.notificationsListLookup).length){
-        console.log(result.length);
-        console.log(this.lookupService().localizedItemsByLang(this.notificationsListLookup).length);
+  async loadNotificationCaotegoryPreference() {
+    this.notificationService.loadNotificationCategoryPreference().subscribe(result => {
+      if (result.length == this.lookupService().localizedItemsByLang(this.notificationsListLookup).length) {
         this.preferenceIsLoaded = true;
-        this.notificationsListPreference = result;}
+        this.notificationsListPreference = result;
+      }
     })
   }
 
-  async updateNotificationCaotegoryPreference(){
+  async updateNotificationCaotegoryPreference() {
 
   }
 
-  updateUserNotificationCategory(event, code: string){
-        console.log(event.target.checked);
-        console.log(code);
-        if(this.preferenceIsLoaded){
-          console.log(this.notificationsListPreference.find((e)=>e.categoryCode==code));
-          let notificationCategory:UserNotificationCategoryPreference = this.notificationsListPreference.find((e)=>e.categoryCode==code);
-          notificationCategory.enabled = event.target.checked;
-          console.log(notificationCategory);
-          this.notificationService.updateNotificationCategory(notificationCategory).subscribe(result =>{
-            console.log(result);
-          })
-        }else{
-          this.lookupService().localizedItemsByLang(this.notificationsListLookup).forEach(value=>{
-            this.notificationService.updateNotificationCategory(new UserNotificationCategoryPreference(value.code, value.code == code ? event.target.checked :true)).subscribe(result =>{
-              console.log(result);
-            });
-          });
-          this.loadNotificationCaotegoryPreference();
-        }
-      }
+  updateUserNotificationCategory(event, code: string) {
 
-   async loadUserNotificationCategory(){
+    if (this.preferenceIsLoaded) {
+      let notificationCategory: UserNotificationCategoryPreference = this.notificationsListPreference.find((e) => e.categoryCode == code);
+      notificationCategory.enabled = event.target.checked;
+
+      this.notificationService.updateNotificationCategory(notificationCategory).subscribe(result => {
+        console.log(result);
+      })
+    } else {
+      this.lookupService().localizedItemsByLang(this.notificationsListLookup).forEach(value => {
+        this.notificationService.updateNotificationCategory(new UserNotificationCategoryPreference(value.code, value.code == code ? event.target.checked : true)).subscribe(result => {
+          console.log(result);
+        });
+      });
+      this.loadNotificationCaotegoryPreference();
+    }
+  }
+
+  async loadUserNotificationCategory() {
     await this.loadNotificationCategory();
     await this.loadNotificationCaotegoryPreference();
   }
 
-  getCategoryIcon(code: string){
+  getCategoryIcon(code: string) {
     switch (code) {
-    case 'GENERAL':
+      case 'GENERAL':
         return 'comment-alt-lines-light';
-    case 'HEALTH':
+      case 'HEALTH':
         return 'heartbeat-light';
-    case 'RELIGIOUS':
+      case 'RELIGIOUS':
         return 'kaaba-light';
-    case 'RITUAL':
+      case 'RITUAL':
         return 'flag-light';
-    case 'GENERAL_AWARENESS':
+      case 'GENERAL_AWARENESS':
         return 'bullhorn-light';
-  }}
-
-  getCategoryColor(code: string){
-    switch (code) {
-    case 'GENERAL':
-        return 'dcc-primary';
-    case 'HEALTH':
-        return 'dcc-danger';
-    case 'RELIGIOUS':
-        return 'dcc-primary';
-    case 'RITUAL':
-        return 'dcc-primary';
-    case 'GENERAL_AWARENESS':
-        return 'dcc-blue';
-  }}
-
-  filterNotificationCategory(list: NotificationCategory[]){
-    return list.filter(e=> this.i18nService.language.startsWith(e.lang));
+    }
   }
 
+  getCategoryColor(code: string) {
+    switch (code) {
+      case 'GENERAL':
+        return 'dcc-primary';
+      case 'HEALTH':
+        return 'dcc-danger';
+      case 'RELIGIOUS':
+        return 'dcc-primary';
+      case 'RITUAL':
+        return 'dcc-primary';
+      case 'GENERAL_AWARENESS':
+        return 'dcc-blue';
+    }
+  }
+
+  filterNotificationCategory(list: NotificationCategory[]) {
+    return list.filter(e => this.i18nService.language.startsWith(e.lang));
+  }
 
 
   // convenience getter for easy access to form fields
   get f() {
     return this.contactsForm?.controls;
+  }
+
+  get emergencyDataFormControls() {
+    return this.emergencyDataForm?.controls;
   }
 
   onSubmit() {
@@ -309,6 +350,46 @@ export class SettingsComponent implements OnInit {
     }
   }
 
+  onEmergencyDataFormSubmit() {
+    // trigger all validations
+    Object.keys(this.emergencyDataForm.controls).forEach(field => {
+      const control = this.emergencyDataForm.get(field);
+      control.markAsTouched({onlySelf: true});
+    });
+
+    // stop here if form is invalid
+    if (this.emergencyDataForm.invalid) {
+      return;
+    }
+    if (this.emergencyDataOriginalMobileNo != this.emergencyDataForm.controls['emergencyContactMobileNumber'].value.replace(/\s/g, "") ||
+      this.emergencyDataOriginalContactName != this.emergencyDataForm.controls['emergencyContactName'].value ||
+      this.emergencyDataOriginalCountryCode.toUpperCase() != this.emergencyDataSelectedCountryCode.toUpperCase()) {
+
+
+      let reg1 = / /g;
+      let reg2 = /\+/gi;
+      let reg3 = /\-/gi;
+
+
+      this.emergencyData.emergencyContactName = this.emergencyDataForm.controls['emergencyContactName'].value;
+      this.emergencyData.emergencyContactMobileNumber = this.emergencyDataSelectedCountryPrefix+ this.emergencyDataForm.controls['emergencyContactMobileNumber'].value.replace(reg1, "").replace(reg3, "");
+
+
+      if (this.emergencyData.emergencyContactName.trim() === '' || this.emergencyData.emergencyContactMobileNumber.trim() === '') {
+        this.toastr.warning(this.translate.instant("emergency_data.update_fail_empty"), this.translate.instant("general.dialog_error_text"));
+      } else {
+        this.userService.updateApplicantEmergencyContact(this.emergencyData).subscribe(response => {
+          if (response && response.errors) {
+            this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
+          } else {
+            this.toastr.success(this.translate.instant("general.dialog_edit_success_text"), this.translate.instant("general.dialog_edit_title"));
+          }
+        })
+      }
+
+    }
+  }
+
   public openTypeahead(): void {
     // Dispatch event on input element that NgbTypeahead is bound to
     this.elem.nativeElement.dispatchEvent(new Event('input'));
@@ -336,6 +417,13 @@ export class SettingsComponent implements OnInit {
     this.countryListDropdown.close();
   }
 
+  onSelectEmergencyDataSelectedCountryPrefix($event, input) {
+    $event.preventDefault();
+    this.emergencyDataSelectedCountryPrefix = $event.item.countryPhonePrefix;
+    this.emergencyDataSelectedCountryCode = $event.item.code.toLowerCase();
+    this.countryListDropdown2.close();
+  }
+
   onOpenChange(event: boolean) {
     if (!event) {
       this.elem.nativeElement.value = '';
@@ -346,6 +434,7 @@ export class SettingsComponent implements OnInit {
     this.confirmDialogService.confirm('settings.dialog_save_confirm_text', 'general.dialog_edit_title').then(confirm => {
       if (confirm) {
         this.updateUserLanguage();
+        this.onEmergencyDataFormSubmit();
         this.onSubmit();
       }
     });

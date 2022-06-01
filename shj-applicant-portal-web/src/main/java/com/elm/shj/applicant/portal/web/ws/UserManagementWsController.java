@@ -333,4 +333,22 @@ public class UserManagementWsController {
                         .body(null).build());
     }
 
+    @GetMapping("/emergency-contact/get")
+    public ResponseEntity<WsResponse<?>> findApplicantEmergencyContact( Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        WsResponse response = userService.findApplicantEmergencyContactByUin(loggedInUserUin);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatus())
+                        .body(response.getBody()).build());
+    }
+
+    @PutMapping("/emergency-contact/update")
+    public ResponseEntity<WsResponse<?>> updateApplicantEmergencyContact(@RequestBody ApplicantEmergencyContactDto applicantEmergencyNumber, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        WsResponse response = userService.updateApplicantEmergencyContactByUin(applicantEmergencyNumber,loggedInUserUin);
+        return ResponseEntity.ok(
+                WsResponse.builder().status(response.getStatus())
+                        .body(response.getBody()).build());
+    }
+
 }

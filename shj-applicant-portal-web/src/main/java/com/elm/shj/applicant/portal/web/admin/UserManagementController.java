@@ -9,6 +9,7 @@ import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.*;
 import com.elm.shj.applicant.portal.services.integration.ApplicantRitualPackageVo;
+import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.PasswordHistoryService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -572,6 +573,20 @@ public class UserManagementController {
     public BadgeVO findApplicantBadge(Authentication authentication){
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.findApplicantBadge(loggedInUserUin,false);
+    }
+
+    @GetMapping("/emergency-contact/get")
+    public WsResponse findApplicantEmergencyContact(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.findApplicantEmergencyContactByUin(loggedInUserUin);
+
+    }
+
+    @PutMapping("/emergency-contact/update")
+    public WsResponse updateApplicantEmergencyContact(@RequestBody ApplicantEmergencyContactDto applicantEmergencyNumber, Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        return userService.updateApplicantEmergencyContactByUin(applicantEmergencyNumber,loggedInUserUin);
+
     }
 
 }

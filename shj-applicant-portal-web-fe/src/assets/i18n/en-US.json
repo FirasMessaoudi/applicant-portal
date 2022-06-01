@@ -149,7 +149,8 @@
     "notifications": "Notifications",
     "select_notifications": "Select the type of notifications you receive",
     "example": "Example",
-    "otp_title": "Update Contacts Confirmation"
+    "otp_title": "Update Contacts Confirmation",
+    "emergency_data": "Emergency Data"
   },
   "home": {
     "title": "Home",
@@ -633,5 +634,10 @@
     "public_notifications": "General Notifications",
     "view_all": "View All",
     "view_all_notifications": "View All Notifications"
+  },
+  "emergency_data": {
+    "mobile_number": "Emergency Mobile Number",
+    "contact_name": "Emergency Contact Name",
+    "update_fail_empty": "Emergency Mobile number or contact name is empty"
   }
 }

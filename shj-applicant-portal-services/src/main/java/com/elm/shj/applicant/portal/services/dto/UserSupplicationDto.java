@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 ELM. All rights reserved.
+ * Copyright (c) 2022 ELM. All rights reserved.
  */
 package com.elm.shj.applicant.portal.services.dto;
 
@@ -11,7 +11,7 @@ import java.util.Date;
  * Dto class for the user supplication domain.
  *
  * @author r.chebbi
- * @since 1.1.0
+ * @since 1.0.0
  */
 @Getter
 @Setter

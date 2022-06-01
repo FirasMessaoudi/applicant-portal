@@ -96,7 +96,7 @@ public class IntegrationService {
     private final String STORE_USER_LOCATIONS = "/ws/store-user-locations";
     private final String SURVEY_URL = "/ws/survey";
     private final String SUPPLICATION_URL="/ws/supplications";
-
+    private final String APPLICANT_EMERGENCY_CONTACT_URL = "/ws/applicant/emergency-contact/";
 
     private final String BADGE_URL = "/ws/badge";
     private final String ROSARY_URL = "/ws/rosary";
@@ -1464,4 +1464,31 @@ public class IntegrationService {
     }
 
 
+    public WsResponse findApplicantEmergencyContactByUin(String uin) {
+        WsResponse<ApplicantEmergencyContactDto> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_EMERGENCY_CONTACT_URL+"/get/"  + uin  ,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantEmergencyContactDto>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get Applicant Emergency Contact", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+    public WsResponse updateApplicantEmergencyContactByUin(String uin, ApplicantEmergencyContactDto applicantEmergencyNumber) {
+        WsResponse<ApplicantEmergencyContactDto> wsResponse = null ;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_EMERGENCY_CONTACT_URL+"/update/"  + uin    ,
+                    HttpMethod.PUT, applicantEmergencyNumber,
+                    new ParameterizedTypeReference<WsResponse<ApplicantEmergencyContactDto>>() {
+                    });
+        }catch  (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update Applicant Emergency Contact", e);
+            return null;
+        }
+        return wsResponse;
+    }
 }

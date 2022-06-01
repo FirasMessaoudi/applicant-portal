@@ -610,5 +610,15 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public BadgeVO findApplicantBadge(String loggedInUserUin, boolean withQr) {
         return integrationService.findApplicantBadge(loggedInUserUin,withQr);
     }
+
+
+
+    public WsResponse findApplicantEmergencyContactByUin(String uin) {
+       return integrationService.findApplicantEmergencyContactByUin(uin);
+    }
+
+    public WsResponse updateApplicantEmergencyContactByUin(ApplicantEmergencyContactDto applicantEmergencyNumber, String uin) {
+        return integrationService.updateApplicantEmergencyContactByUin(uin, applicantEmergencyNumber);
+    }
 }
 
