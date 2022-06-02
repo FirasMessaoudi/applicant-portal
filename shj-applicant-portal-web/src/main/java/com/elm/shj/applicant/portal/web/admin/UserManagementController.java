@@ -582,7 +582,7 @@ public class UserManagementController {
 
     }
 
-    @PutMapping("/emergency-contact/update")
+    @PostMapping("/emergency-contact/update")
     public WsResponse updateApplicantEmergencyContact(@RequestBody ApplicantEmergencyContactDto applicantEmergencyNumber, Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         return userService.updateApplicantEmergencyContactByUin(applicantEmergencyNumber,loggedInUserUin);

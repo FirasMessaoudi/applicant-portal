@@ -1482,7 +1482,7 @@ public class IntegrationService {
         WsResponse<ApplicantEmergencyContactDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(APPLICANT_EMERGENCY_CONTACT_URL+"/update/"  + uin    ,
-                    HttpMethod.PUT, applicantEmergencyNumber,
+                    HttpMethod.POST, applicantEmergencyNumber,
                     new ParameterizedTypeReference<WsResponse<ApplicantEmergencyContactDto>>() {
                     });
         }catch  (WsAuthenticationException e) {

@@ -72,7 +72,7 @@ export class UserService {
   }
 
   updateApplicantEmergencyContact(emergencyData:EmergencyData): Observable<any> {
-    return this.http.put<any>('/core/api/users/emergency-contact/update',emergencyData ).pipe(
+    return this.http.post<any>('/core/api/users/emergency-contact/update',emergencyData).pipe(
       catchError(
         (error: any, caught: Observable<HttpEvent<any>>) => {
           console.error(error);
