@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Dto class for the applicant lite domain.
@@ -28,7 +29,10 @@ public class ApplicantLiteDto implements Serializable {
     private String fullNameAr;
     private String fullNameEn;
     private String fullNameOrigin;
+    private String passportNumber;
+    private String idNumber;
     private String email;
+    private List<ApplicantDigitalIdDto> digitalIds;
     private boolean hasLocalMobileNumber;
     private String mobileNumber;
     private String countryCode;

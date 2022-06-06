@@ -48,12 +48,20 @@ public class RegistrationWsController {
 
     @PostMapping("/verify")
     public ResponseEntity<WsResponse<?>> verify(@RequestBody ValidateApplicantCmd command) {
-        Optional<UserDto> userInApplicantPortal = userService.findByUin(Long.parseLong(command.getUin()));
+        log.info(command.getType());
+        Optional<UserDto> userInApplicantPortal = null;
+        if (command.getType().equals("uin"))
+            userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
+        if (command.getType().equals("passport"))
+            userInApplicantPortal = userService.findByPassportNumber(command.getIdentifier(), command.getNationalityCode());
+        if (command.getType().equals("id"))
+            userInApplicantPortal = userService.findByIdNumber(command.getIdentifier());
+
         if (userInApplicantPortal.isPresent()) {
 
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.ALREADY_REGISTERED.getCode()).referenceNumber(command.getUin()).build()).build());
+                            .body(WsError.builder().error(WsError.EWsError.ALREADY_REGISTERED.getCode()).referenceNumber(command.getIdentifier()).build()).build());
 
         }
 
@@ -62,7 +70,7 @@ public class RegistrationWsController {
 
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.NOT_FOUND_IN_ADMIN.getCode()).referenceNumber(command.getUin()).build()).build());
+                            .body(WsError.builder().error(WsError.EWsError.NOT_FOUND_IN_ADMIN.getCode()).referenceNumber(command.getIdentifier()).build()).build());
 
         }
         return ResponseEntity.ok(

@@ -6,6 +6,7 @@ package com.elm.shj.applicant.portal.web.security.otp;
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
+import com.elm.shj.applicant.portal.services.dto.ApplicantLoginCmd;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -63,14 +64,18 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
             , ResourceNotFoundException.class, DeactivatedUserException.class, UserAlreadyLoggedInException.class})
     public Authentication authenticate(final Authentication authentication) {
         log.debug("starting authentication process");
-
+        UserDto user = null;
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
 
-        long idNumber = Long.parseLong(authentication.getName());
+        ApplicantLoginCmd applicantDetails = (ApplicantLoginCmd) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
-
-        UserDto user = userService.findByUin(idNumber).orElseThrow(() -> new ResourceNotFoundException("idNumber not found."));
+        if (applicantDetails.getType().equals("uin"))
+            user = userService.findByUin(Long.valueOf(applicantDetails.getIdNumber())).orElseThrow(() -> new ResourceNotFoundException("UIN not found."));
+        if (applicantDetails.getType().equals("passport"))
+            user = userService.findByPassportNumber(applicantDetails.getIdNumber(), applicantDetails.getNationalityCode()).orElseThrow(() -> new ResourceNotFoundException("idNumber not found."));
+        if (applicantDetails.getType().equals("id"))
+            user = userService.findByIdNumber(applicantDetails.getIdNumber()).orElseThrow(() -> new ResourceNotFoundException("passport not found."));
 
         // check if user is active
         if (!user.isActivated()) {
@@ -82,7 +87,7 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
         if (!BCrypt.checkpw(password, user.getPasswordHash())) {
             userService.updateLoginTries(user);
             if (user.getNumberOfTries() >= allowedFailedLogins) {
-                throw new RecaptchaException(String.valueOf(idNumber));
+                throw new RecaptchaException(String.valueOf(applicantDetails.getIdNumber()));
             }
             log.debug("wrong password.");
             throw new BadCredentialsException("invalid credentials.");
@@ -93,7 +98,7 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
 
             String recaptchaResponse = request.getParameter(RECAPTCHA_RESPONSE_PARAM_NAME);
             if (StringUtils.isBlank(recaptchaResponse)) {
-                throw new RecaptchaException(String.valueOf(idNumber));
+                throw new RecaptchaException(String.valueOf(applicantDetails.getIdNumber()));
             }
             RecaptchaInfo recaptchaInfo;
             try {
@@ -121,14 +126,14 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
         }
 
         // generate OTP for the given principal
-        String otp = otpService.createOtp(Long.toString(idNumber), user.getMobileNumber());
-        log.debug("###################### OTP for [{}] : {}", idNumber, otp);
+        String otp = otpService.createOtp(applicantDetails.getIdNumber(), user.getMobileNumber());
+        log.debug("###################### OTP for [{}] : {}", applicantDetails.getIdNumber(), otp);
 
         String maskedMobileNumber = user.getMobileNumber() == null ? null : user.getMobileNumber().replaceAll("\\b\\d+(\\d{3})", "*******$1");
         String maskedEmail = user.getEmail() == null ? null : user.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");
 
         // return the Otp Token
-        return new OtpToken(true, otpService.getOtpExpiryMinutes(), authentication.getPrincipal(), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail);
+        return new OtpToken(true, otpService.getOtpExpiryMinutes(), String.valueOf(user.getUin()), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail);
     }
 
 

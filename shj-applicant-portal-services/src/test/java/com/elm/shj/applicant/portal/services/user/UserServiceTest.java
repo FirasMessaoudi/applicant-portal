@@ -306,7 +306,7 @@ public class UserServiceTest {
     @Test
     public void test_verify_applicant_uin_notFound() throws WsAuthenticationException {
         ValidateApplicantCmd command = new ValidateApplicantCmd();
-        command.setUin(String.valueOf(TEST_UIN));
+        command.setIdentifier(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
         WsResponse wsResponse = new WsResponse();
         wsResponse.setStatus(WsResponse.EWsResponseStatus.FAILURE.getCode());
@@ -321,7 +321,7 @@ public class UserServiceTest {
         ValidateApplicantCmd command = new ValidateApplicantCmd();
         ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
         applicantLiteDto.setMobileNumber(String.valueOf(TEST_MOBILE));
-        command.setUin(String.valueOf(TEST_UIN));
+        command.setIdentifier(String.valueOf(TEST_UIN));
         command.setDateOfBirthGregorian(TEST_DATE_OG_BIRTH_GREGORIAN);
         WsResponse wsResponse = new WsResponse();
         wsResponse.setStatus(WsResponse.EWsResponseStatus.SUCCESS.getCode());

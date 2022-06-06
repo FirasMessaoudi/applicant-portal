@@ -8,12 +8,14 @@ import java.io.Serializable;
 public class ValidateApplicantCmd implements Serializable {
 
     private static final long serialVersionUID = 6641483817347109390L;
-    private String uin;
+    private String type;
+    private String identifier;
+    private String nationalityCode;
     private String dateOfBirthGregorian;
     private int dateOfBirthHijri;
 
     @Override
     public String toString() {
-        return '{' + "\"uin\":" + "\"" + uin + "\"" + ",\"dateOfBirthGregorian\":" + "\"" + dateOfBirthGregorian + "\"" + ",\"dateOfBirthHijri\":" + "\"" + dateOfBirthHijri + "\"" + '}';
+        return '{' + "\"type\":" + type + "\"uin\":" + "\"" + identifier + "\"" + ",\"dateOfBirthGregorian\":" + "\"" + dateOfBirthGregorian + "\"" + ",\"dateOfBirthHijri\":" + "\"" + dateOfBirthHijri + "\"" + '}';
     }
 }
