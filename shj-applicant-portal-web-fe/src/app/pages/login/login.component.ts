@@ -27,6 +27,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   showCaptcha = false;
   recaptchaSiteKey: any;
+  loginType = 'uin';
 
   @ViewChild('reCaptchaEl')
   captchaElem: ReCaptcha2Component;
@@ -88,7 +89,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.loginForm.value.username, this.loginForm.value.password, null)
+    this.authenticationService.login(this.loginForm.value.username, this.loginForm.value.password, null, this.loginType)
       .pipe(finalize(() => {
         this.loginForm.markAsPristine();
         this.loading = false;
