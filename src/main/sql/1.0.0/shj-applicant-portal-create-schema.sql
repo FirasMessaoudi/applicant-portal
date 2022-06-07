@@ -273,3 +273,9 @@ create table sha_portal.sha_scheduled_tasks_lock
 );
 
 GO
+ALTER TABLE sha_portal.sha_user
+ADD passport_number VARCHAR(255);
+GO
+ALTER TABLE sha_portal.sha_user
+ADD id_number VARCHAR(255);
+GO

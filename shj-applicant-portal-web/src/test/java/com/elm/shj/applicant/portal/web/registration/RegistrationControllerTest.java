@@ -77,7 +77,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_verify_user_already_register() throws Exception {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
-        applicant.setUin("1234567898");
+        applicant.setIdentifier("1234567898");
 
         when(otpService.createOtp(anyString(), anyString())).thenReturn("");
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.of(new UserDto()));
@@ -89,7 +89,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_verify_applicant_not_found_in_admin_portal() throws Exception {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
-        applicant.setUin("1234567898");
+        applicant.setIdentifier("1234567898");
 
         when(userService.verify(any())).thenReturn(null);
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
@@ -113,7 +113,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_verify_success() throws Exception {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
-        applicant.setUin("1234567898");
+        applicant.setIdentifier("1234567898");
 
         when(userService.verify(any())).thenReturn(new ApplicantLiteDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
@@ -124,7 +124,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_otp() throws Exception {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
-        applicant.setUin("1234567898");
+        applicant.setIdentifier("1234567898");
 
         mockMvc.perform(post(Navigation.API_REGISTRATION + "/otp?" + RegistrationController.RECAPTCHA_TOKEN_NAME + "=" + RECAPTCHA_DUMMY_VALUE).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());

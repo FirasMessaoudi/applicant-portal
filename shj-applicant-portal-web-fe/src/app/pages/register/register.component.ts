@@ -63,6 +63,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   dateStructGreg: any;
   dateStructHijri: any;
   applicantCountry: any;
+  registerType = 'uin';
+  uin: any;
   countries: CountryLookup[] = [];
   selectedCountryCode = "SA";
   SAUDI_COUNTRY_CODE = "SA";
@@ -196,6 +198,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.registerService.generateOTPForRegistration(this.registerForm.value, this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (!response) {
+        console.log(response);
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
         this.captchaElem.reloadCaptcha();
 
@@ -269,9 +272,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.isApplicantVerified = false;
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
-    this.registerService.verifyApplicant(this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
+    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
       if (response) {
         this.user = response;
+        console.log(response.digitalIds[0].uin);
+        this.user.uin = response.digitalIds[0].uin;
+        console.log(this.user);
         this.fillRegistrationForm();
         if (this.user.mobileNumber) {
           let applicantMobileNumber;
@@ -374,6 +380,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.registerForm.controls['fullNameAr'].setValue(this.user.fullNameAr);
     this.registerForm.controls['email'].setValue(this.user.email);
     this.registerForm.controls['mobileNumber'].setValue(this.user.mobileNumber);
+    this.registerForm.controls['uin'].setValue(this.user.uin);
     this.originalEmail = this.user.email;
     this.originalCountryCode = this.selectedCountryCode;
   }

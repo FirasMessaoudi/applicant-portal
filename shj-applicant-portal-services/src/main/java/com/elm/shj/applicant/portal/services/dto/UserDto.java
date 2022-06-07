@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.io.Serializable;
@@ -58,6 +57,9 @@ public class UserDto implements Serializable {
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
     private Long uin;
     private Long nin;
+    private String passportNumber;
+    private String idNumber;
+
     @SafeFile
     private MultipartFile avatarFile;
     private String avatar;

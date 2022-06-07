@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.web.ws;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.services.dto.ApplicantLoginCmd;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
@@ -64,13 +65,12 @@ public class AuthenticationWsController {
      * @return the generated token
      */
     @PostMapping("/login")
-    public ResponseEntity<WsResponse<?>> login(@RequestBody Map<String, String> credentials) {
+    public ResponseEntity<WsResponse<?>> login(@RequestBody ApplicantLoginCmd credentials) {
         log.debug("Login request handler");
         OtpToken authentication;
-        String idNumber = credentials.get("idNumber");
 
         authentication = (OtpToken) otpAuthenticationProvider
-                .authenticate(new UsernamePasswordAuthenticationToken(idNumber, credentials.get("password")));
+                .authenticate(new UsernamePasswordAuthenticationToken(credentials, credentials.getPassword()));
 
 
         return ResponseEntity.ok(

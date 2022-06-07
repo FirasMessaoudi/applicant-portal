@@ -104,6 +104,22 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     /**
+     * Finds a user by his passport number
+     *
+     * @param passportNumber the uin of the user to find
+     * @return the founded user or empty structure
+     */
+    public Optional<UserDto> findByPassportNumber(String passportNumber, String nationalityCode) {
+        JpaUser user = userRepository.findByPassportNumberAndCountryCodeAndDeletedFalseAndActivatedTrue(passportNumber, nationalityCode);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
+
+    public Optional<UserDto> findByIdNumber(String idNumber) {
+        JpaUser user = userRepository.findByIdNumberAndDeletedFalseAndActivatedTrue(idNumber);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
+
+    /**
      * Finds a user by his UIN
      *
      * @param uin the UIN of the user to find

@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.web.login;
 
 import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
+import com.elm.shj.applicant.portal.services.dto.ApplicantLoginCmd;
 import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
 import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -62,13 +63,12 @@ public class AuthenticationController {
      * @return the generated token
      */
     @PostMapping("/login")
-    public ResponseEntity<OtpToken> login(@RequestBody Map<String, String> credentials, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<OtpToken> login(@RequestBody ApplicantLoginCmd credentials, HttpServletRequest request, HttpServletResponse response) {
         log.debug("Login request handler");
         OtpToken authentication;
-        String idNumber = credentials.get("idNumber");
         try {
             authentication = (OtpToken) otpAuthenticationProvider
-                    .authenticate(new UsernamePasswordAuthenticationToken(idNumber, credentials.get("password")));
+                    .authenticate(new UsernamePasswordAuthenticationToken(credentials, credentials.getPassword()));
 
         } catch (RecaptchaException rex) {
             return ResponseEntity.status(INVALID_RECAPTCHA_RESPONSE_CODE).body(null);

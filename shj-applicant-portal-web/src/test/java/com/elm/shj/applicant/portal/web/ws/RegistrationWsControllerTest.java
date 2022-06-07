@@ -56,7 +56,7 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
         String url = Navigation.API_INTEGRATION_REGISTRATION + "/verify";
 
         ValidateApplicantCmd command = new ValidateApplicantCmd();
-        command.setUin(TEST_UIN);
+        command.setIdentifier(TEST_UIN);
 
         when(userService.verify(any())).thenReturn(new ApplicantLiteDto());
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());
@@ -70,7 +70,7 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
     @Test
     public void test_verify_user_already_register() throws Exception {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
-        applicant.setUin(TEST_UIN);
+        applicant.setIdentifier(TEST_UIN);
 
         when(otpService.createOtp(anyString(), anyString())).thenReturn("");
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.of(new UserDto()));
@@ -85,7 +85,7 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
     public void test_verify_applicant_not_found_in_admin_portal() throws Exception {
 
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
-        applicant.setUin(TEST_UIN);
+        applicant.setIdentifier(TEST_UIN);
 
         when(userService.verify(any())).thenReturn(null);
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.empty());

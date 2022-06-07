@@ -23,7 +23,7 @@ public class CountryLookupDto implements Serializable {
 
     private long id;
     private String code;
-    private String nicCode;
+    private String countryNamePrefix;
     private String lang;
     private String label;
     private String countryPhonePrefix;

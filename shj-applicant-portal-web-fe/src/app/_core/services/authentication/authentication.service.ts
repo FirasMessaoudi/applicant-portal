@@ -43,11 +43,11 @@ export class AuthenticationService {
    * @param {LoginContext} context The login parameters.
    * @return {Observable<Credentials>} The user credentials.
    */
-  login(username: string, password: string, recaptchaToken: string): Observable<any> {
-
+  login(username: string, password: string, recaptchaToken: string, loginType:string): Observable<any> {
+    console.log(loginType);
     let params: String = recaptchaToken ? '?grt=' + recaptchaToken : '';
 
-    return this.http.post<any>('/core/api/auth/login' + params, {'idNumber': username, 'password': password});
+    return this.http.post<any>('/core/api/auth/login' + params, {'type': loginType, 'idNumber': username, 'password': password});
   }
 
   /**
