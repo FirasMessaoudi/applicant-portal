@@ -31,8 +31,8 @@ export class RegisterService {
       }));
   }
 
-  verifyApplicant(uin:any,dateOfBirthGregorian:any,dateOfBirthHijri:any){
-    let command = new ValidateApplicantCmd(uin,dateOfBirthGregorian,dateOfBirthHijri);
-    return this.http.post<any>("/core/api/register/verify",command);
+  verifyApplicant(loginType:string, identifier:any,dateOfBirthGregorian:any,dateOfBirthHijri:any){
+    return this.http.post<any>("/core/api/register/verify", {'type': loginType, 'identifier': identifier, 
+    'nationalityCode': '', 'dateOfBirthGregorian':dateOfBirthGregorian, 'dateOfBirthHijri':dateOfBirthHijri});
    }
 }
