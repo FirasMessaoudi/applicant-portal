@@ -263,6 +263,8 @@
     "link_legal_accept": "Please read and accept Terms and Conditions to proceed!",
     "terms_and_conditions_text": "To view the terms and conditions, please click on the <a target='_blank' href='{{url}}'>link</a>",
     "smart_id_number": "Shaaer ID",
+    "card_id_number": "Card ID Number",
+    "passport_id_number": "Passport Number",
     "validate": "Validate",
     "verification_error": "Verification Error",
     "applicant_not_found": " Cannot register no record match the entry please check the input values",

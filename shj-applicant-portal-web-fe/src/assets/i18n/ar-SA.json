@@ -264,6 +264,8 @@
     "link_legal_accept": "الرجاء قراءة وقبول الشروط والأحكام للمتابعة!",
     "terms_and_conditions_text": "للإطلاع على الشروط والأحكام الرجاء الظغط على <a target='_blank' href='{{url}}'>الرابط</a>",
     "smart_id_number": "رقم هوية شعائر",
+    "card_id_number": "رقم هوية البطاقة",
+    "passport_id_number": "رقم جواز السفر",
     "validate": "تحقق",
     "verification_error": "خطء أثناء التحقق",
     "applicant_not_found": " لايمكن التسجيل لا يوجد بيانات ضيف الرحمن متوافقة مع البيانات المدخلة نامل التحقق من البيانات المدخلة",
