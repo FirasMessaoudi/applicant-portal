@@ -39,7 +39,7 @@
       <div class="mb-3 col">
         <label>{{idFieldName()}}<span class="text-danger small px-1">*</span></label>
         <input id="uin" formControlName="uin" class="form-control" [readonly]="isApplicantVerified"
-               onkeypress="return event.keyCode === 8 || this.value.length < 30"
+               onkeypress="return this.value.length < 30"
                min="0" step="1" [class.is-invalid]="f.uin.touched" maxlength="50"/>
         <div *ngIf="f.uin.invalid && f.uin.touched" class="invalid-feedback">
           <div *ngIf="f.uin.errors.required">{{'general.field_validation_required' | translate}}</div>
