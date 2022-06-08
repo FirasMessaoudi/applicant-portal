@@ -71,7 +71,13 @@ public class RegistrationController {
 
     @PostMapping("/verify")
     public ResponseEntity<ApplicantLiteDto> verify(@RequestBody ValidateApplicantCmd command) {
-        Optional<UserDto> userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
+        Optional<UserDto> userInApplicantPortal = null;
+        if (command.getType().equals("uin"))
+            userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
+        if (command.getType().equals("passport"))
+            userInApplicantPortal = userService.findByPassportNumber(command.getIdentifier(), command.getNationalityCode());
+        if (command.getType().equals("id"))
+            userInApplicantPortal = userService.findByIdNumber(command.getIdentifier());
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
