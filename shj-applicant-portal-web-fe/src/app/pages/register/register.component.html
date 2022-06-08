@@ -94,6 +94,18 @@
         </ngx-invisible-recaptcha>
       </div>
 
+      <div class="form-group col" *ngIf="registerType == 'passport'">
+        <!--TODO TO BE REFACTORED-->
+        <label class="col-form-label">{{'general.nationality' | translate}}</label>
+        <select class="custom-select" (change)="selectNationality($event.target.value)">
+          <option selected>{{'general.nationality' | translate}}</option>
+          <option *ngFor="let country of lookupService().localizedItemsByLang(countriesList)"
+                  [value]="country.code">
+            {{country.label}}
+          </option>
+        </select>
+      </div>
+
       <div class="mb-3 col-12 text-left">
         <button class="btn btn-outline-dcc-primary px-5 w_full "
                 [disabled]="!dateString || !f.uin.value ||isApplicantVerified"

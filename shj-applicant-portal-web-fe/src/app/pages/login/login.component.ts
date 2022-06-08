@@ -11,7 +11,8 @@ import {Title} from "@angular/platform-browser";
 import {LangChangeEvent, TranslateService} from "@ngx-translate/core";
 import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
-import {UserService} from "@core/services";
+import {CardService, UserService} from "@core/services";
+import { CountryLookup } from '@app/_shared/model/country-lookup.model';
 
 
 @Component({
@@ -28,6 +29,9 @@ export class LoginComponent implements OnInit {
   showCaptcha = false;
   recaptchaSiteKey: any;
   loginType = 'uin';
+  selectedNationality ='';
+  countriesList: CountryLookup[] = [];
+
 
   @ViewChild('reCaptchaEl')
   captchaElem: ReCaptcha2Component;
@@ -44,7 +48,8 @@ export class LoginComponent implements OnInit {
               private authenticationService: AuthenticationService,
               private titleService: Title,
               private translate: TranslateService,
-              private lookupService: LookupService,
+              private lookupsService: LookupService,
+              private cardService: CardService,
               private userService: UserService) {
   }
 
@@ -59,6 +64,10 @@ export class LoginComponent implements OnInit {
         this.titleService.setTitle(res);
       });
     });
+  }
+
+  lookupService(): LookupService {
+    return this.lookupsService;
   }
 
   ngOnInit() {
@@ -77,6 +86,11 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
+  selectNationality(val){
+    console.log(val);
+    this.selectedNationality = val;
+  }
+
   onSubmit() {
     // trigger all validations
     Object.keys(this.loginForm.controls).forEach(field => {
@@ -89,7 +103,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.authenticationService.login(this.loginForm.value.username, this.loginForm.value.password, null, this.loginType)
+    this.authenticationService.login(this.loginForm.value.username, this.loginForm.value.password, null, this.loginType, this.selectedNationality)
       .pipe(finalize(() => {
         this.loginForm.markAsPristine();
         this.loading = false;
@@ -129,6 +143,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
+
+
   onCaptchaLoad() {
     console.log('captcha is loaded');
   }
@@ -140,11 +156,13 @@ export class LoginComponent implements OnInit {
   refreshRegisterData() {
     this.authenticationService.updateOtpSubject({});
   }
+  
 
 
   onCaptchaSuccess(captchaResponse: string): void {
     console.log(captchaResponse);
   }
+  
 
   loadLookups() {
     this.authenticationService.findSupportedLanguages().subscribe(result => {
@@ -155,6 +173,10 @@ export class LoginComponent implements OnInit {
       this.selectedLang = new Lookup();
       this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.startsWith('ar') ? "ar" : "en"));
       this.setLanguage(this.selectedLang.lang.toLowerCase());
+    });
+    
+    this.cardService.findCountries().subscribe(result => {
+      this.countriesList = result;
     });
 
   }

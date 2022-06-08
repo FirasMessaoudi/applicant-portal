@@ -31,8 +31,8 @@ export class RegisterService {
       }));
   }
 
-  verifyApplicant(loginType:string, identifier:any,dateOfBirthGregorian:any,dateOfBirthHijri:any): Observable<any>{
+  verifyApplicant(loginType:string, identifier:any,dateOfBirthGregorian:any,dateOfBirthHijri:any, nationality: any): Observable<any>{
     return this.http.post<any>("/core/api/register/verify", {'type': loginType, 'identifier': identifier, 
-    'nationalityCode': '', 'dateOfBirthGregorian':dateOfBirthGregorian, 'dateOfBirthHijri':dateOfBirthHijri});
+    'nationalityCode': nationality, 'dateOfBirthGregorian':dateOfBirthGregorian, 'dateOfBirthHijri':dateOfBirthHijri});
    }
 }

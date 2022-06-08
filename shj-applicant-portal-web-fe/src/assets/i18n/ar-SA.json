@@ -118,7 +118,8 @@
     "identity_number": "رقم الهوية",
     "main": "الرئيسية",
     "language": "اللغة",
-    "no-data-found": " لا توجد بيانات"
+    "no-data-found": " لا توجد بيانات",
+    "nationality": "الجنسية"
   },
   "header": {
     "welcome": "مرحبا",

@@ -20,6 +20,7 @@ import {CountryISO} from 'ngx-intl-tel-input';
 import {CountryLookup} from "@model/country-lookup.model";
 import {merge, Observable, Subject, Subscription} from "rxjs";
 import {filter, map} from "rxjs/operators";
+import { LookupService } from '@app/_core/utilities/lookup.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -66,7 +67,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
   registerType = 'uin';
   uin: any;
   countries: CountryLookup[] = [];
+  countriesList: CountryLookup[] = [];
   selectedCountryCode = "SA";
+  selectedNationality ='';
   SAUDI_COUNTRY_CODE = "SA";
   selectedCountryPrefix: string = "+966";
   @ViewChild('instance')
@@ -91,6 +94,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private toastr: ToastService,
     private translate: TranslateService,
     private dateFormatterService: DateFormatterService,
+    private lookupsService: LookupService,
     public datepipe: DatePipe
   ) {
     // redirect to home if already logged in
@@ -268,10 +272,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     return frm.controls['password'].value === frm.controls['confirmPassword'].value ? null : {'mismatch': true};
   }
 
+  lookupService(): LookupService {
+    return this.lookupsService;
+  }
+
   loadLookups() {
     this.cardService.findCountries().subscribe(result => {
       result.forEach(c => c.countryPhonePrefix = '+' + c.countryPhonePrefix);
       this.countries = result;
+    });
+    this.cardService.findCountries().subscribe(result => {
+      this.countriesList = result;
     });
   }
 
@@ -281,7 +292,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.isApplicantVerified = false;
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
-    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin.value, gregorianDate, hijriDate).subscribe(response => {
+    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin.value, gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
       if (response) {
         this.user = response;
         console.log(response.digitalIds[0].uin);
@@ -396,6 +407,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     document.querySelector('body').classList.add('register');
+  }
+
+  selectNationality(val){
+    console.log(val);
+    this.selectedNationality = val;
   }
 
   ngOnDestroy() {
