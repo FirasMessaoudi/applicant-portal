@@ -251,7 +251,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private createForm() {
 
     this.registerForm = this.formBuilder.group({
-      uin: ['', [Validators.required]],
+      uin: [''],
       fullNameEn: {disabled: true},
       fullNameAr: {disabled: true},
       dateOfBirthGregorian: ['', Validators.required],
