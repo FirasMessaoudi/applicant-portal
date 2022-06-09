@@ -13,4 +13,8 @@ export const PUBLIC_ROUTES: Routes = [
     path: '',
     loadChildren: () => import('@pages/applicant-qr/applicant-qr.module').then(m => m.ApplicantQrModule)
   },
+  {
+    path: '',
+    loadChildren: () => import('@pages/privacy-policy/privacy-policy.module').then(m => m.PrivacyPolicyModule)
+  },
 ];
