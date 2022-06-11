@@ -110,6 +110,9 @@ public class JpaUser implements Serializable {
 	@Column(name = "TOKEN_EXPIRY_DATE")
 	private Date tokenExpiryDate;
 
+	@Column(name = "nationality_code")
+	private String nationalityCode;
+
 	@PrePersist
 	public void prePersist() {
 		creationDate = new Date();

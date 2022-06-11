@@ -77,6 +77,8 @@ public class UserDto implements Serializable {
     private Date creationDate;
     private Set<UserRoleDto> userRoles;
     private Date tokenExpiryDate;
+    @Length(max = 20)
+    private String nationalityCode;
 
 
     @Override

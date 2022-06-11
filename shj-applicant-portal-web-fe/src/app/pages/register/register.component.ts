@@ -230,6 +230,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
           this.user.preferredLanguage = this.currentLanguage.startsWith('ar') ? "ar" : "en";
+          this.user.nationalityCode = this.selectedNationality;
           this.authenticationService.updateOtpSubject({
             user: this.user,
             actionType: "/register",

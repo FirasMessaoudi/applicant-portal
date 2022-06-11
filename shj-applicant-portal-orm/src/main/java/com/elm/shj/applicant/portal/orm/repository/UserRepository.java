@@ -37,6 +37,8 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     JpaUser findByPassportNumberAndCountryCodeAndDeletedFalseAndActivatedTrue(String passportNumber, String countryCode);
 
+    JpaUser findByPassportNumberAndNationalityCodeAndDeletedFalseAndActivatedTrue(String passportNumber, String nationalityCode);
+
     JpaUser findByIdNumberAndDeletedFalseAndActivatedTrue(String idNumber);
 
     List<JpaUser> findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
