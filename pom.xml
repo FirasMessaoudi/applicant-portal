@@ -168,9 +168,9 @@
         <sonar.coverage.jacoco.xmlReportPaths>
             ${basedir}/shj-applicant-portal-orm/target/jacoco-ut/jacoco.xml,${basedir}/shj-applicant-portal-services/target/jacoco-ut/jacoco.xml,${basedir}/shj-applicant-portal-web/target/jacoco-ut/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-        <java.version>13</java.version>
-        <maven.compiler.source>13</maven.compiler.source>
-        <maven.compiler.target>13</maven.compiler.target>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
