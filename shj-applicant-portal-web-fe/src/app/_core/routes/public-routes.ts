@@ -17,4 +17,8 @@ export const PUBLIC_ROUTES: Routes = [
     path: '',
     loadChildren: () => import('@pages/privacy-policy/privacy-policy.module').then(m => m.PrivacyPolicyModule)
   },
+  {
+    path: '',
+    loadChildren: () => import('@pages/product-info/product-info.module').then(m => m.ProductInfoModule)
+  },
 ];
