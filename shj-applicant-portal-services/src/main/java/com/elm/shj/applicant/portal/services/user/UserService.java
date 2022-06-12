@@ -428,6 +428,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public Optional<ApplicantMainDataDto> findUserMainDataByUin(String uin, long applicantPackageId) {
+        log.debug("Handler for findUserMainDataByUin {}", uin);
         return Optional.ofNullable(integrationService.loadUserMainData(uin, applicantPackageId));
     }
 
@@ -447,7 +448,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      * @return applicantLiteDto
      */
     public ApplicantLiteDto verify(ValidateApplicantCmd command) {
-        WsResponse<ApplicantLiteDto> wsResponse = null;
+        WsResponse<ApplicantLiteDto> wsResponse;
         final String url = "/ws/verify";
         try {
             wsResponse = integrationService.callIntegrationWs(url, HttpMethod.POST, command, new ParameterizedTypeReference<WsResponse<ApplicantLiteDto>>() {

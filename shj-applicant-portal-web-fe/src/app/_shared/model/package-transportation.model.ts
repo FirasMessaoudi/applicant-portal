@@ -7,6 +7,4 @@ export class PackageTransportation {
     locationFromNameEn: string;
     locationToNameAr: string;
     locationToNameEn: string;
-    ritualStepCode: string;
-    vehicleNumber: string;
 }
