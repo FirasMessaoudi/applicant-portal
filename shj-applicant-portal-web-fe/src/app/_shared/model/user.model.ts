@@ -31,4 +31,5 @@ export class User {
   countryCode: string;
   countryPhonePrefix: any;
   preferredLanguage: string;
+  nationalityCode: string;
 }

@@ -279,3 +279,7 @@ GO
 ALTER TABLE sha_portal.sha_user
 ADD id_number VARCHAR(255);
 GO
+
+ALTER TABLE sha_portal.sha_user
+ADD nationality_code varchar(20)
+GO
