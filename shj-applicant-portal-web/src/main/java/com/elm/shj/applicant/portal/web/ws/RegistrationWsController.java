@@ -49,7 +49,7 @@ public class RegistrationWsController {
     @PostMapping("/verify")
     public ResponseEntity<WsResponse<?>> verify(@RequestBody ValidateApplicantCmd command) {
         log.info(command.getType());
-        Optional<UserDto> userInApplicantPortal = null;
+        Optional<UserDto> userInApplicantPortal = Optional.empty();
         if (command.getType().equals("uin"))
             userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
         if (command.getType().equals("passport"))
