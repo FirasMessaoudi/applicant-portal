@@ -46,7 +46,7 @@ public class SmsService {
                 .countryCode(countryCode)
                 .receiverNumber(recipientNumber)
                 .body(body)
-                .comment(comments).build();
+                .comment("comments").build();
         HUICRequestDto<SmsRequestDto> huicSmsRequest = new HUICRequestDto<>();
         huicSmsRequest.setRequest(smsRequest);
         huicSmsRequest.setRequestToken("string");
@@ -56,7 +56,7 @@ public class SmsService {
                 .trustManager(InsecureTrustManagerFactory.INSTANCE)
                 .build();
         HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(sslContext));
-
+        log.info("Sms request {}", smsRequest);
         SmsResponseDto smsResponse = WebClient
                 .builder()
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
