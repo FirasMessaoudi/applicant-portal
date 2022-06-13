@@ -310,7 +310,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             if (this.user.countryCode) {
               this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
             }
-            let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase()).countryPhonePrefix;
+            let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase())?.countryPhonePrefix;
             if (this.user.mobileNumber.startsWith('00')) {
               console.log("starts with 00")
               this.user.mobileNumber = this.user.mobileNumber.substring(2);
