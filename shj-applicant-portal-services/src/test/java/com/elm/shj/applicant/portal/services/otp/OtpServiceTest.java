@@ -37,6 +37,8 @@ class OtpServiceTest {
 
   private static final String TEST_UIN = "1234567899";
     private static final String TEST_MOBILE = "12345678";
+
+    private static final int TEST_COUNTRY_CODE = 966;
     private static final String TEST_OTP = "1234";
   private static final String TEST_WRONG_OTP = "4321";
   @InjectMocks
@@ -78,11 +80,11 @@ class OtpServiceTest {
     when(otpGenerator.generateOtp(TEST_UIN)).thenReturn("1234");
     when(messageSource.getMessage(any(), any(), any())).thenReturn("message sent");
     when(smsService.sendMessage(any(), any())).thenReturn(true);
-    serviceToTest.createOtp(TEST_UIN, TEST_MOBILE);
+    serviceToTest.createOtp(TEST_UIN,TEST_COUNTRY_CODE, TEST_MOBILE);
     verify(otpGenerator).generateOtp(TEST_UIN);
     verify(messageSource).getMessage(any(), any(), any());
     verify(smsService).sendMessage(any(), any());
-    assertEquals("1234", serviceToTest.createOtp(TEST_UIN, TEST_MOBILE));
+    assertEquals("1234", serviceToTest.createOtp(TEST_UIN,TEST_COUNTRY_CODE, TEST_MOBILE));
   }
 
   @Test

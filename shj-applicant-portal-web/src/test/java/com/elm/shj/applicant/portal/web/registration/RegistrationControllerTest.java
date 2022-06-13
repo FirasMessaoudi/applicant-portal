@@ -79,7 +79,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
         applicant.setIdentifier("1234567898");
 
-        when(otpService.createOtp(anyString(), anyString())).thenReturn("");
+        when(otpService.createOtp(anyString(),anyInt(), anyString())).thenReturn("");
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.of(new UserDto()));
         mockMvc.perform(post(Navigation.API_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(applicant)).with(csrf())).andDo(print()).andExpect(status().is(USER_ALREADY_REGISTERED_RESPONSE_CODE));
@@ -129,7 +129,7 @@ public class RegistrationControllerTest extends AbstractControllerTestSuite {
         mockMvc.perform(post(Navigation.API_REGISTRATION + "/otp?" + RegistrationController.RECAPTCHA_TOKEN_NAME + "=" + RECAPTCHA_DUMMY_VALUE).contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectToJson(user)).with(csrf())).andDo(print()).andExpect(status().isOk());
         when(otpGenerator.generateOtp(any())).thenReturn(TEST_OTP);
-        when(otpService.createOtp(anyString(), anyString())).thenReturn(TEST_OTP);
+        when(otpService.createOtp(anyString(),anyInt(), anyString())).thenReturn(TEST_OTP);
     }
 
     @Test
