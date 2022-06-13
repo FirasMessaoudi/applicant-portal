@@ -60,7 +60,7 @@
                             <button class="btn btn-link ltr country-prefix-button" id="dropdown1" ngbDropdownToggle (click)="openTypeahead()">
                 <span
                   class="flag-icon flag-icon-{{
-                    selectedCountryCode?.toLowerCase()
+                    selectedCountryName?.toLowerCase()
                   }}"
                 ></span>
                 {{ selectedCountryPrefix }}
@@ -72,7 +72,7 @@
                             <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown1">
                                 <ng-template #rt let-r="result" let-t="term">
                                     <span class="flag-icon flag-icon-{{
-                      r['code'].toLowerCase()
+                      r['countryNamePrefix'].toLowerCase()
                     }} flag-icon-selected"></span>
                                     <ngb-highlight [result]="r.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
                                 </ng-template>

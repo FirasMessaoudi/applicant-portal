@@ -20,7 +20,7 @@ import {CountryISO} from 'ngx-intl-tel-input';
 import {CountryLookup} from "@model/country-lookup.model";
 import {merge, Observable, Subject, Subscription} from "rxjs";
 import {filter, map} from "rxjs/operators";
-import { LookupService } from '@app/_core/utilities/lookup.service';
+import {LookupService} from '@app/_core/utilities/lookup.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -68,9 +68,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   uin: any;
   countries: CountryLookup[] = [];
   countriesList: CountryLookup[] = [];
-  selectedCountryCode = "SA";
+  selectedCountryCode = "113";
   selectedNationality ='';
-  SAUDI_COUNTRY_CODE = "SA";
+  SAUDI_COUNTRY_CODE = "113";
+  selectedCountryName = "SA";
   selectedCountryPrefix: string = "+966";
   @ViewChild('instance')
   instance: NgbTypeahead;
@@ -170,6 +171,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.user = data.user;
         this.registerForm.controls['uin'].setValue(this.user.uin);
         this.selectedCountryCode = this.user.countryCode.toLowerCase();
+        this.selectedCountryName = this.countriesList.find(country=>country.code==this.selectedCountryCode).countryNamePrefix;
         this.fillRegistrationForm();
       }
     });
@@ -200,7 +202,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let mobileNumber = this.registerForm.controls['mobileNumber'].value.replace(reg1, "").replace(reg3, "");
     this.registerForm.controls['mobileNumber'].setValue(mobileNumber);
 
-    this.registerService.generateOTPForRegistration(this.registerForm.value, this.captchaElem.getCurrentResponse()).subscribe(response => {
+    this.registerService.generateOTPForRegistration(this.registerForm.value, this.selectedCountryPrefix.replace(reg2, ""), this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (!response) {
         console.log(response);
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
@@ -443,6 +445,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   onSelect($event, input) {
     $event.preventDefault();
     this.selectedCountryPrefix = $event.item.countryPhonePrefix;
+    this.selectedCountryName = $event.item.countryNamePrefix;
     this.selectedCountryCode = $event.item.code.toLowerCase();
     this.countryListDropdown.close();
   }

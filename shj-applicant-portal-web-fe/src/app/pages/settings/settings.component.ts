@@ -44,6 +44,7 @@ export class SettingsComponent implements OnInit {
   userContacts: UserContacts = new UserContacts();
   countries: any;
   selectedCountryCode;
+  selectedCountryName;
   selectedCountryPrefix: any;
   originalCountryPrefix: any;
   @ViewChild('instance')
@@ -140,6 +141,7 @@ export class SettingsComponent implements OnInit {
         this.selectedCountryCode = data?.countryCode?.toLowerCase();
         this.originalCountryPrefix = '+' + data.countryPhonePrefix;
         this.selectedCountryPrefix = '+' + data.countryPhonePrefix;
+        this.selectedCountryName = this.countries.find(country=>country.code==this.selectedCountryCode).countryNamePrefix;
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
           this.translate.instant('general.dialog_error_title'));
@@ -414,6 +416,7 @@ export class SettingsComponent implements OnInit {
     $event.preventDefault();
     this.selectedCountryPrefix = $event.item.countryPhonePrefix;
     this.selectedCountryCode = $event.item.code.toLowerCase();
+    this.selectedCountryName = $event.item.countryNamePrefix;
     this.countryListDropdown.close();
   }
 
