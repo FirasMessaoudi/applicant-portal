@@ -155,7 +155,7 @@
               <div ngbDropdownMenu class="dropdown-menu no-transform" aria-labelledby="dropdown1">
                 <ng-template #rt let-r="result" let-t="term">
                   <span class="flag-icon flag-icon-{{r['code'].toLowerCase()}} flag-icon-selected"></span>
-                  <ngb-highlight [result]="r.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
+                  <ngb-highlight [result]="r?.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
                 </ng-template>
                 <input id="typeahead-template"
                        type="text"
