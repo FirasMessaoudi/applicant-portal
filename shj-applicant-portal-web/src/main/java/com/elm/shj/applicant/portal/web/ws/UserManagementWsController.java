@@ -185,7 +185,7 @@ public class UserManagementWsController {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
 
         String mobileNumber = userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber();
-        String otp = otpService.createOtp(loggedInUserUin, mobileNumber);
+        String otp = otpService.createOtp(loggedInUserUin,Integer.valueOf(userContacts.getCountryPhonePrefix()), mobileNumber);
         log.debug("###################### OTP for [{}] : {} in edit contacts", loggedInUserUin, otp);
         String maskedMobileNumber = mobileNumber == null ? null : mobileNumber.replaceAll("\\b\\d+(\\d{3})", "*******$1");
         String maskedEmail = userContacts.getEmail() == null ? null : userContacts.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");

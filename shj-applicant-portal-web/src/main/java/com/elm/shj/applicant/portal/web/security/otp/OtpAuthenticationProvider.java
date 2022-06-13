@@ -126,7 +126,7 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
         }
 
         // generate OTP for the given principal
-        String otp = otpService.createOtp(applicantDetails.getIdNumber(), user.getMobileNumber());
+        String otp = otpService.createOtp(applicantDetails.getIdNumber(), Integer.valueOf(user.getCountryPhonePrefix()), user.getMobileNumber());
         log.debug("###################### OTP for [{}] : {}", applicantDetails.getIdNumber(), otp);
 
         String maskedMobileNumber = user.getMobileNumber() == null ? null : user.getMobileNumber().replaceAll("\\b\\d+(\\d{3})", "*******$1");

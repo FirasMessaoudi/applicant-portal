@@ -72,7 +72,7 @@ public class RegistrationWsControllerTest extends AbstractControllerTestSuite {
         ValidateApplicantCmd applicant = new ValidateApplicantCmd();
         applicant.setIdentifier(TEST_UIN);
 
-        when(otpService.createOtp(anyString(), anyString())).thenReturn("");
+        when(otpService.createOtp(anyString(),anyInt(), anyString())).thenReturn("");
         when(userService.findByUin(anyLong())).thenReturn(java.util.Optional.of(new UserDto()));
 
         mockMvc.perform(post(Navigation.API_INTEGRATION_REGISTRATION + "/verify").contentType(MediaType.APPLICATION_JSON_UTF8)

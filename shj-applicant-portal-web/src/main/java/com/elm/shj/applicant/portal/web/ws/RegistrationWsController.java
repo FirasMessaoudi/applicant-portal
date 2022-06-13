@@ -49,7 +49,7 @@ public class RegistrationWsController {
     @PostMapping("/verify")
     public ResponseEntity<WsResponse<?>> verify(@RequestBody ValidateApplicantCmd command) {
         log.info(command.getType());
-        Optional<UserDto> userInApplicantPortal = null;
+        Optional<UserDto> userInApplicantPortal = Optional.empty();
         if (command.getType().equals("uin"))
             userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
         if (command.getType().equals("passport"))
@@ -83,7 +83,7 @@ public class RegistrationWsController {
             , HttpServletRequest request) {
 
         String mobileNumber = user.getCountryPhonePrefix() + user.getMobileNumber();
-        String otp = otpService.createOtp(Long.toString(user.getUin()), mobileNumber);
+        String otp = otpService.createOtp(Long.toString(user.getUin()),Integer.valueOf(user.getCountryPhonePrefix()), mobileNumber);
         log.debug("###################### OTP for [{}] : {} in Registration", user.getUin(), otp);
 
         String maskedMobileNumber = user.getMobileNumber() == null ? null : mobileNumber.replaceAll("\\b\\d+(\\d{3})", "*******$1");

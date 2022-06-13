@@ -110,7 +110,7 @@ public class RegistrationController {
             log.info("Captcha validation was not successful!");
             return null;
         }
-        String otp = otpService.createOtp(Long.toString(user.getUin()), user.getMobileNumber());
+        String otp = otpService.createOtp(Long.toString(user.getUin()),Integer.valueOf(user.getCountryPhonePrefix()), user.getMobileNumber());
         log.debug("###################### OTP for [{}] : {} in Registration", user.getUin(), otp);
         String maskedMobileNumber = user.getMobileNumber() == null ? null : user.getMobileNumber().replaceAll("\\b\\d+(\\d{3})", "*******$1");
         String maskedEmail = user.getEmail() == null ? null : user.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");

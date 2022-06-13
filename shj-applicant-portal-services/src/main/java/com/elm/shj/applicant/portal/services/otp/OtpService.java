@@ -3,7 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.otp;
 
-import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
+import com.elm.shj.applicant.portal.services.sms.SmsService;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -16,6 +16,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.net.ssl.SSLException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -44,7 +45,7 @@ public class OtpService {
     private LoadingCache<String, String> otpCache;
 
     private final OtpGenerator otpGenerator;
-    private final SmsGatewayService smsService;
+    private final SmsService smsService;
     private final MessageSource messageSource;
 
     @PostConstruct
@@ -65,16 +66,15 @@ public class OtpService {
      * @param principal the key to attach to the created otp
      * @return the created otp
      */
-    public String createOtp(String principal, String mobileNumber) {
+    public String createOtp(String principal,Integer countryCode, String mobileNumber) {
         try {
             String generatedOtp = otpGenerator.generateOtp(principal);
             otpCache.put(principal, generatedOtp);
             //TODO:need to be changed since uin is not required to start with 1
             String locale = principal.startsWith("1") ? "ar" : "en";
             String registerUserSms = messageSource.getMessage(OTP_SMS_NOTIFICATION_MSG, new String[]{generatedOtp}, Locale.forLanguageTag(locale));
-            smsService.sendMessage(Long.valueOf(mobileNumber), registerUserSms);
-            return generatedOtp;
-        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+            return smsService.sendMessage(countryCode,mobileNumber, registerUserSms, null) ? generatedOtp : null;
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SSLException e) {
             log.error("Unable to generate OTP : " + e.getMessage(), e);
             return null;
         }
