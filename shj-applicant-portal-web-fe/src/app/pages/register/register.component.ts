@@ -202,7 +202,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let mobileNumber = this.registerForm.controls['mobileNumber'].value.replace(reg1, "").replace(reg3, "");
     this.registerForm.controls['mobileNumber'].setValue(mobileNumber);
 
-    this.registerService.generateOTPForRegistration(this.registerForm.value, this.captchaElem.getCurrentResponse()).subscribe(response => {
+    this.registerService.generateOTPForRegistration(this.registerForm.value, this.selectedCountryPrefix.replace(reg2, ""), this.captchaElem.getCurrentResponse()).subscribe(response => {
       if (!response) {
         console.log(response);
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));
