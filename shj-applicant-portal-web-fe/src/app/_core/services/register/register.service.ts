@@ -16,7 +16,7 @@ export class RegisterService {
   }
 
   validateOtpThenRegister(user: User, pin: string): Observable<any> {
-    return this.http.post(`/core/api/register?pin= ${pin}`, user);
+    return this.http.post(`/core/api/register?pin=${pin}`, user);
   }
 
   generateOTPForRegistration(user: User, phonePrefix: string, recaptchaToken: string): Observable<any> {

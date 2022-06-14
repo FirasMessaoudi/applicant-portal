@@ -45,9 +45,9 @@ public class PasswordExpiryNotificationScheduler {
     @Value("${password.expiry.notification.period.in.days}")
     private int passwordExpiryNotificationPeriod;
 
-    @PostConstruct
-    @Scheduled(cron = "${scheduler.password.expiry.notification.cron}")
-    @SchedulerLock(name = "notify-password-expiry-users-task")
+//    @PostConstruct
+//    @Scheduled(cron = "${scheduler.password.expiry.notification.cron}")
+//    @SchedulerLock(name = "notify-password-expiry-users-task")
     void notifyPasswordExpiredUsers() {
         log.debug("password Expiry notification scheduler started...");
         List<JpaUser> users = userRepository.findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
