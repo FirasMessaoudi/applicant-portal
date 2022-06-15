@@ -76,12 +76,19 @@ public class UserManagementWsController {
     @RolesAllowed(AuthorityConstants.RESET_PASSWORD)
     public ResponseEntity<WsResponse<?>> resetUserPassword(@RequestBody @Valid ResetPasswordCmd command) {
 
-        Optional<UserDto> userDtoOptional = userService.findByUin(command.getIdNumber());
+        Optional<UserDto> userDtoOptional = Optional.empty();
+
+        if (command.getType().equals(ELoginType.uin.name()))
+            userDtoOptional = userService.findByUin(Long.valueOf(command.getIdentifier()));
+        if (command.getType().equals(ELoginType.passport.name()))
+            userDtoOptional = userService.findByPassportNumber(command.getIdentifier(), command.getNationalityCode());
+        if (command.getType().equals(ELoginType.id.name()))
+            userDtoOptional = userService.findByIdNumber(command.getIdentifier());
 
         if (!userDtoOptional.isPresent()) {
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(command.getIdNumber() + "").build()).build());
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(command.getIdentifier() + "").build()).build());
         }
 
         UserDto user = userDtoOptional.get();
@@ -100,10 +107,10 @@ public class UserManagementWsController {
         if (dateOfBirthMatched) {
             userService.resetPassword(user);
         } else {
-            log.debug("invalid data for username {}", command.getIdNumber());
+            log.debug("invalid data for username {}", command.getIdentifier());
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
-                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(command.getIdNumber() + "").build()).build());
+                            .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(command.getIdentifier() + "").build()).build());
         }
 
         return ResponseEntity.ok(

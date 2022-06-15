@@ -20,7 +20,9 @@ public class ResetPasswordCmd implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private long idNumber;
+    private String type;
+    private String identifier;
+    private String nationalityCode;
 
     @Past
     private Date dateOfBirthGregorian;

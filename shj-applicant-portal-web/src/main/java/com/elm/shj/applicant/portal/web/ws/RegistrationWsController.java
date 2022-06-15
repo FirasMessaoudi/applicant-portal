@@ -50,11 +50,11 @@ public class RegistrationWsController {
     public ResponseEntity<WsResponse<?>> verify(@RequestBody ValidateApplicantCmd command) {
         log.info(command.getType());
         Optional<UserDto> userInApplicantPortal = Optional.empty();
-        if (command.getType().equals("uin"))
+        if (command.getType().equals(ELoginType.uin.name()))
             userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
-        if (command.getType().equals("passport"))
+        if (command.getType().equals(ELoginType.passport.name()))
             userInApplicantPortal = userService.findByPassportNumber(command.getIdentifier(), command.getNationalityCode());
-        if (command.getType().equals("id"))
+        if (command.getType().equals(ELoginType.id.name()))
             userInApplicantPortal = userService.findByIdNumber(command.getIdentifier());
 
         if (userInApplicantPortal.isPresent()) {

@@ -306,7 +306,7 @@ public class UserManagementControllerTest extends AbstractControllerTestSuite {
 
         ResetPasswordCmd params = new ResetPasswordCmd();
         params.setDateOfBirthGregorian(birthdate);
-        params.setIdNumber(uin);
+        params.setIdentifier(String.valueOf(uin));
 
         UserDto user = new UserDto();
         user.setDateOfBirthGregorian(birthdate);
