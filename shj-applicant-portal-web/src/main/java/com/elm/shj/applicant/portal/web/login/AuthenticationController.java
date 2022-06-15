@@ -63,7 +63,7 @@ public class AuthenticationController {
      * @return the generated token
      */
     @PostMapping("/login")
-    public ResponseEntity<OtpToken> login(@RequestBody ApplicantLoginCmd credentials, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<OtpToken> login(@RequestBody ApplicantLoginCmd credentials) {
         log.debug("Login request handler");
         OtpToken authentication;
         try {

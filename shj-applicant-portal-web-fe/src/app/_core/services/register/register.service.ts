@@ -16,10 +16,11 @@ export class RegisterService {
   }
 
   validateOtpThenRegister(user: User, pin: string): Observable<any> {
-    return this.http.post(`/core/api/register?pin= ${pin}`, user);
+    return this.http.post(`/core/api/register?pin=${pin}`, user);
   }
 
-  generateOTPForRegistration(user: User, recaptchaToken: string): Observable<any> {
+  generateOTPForRegistration(user: User, phonePrefix: string, recaptchaToken: string): Observable<any> {
+    user.countryPhonePrefix = phonePrefix;
     console.log(user);
     return this.http.post<any>('/core/api/register/otp?grt=' + recaptchaToken, user)
       .pipe(catchError((error: HttpErrorResponse) => {
@@ -32,7 +33,7 @@ export class RegisterService {
   }
 
   verifyApplicant(loginType:string, identifier:any,dateOfBirthGregorian:any,dateOfBirthHijri:any, nationality: any): Observable<any>{
-    return this.http.post<any>("/core/api/register/verify", {'type': loginType, 'identifier': identifier, 
+    return this.http.post<any>("/core/api/register/verify", {'type': loginType, 'identifier': identifier,
     'nationalityCode': nationality, 'dateOfBirthGregorian':dateOfBirthGregorian, 'dateOfBirthHijri':dateOfBirthHijri});
    }
 }

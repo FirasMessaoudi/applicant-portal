@@ -63,6 +63,7 @@ public class RegistrationController {
             log.debug("Update failed in admin portal for applicant with Uin {}", user.getUin());
             return ResponseEntity.status(UPDATE_FAILED_IN_ADMIN_PORTAL).build();
         }
+        user.setNationalityCode(returnedApplicant.getNationalityCode());
         UserDto createdUser = userService.createUser(user);
         log.info("New user has been created with {} Uin number", createdUser.getUin());
         return ResponseEntity.ok(createdUser);

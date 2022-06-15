@@ -83,7 +83,7 @@ public class RegistrationWsController {
             , HttpServletRequest request) {
 
         String mobileNumber = user.getCountryPhonePrefix() + user.getMobileNumber();
-        String otp = otpService.createOtp(Long.toString(user.getUin()),Integer.valueOf(user.getCountryPhonePrefix()), mobileNumber);
+        String otp = otpService.createOtp(Long.toString(user.getUin()),Integer.valueOf(user.getCountryPhonePrefix()), user.getMobileNumber());
         log.debug("###################### OTP for [{}] : {} in Registration", user.getUin(), otp);
 
         String maskedMobileNumber = user.getMobileNumber() == null ? null : mobileNumber.replaceAll("\\b\\d+(\\d{3})", "*******$1");
