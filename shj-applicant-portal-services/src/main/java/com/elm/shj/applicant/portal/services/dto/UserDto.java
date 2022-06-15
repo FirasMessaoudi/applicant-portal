@@ -7,16 +7,12 @@ import com.elm.dcc.foundation.commons.validation.Password;
 import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.dcc.foundation.commons.validation.Unique;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
-import com.elm.shj.applicant.portal.services.data.validators.OnlyCharacters;
 import com.google.common.base.MoreObjects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -34,25 +30,17 @@ public class UserDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private long id;
-    @Past
     private Date dateOfBirthGregorian;
     private int dateOfBirthHijri;
-    @Length(max = 50, min = 3)
-    @Email
     private String email;
 
-    @OnlyCharacters(min = 6, max = 150, arabic = true)
     private String fullNameAr;
     private String gender;
-    @OnlyCharacters(min = 10, max = 150, allowEmpty = false)
     private String fullNameEn;
     private Date lastLoginDate;
-    @NotNull
-    @Length(max = 20, min = 5)
+
     private String mobileNumber;
-    @Length(max = 20)
     private String countryPhonePrefix;
-    @Length(max = 20)
     private String countryCode;
     @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
     private Long uin;
