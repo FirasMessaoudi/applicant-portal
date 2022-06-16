@@ -477,6 +477,12 @@
     "staff_name": "Staff Name",
     "staff_title": "Staff Title"
   },
+  "program-management": {
+    "transportation_type": "Transportation type",
+    "departure_time": "Departure time",
+    "add_to_alerts": "Add to alerts",
+    "added_to_alerts": "Added to alerts"
+  },
   "printing-management": {
     "title": "Printing Management",
     "request_number": "Request Number",
