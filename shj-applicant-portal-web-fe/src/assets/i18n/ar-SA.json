@@ -479,6 +479,12 @@
     "staff_name": "Staff Name",
     "staff_title": "Staff Title"
   },
+  "program-management": {
+    "transportation_type": "طريقة التنقل",
+    "departure_time": "موعد الانطلاق",
+    "add_to_alerts": "أضف للتنبيهات",
+    "added_to_alerts": "تم الإضافة للتنبيهات"
+  },
   "printing-management": {
     "title": "إدارة الطباعة",
     "request_number": "رقم الطلب",
