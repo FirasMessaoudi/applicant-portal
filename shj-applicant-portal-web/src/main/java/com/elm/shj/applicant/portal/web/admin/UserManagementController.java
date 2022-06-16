@@ -218,7 +218,13 @@ public class UserManagementController {
             throw new RecaptchaException("Invalid captcha.");
         }
 
-        UserDto user = userService.findByUin(command.getIdNumber()).orElseThrow(() -> new UsernameNotFoundException("No user found with username " + command.getIdNumber()));
+        UserDto user = null;
+        if (command.getType().equals(ELoginType.uin.name()))
+            user = userService.findByUin(Long.valueOf(command.getIdentifier())).orElseThrow(() -> new UsernameNotFoundException("No user found with uin " + command.getIdentifier()));
+        if (command.getType().equals(ELoginType.passport.name()))
+            user = userService.findByPassportNumber(command.getIdentifier(), command.getNationalityCode()).orElseThrow(() -> new UsernameNotFoundException("No user found with passport number " + command.getIdentifier()));
+        if (command.getType().equals(ELoginType.id.name()))
+            user = userService.findByIdNumber(command.getIdentifier()).orElseThrow(() -> new UsernameNotFoundException("No user found with id number " + command.getIdentifier()));
 
         boolean dateOfBirthMatched;
 
@@ -234,7 +240,7 @@ public class UserManagementController {
         if (dateOfBirthMatched) {
             userService.resetPassword(user);
         } else {
-            log.debug("invalid data for username {}", command.getIdNumber());
+            log.debug("invalid data for username {}", command.getIdentifier());
             throw new BadCredentialsException("invalid credentials.");
         }
     }

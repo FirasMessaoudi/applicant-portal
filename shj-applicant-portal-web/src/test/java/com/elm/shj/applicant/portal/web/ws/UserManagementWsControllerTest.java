@@ -5,7 +5,6 @@ import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.web.AbstractControllerTestSuite;
 import com.elm.shj.applicant.portal.web.admin.ChangePasswordCmd;
 import com.elm.shj.applicant.portal.web.admin.ResetPasswordCmd;
-import com.elm.shj.applicant.portal.web.admin.UserLocationsCmd;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import org.junit.jupiter.api.Test;
@@ -79,7 +78,7 @@ public class UserManagementWsControllerTest extends AbstractControllerTestSuite 
 
         ResetPasswordCmd params = new ResetPasswordCmd();
         params.setDateOfBirthGregorian(birthdate);
-        params.setIdNumber(uin);
+        params.setIdentifier(String.valueOf(uin));
 
         UserDto user = new UserDto();
         user.setDateOfBirthGregorian(birthdate);

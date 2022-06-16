@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
 import {ReCaptcha2Component} from "ngx-captcha";
 import {TranslateService} from "@ngx-translate/core";
 import {I18nService} from "@dcc-commons-ng/services";
-import {DEFAULT_MAX_USER_AGE, UserService} from "@core/services";
+import {CardService, DEFAULT_MAX_USER_AGE, UserService} from "@core/services";
 import {environment} from "@env/environment";
 import {ToastService} from "@shared/components/toast/toast-service";
 import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
@@ -12,6 +12,8 @@ import {DateType} from "@shared/modules/hijri-gregorian-datepicker/datepicker/co
 import {DateFormatterService} from "@shared/modules/hijri-gregorian-datepicker/datepicker/date-formatter.service";
 import {HijriGregorianDatepickerComponent} from "@shared/modules/hijri-gregorian-datepicker/datepicker/hijri-gregorian-datepicker.component";
 import {DccValidators, IdType} from "@shared/validators";
+import { CountryLookup } from '@app/_shared/model/country-lookup.model';
+import { LookupService } from '@app/_core/utilities/lookup.service';
 
 
 @Component({
@@ -30,6 +32,10 @@ export class ResetPasswordComponent implements OnInit {
   _maxPickerDate:any;
   @ViewChild('reCaptchaEl')
   captchaElem: ReCaptcha2Component;
+  loginType = 'uin';
+  selectedNationality ='';
+  countriesList: CountryLookup[] = [];
+
 
   recaptcha: any = null;
 
@@ -50,6 +56,8 @@ export class ResetPasswordComponent implements OnInit {
               private translate: TranslateService,
               private i18nService: I18nService,
               private userService: UserService,
+              private lookupsService: LookupService,
+              private cardService: CardService,
               private dateFormatterService: DateFormatterService) {
   }
 
@@ -62,6 +70,9 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.cardService.findCountries().subscribe(result => {
+      this.countriesList = result;
+    });
     // calendar default;
     let toDayGregorian = this.dateFormatterService.todayGregorian();
     let toDayHijri = this.dateFormatterService.todayHijri();
@@ -107,6 +118,15 @@ export class ResetPasswordComponent implements OnInit {
     return this.resetPasswordForm.controls;
   }
 
+  lookupService(): LookupService {
+    return this.lookupsService;
+  }
+
+  selectNationality(val){
+    console.log(val);
+    this.selectedNationality = val;
+  }
+
   resetPassword() {
     this.loading = true;
     // trigger all validations
@@ -120,7 +140,9 @@ export class ResetPasswordComponent implements OnInit {
       return;
     }
     let user = {
-      idNumber: this.resetPasswordForm.controls.idNumber.value,
+      type: this.loginType,
+      identifier: this.resetPasswordForm.controls.idNumber.value,
+      notionalityCode: this.selectedNationality,
       dateOfBirthGregorian: this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.resetPasswordForm.controls.dateOfBirthGregorian.value : null,
       dateOfBirthHijri: this.dateOfBirthPicker.selectedDateType == DateType.Hijri ? this.resetPasswordForm.controls.dateOfBirthHijri.value : null
     }

@@ -7,6 +7,7 @@ import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.dcc.foundation.providers.recaptcha.model.RecaptchaInfo;
 import com.elm.dcc.foundation.providers.recaptcha.service.RecaptchaService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantLoginCmd;
+import com.elm.shj.applicant.portal.services.dto.ELoginType;
 import com.elm.shj.applicant.portal.services.dto.UserDto;
 import com.elm.shj.applicant.portal.services.otp.OtpService;
 import com.elm.shj.applicant.portal.services.user.UserService;
@@ -70,12 +71,12 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
 
         ApplicantLoginCmd applicantDetails = (ApplicantLoginCmd) authentication.getPrincipal();
         String password = (String) authentication.getCredentials();
-        if (applicantDetails.getType().equals("uin"))
+        if (applicantDetails.getType().equals(ELoginType.uin.name()))
             user = userService.findByUin(Long.valueOf(applicantDetails.getIdNumber())).orElseThrow(() -> new ResourceNotFoundException("UIN not found."));
-        if (applicantDetails.getType().equals("passport"))
-            user = userService.findByPassportNumber(applicantDetails.getIdNumber(), applicantDetails.getNationalityCode()).orElseThrow(() -> new ResourceNotFoundException("idNumber not found."));
-        if (applicantDetails.getType().equals("id"))
-            user = userService.findByIdNumber(applicantDetails.getIdNumber()).orElseThrow(() -> new ResourceNotFoundException("passport not found."));
+        if (applicantDetails.getType().equals(ELoginType.passport.name()))
+            user = userService.findByPassportNumber(applicantDetails.getIdNumber(), applicantDetails.getNationalityCode()).orElseThrow(() -> new ResourceNotFoundException("passport number not found."));
+        if (applicantDetails.getType().equals(ELoginType.id.name()))
+            user = userService.findByIdNumber(applicantDetails.getIdNumber()).orElseThrow(() -> new ResourceNotFoundException("idNumber not found."));
 
         // check if user is active
         if (!user.isActivated()) {
