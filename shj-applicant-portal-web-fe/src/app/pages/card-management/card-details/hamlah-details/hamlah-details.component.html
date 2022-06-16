@@ -117,10 +117,10 @@
       </thead>
       <tbody>
       <tr *ngFor="let catering of applicantPackage?.applicantPackageCaterings">
-        <td class="ltr">{{ 'card-management.'+catering?.packageCatering?.type | translate}}</td>
+        <td class="ltr">{{ 'card-management.'+catering?.packageCatering?.mealTypeCode | translate}}</td>
         <td class="ltr">{{ currentLanguage.startsWith("en")? catering?.packageCatering?.descriptionEn : catering?.packageCatering?.descriptionAr }}</td>
         <td>
-          {{removeSecondsAddAmPm(catering?.packageCatering?.mealTime)}}
+          {{removeSecondsAddAmPm(catering?.packageCatering?.mealTimeCode)}}
           {{'card-management.from' | translate}}
           {{ catering?.packageCatering?.packageHousing?.validityStart |gregorianDateFormat  }}
           {{'card-management.to' | translate}}

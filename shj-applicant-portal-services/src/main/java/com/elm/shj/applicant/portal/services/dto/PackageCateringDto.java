@@ -27,13 +27,15 @@ public class PackageCateringDto implements Serializable {
 
     private String mealCode;
 
+    private String mealTypeCode;
+
     @NotNull(message = "validation.data.constraints.msg.20001")
     private Time mealTime;
 
     @NotNull(message = "validation.data.constraints.msg.20001")
     private String mealDescription;
 
-    private String type;
+    private String mealTimeCode;
 
     private String descriptionAr;
 
@@ -49,5 +51,4 @@ public class PackageCateringDto implements Serializable {
 
     @JsonBackReference(value = "applicantPackageCaterings")
     private List<ApplicantPackageCateringDto> applicantPackageCaterings;
-
 }
