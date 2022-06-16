@@ -250,7 +250,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if(this.registerType == 'uin')
         return this.translate.instant("register.smart_id_number")
     if(this.registerType == 'id')
-        return this.translate.instant("register.card_id_number")
+        return this.translate.instant("register.id_number")
     if(this.registerType == 'passport')
         return this.translate.instant("register.passport_id_number")
   }

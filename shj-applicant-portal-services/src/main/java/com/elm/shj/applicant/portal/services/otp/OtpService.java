@@ -3,7 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.otp;
 
-import com.elm.shj.applicant.portal.services.sms.SmsService;
+import com.elm.shj.applicant.portal.services.sms.HUICSmsService;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -45,7 +45,7 @@ public class OtpService {
     private LoadingCache<String, String> otpCache;
 
     private final OtpGenerator otpGenerator;
-    private final SmsService smsService;
+    private final HUICSmsService huicSmsService;
     private final MessageSource messageSource;
 
     @PostConstruct
@@ -73,7 +73,7 @@ public class OtpService {
             //TODO:need to be changed since uin is not required to start with 1
             String locale = principal.startsWith("1") ? "ar" : "en";
             String registerUserSms = messageSource.getMessage(OTP_SMS_NOTIFICATION_MSG, new String[]{generatedOtp}, Locale.forLanguageTag(locale));
-            return smsService.sendMessage(countryCode,mobileNumber, registerUserSms, null) ? generatedOtp : null;
+            return huicSmsService.sendMessage(countryCode,mobileNumber, registerUserSms, null) ? generatedOtp : null;
         } catch (NoSuchAlgorithmException | InvalidKeyException | SSLException e) {
             log.error("Unable to generate OTP : " + e.getMessage(), e);
             return null;

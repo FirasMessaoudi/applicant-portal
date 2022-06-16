@@ -188,3 +188,10 @@ GO
 
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('google.maps.radius.search', '5000');
 GO
+
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('sms.api.token', 'D60A13C6105742AD99FEDD608632A157');
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('sms.api.url', 'https://172.16.72.65/api/SmartCards/smsService');
+GO
+
+UPDATE sha_portal.sha_user SET mobile_number = '551367731' WHERE nin in ('1234567897');
+GO

@@ -32,15 +32,23 @@ import javax.net.ssl.SSLException;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class SmsService {
+public class HUICSmsService {
 
-    @Value("${sms.api.token}")
+    @Value("${huic.sms.api.token}")
     private String smsApiToken;
 
-    @Value("${sms.api.url}")
+    @Value("${huic.sms.api.url}")
     private String smsApiUrl;
 
+    @Value("${huic.sms.api.mock.enabled}")
+    private Boolean smsMockEnabled;
+
     public boolean sendMessage(Integer countryCode, String recipientNumber, String body, String comments) throws SSLException {
+        if(smsMockEnabled) {
+            log.info("SMS : {} ", body);
+            log.info("Mock SMS sent successfully");
+            return true;
+        }
         SmsRequestDto smsRequest = SmsRequestDto
                 .builder()
                 .countryCode(countryCode)

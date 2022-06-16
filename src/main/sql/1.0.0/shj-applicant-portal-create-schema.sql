@@ -271,15 +271,11 @@ create table sha_portal.sha_scheduled_tasks_lock
     locked_at  datetime     NULL,
     locked_by  varchar(255) NOT NULL,
 );
-
-GO
-ALTER TABLE sha_portal.sha_user
-ADD passport_number VARCHAR(255);
-GO
-ALTER TABLE sha_portal.sha_user
-ADD id_number VARCHAR(255);
 GO
 
-ALTER TABLE sha_portal.sha_user
-ADD nationality_code varchar(20)
+ALTER TABLE sha_portal.sha_user ADD passport_number VARCHAR(255);
+ALTER TABLE sha_portal.sha_user ADD id_number VARCHAR(255);
+GO
+
+ALTER TABLE sha_portal.sha_user ADD nationality_code varchar(20);
 GO

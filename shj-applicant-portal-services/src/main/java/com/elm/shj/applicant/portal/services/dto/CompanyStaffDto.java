@@ -32,14 +32,7 @@ public class CompanyStaffDto {
     @Min(1)
     @Max(15)
     @NotNull(message = "validation.data.constraints.msg.20001")
-    private int idNumber;
-
-   /* @NotNull(message = "validation.data.constraints.msg.20001")
-    @JsonBackReference(value = "company")
-    private CompanyDto company;
-
-    @JsonBackReference(value = "applicantGroups")
-    private List<ApplicantGroupDto> applicantGroups;*/
+    private String idNumber;
 
     private String titleCode;
 
