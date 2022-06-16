@@ -2,7 +2,7 @@
 <html lang="ar">
 
 <head>
-    <title>Welcome to Shaaer Platform مرحبا بك في منصة شعائر</title>
+    <title>Welcome to Hajj App Platform مرحبا بك في منصة تطبيق الحج</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -174,7 +174,7 @@
                                                     Dear ${user.fullNameEn},
                                                 </h2>
                                                 <p style="font-size: 14px; margin: 0; color: #707070">
-                                                    Welcome to Shaaer platform. You can login to the system using the
+                                                    Welcome to Hajj App platform. You can login to the system using the
                                                     following username <#setting number_format="0" />${user.uin}<#setting number_format="" /> .
                                                     
                                                 </p>
@@ -197,7 +197,7 @@
                               "><#if  user.gender??><#if  user.gender == "M">عزيزي <#else>عزيزتي </#if> <#else> عزيزي</#if>
                                                     ${user.fullNameAr}،</h2>
                                                 <p style="font-size: 14px; margin: 0; color: #707070">مرحبا بك في منصة
-                                                    شعائر. يمكن الدخول على المنصة باستعمال اسم
+                                                    تطبيق الحج. يمكن الدخول على المنصة باستعمال اسم
                                                     المستخدم <#setting number_format="0" />${user.uin}<#setting number_format="" /> .
                                                     
 												</p>
