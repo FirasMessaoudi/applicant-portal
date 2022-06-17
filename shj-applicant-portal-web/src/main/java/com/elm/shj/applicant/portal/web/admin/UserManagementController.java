@@ -200,6 +200,7 @@ public class UserManagementController {
     @RolesAllowed(AuthorityConstants.RESET_PASSWORD)
     public void resetUserPassword(@RequestBody @Valid ResetPasswordCmd command,
                                   @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken) {
+        log.info("reset user password for {} identifier and {} nationality.", command.getIdentifier(), command.getNationalityCode());
         if (StringUtils.isBlank(reCaptchaToken)) {
             log.info("recaptcha response is not provided in the request...");
             throw new RecaptchaException("Invalid Captcha");
