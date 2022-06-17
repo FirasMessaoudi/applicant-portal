@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.services.user;
 
 import com.elm.dcc.foundation.providers.email.service.EmailService;
-import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
@@ -14,13 +13,13 @@ import com.elm.shj.applicant.portal.services.integration.ApplicantRitualPackageV
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
+import com.elm.shj.applicant.portal.services.sms.HUICSmsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -31,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,12 +55,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private static final long APPLICANT_ROLE_ID = 1L;
     private static final String DEFFAULT_HISTORY_PASSWORD = "$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK";
 
-    @Value("${admin.portal.url}")
-    private String adminPortalUrl;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
-    private final SmsGatewayService smsGatewayService;
+    private final HUICSmsService huicSmsService;
     private final EmailService emailService;
     private final IntegrationService integrationService;
     private final PasswordHistoryService passwordHistoryService;
@@ -390,10 +388,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         // Send SMS notification
         String[] smsNotificationArgs = new String[]{user.getPassword()};
         String locale = (user.getNin() != null && isCitizen(user.getNin())) ? "ar" : "en";
-
-
         String createdUserSms = messageSource.getMessage(RESET_PASSWORD_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
-        boolean smsSent = smsGatewayService.sendMessage(Long.parseLong(user.getMobileNumber()), createdUserSms);
+        boolean smsSent = false;
+        try {
+            smsSent = huicSmsService.sendMessage(user.getCountryPhonePrefix() == null || user.getCountryPhonePrefix().isEmpty() ? 966 : Integer.valueOf(user.getCountryPhonePrefix()), String.valueOf(user.getMobileNumber()), createdUserSms, "comments");
+        } catch (SSLException e) {
+            log.error("Unable to send SMS for {}", user.getMobileNumber(), e);
+        }
         log.debug("SMS notification status: {}", smsSent);
 
         // Send Email notification
@@ -422,7 +423,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
                 REGISTRATION_EMAIL_SUBJECT, REGISTRATION_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
         log.debug("Email notification status: {}", emailSent);
         //TODO:TO CHECK SMSGETWAY EXPECTED NUMBER FORMAT
-        boolean smsSent = smsGatewayService.sendMessage(Long.parseLong(user.getMobileNumber()), createdUserSms);
+        boolean smsSent = false;
+        try {
+            smsSent = huicSmsService.sendMessage(user.getCountryPhonePrefix() == null || user.getCountryPhonePrefix().isEmpty() ? 966 : Integer.valueOf(user.getCountryPhonePrefix()), String.valueOf(user.getMobileNumber()), createdUserSms, "comments");
+        } catch (SSLException e) {
+            log.error("Unable to send SMS for {}", user.getMobileNumber(), e);
+        }
+        log.debug("SMS notification status: {}", smsSent);
 
         return smsSent || emailSent;
     }
