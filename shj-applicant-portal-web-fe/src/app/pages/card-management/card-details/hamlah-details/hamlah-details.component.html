@@ -121,11 +121,6 @@
         <td class="ltr">{{ currentLanguage.startsWith("en")? catering?.packageCatering?.descriptionEn : catering?.packageCatering?.descriptionAr }}</td>
         <td>
           {{removeSecondsAddAmPm(catering?.packageCatering?.mealTimeCode)}}
-          {{'card-management.from' | translate}}
-          {{ catering?.packageCatering?.packageHousing?.validityStart |gregorianDateFormat  }}
-          {{'card-management.to' | translate}}
-          {{ catering?.packageCatering?.packageHousing?.validityStart | gregorianDateFormat }}
-
         </td>
         <td class="ltr">
           {{
