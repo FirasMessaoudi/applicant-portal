@@ -27,8 +27,8 @@ public class NotificationService {
 
     private final IntegrationService integrationService;
 
-    @Value("${notification.count.interval}")
-    private int notificationCountInterval;
+    @Value("${notification.count.refresh.interval}")
+    private int notificationCountRefreshInterval;
 
     /**
      * Count user new notifications.
@@ -41,7 +41,7 @@ public class NotificationService {
     }
 
     public Integer countNotificationInterval() {
-        return notificationCountInterval;
+        return notificationCountRefreshInterval;
     }
 
     /**

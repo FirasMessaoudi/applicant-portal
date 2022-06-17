@@ -542,6 +542,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long applicantPackageId) {
         ApplicantPackageDetailsDto applicantPackageDetails =  integrationService.loadApplicantPackageDetails(uin, applicantPackageId);
+        if(applicantPackageDetails.getCompanyLite() != null)
+            applicantPackageDetails.getCompanyLite().setCode(applicantPackageDetails.getCompanyLite().getCode().contains("_") ?
+                    applicantPackageDetails.getCompanyLite().getCode().substring(0, applicantPackageDetails.getCompanyLite().getCode().indexOf("_")) : applicantPackageDetails.getCompanyLite().getCode());
         String pattern = "MM-dd-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Collections.sort(applicantPackageDetails.getApplicantPackageCaterings(), new Comparator<ApplicantPackageCateringDto>() {
