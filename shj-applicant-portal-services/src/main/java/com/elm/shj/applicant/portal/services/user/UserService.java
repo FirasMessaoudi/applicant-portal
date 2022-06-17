@@ -47,7 +47,7 @@ import java.util.*;
 public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public static final String CREATE_USER_SMS_NOTIFICATION_KEY = "user.mngt.new.user.sms.notification";
-    public static final String REGISTRATION_EMAIL_SUBJECT = "Welcome to ELM Product";
+    public static final String REGISTRATION_EMAIL_SUBJECT = "Welcome to Hajj App";
     public static final String REGISTRATION_EMAIL_TPL_NAME = "email-registration.ftl";
     public static final String RESET_PASSWORD_EMAIL_TPL_NAME = "email-reset-password.ftl";
     public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
