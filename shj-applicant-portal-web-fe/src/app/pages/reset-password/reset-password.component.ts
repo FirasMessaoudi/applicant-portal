@@ -142,7 +142,7 @@ export class ResetPasswordComponent implements OnInit {
     let user = {
       type: this.loginType,
       identifier: this.resetPasswordForm.controls.idNumber.value,
-      notionalityCode: this.selectedNationality,
+      nationalityCode: this.selectedNationality,
       dateOfBirthGregorian: this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.resetPasswordForm.controls.dateOfBirthGregorian.value : null,
       dateOfBirthHijri: this.dateOfBirthPicker.selectedDateType == DateType.Hijri ? this.resetPasswordForm.controls.dateOfBirthHijri.value : null
     }
