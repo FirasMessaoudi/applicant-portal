@@ -25,7 +25,7 @@ INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.username', '');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.password', '');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.from.address', 'no-reply@elm.sa');
-INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.from.name', 'Elm Product');
+INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.from.name', 'Hajj App');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.smtp.auth', 'false');
 INSERT INTO sha_portal.sha_config (conf_key, conf_value) VALUES ('elm.providers.email.mock.enabled', 'false');
 
