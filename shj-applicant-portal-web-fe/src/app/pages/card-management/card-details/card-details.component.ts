@@ -98,17 +98,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadTafweejDetails() {
-    this.cardService.findTafweejDetails().subscribe(data => {
-      if (data) {
-        this.tafweejDetails = data;
-      } else {
-        this.toastr.error(this.translate.instant('general.route_item_not_found'),
-          this.translate.instant('general.dialog_error_title'));
-      }
-    });
-  }
-
   loadGroupLeaders() {
     this.cardService.findGroupLeadersDetails(this.selectedApplicantRitualPackage.companyRitualSeasonId).subscribe(data => {
       if (data) {
