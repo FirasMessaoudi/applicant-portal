@@ -337,7 +337,7 @@ public class UserManagementWsController {
         }
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(null).build());
+                        .body(true).build());
     }
 
     @GetMapping("/emergency-contact/get")
