@@ -74,6 +74,7 @@ public class IntegrationService {
     private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
     private final String MEAL_TYPE_LOOKUP = "/ws/meal-type/list";
+    private final String MEAL_TIME_LOOKUP = "/ws/meal-time/list";
     private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
     private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
@@ -773,6 +774,19 @@ public class IntegrationService {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load meal types.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<MealTimeLookupDto> loadMealTime() {
+        WsResponse<List<MealTimeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(MEAL_TIME_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<MealTimeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load meal times.", e);
             return Collections.emptyList();
         }
         return wsResponse.getBody();

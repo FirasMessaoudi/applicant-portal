@@ -49,6 +49,7 @@ public class LookupService {
     private List<NotificationCategoryLookupDto> notificationCategories;
     private List<NotificationTemplateNameLookupDto> retrieveNotificationNames;
     private List<MealTypeLookupDto> mealTypes;
+    private List<MealTimeLookupDto> mealTimes;
     private List<LanguageLookupDto> supportedLanguages;
 
     private List<IncidentTypeLookupDto> incidentTypes;
@@ -79,6 +80,7 @@ public class LookupService {
         this.notificationCategories = integrationService.loadNotificationCategories();
         this.retrieveNotificationNames = integrationService.loadNotificationNames();
         this.mealTypes = integrationService.loadMealTypes();
+        this.mealTimes = integrationService.loadMealTime();
         this.supportedLanguages = integrationService.loadSupportedLanguages();
         this.incidentStatus = integrationService.loadIncidentStatus();
         this.incidentTypes = integrationService.loadIncidentTypes();
@@ -163,6 +165,10 @@ public class LookupService {
 
     public List<MealTypeLookupDto> retrieveMealTypes() {
         return mealTypes;
+    }
+
+    public List<MealTimeLookupDto> retrieveMealTime() {
+        return mealTimes;
     }
 
     public List<LanguageLookupDto> retrieveSupportedLanguages() {
