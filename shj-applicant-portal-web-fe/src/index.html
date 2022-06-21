@@ -52,3 +52,16 @@
   integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
   crossorigin="anonymous"
 ></script>
+
+<script charset='UTF-8'>
+  window['adrum-start-time'] = new Date().getTime();
+  (function(config){
+    config.appKey = 'AD-AAB-ABS-AGE';
+    config.adrumExtUrlHttp = 'http://cdn.appdynamics.com';
+    config.adrumExtUrlHttps = 'https://cdn.appdynamics.com';
+    config.beaconUrlHttp = 'http://col.eum-appdynamics.com';
+    config.beaconUrlHttps = 'https://col.eum-appdynamics.com';
+    config.xd = {enable : false};
+  })(window['adrum-config'] || (window['adrum-config'] = {}));
+</script>
+<script src='//cdn.appdynamics.com/adrum/adrum-20.12.0.3360.js'></script>
