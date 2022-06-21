@@ -1340,14 +1340,14 @@ public class IntegrationService {
 
 
 
-    public WsResponse loadGroupLeaderByUinAndSeasonId(String uin, Long ritualId) {
-        WsResponse<CompanyStaffDto> wsResponse = null;
+    public WsResponse loadGroupLeaderByUinAndSeasonId(String uin) {
+        WsResponse<String> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(  "/ws/find/company-staff/group-leader/" + uin + "/" + ritualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<CompanyStaffDto>>() {
+            wsResponse = callIntegrationWs(  "/ws/find/company-staff/group-leader/" + uin , HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to load group leader.", e);
+            log.error("Cannot authenticate to load group leader mobile number.", e);
             return null;
         }
         return wsResponse;

@@ -635,8 +635,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.findLatestApplicantRitualPackageByUin(uin);
     }
 
-    public WsResponse findGroupLeaderByUinAndSeasonId(String uin, Long companyRitualSeasonId) {
-        return integrationService.loadGroupLeaderByUinAndSeasonId(uin, companyRitualSeasonId);
+    public WsResponse findGroupLeaderByUinAndSeasonId(String uin) {
+        return integrationService.loadGroupLeaderByUinAndSeasonId(uin);
     }
 
     public BadgeVO findApplicantBadge(String loggedInUserUin, boolean withQr) {
