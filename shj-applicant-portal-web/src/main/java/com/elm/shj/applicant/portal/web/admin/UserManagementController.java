@@ -231,7 +231,7 @@ public class UserManagementController {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // decide which date of birth to use
-        if (command.getDateOfBirthGregorian() != null) {
+        if (user.getDateOfBirthGregorian() != null) {
             String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
             String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
             dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);

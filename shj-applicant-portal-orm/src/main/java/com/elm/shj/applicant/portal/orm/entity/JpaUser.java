@@ -50,7 +50,7 @@ public class JpaUser implements Serializable {
 	private Date dateOfBirthGregorian;
 
 	@Column(name = "DATE_OF_BIRTH_HIJRI")
-	private int dateOfBirthHijri;
+	private Integer dateOfBirthHijri;
 
 	private boolean deleted;
 
