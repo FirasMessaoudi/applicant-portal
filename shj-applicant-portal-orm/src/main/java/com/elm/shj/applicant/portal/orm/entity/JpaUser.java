@@ -75,10 +75,10 @@ public class JpaUser implements Serializable {
 	@Column(name = "MOBILE_NUMBER", nullable = false)
 	private String mobileNumber;
 
-	private long nin;
+	private Long nin;
 
 	@Column(nullable = false)
-	private long uin;
+	private Long uin;
 
 	@Column(name = "passport_number")
 	private String passportNumber;
