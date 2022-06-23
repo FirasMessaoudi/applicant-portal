@@ -368,7 +368,7 @@ public class UserManagementController {
      * @param lang the preferred language to update user with
      * @return success if update done
      */
-    @PutMapping("/language/{lang}/{uin}")
+    @PostMapping("/language/{lang}/{uin}")
     public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, @PathVariable long uin) {
         log.debug("Handler for {}", "Update User preferred language");
         try {
@@ -386,7 +386,7 @@ public class UserManagementController {
      * @param userContacts the user contacts info to update
      * @return the updated user contacts
      */
-    @PutMapping("/contacts")
+    @PostMapping("/contacts")
     public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();

@@ -206,7 +206,7 @@ public class UserManagementWsController {
     /**
      * update user loggedin contacts
      */
-    @PutMapping("/contacts")
+    @PostMapping("/contacts")
     public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
@@ -314,7 +314,7 @@ public class UserManagementWsController {
                 WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
 
-    @PutMapping("/language/{lang}")
+    @PostMapping("/language/{lang}")
     public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, Authentication authentication) {
         log.debug("Handler for {}", "Update User preferred language");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();

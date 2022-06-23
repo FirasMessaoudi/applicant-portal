@@ -171,7 +171,7 @@
                                 margin: 0 0 20px 0;
                                 color: #707070;
                               ">
-                                                    Dear ${user.fullNameEn},
+                                                    Dear <#if user.fullNameEn??>${user.fullNameEn}،</#if>,
                                                 </h2>
                                                 <p style="font-size: 14px; margin: 0; color: #707070">
                                                     You requested a reset password in Hajj App platform. You can login to
@@ -196,7 +196,7 @@
                                 margin: 0 0 20px 0;
                                 color: #707070;
                               "><#if  user.gender??><#if  user.gender == "M">عزيزي <#else>عزيزتي </#if> <#else> عزيزي</#if>
-                                                    ${user.fullNameAr}،</h2>
+                                                    <#if  user.fullNameAr??>${user.fullNameAr}،</#if></h2>
                                                 <p style="font-size: 14px; margin: 0; color: #707070"> يمكنك الدخول على
                                                     المنصة باستخدام رقم بطاقة تطبيق الحج
                                                      <#setting number_format="0" />${user.uin}<#setting number_format="" />

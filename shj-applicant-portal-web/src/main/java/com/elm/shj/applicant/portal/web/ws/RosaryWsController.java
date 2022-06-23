@@ -52,17 +52,17 @@ public class RosaryWsController {
         WsResponse wsResponse = rosaryService.findSupplicationsUserCounterByDigitalId(loggedInUserUin);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
-    @PutMapping("/delete-supplication/{id}")
+    @PostMapping("/delete-supplication/{id}")
     public  ResponseEntity<WsResponse<?>> deleteSupplication(@PathVariable("id") long id ){
         WsResponse wsResponse = rosaryService.deleteSupplication(id);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
-    @PutMapping("/reset-supplication-number/{id}")
+    @PostMapping("/reset-supplication-number/{id}")
     public  ResponseEntity<WsResponse<?>> resetSupplicationCounter(@PathVariable("id") long id ){
         WsResponse wsResponse = rosaryService.resetSupplicationNumber(id);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
-    @PutMapping("/update-supplication-numbers/{id}/{total}/{last}")
+    @PostMapping("/update-supplication-numbers/{id}/{total}/{last}")
     public  ResponseEntity<WsResponse<?>> updateSupplicationCounter(@PathVariable("id") long id, @PathVariable("total") int total, @PathVariable("last") int last){
         WsResponse wsResponse = rosaryService.updateSupplicationNumbers(id,total,last);
         return ResponseEntity.ok(WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
