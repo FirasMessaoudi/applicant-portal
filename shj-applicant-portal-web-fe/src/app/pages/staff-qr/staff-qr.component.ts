@@ -24,7 +24,8 @@ export class StaffQrComponent implements OnInit {
       // TODO put staff url
       //window.open('https://apps.apple.com/ng/app/pilgrimage-app-pilgrims/idXXXXXXXXXX', '_blank');
     } else {
-      document.getElementsByTagName('html') [0].remove();
+      // TODO remove this once urls are available
+      // document.getElementsByTagName('html') [0].remove();
     }
   }
 
