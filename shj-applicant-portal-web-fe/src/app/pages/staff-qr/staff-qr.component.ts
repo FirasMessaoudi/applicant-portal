@@ -17,6 +17,8 @@ export class StaffQrComponent implements OnInit {
     let isAndroid = ua.indexOf("android") > -1 && ua.indexOf("mobile") > -1;
     let isiPhone = ua.indexOf("iphone") > -1 && ua.indexOf("mobile") > -1;
     let isiPad = ua.indexOf("ipad") > -1 && ua.indexOf("mobile") > -1;
+    // TODO remove this once urls are available
+    // document.getElementsByTagName('html') [0].remove();
     if (isAndroid) {
       // TODO put staff url
       //window.open('https://play.google.com/store/apps/details?id=com.elm.shaaer.staff.mobile', '_blank');
@@ -24,8 +26,7 @@ export class StaffQrComponent implements OnInit {
       // TODO put staff url
       //window.open('https://apps.apple.com/ng/app/pilgrimage-app-pilgrims/idXXXXXXXXXX', '_blank');
     } else {
-      // TODO remove this once urls are available
-      // document.getElementsByTagName('html') [0].remove();
+      // do nothing
     }
   }
 
