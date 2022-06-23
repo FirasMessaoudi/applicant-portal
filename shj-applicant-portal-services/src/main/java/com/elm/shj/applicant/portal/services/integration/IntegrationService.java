@@ -1031,7 +1031,7 @@ public class IntegrationService {
         WsResponse<ChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/update/" + id,
-                    HttpMethod.PUT, applicantChatContact,
+                    HttpMethod.POST, applicantChatContact,
                     new ParameterizedTypeReference<WsResponse<ChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1114,7 +1114,7 @@ public class IntegrationService {
     public void updatePreferredLanguage(long uin, String lang) {
         try {
             callIntegrationWs(APPLICANT_PREFERRED_LANGUAGE + "/" + uin + "/" + lang,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1221,7 +1221,7 @@ public class IntegrationService {
     public void updateLoggedInFlag(Long uin, boolean mobileLoggedIn) {
         try {
             callIntegrationWs(MOBILE_LOGIN_URL + uin + "/" + mobileLoggedIn,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1247,7 +1247,7 @@ public class IntegrationService {
         WsResponse<String> wsResponse= null;
         try {
             wsResponse=  callIntegrationWs(CHAT_CONTACT_URL + "/read-chat-messages/" + chatContactId ,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1414,7 +1414,7 @@ public class IntegrationService {
         WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/delete-supplication/"+ id ,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<Integer>>() {
                     });
         }catch  (WsAuthenticationException e) {
@@ -1428,7 +1428,7 @@ public class IntegrationService {
         WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/reset-supplication-number/"+ id ,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<Integer>>() {
                     });
         }catch  (WsAuthenticationException e) {
@@ -1442,7 +1442,7 @@ public class IntegrationService {
         WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/update-supplication-numbers/"+ id + "/" + total  + "/" + last,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<Integer>>() {
                     });
         }catch  (WsAuthenticationException e) {
