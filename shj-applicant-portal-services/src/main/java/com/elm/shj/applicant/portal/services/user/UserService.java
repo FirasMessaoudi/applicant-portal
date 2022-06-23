@@ -398,8 +398,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         log.debug("SMS notification status: {}", smsSent);
 
         // Send Email notification
-        boolean emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
-                RESET_PASSWORD_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
+        boolean emailSent = false;
+        try {
+            emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
+                    RESET_PASSWORD_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
+        } catch (Exception e) {
+            log.error("Unable to send email for {}", user.getEmail(), e);
+        }
         log.debug("Email notification status: {}", emailSent);
 
         return smsSent || emailSent;
@@ -630,8 +635,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.findLatestApplicantRitualPackageByUin(uin);
     }
 
-    public WsResponse findGroupLeaderByUinAndSeasonId(String uin, Long companyRitualSeasonId) {
-        return integrationService.loadGroupLeaderByUinAndSeasonId(uin, companyRitualSeasonId);
+    public WsResponse findGroupLeaderByUinAndSeasonId(String uin) {
+        return integrationService.loadGroupLeaderByUinAndSeasonId(uin);
     }
 
     public BadgeVO findApplicantBadge(String loggedInUserUin, boolean withQr) {

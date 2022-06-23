@@ -231,7 +231,7 @@ public class UserManagementController {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // decide which date of birth to use
-        if (command.getDateOfBirthGregorian() != null) {
+        if (user.getDateOfBirthGregorian() != null) {
             String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
             String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
             dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
@@ -402,7 +402,7 @@ public class UserManagementController {
             return ResponseEntity.notFound().build();
         }
 
-        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri(), EChannel.WEB.name());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthGregorian(), databaseUser.getDateOfBirthHijri(), EChannel.WEB.name());
         ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
         if (returnedApplicant == null)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

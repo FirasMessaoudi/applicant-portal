@@ -56,7 +56,7 @@ public class RegistrationController {
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri(), EChannel.WEB.name());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthGregorian(), user.getDateOfBirthHijri(), EChannel.WEB.name());
 
         ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
         if (returnedApplicant == null) {
