@@ -296,7 +296,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
     this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin.value, gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
-      if (response) {
+      if (response && response.digitalIds.length > 0) {
         this.user = response;
         console.log(response.digitalIds[0].uin);
         this.user.uin = response.digitalIds[0].uin;
