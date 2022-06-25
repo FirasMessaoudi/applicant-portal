@@ -116,7 +116,7 @@ public class ChatContactWsController {
      * @param authentication       the authenticated user
      * @return updatedContact updatedOne one
      */
-    @PutMapping(value = "/update/{id}")
+    @PostMapping(value = "/update/{id}")
     public ResponseEntity<WsResponse<?>> update(@PathVariable long id,
                                                 @RequestBody ChatContactLiteDto applicantChatContact,
                                                 Authentication authentication) {
@@ -201,7 +201,7 @@ public class ChatContactWsController {
                 .body(Message).build());
     }
 
-    @PutMapping(value = "/read-chat-messages/{chatContactId}")
+    @PostMapping(value = "/read-chat-messages/{chatContactId}")
     public ResponseEntity<WsResponse<?>> markChatMessageAsRead(@PathVariable long chatContactId) {
         chatMessageService.markChatMessageAsRead(chatContactId);
         return ResponseEntity.ok(WsResponse

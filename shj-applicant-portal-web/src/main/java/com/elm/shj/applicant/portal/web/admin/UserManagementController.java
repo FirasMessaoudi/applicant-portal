@@ -200,6 +200,7 @@ public class UserManagementController {
     @RolesAllowed(AuthorityConstants.RESET_PASSWORD)
     public void resetUserPassword(@RequestBody @Valid ResetPasswordCmd command,
                                   @RequestParam(RECAPTCHA_TOKEN_NAME) String reCaptchaToken) {
+        log.info("reset user password for {} identifier and {} nationality.", command.getIdentifier(), command.getNationalityCode());
         if (StringUtils.isBlank(reCaptchaToken)) {
             log.info("recaptcha response is not provided in the request...");
             throw new RecaptchaException("Invalid Captcha");
@@ -230,7 +231,7 @@ public class UserManagementController {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // decide which date of birth to use
-        if (command.getDateOfBirthGregorian() != null) {
+        if (user.getDateOfBirthGregorian() != null) {
             String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
             String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
             dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
@@ -367,7 +368,7 @@ public class UserManagementController {
      * @param lang the preferred language to update user with
      * @return success if update done
      */
-    @PutMapping("/language/{lang}/{uin}")
+    @PostMapping("/language/{lang}/{uin}")
     public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, @PathVariable long uin) {
         log.debug("Handler for {}", "Update User preferred language");
         try {
@@ -385,7 +386,7 @@ public class UserManagementController {
      * @param userContacts the user contacts info to update
      * @return the updated user contacts
      */
-    @PutMapping("/contacts")
+    @PostMapping("/contacts")
     public ResponseEntity<ApplicantLiteDto> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
@@ -401,7 +402,7 @@ public class UserManagementController {
             return ResponseEntity.notFound().build();
         }
 
-        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri(), EChannel.WEB.name());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthGregorian(), databaseUser.getDateOfBirthHijri(), EChannel.WEB.name());
         ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
         if (returnedApplicant == null)
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

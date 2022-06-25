@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.services.user;
 
 import com.elm.dcc.foundation.providers.email.service.EmailService;
-import com.elm.dcc.foundation.providers.sms.service.SmsGatewayService;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
@@ -14,13 +13,13 @@ import com.elm.shj.applicant.portal.services.integration.ApplicantRitualPackageV
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsAuthenticationException;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
+import com.elm.shj.applicant.portal.services.sms.HUICSmsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -31,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -47,7 +47,7 @@ import java.util.*;
 public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public static final String CREATE_USER_SMS_NOTIFICATION_KEY = "user.mngt.new.user.sms.notification";
-    public static final String REGISTRATION_EMAIL_SUBJECT = "Welcome to ELM Product";
+    public static final String REGISTRATION_EMAIL_SUBJECT = "Welcome to Hajj App";
     public static final String REGISTRATION_EMAIL_TPL_NAME = "email-registration.ftl";
     public static final String RESET_PASSWORD_EMAIL_TPL_NAME = "email-reset-password.ftl";
     public static final String RESET_PASSWORD_SMS_NOTIFICATION_KEY = "reset.password.sms.notification";
@@ -55,12 +55,10 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     private static final long APPLICANT_ROLE_ID = 1L;
     private static final String DEFFAULT_HISTORY_PASSWORD = "$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK";
 
-    @Value("${admin.portal.url}")
-    private String adminPortalUrl;
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
-    private final SmsGatewayService smsGatewayService;
+    private final HUICSmsService huicSmsService;
     private final EmailService emailService;
     private final IntegrationService integrationService;
     private final PasswordHistoryService passwordHistoryService;
@@ -390,15 +388,23 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         // Send SMS notification
         String[] smsNotificationArgs = new String[]{user.getPassword()};
         String locale = (user.getNin() != null && isCitizen(user.getNin())) ? "ar" : "en";
-
-
         String createdUserSms = messageSource.getMessage(RESET_PASSWORD_SMS_NOTIFICATION_KEY, smsNotificationArgs, Locale.forLanguageTag(locale));
-        boolean smsSent = smsGatewayService.sendMessage(Long.parseLong(user.getMobileNumber()), createdUserSms);
+        boolean smsSent = false;
+        try {
+            smsSent = huicSmsService.sendMessage(user.getCountryPhonePrefix() == null || user.getCountryPhonePrefix().isEmpty() ? 966 : Integer.valueOf(user.getCountryPhonePrefix()), String.valueOf(user.getMobileNumber()), createdUserSms, "comments");
+        } catch (SSLException e) {
+            log.error("Unable to send SMS for {}", user.getMobileNumber(), e);
+        }
         log.debug("SMS notification status: {}", smsSent);
 
         // Send Email notification
-        boolean emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
-                RESET_PASSWORD_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
+        boolean emailSent = false;
+        try {
+            emailSent = emailService.sendMailFromTemplate(Arrays.asList(user.getEmail()), null,
+                    RESET_PASSWORD_EMAIL_SUBJECT, RESET_PASSWORD_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
+        } catch (Exception e) {
+            log.error("Unable to send email for {}", user.getEmail(), e);
+        }
         log.debug("Email notification status: {}", emailSent);
 
         return smsSent || emailSent;
@@ -422,7 +428,13 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
                 REGISTRATION_EMAIL_SUBJECT, REGISTRATION_EMAIL_TPL_NAME, ImmutableMap.of("user", user));
         log.debug("Email notification status: {}", emailSent);
         //TODO:TO CHECK SMSGETWAY EXPECTED NUMBER FORMAT
-        boolean smsSent = smsGatewayService.sendMessage(Long.parseLong(user.getMobileNumber()), createdUserSms);
+        boolean smsSent = false;
+        try {
+            smsSent = huicSmsService.sendMessage(user.getCountryPhonePrefix() == null || user.getCountryPhonePrefix().isEmpty() ? 966 : Integer.valueOf(user.getCountryPhonePrefix()), String.valueOf(user.getMobileNumber()), createdUserSms, "comments");
+        } catch (SSLException e) {
+            log.error("Unable to send SMS for {}", user.getMobileNumber(), e);
+        }
+        log.debug("SMS notification status: {}", smsSent);
 
         return smsSent || emailSent;
     }
@@ -542,6 +554,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
 
     public ApplicantPackageDetailsDto findApplicantPackageDetails(String uin, long applicantPackageId) {
         ApplicantPackageDetailsDto applicantPackageDetails =  integrationService.loadApplicantPackageDetails(uin, applicantPackageId);
+        if(applicantPackageDetails.getCompanyLite() != null)
+            applicantPackageDetails.getCompanyLite().setCode(applicantPackageDetails.getCompanyLite().getCode().contains("_") ?
+                    applicantPackageDetails.getCompanyLite().getCode().substring(0, applicantPackageDetails.getCompanyLite().getCode().indexOf("_")) : applicantPackageDetails.getCompanyLite().getCode());
         String pattern = "MM-dd-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         Collections.sort(applicantPackageDetails.getApplicantPackageCaterings(), new Comparator<ApplicantPackageCateringDto>() {
@@ -568,7 +583,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(String uin, Long companyRitualSeasonId) {
-        return integrationService.loadApplicantRelatedEmployeesDetails(uin, companyRitualSeasonId);
+        return Collections.singletonList(integrationService.loadApplicantRelatedEmployeesDetails(uin, companyRitualSeasonId));
     }
 
     public CompanyRitualSeasonLiteDto findLatestApplicantRitualSeasonByUin(String uin) {
@@ -620,8 +635,8 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.findLatestApplicantRitualPackageByUin(uin);
     }
 
-    public WsResponse findGroupLeaderByUinAndSeasonId(String uin, Long companyRitualSeasonId) {
-        return integrationService.loadGroupLeaderByUinAndSeasonId(uin, companyRitualSeasonId);
+    public WsResponse findGroupLeaderByUinAndSeasonId(String uin) {
+        return integrationService.loadGroupLeaderByUinAndSeasonId(uin);
     }
 
     public BadgeVO findApplicantBadge(String loggedInUserUin, boolean withQr) {

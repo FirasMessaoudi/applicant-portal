@@ -31,7 +31,7 @@ public class UserDto implements Serializable {
 
     private long id;
     private Date dateOfBirthGregorian;
-    private int dateOfBirthHijri;
+    private Integer dateOfBirthHijri;
     private String email;
 
     private String fullNameAr;

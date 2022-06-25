@@ -63,6 +63,12 @@ public class NotificationController {
      * @param authentication authenticated user
      * @return
      */
+    @GetMapping("/count-interval")
+    public Integer countNotificationInterval(Authentication authentication) {
+        // get the new notification count interval
+        return notificationService.countNotificationInterval();
+    }
+
     @GetMapping("/new-notifications-count")
     public ResponseEntity<UserNewNotificationsCountVo> countUserNewNotifications(Authentication authentication) {
         // get the logged-in user id from authentication then count the un-read notifications

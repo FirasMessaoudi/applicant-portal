@@ -74,6 +74,7 @@ public class IntegrationService {
     private final String HEALTH_IMMUNIZATION_LOOKUP = "/ws/health-immunization/list";
     private final String RELIGIOUS_OCCASIONS_DAY_LOOKUP = "/ws/religious-occasions-day/list";
     private final String MEAL_TYPE_LOOKUP = "/ws/meal-type/list";
+    private final String MEAL_TIME_LOOKUP = "/ws/meal-time/list";
     private final String NOTIFICATION_CATEGORY_LOOKUP = "/ws/notification-category/list";
     private final String NOTIFICATION_NAME_LOOKUP = "/ws/notification-name/list";
     private final String NOTIFICATION_CATEGORY_UPDATE = NOTIFICATION_URL + "/update-user-notification-category-preference";
@@ -517,11 +518,11 @@ public class IntegrationService {
         return wsResponse.getBody()!=null?wsResponse.getBody(): Collections.emptyList();
     }
 
-    public List<CompanyStaffDto> loadApplicantRelatedEmployeesDetails(String uin, Long ritualId) {
-        WsResponse<List<CompanyStaffDto>> wsResponse = null;
+    public CompanyStaffDto loadApplicantRelatedEmployeesDetails(String uin, Long ritualId) {
+        WsResponse<CompanyStaffDto> wsResponse;
         try {
             wsResponse = callIntegrationWs(APPLICANT_COMPANY_STAFF_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<CompanyStaffDto>>>() {
+                    new ParameterizedTypeReference<WsResponse<CompanyStaffDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load applicant health details.", e);
@@ -778,6 +779,19 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public List<MealTimeLookupDto> loadMealTime() {
+        WsResponse<List<MealTimeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(MEAL_TIME_LOOKUP, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<MealTimeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load meal times.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
     /**
      * Find user notification category preference from command portal.
      *
@@ -1017,7 +1031,7 @@ public class IntegrationService {
         WsResponse<ChatContactLiteDto> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(CHAT_CONTACT_URL + "/update/" + id,
-                    HttpMethod.PUT, applicantChatContact,
+                    HttpMethod.POST, applicantChatContact,
                     new ParameterizedTypeReference<WsResponse<ChatContactLiteDto>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1100,7 +1114,7 @@ public class IntegrationService {
     public void updatePreferredLanguage(long uin, String lang) {
         try {
             callIntegrationWs(APPLICANT_PREFERRED_LANGUAGE + "/" + uin + "/" + lang,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1207,7 +1221,7 @@ public class IntegrationService {
     public void updateLoggedInFlag(Long uin, boolean mobileLoggedIn) {
         try {
             callIntegrationWs(MOBILE_LOGIN_URL + uin + "/" + mobileLoggedIn,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1233,7 +1247,7 @@ public class IntegrationService {
         WsResponse<String> wsResponse= null;
         try {
             wsResponse=  callIntegrationWs(CHAT_CONTACT_URL + "/read-chat-messages/" + chatContactId ,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
@@ -1326,14 +1340,14 @@ public class IntegrationService {
 
 
 
-    public WsResponse loadGroupLeaderByUinAndSeasonId(String uin, Long ritualId) {
-        WsResponse<CompanyStaffDto> wsResponse = null;
+    public WsResponse loadGroupLeaderByUinAndSeasonId(String uin) {
+        WsResponse<String> wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(  "/ws/find/company-staff/group-leader/" + uin + "/" + ritualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<CompanyStaffDto>>() {
+            wsResponse = callIntegrationWs(  "/ws/find/company-staff/group-leader/" + uin , HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<String>>() {
                     });
         } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to load group leader.", e);
+            log.error("Cannot authenticate to load group leader mobile number.", e);
             return null;
         }
         return wsResponse;
@@ -1400,7 +1414,7 @@ public class IntegrationService {
         WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/delete-supplication/"+ id ,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<Integer>>() {
                     });
         }catch  (WsAuthenticationException e) {
@@ -1414,7 +1428,7 @@ public class IntegrationService {
         WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/reset-supplication-number/"+ id ,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<Integer>>() {
                     });
         }catch  (WsAuthenticationException e) {
@@ -1428,7 +1442,7 @@ public class IntegrationService {
         WsResponse<UserSupplicationDto> wsResponse = null ;
         try {
             wsResponse = callIntegrationWs(ROSARY_URL + "/update-supplication-numbers/"+ id + "/" + total  + "/" + last,
-                    HttpMethod.PUT, null,
+                    HttpMethod.POST, null,
                     new ParameterizedTypeReference<WsResponse<Integer>>() {
                     });
         }catch  (WsAuthenticationException e) {

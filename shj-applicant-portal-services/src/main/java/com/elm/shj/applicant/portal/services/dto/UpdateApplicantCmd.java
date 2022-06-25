@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Update Applicant MVC Command
@@ -36,6 +37,7 @@ public class UpdateApplicantCmd implements Serializable {
 
     @Length(max = 20)
     private String countryCode;
+    private Date dateOfBirthGregorian;
     private int dateOfBirthHijri;
 
     private String channel;

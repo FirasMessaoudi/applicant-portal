@@ -9,6 +9,7 @@ import com.elm.shj.applicant.portal.services.integration.UserNewNotificationsCou
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public class NotificationService {
 
     private final IntegrationService integrationService;
 
+    @Value("${notification.count.refresh.interval}")
+    private int notificationCountRefreshInterval;
+
     /**
      * Count user new notifications.
      *
@@ -34,6 +38,10 @@ public class NotificationService {
      */
     public UserNewNotificationsCountVo countUserNewNotifications(String uin) {
         return this.integrationService.countUserNewNotifications(uin);
+    }
+
+    public Integer countNotificationInterval() {
+        return notificationCountRefreshInterval;
     }
 
     /**

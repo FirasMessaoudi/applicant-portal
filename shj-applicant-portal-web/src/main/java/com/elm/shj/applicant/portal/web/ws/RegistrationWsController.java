@@ -113,7 +113,7 @@ public class RegistrationWsController {
 
         }
         if (needToUpdateInAdminPortal) {
-            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthHijri(), EChannel.MOBILE.name());
+            UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthGregorian(), user.getDateOfBirthHijri(), EChannel.MOBILE.name());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
             if (returnedApplicant == null)

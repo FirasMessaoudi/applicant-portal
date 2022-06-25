@@ -28,7 +28,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   card: Card;
   applicant: ApplicantMainData;
   healthDetails: ApplicantHealth;
-  tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
   applicantStatuses: Lookup[] = [];
@@ -96,17 +95,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
       this.applicantPackage = null;
       this.healthDetails = null;
     }
-  }
-
-  loadTafweejDetails() {
-    this.cardService.findTafweejDetails().subscribe(data => {
-      if (data) {
-        this.tafweejDetails = data;
-      } else {
-        this.toastr.error(this.translate.instant('general.route_item_not_found'),
-          this.translate.instant('general.dialog_error_title'));
-      }
-    });
   }
 
   loadGroupLeaders() {

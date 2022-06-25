@@ -17,6 +17,7 @@ import * as moment_ from 'moment-hijri';
 import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from 'ngx-perfect-scrollbar';
 import {UtilityService} from "@core/utilities/utility.service";
 import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
+import {Subscription, timer} from "rxjs";
 
 const momentHijri = moment_;
 
@@ -49,6 +50,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   newNotificationsCountTimerInterval: any;
   userNewNotificationsCount: UserNewNotificationsCount;
   activeId = 1;
+  private notificationSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
@@ -105,10 +107,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   initializeUserNewNotificationsCountTimer() {
-    this.newNotificationsCountTimerInterval = setInterval(() => {
-      this.loadUserNewNotificationsCounts();
-      this.loadUserNotifications();
-    }, 45000);
+    this.notificationService
+      .getNewNotificationsInterval()
+      .subscribe((timeInterval) => {
+        this.notificationSubscription = timer(0, timeInterval).subscribe(() => {
+          this.loadUserNewNotificationsCounts();
+          this.loadUserNotifications();
+        });
+      });
   }
 
   loadUserNotifications() {
@@ -277,6 +283,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     clearInterval(this.newNotificationsCountTimerInterval);
+    if (this.notificationSubscription) {
+      this.notificationSubscription.unsubscribe();
+    }
   }
 
   getNotificationCount(){

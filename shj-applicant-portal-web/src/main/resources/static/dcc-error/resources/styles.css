@@ -15990,14 +15990,30 @@ a {
 
 [dir="ltr"] .header-wrapper::before { transform: rotate(180deg);}
 
-.logo img{
-    width: 80px;
-}
 
-footer{
-    background: #F1F4F0 0% 0% no-repeat padding-box;
-}
+
 
 .error_header{
     color:#0C4008;
+}
+
+.main_bg{
+    background-image:url(dcc-error-bg.jpg);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.shape_bg{
+    
+}
+.shape_bg::before{
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(250, 250, 250, 0.7);;
+    display: block;
+    border-radius: 10px;
 }

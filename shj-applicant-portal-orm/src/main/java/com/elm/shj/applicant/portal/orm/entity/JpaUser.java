@@ -50,7 +50,7 @@ public class JpaUser implements Serializable {
 	private Date dateOfBirthGregorian;
 
 	@Column(name = "DATE_OF_BIRTH_HIJRI")
-	private int dateOfBirthHijri;
+	private Integer dateOfBirthHijri;
 
 	private boolean deleted;
 
@@ -75,10 +75,10 @@ public class JpaUser implements Serializable {
 	@Column(name = "MOBILE_NUMBER", nullable = false)
 	private String mobileNumber;
 
-	private long nin;
+	private Long nin;
 
 	@Column(nullable = false)
-	private long uin;
+	private Long uin;
 
 	@Column(name = "passport_number")
 	private String passportNumber;

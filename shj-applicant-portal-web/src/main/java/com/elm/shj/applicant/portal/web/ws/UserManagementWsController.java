@@ -97,7 +97,7 @@ public class UserManagementWsController {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         // decide which date of birth to use
-        if (command.getDateOfBirthGregorian() != null) {
+        if (user.getDateOfBirthGregorian() != null) {
             String userDateFormatted = sdf.format(user.getDateOfBirthGregorian());
             String commandDataOfBirthFormatted = sdf.format(command.getDateOfBirthGregorian());
             dateOfBirthMatched = commandDataOfBirthFormatted.equals(userDateFormatted);
@@ -206,7 +206,7 @@ public class UserManagementWsController {
     /**
      * update user loggedin contacts
      */
-    @PutMapping("/contacts")
+    @PostMapping("/contacts")
     public ResponseEntity<WsResponse<?>> updateUserContacts(@RequestBody @Validated UpdateContactsCmd userContacts, Authentication authentication) {
         log.debug("Handler for {}", "Update User Contacts");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
@@ -222,7 +222,7 @@ public class UserManagementWsController {
             return generateFailResponse(WsError.EWsError.APPLICANT_NOT_FOUND, loggedInUserUin);
         }
 
-        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthHijri(), EChannel.MOBILE.name());
+        UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(Long.parseLong(loggedInUserUin)), userContacts.getEmail(), userContacts.getCountryPhonePrefix() + userContacts.getMobileNumber(), userContacts.getCountryCode(), databaseUser.getDateOfBirthGregorian(), databaseUser.getDateOfBirthHijri(), EChannel.MOBILE.name());
         ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
         if (returnedApplicant == null)
             return generateFailResponse(WsError.EWsError.NOT_FOUND_IN_ADMIN, loggedInUserUin);
@@ -314,7 +314,7 @@ public class UserManagementWsController {
                 WsResponse.builder().status(wsResponse.getStatus()).body(wsResponse.getBody()).build());
     }
 
-    @PutMapping("/language/{lang}")
+    @PostMapping("/language/{lang}")
     public ResponseEntity<Object> updateUserPreferredLanguage(@PathVariable String lang, Authentication authentication) {
         log.debug("Handler for {}", "Update User preferred language");
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
@@ -337,7 +337,7 @@ public class UserManagementWsController {
         }
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(null).build());
+                        .body(true).build());
     }
 
     @GetMapping("/emergency-contact/get")

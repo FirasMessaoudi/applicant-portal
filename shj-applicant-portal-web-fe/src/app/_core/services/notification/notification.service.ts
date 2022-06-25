@@ -71,6 +71,10 @@ export class NotificationService {
     return this.http.get<DetailedUserNotification[]>('/core/api/notification/list');
   }
 
+  getNewNotificationsInterval(): Observable<any> {
+    return this.http.get<any>('/core/api/notification/count-interval', {responseType: 'number' as 'json'});
+  }
+
   getTypedNotifications(type, pageNumber): Observable<any> {
     let params = new HttpParams().set('page', pageNumber);
     if (type?.length > 0) {
