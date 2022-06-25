@@ -4,7 +4,7 @@
     <parent>
        <groupId>com.elm.shj.applicant.portal</groupId>
        <artifactId>shj-applicant-portal</artifactId>
-       <version>1.2.3-SNAPSHOT</version>
+       <version>1.2.4-SNAPSHOT</version>
   </parent>
 
 
