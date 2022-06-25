@@ -583,7 +583,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     }
 
     public List<CompanyStaffDto> findRelatedEmployeesByApplicantUinAndCompanyRitualSeasonId(String uin, Long companyRitualSeasonId) {
-        return integrationService.loadApplicantRelatedEmployeesDetails(uin, companyRitualSeasonId);
+        return Collections.singletonList(integrationService.loadApplicantRelatedEmployeesDetails(uin, companyRitualSeasonId));
     }
 
     public CompanyRitualSeasonLiteDto findLatestApplicantRitualSeasonByUin(String uin) {

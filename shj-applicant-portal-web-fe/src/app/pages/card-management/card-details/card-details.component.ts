@@ -28,7 +28,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   card: Card;
   applicant: ApplicantMainData;
   healthDetails: ApplicantHealth;
-  tafweejDetails: CompanyRitualMainDataStep[];
   groupLeaders: GroupLeader[];
   url: any = 'assets/images/default-avatar.svg';
   applicantStatuses: Lookup[] = [];

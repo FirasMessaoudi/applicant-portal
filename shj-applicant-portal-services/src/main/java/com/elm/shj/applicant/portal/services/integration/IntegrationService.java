@@ -518,11 +518,11 @@ public class IntegrationService {
         return wsResponse.getBody()!=null?wsResponse.getBody(): Collections.emptyList();
     }
 
-    public List<CompanyStaffDto> loadApplicantRelatedEmployeesDetails(String uin, Long ritualId) {
-        WsResponse<List<CompanyStaffDto>> wsResponse = null;
+    public CompanyStaffDto loadApplicantRelatedEmployeesDetails(String uin, Long ritualId) {
+        WsResponse<CompanyStaffDto> wsResponse;
         try {
             wsResponse = callIntegrationWs(APPLICANT_COMPANY_STAFF_DETAILS_URL + "/" + uin + "/" + ritualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<CompanyStaffDto>>>() {
+                    new ParameterizedTypeReference<WsResponse<CompanyStaffDto>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load applicant health details.", e);
