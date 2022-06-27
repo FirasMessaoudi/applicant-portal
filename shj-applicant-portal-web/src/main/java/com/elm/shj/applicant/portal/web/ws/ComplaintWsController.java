@@ -76,7 +76,7 @@ public class ComplaintWsController {
      * @return the created applicant_complaint
      * @throws Exception
      */
-    @PostMapping(value = "/create-complaint", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> createComplaint(@RequestPart("typeCode") String typeCode,
                                                          @RequestPart("description") String description,
                                                          @RequestPart(value = "city", required = false) String city,
