@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2021 ELM. All rights reserved.
  */
-package com.elm.shj.applicant.portal.services.incident;
+package com.elm.shj.applicant.portal.services.complaint;
 
-import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
+import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class IncidentService {
+public class ComplaintService {
 
     private final IntegrationService integrationService;
     /**
@@ -32,15 +32,11 @@ public class IncidentService {
      * @param ritualId
      * @return
      */
-    public List<ApplicantIncidentDto> findIncidents(long ritualId) {
-        return this.integrationService.loadIncidents(ritualId);
+    public List<ApplicantComplaintDto> findComplaints(long ritualId) {
+        return integrationService.loadComplaints(ritualId);
     }
 
-    public byte[] getAttachment(long id) {
-        return this.integrationService.getAttachment(id);
-    }
-
-    public WsResponse createIncident(MultipartBodyBuilder builder) {
-        return integrationService.createIncident(builder);
+    public WsResponse createComplaint(MultipartBodyBuilder builder) {
+        return integrationService.createComplaint(builder);
     }
 }

@@ -54,6 +54,10 @@ public class LookupService {
 
     private List<IncidentTypeLookupDto> incidentTypes;
     private List<IncidentStatusLookupDto> incidentStatus;
+    private List<ComplaintStatusLookupDto> complaintStatuses;
+    private List<ComplaintTypeLookupDto> complaintTypes;
+    private List<CityLookupDto> cities;
+
 
     @PostConstruct
     @Scheduled(cron = "${scheduler.load.lookups.cron}")
@@ -84,6 +88,10 @@ public class LookupService {
         this.supportedLanguages = integrationService.loadSupportedLanguages();
         this.incidentStatus = integrationService.loadIncidentStatus();
         this.incidentTypes = integrationService.loadIncidentTypes();
+        this.complaintTypes = integrationService.listComplaintTypes();
+        this.complaintStatuses = integrationService.listComplaintStatus();
+        this.cities = integrationService.listCities();
+
 
     }
 
@@ -181,5 +189,13 @@ public class LookupService {
     public List<IncidentTypeLookupDto> retrieveIncidentTypes() {
         return this.incidentTypes;
     }
-
+    public List<ComplaintStatusLookupDto> retrieveComplaintStatusesLookups() {
+        return complaintStatuses;
+    }
+    public List<ComplaintTypeLookupDto> retrieveComplaintTypesLookups() {
+        return complaintTypes;
+    }
+    public List<CityLookupDto> retrieveCitiesLookups() {
+        return cities;
+    }
 }

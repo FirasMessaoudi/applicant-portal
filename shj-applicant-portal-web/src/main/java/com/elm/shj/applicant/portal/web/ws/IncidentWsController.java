@@ -7,7 +7,7 @@ import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
-import com.elm.shj.applicant.portal.services.incident.IncidentService;
+import com.elm.shj.applicant.portal.services.incident.IncidentComplaintService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -42,7 +42,7 @@ import java.util.List;
 @RequestMapping(Navigation.API_INTEGRATION_INCIDENTS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class IncidentWsController {
-    private final IncidentService incidentService;
+    private final IncidentComplaintService incidentService;
     private final UserService userService;
 
     /**
@@ -74,7 +74,7 @@ public class IncidentWsController {
                                                       Authentication authentication) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(incidentService.getAttachment(id)).build());
+                        .body(incidentService.getIncidentAttachment(id)).build());
     }
 
     /**
@@ -91,6 +91,8 @@ public class IncidentWsController {
     @PostMapping(value = "/create-incident", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> createIncident(@RequestPart("typeCode") String typeCode,
                                                         @RequestPart("description") String description,
+                                                        @RequestPart(value = "city", required = false) String city,
+                                                        @RequestPart(value = "campNumber", required = false) String campNumber,
                                                         @RequestPart(value = "locationLat", required = false) String locationLat,
                                                         @RequestPart(value = "locationLng", required = false) String locationLng,
                                                         @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile incidentAttachment, Authentication authentication) throws Exception {
@@ -100,6 +102,8 @@ public class IncidentWsController {
         ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
         ApplicantIncidentLiteDto incidentDto = new ApplicantIncidentLiteDto();
         incidentDto.setTypeCode(typeCode);
+        incidentDto.setCity(city);
+        incidentDto.setCampNumber(campNumber);
         if (locationLat != null)
             incidentDto.setLocationLat(Double.parseDouble(locationLat));
         incidentDto.setDescription(description);
