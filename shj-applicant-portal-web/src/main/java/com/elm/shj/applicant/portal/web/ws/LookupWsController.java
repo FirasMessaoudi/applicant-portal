@@ -34,7 +34,7 @@ import java.util.List;
 )
 @Slf4j
 @RestController
-@RequestMapping(Navigation.API_INTEGRATION_LOOKUP)
+@RequestMapping(Navigation.API_INTEGRATION_USERS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class LookupWsController {
 
