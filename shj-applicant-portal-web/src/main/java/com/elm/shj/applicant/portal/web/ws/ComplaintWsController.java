@@ -63,17 +63,7 @@ public class ComplaintWsController {
                         .body(complaintList).build());
     }
 
-    /**
-     * create new applicant incident
-     *
-     * @param typeCode
-     * @param description
-     * @param locationLat
-     * @param locationLng
-     * @param complaintAttachment
-     * @return the created applicant_incident
-     * @throws Exception
-     */
+   /*
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> createComplaint(@RequestPart("typeCode") String typeCode,
                                                         @RequestPart("description") String description,
@@ -101,6 +91,6 @@ public class ComplaintWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(response.getStatus())
                         .body(response.getBody()).build());
-    }
+    }*/
 
 }
