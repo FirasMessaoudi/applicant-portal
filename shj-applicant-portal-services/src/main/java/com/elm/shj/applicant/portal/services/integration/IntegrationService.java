@@ -101,7 +101,7 @@ public class IntegrationService {
 
     private final String BADGE_URL = "/ws/badge";
     private final String ROSARY_URL = "/ws/rosary";
-
+    private final String COMPLAINT_URL = "/api/ws/complaints";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -1501,6 +1501,40 @@ public class IntegrationService {
                     });
         }catch  (WsAuthenticationException e) {
             log.error("Cannot authenticate to update Applicant Emergency Contact", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
+    /**
+     * Find all list of complaint
+     *
+     * @return list of complaint
+     */
+    public  List<ApplicantComplaintDto> loadComplaints(long applicantRitualId) {
+        WsResponse<List<ApplicantComplaintDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPLAINT_URL+"/applicant/list/" + applicantRitualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantComplaintDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get complaints", e);
+            return Collections.emptyList();
+        }
+        if (wsResponse == null) {
+            return new ArrayList<>();
+        }
+        return wsResponse.getBody();
+    }
+
+    public WsResponse createComplaint(MultipartBodyBuilder builder) {
+        WsResponse wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPLAINT_URL + "/create", HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantIncidentDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to create complaint", e);
             return null;
         }
         return wsResponse;
