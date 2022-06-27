@@ -196,5 +196,40 @@ public class LookupController {
         return lookupService.retrieveNotificationCategories();
     }
 
+    /**
+     * List organizer types
+     *
+     * @return List organizer types
+     */
+    @GetMapping("/complaint-type/list")
+    public List<ComplaintTypeLookupDto> listComplaintTypes(Authentication authentication) {
+        log.debug("list organizer types...");
+        List<ComplaintTypeLookupDto> complaintTypeLookupDtos = lookupService.retrieveComplaintTypesLookups();
+        return complaintTypeLookupDtos;
+    }
+
+    /**
+     * List organizer types
+     *
+     * @return List organizer types
+     */
+    @GetMapping("/complaint-sts/list")
+    public List<ComplaintStatusLookupDto> listComplaintStatus(Authentication authentication) {
+        log.debug("list organizer types...");
+        List<ComplaintStatusLookupDto> complaintStatusLookupDtos = lookupService.retrieveComplaintStatusesLookups();
+        return complaintStatusLookupDtos;
+    }
+
+    /**
+     * List organizer types
+     *
+     * @return List organizer types
+     */
+    @GetMapping("/city/list")
+    public List<CityLookupDto> listCities(Authentication authentication) {
+        log.debug("list organizer types...");
+        List<CityLookupDto> cityLookupDtos = lookupService.retrieveCitiesLookups();
+        return cityLookupDtos;
+    }
 
 }

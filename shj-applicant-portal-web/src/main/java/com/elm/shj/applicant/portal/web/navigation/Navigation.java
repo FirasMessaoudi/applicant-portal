@@ -23,6 +23,8 @@ public class Navigation {
     public static final String API_USERS_RESET_PWRD = API_USERS + "/reset-password";
     // Lookup
     public static final String API_LOOKUP = "/api/lookup";
+    // Lookup Integration
+    public static final String API_INTEGRATION_LOOKUP = "/api/ws/lookup";
     // Registration
     public static final String API_REGISTRATION = "/api/register";
     // Integration web service call
