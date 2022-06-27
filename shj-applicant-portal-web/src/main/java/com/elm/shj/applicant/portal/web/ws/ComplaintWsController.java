@@ -8,6 +8,9 @@ import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
 import com.elm.shj.applicant.portal.services.complaint.ComplaintService;
+import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
+import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
+import com.elm.shj.applicant.portal.services.incident.IncidentComplaintService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -28,8 +31,8 @@ import java.util.List;
 /**
  * Controller for exposing notification web services for external party.
  *
- * @author f.messaoudi
- * @since 1.1.0
+ * @author salzoubi
+ * @since 1.2.4
  */
 @CrossOrigin(
         originPatterns = "*",
@@ -45,43 +48,31 @@ public class ComplaintWsController {
     private final ComplaintService complaintService;
     private final UserService userService;
 
-//    /**
-//     * get all complaints by ritual id
-//     *
-//     * @param authentication the authenticated user
-//     * @return the list of complaints
-//     */
-//
-//    @GetMapping("/list")
-//    public ResponseEntity<WsResponse<?>> findComplaints(Authentication authentication) {
-//        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-//        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
-//        List<ApplicantComplaintDto> complaintDtos = complaintService.findComplaints(applicantRitualDto.getId());
-//        return ResponseEntity.ok(
-//                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-//                        .body(complaintDtos).build());
-//    }
+    /**
+     * get all incidents by ritual id
+     *
+     * @param authentication the authenticated user
+     * @return the list of incidents
+     */
 
-//    /**
-//     * download complaint attachment by id
-//     *
-//     * @param id
-//     * @param authentication
-//     * @return the attachment as byte
-//     */
-//    @GetMapping(value = "/download/{id}")
-//    public ResponseEntity<WsResponse<?>> downloadFile(@PathVariable long id,
-//                                                      Authentication authentication) {
-//        return ResponseEntity.ok(
-//                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-//                        .body(complaintService.getAttachment(id)).build());
-//    }
+    @GetMapping("/list")
+    public ResponseEntity<WsResponse<?>> findComplaints(Authentication authentication) {
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
+        List<ApplicantComplaintDto> complaintList = incidentComplaintService.findComplaints(applicantRitualDto.getId());
+
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(complaintList).build());
+    }
 
     /**
      * create new applicant complaint
      *
      * @param typeCode
      * @param description
+     * @param city
+     * @param campNumber
      * @param locationLat
      * @param locationLng
      * @param complaintAttachment
@@ -90,12 +81,12 @@ public class ComplaintWsController {
      */
     @PostMapping(value = "/create-complaint", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> createComplaint(@RequestPart("typeCode") String typeCode,
-                                                        @RequestPart("description") String description,
-                                                        @RequestPart(value = "city", required = false) String city,
-                                                        @RequestPart(value = "campNumber", required = false) String campNumber,
-                                                        @RequestPart(value = "locationLat", required = false) String locationLat,
-                                                        @RequestPart(value = "locationLng", required = false) String locationLng,
-                                                        @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile complaintAttachment, Authentication authentication) throws Exception {
+                                                         @RequestPart("description") String description,
+                                                         @RequestPart(value = "city", required = false) String city,
+                                                         @RequestPart(value = "campNumber", required = false) String campNumber,
+                                                         @RequestPart(value = "locationLat", required = false) String locationLat,
+                                                         @RequestPart(value = "locationLng", required = false) String locationLng,
+                                                         @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile complaintAttachment, Authentication authentication) throws Exception {
         log.info("adding applicant complaint");
         // log.info(complaintAttachment.getContentType());
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();

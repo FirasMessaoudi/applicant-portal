@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.incident;
 
+import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
@@ -23,7 +24,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class IncidentService {
+public class IncidentComplaintService {
 
     private final IntegrationService integrationService;
     /**
@@ -36,11 +37,21 @@ public class IncidentService {
         return this.integrationService.loadIncidents(ritualId);
     }
 
-    public byte[] getAttachment(long id) {
+    public byte[] getIncidentAttachment(long id) {
         return this.integrationService.getAttachment(id);
     }
 
     public WsResponse createIncident(MultipartBodyBuilder builder) {
         return integrationService.createIncident(builder);
+    }
+
+    public List<ApplicantComplaintDto> findComplaints(long ritualId) {
+        return integrationService.loadComplaints(ritualId);
+    }
+
+
+
+    public WsResponse createComplaint(MultipartBodyBuilder builder) {
+        return integrationService.createComplaint(builder);
     }
 }

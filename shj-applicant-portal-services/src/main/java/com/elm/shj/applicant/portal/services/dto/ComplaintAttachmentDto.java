@@ -1,6 +1,8 @@
 
 /*
  * Copyright (c) 2021 ELM. All rights reserved.
+/*
+ * Copyright (c) 2022 ELM. All rights reserved.
  */
 package com.elm.shj.applicant.portal.services.dto;
 
@@ -13,7 +15,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Dto class for applicant incident domain.
+ * Dto class for complaint attachment domain.
  *
  * @author Ahmed Ali
  * @since 1.1.0

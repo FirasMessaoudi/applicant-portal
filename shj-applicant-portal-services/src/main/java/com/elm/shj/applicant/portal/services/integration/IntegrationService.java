@@ -107,7 +107,7 @@ public class IntegrationService {
 
     private final String BADGE_URL = "/ws/badge";
     private final String ROSARY_URL = "/ws/rosary";
-
+    private final String COMPLAINT_URL = "/api/ws/complaints";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
@@ -898,19 +898,6 @@ public class IntegrationService {
         return wsResponse;
     }
 
-    public WsResponse createComplaint(MultipartBodyBuilder builder) {
-        WsResponse wsResponse = null;
-        try {
-            wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
-                    new ParameterizedTypeReference<WsResponse<ApplicantComplaintDto>>() {
-                    });
-        } catch (WsAuthenticationException e) {
-            log.error("Cannot authenticate to create incident", e);
-            return null;
-        }
-        return wsResponse;
-    }
-
     public PackageHousingDto loadHousingDetails(String uin, long applicantPackageId) {
         WsResponse<PackageHousingDto> wsResponse = null;
         try {
@@ -1578,4 +1565,26 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
+
+    /**
+     * Find all list of complaint
+     *
+     * @return list of complaint
+     */
+    public  List<ApplicantComplaintDto> loadComplaints(long applicantRitualId) {
+        WsResponse<List<ApplicantComplaintDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPLAINT_URL+"/applicant/list/" + applicantRitualId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantComplaintDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get complaints", e);
+            return Collections.emptyList();
+        }
+        if (wsResponse == null) {
+            return new ArrayList<>();
+        }
+        return wsResponse.getBody();
+    }
+    
 }

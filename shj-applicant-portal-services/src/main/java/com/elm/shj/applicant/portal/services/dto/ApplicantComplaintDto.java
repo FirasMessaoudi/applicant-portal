@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,8 @@ public class ApplicantComplaintDto implements Serializable {
     private String statusCode;
     private String referenceNumber;
     private String typeCode;
+    @NotNull(message = "validation.data.constraints.msg.20001")
+    @Size(min = 1, max = 500)
     private String description;
     private Double locationLat;
     private Double locationLng;

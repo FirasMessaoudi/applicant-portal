@@ -25,6 +25,13 @@ public class ApplicantPackageHousingDto implements Serializable {
     private long id;
     private String roomNumber;
     private String bedNumber;
+    private String campInfo;
+    private String siteCampRefCode;
+    private String siteTent;
+    private String siteFloor;
+    private String siteCorridor;
+    private String siteRoom;
+    private String siteBedNumber;
     private Date creationDate;
     private Date updateDate;
     private ApplicantPackageDto applicantPackage;

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {LoginLayoutComponent} from "@core/_layout";
 
 @Component({
@@ -7,21 +7,24 @@ import {LoginLayoutComponent} from "@core/_layout";
   styleUrls: ['./applicant-qr.component.scss'],
   providers: [LoginLayoutComponent]
 })
-export class ApplicantQrComponent implements OnInit {
+export class ApplicantQrComponent implements AfterViewInit {
+
+  @ViewChild('appleLink', { read: ElementRef }) appleLink: ElementRef;
+  @ViewChild('googleLink', { read: ElementRef }) googleLink: ElementRef;
+
 
   constructor() {
   }
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
     let ua = navigator.userAgent.toLowerCase();
     let isAndroid = ua.indexOf("android") > -1 && ua.indexOf("mobile") > -1;
     let isiPhone = ua.indexOf("iphone") > -1 && ua.indexOf("mobile") > -1;
     let isiPad = ua.indexOf("ipad") > -1 && ua.indexOf("mobile") > -1;
-    document.getElementsByTagName('html') [0].remove();
     if (isAndroid) {
-      window.open('https://play.google.com/store/apps/details?id=com.elm.shaaer.applicant.mobile', '_blank');
+      this.googleLink.nativeElement.click();
     } else if (isiPhone || isiPad) {
-      window.open('https://apps.apple.com/ng/app/pilgrimage-app-pilgrims/id1626714163', '_blank');
+      this.appleLink.nativeElement.click();
     } else {
       // do nothing
     }

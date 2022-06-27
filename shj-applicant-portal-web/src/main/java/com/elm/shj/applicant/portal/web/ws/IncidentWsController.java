@@ -7,7 +7,7 @@ import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
-import com.elm.shj.applicant.portal.services.incident.IncidentService;
+import com.elm.shj.applicant.portal.services.incident.IncidentComplaintService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -42,7 +42,7 @@ import java.util.List;
 @RequestMapping(Navigation.API_INTEGRATION_INCIDENTS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class IncidentWsController {
-    private final IncidentService incidentService;
+    private final IncidentComplaintService incidentService;
     private final UserService userService;
 
     /**
@@ -74,7 +74,7 @@ public class IncidentWsController {
                                                       Authentication authentication) {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(incidentService.getAttachment(id)).build());
+                        .body(incidentService.getIncidentAttachment(id)).build());
     }
 
     /**
