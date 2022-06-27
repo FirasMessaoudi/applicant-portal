@@ -8,9 +8,6 @@ import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintLiteDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
 import com.elm.shj.applicant.portal.services.complaint.ComplaintService;
-import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
-import com.elm.shj.applicant.portal.services.incident.IncidentComplaintService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -59,7 +56,7 @@ public class ComplaintWsController {
     public ResponseEntity<WsResponse<?>> findComplaints(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
-        List<ApplicantComplaintDto> complaintList = incidentComplaintService.findComplaints(applicantRitualDto.getId());
+        List<ApplicantComplaintDto> complaintList = complaintService.findComplaints(applicantRitualDto.getId());
 
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())

@@ -1586,5 +1586,17 @@ public class IntegrationService {
         }
         return wsResponse.getBody();
     }
-    
+
+    public WsResponse createComplaint(MultipartBodyBuilder builder) {
+        WsResponse wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantComplaintDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to create incident", e);
+            return null;
+        }
+        return wsResponse;
+    }
 }

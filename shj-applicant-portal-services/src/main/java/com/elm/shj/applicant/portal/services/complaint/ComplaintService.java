@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.complaint;
 
+import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Service handling user incidents operations
@@ -29,13 +32,9 @@ public class ComplaintService {
      * @param ritualId
      * @return
      */
-//    public List<ApplicantComplaintDto> findIncidents(long ritualId) {
-//        return this.integrationService.loadIncidents(ritualId);
-//    }
-
-//    public byte[] getAttachment(long id) {
-//        return this.integrationService.getAttachment(id);
-//    }
+    public List<ApplicantComplaintDto> findComplaints(long ritualId) {
+        return integrationService.loadComplaints(ritualId);
+    }
 
     public WsResponse createComplaint(MultipartBodyBuilder builder) {
         return integrationService.createComplaint(builder);

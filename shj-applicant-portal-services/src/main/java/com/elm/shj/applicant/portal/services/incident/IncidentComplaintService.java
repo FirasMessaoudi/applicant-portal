@@ -45,13 +45,5 @@ public class IncidentComplaintService {
         return integrationService.createIncident(builder);
     }
 
-    public List<ApplicantComplaintDto> findComplaints(long ritualId) {
-        return integrationService.loadComplaints(ritualId);
-    }
 
-
-
-    public WsResponse createComplaint(MultipartBodyBuilder builder) {
-        return integrationService.createComplaint(builder);
-    }
 }
