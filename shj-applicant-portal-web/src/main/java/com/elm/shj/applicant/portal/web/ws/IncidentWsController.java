@@ -91,6 +91,8 @@ public class IncidentWsController {
     @PostMapping(value = "/create-incident", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WsResponse<?>> createIncident(@RequestPart("typeCode") String typeCode,
                                                         @RequestPart("description") String description,
+                                                        @RequestPart(value = "city", required = false) String city,
+                                                        @RequestPart(value = "campNumber", required = false) String campNumber,
                                                         @RequestPart(value = "locationLat", required = false) String locationLat,
                                                         @RequestPart(value = "locationLng", required = false) String locationLng,
                                                         @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile incidentAttachment, Authentication authentication) throws Exception {
@@ -100,6 +102,8 @@ public class IncidentWsController {
         ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
         ApplicantIncidentLiteDto incidentDto = new ApplicantIncidentLiteDto();
         incidentDto.setTypeCode(typeCode);
+        incidentDto.setCity(city);
+        incidentDto.setCampNumber(campNumber);
         if (locationLat != null)
             incidentDto.setLocationLat(Double.parseDouble(locationLat));
         incidentDto.setDescription(description);

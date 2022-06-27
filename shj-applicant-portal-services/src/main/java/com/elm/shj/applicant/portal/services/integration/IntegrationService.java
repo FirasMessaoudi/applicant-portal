@@ -25,6 +25,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Service handling calling command portal.
@@ -86,6 +87,7 @@ public class IntegrationService {
     private final String INCIDENT_DOWNLOAD = "/ws/incidents/attachment/";
     private final String CHAT_CONTACT_URL = "/ws/chat-contact";
     private final String INCIDENT_CREATE_URL = "/ws/incidents/create";
+    private final String COMPLAINT_CREATE_URL = "/ws/complaints/create";
     private final String APPLICANT_RITUAL_URL = "/ws/ritual/";
     private final String APPLICANT_BY_UIN = "/ws/applicant/find-by-uin";
     private final String APPLICANT_PREFERRED_LANGUAGE = "/ws/applicant/language";
@@ -98,6 +100,10 @@ public class IntegrationService {
     private final String SURVEY_URL = "/ws/survey";
     private final String SUPPLICATION_URL="/ws/supplications";
     private final String APPLICANT_EMERGENCY_CONTACT_URL = "/ws/applicant/emergency-contact/";
+    private final String COMPLAINT_STATUSES_LOOKUP_URL = "/ws/complaint-sts/list";
+    private final String COMPLAINT_TYPES_LOOKUP_URL = "/ws/complaint-types/list";
+    private final String CITY_LOOKUP_URL = "/ws/city/list";
+
 
     private final String BADGE_URL = "/ws/badge";
     private final String ROSARY_URL = "/ws/rosary";
@@ -162,7 +168,7 @@ public class IntegrationService {
 
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .retrieve().bodyToMono(responseTypeReference).block();
-        } else if (serviceRelativeUrl == INCIDENT_CREATE_URL) {
+        } else if (Objects.equals(serviceRelativeUrl, INCIDENT_CREATE_URL) || Objects.equals(serviceRelativeUrl, COMPLAINT_CREATE_URL)) {
             return webClient.method(httpMethod).uri(commandIntegrationUrl + serviceRelativeUrl).accept(MediaType.APPLICATION_JSON)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED).headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
                     .body(BodyInserters.fromMultipartData((MultiValueMap<String, HttpEntity<?>>) bodyToSend)).retrieve().bodyToMono(WsResponse.class).block();
@@ -892,6 +898,19 @@ public class IntegrationService {
         return wsResponse;
     }
 
+    public WsResponse createComplaint(MultipartBodyBuilder builder) {
+        WsResponse wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
+                    new ParameterizedTypeReference<WsResponse<ApplicantComplaintDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to create incident", e);
+            return null;
+        }
+        return wsResponse;
+    }
+
     public PackageHousingDto loadHousingDetails(String uin, long applicantPackageId) {
         WsResponse<PackageHousingDto> wsResponse = null;
         try {
@@ -1504,5 +1523,59 @@ public class IntegrationService {
             return null;
         }
         return wsResponse;
+    }
+
+    /**
+     * Load complaint statuses from command portal.
+     *
+     * @return list of complaint statuses or empty list in case of failed authentication
+     */
+    public List<ComplaintStatusLookupDto> listComplaintStatus() {
+        WsResponse<List<ComplaintStatusLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPLAINT_STATUSES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ComplaintStatusLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load notification template statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load complaint types from command portal.
+     *
+     * @return list of complaint types or empty list in case of failed authentication
+     */
+    public List<ComplaintTypeLookupDto> listComplaintTypes() {
+        WsResponse<List<ComplaintTypeLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPLAINT_TYPES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ComplaintTypeLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load notification template statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    /**
+     * Load complaint types from command portal.
+     *
+     * @return list of complaint types or empty list in case of failed authentication
+     */
+    public List<CityLookupDto> listCities() {
+        WsResponse<List<CityLookupDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CITY_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<CityLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load notification template statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
     }
 }
