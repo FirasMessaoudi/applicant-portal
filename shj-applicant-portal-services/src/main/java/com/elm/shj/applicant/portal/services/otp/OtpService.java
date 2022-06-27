@@ -83,10 +83,10 @@ public class OtpService {
         }
     }
 
-    public String createOtp(String principal,Integer countryCode, String mobileNumber, String loginType) {
+    public String createOtp(String principal,Integer countryCode, String mobileNumber, String loginType, String idNumber) {
         try {
             String generatedOtp;
-            if(principal.equals(DEFAULT_ADMIN_USER) && loginType.equals(ELoginType.id.name())){
+            if(DEFAULT_ADMIN_USER.equals(idNumber) && loginType.equals(ELoginType.id.name())){
                 generatedOtp = DEFAULT_ADMIN_USER_OTP;
             } else {
                 generatedOtp = otpGenerator.generateOtp(principal);
