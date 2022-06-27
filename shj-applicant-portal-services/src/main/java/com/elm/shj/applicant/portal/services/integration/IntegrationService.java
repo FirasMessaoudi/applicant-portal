@@ -1590,7 +1590,7 @@ public class IntegrationService {
     public WsResponse createComplaint(MultipartBodyBuilder builder) {
         WsResponse wsResponse = null;
         try {
-            wsResponse = callIntegrationWs(INCIDENT_CREATE_URL, HttpMethod.POST, builder.build(),
+            wsResponse = callIntegrationWs(COMPLAINT_CREATE_URL, HttpMethod.POST, builder.build(),
                     new ParameterizedTypeReference<WsResponse<ApplicantComplaintDto>>() {
                     });
         } catch (WsAuthenticationException e) {
