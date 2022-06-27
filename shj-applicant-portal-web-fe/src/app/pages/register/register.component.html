@@ -12,6 +12,11 @@
     </div>
   </div>
 
+  <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
+    {{ "register.header_title" | translate }}
+
+  </h1>
+
   <div class="form-group" *ngIf="!isApplicantVerified">
     <div class="d-flex flex-column flex-lg-row justify-content-between flex-wrap">
       <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0">
@@ -28,13 +33,11 @@
         />
         <label class="custom-control-label text-nowrap" for="customRadioInline3" (click)="registerType = 'passport'">{{"card-management.passport_number"|translate}}</label>
       </div>
+      <div class="custom-control custom-radio custom-control-inline mb-2 mb-lg-0"></div>
     </div>
   </div>
   <form [formGroup]="registerForm" class="login-box__wrapper">
-    <h1 class="text-dcc-primary font-weight-bold mb-4 h4">
-      {{ "register.header_title" | translate }}
 
-    </h1>
     <div class="row row-cols-1 row-cols-md-2">
       <div class="mb-3 col">
         <label>{{idFieldName()}}<span class="text-danger small px-1">*</span></label>
