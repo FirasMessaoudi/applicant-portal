@@ -1060,6 +1060,19 @@ public class IntegrationService {
         return wsResponse.getBody();
     }
 
+    public Long findIdApplicantRitual(String uin, long applicantPackageId) {
+        WsResponse<Long> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(APPLICANT_RITUAL_URL + "/id/" + uin + "/" + applicantPackageId, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<Long>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load incidents.", e);
+            return null;
+        }
+        return wsResponse.getBody();
+    }
+
     public byte[] getAttachment(long id) {
         ByteArrayResource file;
         try {

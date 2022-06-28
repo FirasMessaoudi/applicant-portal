@@ -65,4 +65,8 @@ export class LookupService {
   localizedItemsByLang(lookupItems: any[]): any[] {
     return lookupItems.filter(value => this.i18nService.language.startsWith(value.lang));
   }
+
+  findCities(): Observable<Lookup[]> {
+    return this.http.get<any>('/core/api/lookup/city/list');
+  }
 }

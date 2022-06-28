@@ -44,6 +44,10 @@
                 <a (click)="isActive = false" class="py-2 d-block h6 "
                    [routerLink]="['/hajj-rituals']">{{ 'header.my_program' | translate }}</a>
               </li>
+              <li routerLinkActive="active">
+                <a (click)="isActive = false" class="py-2 d-block h6 "
+                   [routerLink]="['/complaint/create']">{{ 'header.complaint' | translate }}</a>
+              </li>
             </ul>
           </div>
         </nav>
