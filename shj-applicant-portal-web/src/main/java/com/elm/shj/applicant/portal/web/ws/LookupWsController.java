@@ -275,10 +275,13 @@ public class LookupWsController {
      * @return List organizer types
      */
     @GetMapping("/complaint-type/list")
-    public List<ComplaintTypeLookupDto> listComplaintTypes(Authentication authentication) {
+    public  ResponseEntity<WsResponse<?>> listComplaintTypes(Authentication authentication) {
         log.debug("list organizer types...");
         List<ComplaintTypeLookupDto> complaintTypeLookupDtos = lookupService.retrieveComplaintTypesLookups();
-        return complaintTypeLookupDtos;
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(complaintTypeLookupDtos).build());
+
     }
 
     /**
@@ -287,10 +290,12 @@ public class LookupWsController {
      * @return List organizer types
      */
     @GetMapping("/complaint-sts/list")
-    public List<ComplaintStatusLookupDto> listComplaintStatus(Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> listComplaintStatus(Authentication authentication) {
         log.debug("list organizer types...");
         List<ComplaintStatusLookupDto> complaintStatusLookupDtos = lookupService.retrieveComplaintStatusesLookups();
-        return complaintStatusLookupDtos;
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(complaintStatusLookupDtos).build());
     }
 
     /**
@@ -299,9 +304,11 @@ public class LookupWsController {
      * @return List organizer types
      */
     @GetMapping("/city/list")
-    public List<CityLookupDto> listCities(Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> listCities(Authentication authentication) {
         log.debug("list organizer types...");
         List<CityLookupDto> cityLookupDtos = lookupService.retrieveCitiesLookups();
-        return cityLookupDtos;
+        return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(cityLookupDtos).build());
     }
 }

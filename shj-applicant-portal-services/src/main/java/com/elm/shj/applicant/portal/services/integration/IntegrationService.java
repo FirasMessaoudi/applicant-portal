@@ -107,7 +107,7 @@ public class IntegrationService {
 
     private final String BADGE_URL = "/ws/badge";
     private final String ROSARY_URL = "/ws/rosary";
-    private final String COMPLAINT_URL = "/api/ws/complaints";
+    private final String COMPLAINT_URL = "/ws/complaints";
     private final WebClient webClient;
     @Value("${admin.portal.url}")
     private String commandIntegrationUrl;
