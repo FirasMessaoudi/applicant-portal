@@ -65,7 +65,7 @@
                 ></span>
                 {{ selectedCountryPrefix }}
               </button>
-                            <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="15" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15" [class.is-invalid]="
+                            <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="20" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15" [class.is-invalid]="
                   f.mobileNumber.invalid && f.mobileNumber.touched
                 " />
 
@@ -118,14 +118,10 @@
             <div ngbDropdown #countryListDropdown2="ngbDropdown" (openChange)="onOpenChange($event)" class="d-inline-block w-100">
               <div class="input-group">
                 <button class="btn btn-link ltr country-prefix-button" id="dropdown2" ngbDropdownToggle (click)="openTypeahead()">
-                <span
-                  class="flag-icon flag-icon-{{
-                    emergencyDataSelectedCountryNamePrefix?.toLowerCase()
-                  }}"
-                ></span>
+
                   {{  emergencyDataSelectedCountryPrefix }}
                 </button>
-                <input class="form-control mobile-number-input" formControlName="emergencyContactMobileNumber" maxlength="15" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"/>
+                <input class="form-control mobile-number-input" formControlName="emergencyContactMobileNumber" maxlength="20" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"/>
 
                 <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown2">
                   <ng-template #rt let-r="result" let-t="term">
