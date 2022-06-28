@@ -11,6 +11,7 @@ import com.elm.shj.applicant.portal.services.complaint.ComplaintService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
+import com.elm.shj.applicant.portal.web.security.jwt.JwtToken;
 import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ import java.util.List;
 public class ComplaintWsController {
     private final ComplaintService complaintService;
     private final UserService userService;
+    private final JwtTokenService jwtTokenService;
 
     /**
      * get all incidents by ritual id
@@ -92,6 +94,7 @@ public class ComplaintWsController {
         complaintDto.setTypeCode(typeCode);
         complaintDto.setCity(city);
         complaintDto.setCampNumber(campNumber);
+        complaintDto.setMobileNumber(userService.findMobileNumber(jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L)));
         if (locationLat != null)
             complaintDto.setLocationLat(Double.parseDouble(locationLat));
         complaintDto.setDescription(description);
