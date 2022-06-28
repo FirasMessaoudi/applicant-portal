@@ -15,6 +15,7 @@ import {CARD_MANAGEMENT_ROUTES} from "@core/routes/card-management-routes";
 import {LANDING_ROUTES} from "@core/routes/landing-routes";
 import {OTP_PRIVATE_ROUTES} from "@core/routes/otp-private-routes";
 import {COMPLAINT_ROUTES} from "@core/routes/complaint-routes";
+import {INCIDENT_ROUTES} from "@core/routes/incident-routes";
 
 const routes: Routes = [
 
@@ -45,6 +46,12 @@ const routes: Routes = [
     component: AppLayoutComponent,
     canActivate: [AuthenticationGuard],
     children: COMPLAINT_ROUTES
+  },
+  {
+    path: '',
+    component: AppLayoutComponent,
+    canActivate: [AuthenticationGuard],
+    children: INCIDENT_ROUTES
   },
   {
     path: '',

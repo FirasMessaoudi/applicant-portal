@@ -45,9 +45,11 @@ public class Navigation {
     public static final String API_INTEGRATION_AUTH_LOGOUT = API_INTEGRATION_AUTH + "/logout";
     // Logout
     public static final String API_AUTH_LOGOUT = API_AUTH + "/logout";
-    // Incidents
+    // Incidents Integration
     public static final String API_INTEGRATION_INCIDENTS = "/api/ws/incidents";
-    // Complaints
+    // Incidents
+    public static final String API_INCIDENTS = "/api/incidents";
+    // Complaints Integration
     public static final String API_INTEGRATION_COMPLAINTS = "/api/ws/complaints";
     // Complaints
     public static final String API_COMPLAINTS = "/api/complaints";

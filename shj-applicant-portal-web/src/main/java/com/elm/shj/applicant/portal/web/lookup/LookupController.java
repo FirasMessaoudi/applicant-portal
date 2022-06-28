@@ -225,6 +225,30 @@ public class LookupController {
      *
      * @return List organizer types
      */
+    @GetMapping("/incident-type/list")
+    public List<IncidentTypeLookupDto> listIncidentTypes(Authentication authentication) {
+        log.debug("list organizer types...");
+        List<IncidentTypeLookupDto> incidentTypeLookupDtos = lookupService.retrieveIncidentTypes();
+        return incidentTypeLookupDtos;
+    }
+
+    /**
+     * List organizer types
+     *
+     * @return List organizer types
+     */
+    @GetMapping("/incident-sts/list")
+    public List<IncidentStatusLookupDto> listIncidentStatus(Authentication authentication) {
+        log.debug("list organizer types...");
+        List<IncidentStatusLookupDto> incidentStatusLookupDtos = lookupService.retrieveIncidentStatus();
+        return incidentStatusLookupDtos;
+    }
+
+    /**
+     * List organizer types
+     *
+     * @return List organizer types
+     */
     @GetMapping("/city/list")
     public List<CityLookupDto> listCities(Authentication authentication) {
         log.debug("list organizer types...");

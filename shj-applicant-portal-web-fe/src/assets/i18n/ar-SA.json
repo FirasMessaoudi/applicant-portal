@@ -47,6 +47,7 @@
     "dialog_error_text": "عذرا! حدث خطأ. يرجى المحاولة مرة أخرى.",
     "dialog_error_title": "خطأ",
     "dialog_file_upload_error_text": "لا يمكن تعديل الصورة, الملف المرفق غير سليم",
+    "no_data_found_matching_given_criteria": "لا يوجد بيانات يمكن عرضها",
     "dialog_file_upload_success_text": "تم تعديل الصورة بنجاح",
     "table_emtpy_text": "لا يوجد بيانات",
     "btn_ok": "موافق",
@@ -130,6 +131,7 @@
     "my_dashboard": "بياناتي",
     "my_program": "برنامجي",
     "complaint": "الشكاوى",
+    "incident": "البلاغات",
     "ritual_schedule": "الجدول الزمني",
     "alert_button_text": "عودة لبيانات آخر موسم",
     "change_ritual_modal_title": "اختر موسم الحج أو العمرة الذي تريد عرض بياناته",
@@ -318,20 +320,27 @@
   },
   "incident-management": {
     "title": "البلاغات",
+    "create_title": "إنشاء بلاغ",
     "incidents_list": "قائمة البلاغات",
     "incident_number": "رقم البلاغ",
     "incident_date": "تاريخ البلاغ",
     "status": "الحالة",
-    "type": "نوع البلاغ",
-    "incident_details_title": "تفاصيل البلاغ",
+    "incident_type": "نوع البلاغ",
+    "incident_details": "تفاصيل البلاغ",
     "incident_information": "معلومات البلاغ",
     "incident_text": "نص البلاغ",
     "incident_process_information": "معلومات المعالجة",
     "incident_process_text": "نص المعالجة",
     "incident_process_date": "تاريخ المعالجة",
     "location": "عنوان الموقع",
+    "incident_description": "وصف البلاغ",
+    "incident_creation": "بلاغ جديد",
     "btn_processing": "معالجة الطلب",
-    "processing_error": "خطأ اثناء محاولة معالجة البلاغ"
+    "processing_error": "خطأ اثناء محاولة معالجة البلاغ",
+    "dialog_create_incident_success_text": "تم إنشاء البلاغ",
+    "dialog_create_incident_confirmation_text": "هل تريد إنشاء بلاغ جديد؟",
+    "incident_city": "المدينة",
+    "camp_number": "رقم المخيم"
   },
   "address": {
     "address-title": "العنوان",
@@ -576,6 +585,7 @@
     "private_notifications": "تنبيهات خاصة",
     "public_notifications": "تنبيهات عامة",
     "view_all": "عرض الكل",
+    "cancel_confirmation_text": "هل أنت متأكد أنك تريد إلغاء أي تعديلات؟",
     "view_all_notifications": "عرض كل التنبيهات"
   },
   "emergency_data": {
@@ -611,9 +621,15 @@
     "dialog_resolve_complaint_success_text": "تم تحويل حالة الشكوى إلى تم الحل",
     "dialog_close_complaint_success_text": "تم تحويل حالة الشكوى إلى مغلقة",
     "dialog_create_complaint_success_text": "تم إنشاء الشكوى",
-    "dialog_create_complaint_confirmation_text": "هل تريد إنشاء الشكوى جديدة؟",
+    "dialog_create_complaint_confirmation_text": "هل تريد إنشاء شكوى جديدة؟",
+    "cancel_confirmation_text": "هل أنت متأكد أنك تريد إلغاء أي تعديلات؟",
     "operation_date": "تاريخ الإجراء",
     "complaint_city": "المدينة",
     "camp_number": "رقم المخيم"
+  },
+  "file-management": {
+    "upload": "رفع ملف",
+    "file_size_invalid": "حجم الملف يجب ان لايتعدى 15 MB",
+    "file_extension_invalid": "امتداد ملف غير صحيح"
   }
 }

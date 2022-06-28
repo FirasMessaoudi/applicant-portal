@@ -1,13 +1,12 @@
 /*
  * Copyright (c) 2021 ELM. All rights reserved.
  */
-package com.elm.shj.applicant.portal.web.complaint;
+package com.elm.shj.applicant.portal.web.incident;
 
 import com.elm.dcc.foundation.commons.validation.SafeFile;
-import com.elm.shj.applicant.portal.services.complaint.ComplaintService;
-import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
+import com.elm.shj.applicant.portal.services.incident.IncidentComplaintService;
+import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentDto;
+import com.elm.shj.applicant.portal.services.dto.ApplicantIncidentLiteDto;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -40,10 +39,10 @@ import java.util.List;
 )
 @Slf4j
 @RestController
-@RequestMapping(Navigation.API_COMPLAINTS)
+@RequestMapping(Navigation.API_INCIDENTS)
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
-public class ComplaintController {
-    private final ComplaintService complaintService;
+public class IncidentController {
+    private final IncidentComplaintService incidentService;
     private final UserService userService;
     private final JwtTokenService jwtTokenService;
 
@@ -55,42 +54,42 @@ public class ComplaintController {
      */
 
     @GetMapping("/list")
-    public ResponseEntity<WsResponse<?>> findComplaints(Authentication authentication) {
+    public ResponseEntity<WsResponse<?>> findIncidents(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        List<ApplicantComplaintDto> complaintList = complaintService.findComplaints(userService.findIdApplicantRitualId(loggedInUserUin));
+        List<ApplicantIncidentDto> incidentList = incidentService.findIncidents(userService.findIdApplicantRitualId(loggedInUserUin));
 
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(complaintList).build());
+                        .body(incidentList).build());
     }
 
     /**
-     * create new applicant complaint
+     * create new applicant incident
      *
-     * @param complaint
-     * @param complaintAttachment
-     * @return the created applicant_complaint
+     * @param incident
+     * @param incidentAttachment
+     * @return the created applicant_incident
      * @throws Exception
      */
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WsResponse<?>> createComplaint(@RequestPart("complaint") ApplicantComplaintLiteDto complaint,
-                                                         @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile complaintAttachment, Authentication authentication) throws Exception {
-        log.info("adding applicant complaint");
-        // log.info(complaintAttachment.getContentType());
+    public ResponseEntity<WsResponse<?>> createIncident(@RequestPart("incident") ApplicantIncidentLiteDto incident,
+                                                         @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile incidentAttachment, Authentication authentication) throws Exception {
+        log.info("adding applicant incident");
+        // log.info(incidentAttachment.getContentType());
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         Long applicantRitualId = userService.findIdApplicantRitualId(loggedInUserUin);
-        ApplicantComplaintLiteDto complaintDto = new ApplicantComplaintLiteDto();
-        complaintDto.setTypeCode(complaint.getTypeCode());
-        complaintDto.setCity(complaint.getCity());
-        complaintDto.setCampNumber(complaint.getCampNumber());
-        complaintDto.setMobileNumber(userService.findMobileNumber(jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L)));
-        complaintDto.setDescription(complaint.getDescription());
-        complaintDto.setApplicantRitualId(applicantRitualId);
+        ApplicantIncidentLiteDto incidentDto = new ApplicantIncidentLiteDto();
+        incidentDto.setTypeCode(incident.getTypeCode());
+        incidentDto.setCity(incident.getCity());
+        incidentDto.setCampNumber(incident.getCampNumber());
+        incidentDto.setMobileNumber(userService.findMobileNumber(jwtTokenService.retrieveUserIdFromToken(((JwtToken) authentication).getToken()).orElse(0L)));
+        incidentDto.setDescription(incident.getDescription());
+        incidentDto.setApplicantRitualId(applicantRitualId);
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
-        if (complaintAttachment != null && !complaintAttachment.isEmpty() && complaintAttachment.getSize() > 0)
-            builder.part("attachment", complaintAttachment.getResource());
-        builder.part("complaint", complaintDto);
-        WsResponse response = complaintService.createComplaint(builder);
+        if (incidentAttachment != null && !incidentAttachment.isEmpty() && incidentAttachment.getSize() > 0)
+            builder.part("attachment", incidentAttachment.getResource());
+        builder.part("incident", incidentDto);
+        WsResponse response = incidentService.createIncident(builder);
         return ResponseEntity.ok(
                 WsResponse.builder().status(response.getStatus())
                         .body(response.getBody()).build());

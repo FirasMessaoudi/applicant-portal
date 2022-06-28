@@ -46,6 +46,7 @@ export class CreateComplaintComponent implements OnInit {
   url: any = 'assets/images/default-avatar.svg';
   file: File;
   progress = 0;
+  allowedFileExtension = ['.apng','.avif','.gif','.jpeg','.jpg','.png','.svg','.webp','.bmp','.tiff','.mp4','.mov','.wmv','.avi','.flv','.avchd','.mkv'];
 
   constructor(
     private complaintService: ComplaintService,
@@ -96,11 +97,7 @@ export class CreateComplaintComponent implements OnInit {
     this.router.navigate(['/complaints/list']);
   }
 
-  get canSeeAddUpdateComplaints(): boolean {
-    //TODO Update authorities
-    // return this.authenticationService.hasAuthority(EAuthority.ADD_USER) || this.authenticationService.hasAuthority(EAuthority.EDIT_USER);
-    return true;
-  }
+
 
   get currentLanguage(): string {
     return this.i18nService.language;
@@ -158,7 +155,7 @@ export class CreateComplaintComponent implements OnInit {
   }
 
   goBackToList() {
-    this.router.navigate(['/complaints/list']);
+    this.router.navigate(['/complaint/list']);
   }
 
   get f() {
@@ -256,12 +253,25 @@ export class CreateComplaintComponent implements OnInit {
 
   onFileChange(event) {
     if (event.target.files && event.target.files[0]) {
+      const sFileName = event.target.files[0].name;
       const reader = new FileReader();
+      var blnValid = false;
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       reader.onload = () => { // called once readAsDataURL is completed
         const fileSizeInMb = Math.round(event.target.files[0].size / 1024 / 1024);
         if (fileSizeInMb < 0 || fileSizeInMb > 15) {
-          this.toastr.error(this.translate.instant('staff-management.file_size_invalid'), this.translate.instant('staff-management.change-avatar'));
+          this.toastr.error(this.translate.instant('file-management.file_size_invalid'), this.translate.instant('file-management.upload'));
+          return;
+        }
+        for (var j = 0; j < this.allowedFileExtension.length; j++) {
+          var sCurExtension = this.allowedFileExtension[j];
+          if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+            blnValid = true;
+            break;
+          }
+        }
+        if (!blnValid){
+          this.toastr.error(this.translate.instant('file-management.file_extension_invalid'), this.translate.instant('file-management.upload'));
           return;
         }
         this.url = reader.result.toString();

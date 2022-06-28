@@ -46,6 +46,7 @@
     "dialog_error_title": "Error",
     "dialog_edit_contacts_error_text": "User contacts not updated. Please try again.",
     "dialog_file_upload_error_text": "Cannot upload avatar, file maybe infected.",
+    "no_data_found_matching_given_criteria": "There's no data found match search criteria",
     "dialog_file_upload_success_text": "Avatar has been successfully updated",
     "table_emtpy_text": "No Results Found",
     "btn_ok": "Ok",
@@ -129,6 +130,7 @@
     "my_dashboard": "My Dashboard",
     "my_program": "My Program",
     "complaint": "Complaints",
+    "incident": "Incidents",
     "ritual_schedule": "Ritual Schedule",
     "alert_button_text": "Back to latest season data",
     "change_ritual_modal_title": "Choose the Hajj or Umrah season you want to view data",
@@ -316,21 +318,27 @@
   },
   "incident-management": {
     "title": "Incidents",
+    "create_title": "Create Incident",
     "incidents_list": "Incidents List",
     "incident_number": "Incident Number",
     "incident_date": "Incident Date",
     "status": "Status",
-    "type": "Incident Type",
-    "incident_details_title": "Incident Details",
+    "incident_type": "Incident Type",
+    "incident_details": "Incident Details",
     "incident_information": "Incident Information",
     "incident_text": "Incident text",
     "incident_process_information": "Processing Information",
     "incident_process_text": "Processing text",
     "incident_process_date": "Processing date",
     "location": "Location Address",
+    "incident_description": "Incident Description",
+    "incident_creation": "Incident Creation",
     "btn_processing": "Process",
     "processing_error": "Error occurred while processing Incident",
-    "city": "city"
+    "dialog_create_incident_success_text": "The incident created",
+    "dialog_create_incident_confirmation_text": "Are you sure you want to create new incident?",
+    "incident_city": "city",
+    "camp_number": "Camp Number"
   },
   "address": {
     "address-title": "Address",
@@ -574,6 +582,7 @@
     "private_notifications": "Private Notifications",
     "public_notifications": "General Notifications",
     "view_all": "View All",
+    "cancel_confirmation_text": "Are you sure, you want to cancel changes?",
     "view_all_notifications": "View All Notifications"
   },
   "emergency_data": {
@@ -609,8 +618,14 @@
     "dialog_close_complaint_success_text": "The complaint status changed to closed",
     "dialog_create_complaint_success_text": "The complaint created",
     "dialog_create_complaint_confirmation_text": "Are you sure you want to create new complaint?",
+    "cancel_confirmation_text": "Are you sure, you want to cancel changes?",
     "operation_date": "Operation Date",
     "complaint_city": "City",
     "camp_number": "Camp Number"
+  },
+  "file-management": {
+    "upload": "File Upload",
+    "file_size_invalid": "File size should not exceed 15 MB.",
+    "file_extension_invalid": "Invalid file extension."
   }
 }

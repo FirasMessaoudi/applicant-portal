@@ -14,15 +14,12 @@ export class ComplaintService {
   constructor(private http: HttpClient, private cookieService: CookieService) {
   }
 
-  // /**
-  //  * list all complaints.
-  //  */
-  // list(pageNumber: any, complaintSearchCriteria: ComplaintSearchCriteria): Observable<any> {
-  //   let params = new HttpParams()
-  //     .set('page', pageNumber);
-  //   return this.http.post<any>('/core/api/complaints/list', complaintSearchCriteria, {params: params});
-  //   //return this.http.get<any>('/core/api/complaints/list');
-  // }
+  /**
+   * list all complaints.
+   */
+  list(): Observable<any> {
+    return this.http.get<any>('/core/api/complaints/list');
+  }
 
   /**
    * load all complaint types.
