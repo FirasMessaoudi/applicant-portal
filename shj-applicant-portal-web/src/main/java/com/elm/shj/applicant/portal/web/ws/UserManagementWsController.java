@@ -243,7 +243,7 @@ public class UserManagementWsController {
                                     .referenceNumber(String.valueOf(databaseUser.getUin()))
                                     .build()).build());
         }
-        returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
+       // returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(returnedApplicant).build());
