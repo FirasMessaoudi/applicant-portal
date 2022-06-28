@@ -68,10 +68,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
   uin: any;
   countries: CountryLookup[] = [];
   countriesList: CountryLookup[] = [];
-  selectedCountryCode = "113";
+  selectedCountryCode = "966";
   selectedNationality ='';
-  SAUDI_COUNTRY_CODE = "113";
-  selectedCountryName = "SA";
+  SAUDI_COUNTRY_CODE = "966";
+  selectedCountryName;
   selectedCountryPrefix: string = "+966";
   @ViewChild('instance')
   instance: NgbTypeahead;
@@ -170,8 +170,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
         }
         this.user = data.user;
         this.registerForm.controls['uin'].setValue(this.user.uin);
-        this.selectedCountryCode = this.user.countryCode.toLowerCase();
-        this.selectedCountryName = this.countriesList.find(country=>country.code==this.selectedCountryCode).countryNamePrefix;
+        this.selectedCountryCode = this.countriesList.find(country=>country.countryPhonePrefix==this.selectedCountryCode).countryPhonePrefix;
+        this.selectedCountryName = this.countriesList.find(country=>country.countryPhonePrefix==this.selectedCountryCode).countryNamePrefix;
         this.fillRegistrationForm();
       }
     });
@@ -227,7 +227,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.user.maskedMobileNumber = response.mobileNumber;
           this.user.uin = this.registerForm.controls.uin.value;
           this.user.mobileNumber = this.registerForm.controls.mobileNumber.value.replace(reg1, "").replace(reg3, "");
-          this.user.countryCode = this.selectedCountryCode.toUpperCase();
+         // this.user.countryCode = this.selectedCountryCode.toUpperCase();
           this.user.countryPhonePrefix = this.selectedCountryPrefix.replace(reg2, "")
           this.user.email = this.registerForm.controls.email.value;
           this.user.password = this.registerForm.controls.password.value;
@@ -310,15 +310,33 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
           } else {
             if (this.user.countryCode) {
-              this.selectedCountryCode = response.countryCode?.toLowerCase().substr(0, 2);
+              if(this.user.mobileNumber.startsWith(response.countryCode) ){
+                this.selectedCountryCode = response.countryCode;
+                this.selectedCountryPrefix = response.countryCode;
+                this.selectedCountryName = this.countriesList.find(country=>country.countryPhonePrefix==this.selectedCountryCode).countryNamePrefix;
+
+
+                this.user.mobileNumber = this.user.mobileNumber.substring(this.selectedCountryCode.length);
+              }else {
+                this.selectedCountryCode = '966';
+                this.selectedCountryPrefix = '966';
+                this.selectedCountryName = this.countriesList.find(country=>country.countryPhonePrefix==this.selectedCountryCode).countryNamePrefix;
+
+              }
             }
             let dialCode = this.countries.find(c => this.selectedCountryCode?.toLowerCase() === c.code?.toLowerCase())?.countryPhonePrefix;
             if (this.user.mobileNumber.startsWith('00')) {
               console.log("starts with 00")
               this.user.mobileNumber = this.user.mobileNumber.substring(2);
             }
+            if (this.user.mobileNumber.startsWith('+')) {
+              console.log("starts with +")
+              this.user.mobileNumber = this.user.mobileNumber.substring(1);
+            }
             applicantMobileNumber = this.user.mobileNumber.replace(dialCode, '');
             this.registerForm.controls['mobileNumber'].setValue(applicantMobileNumber);
+            console.log('selectedCountryCode ::: ')
+            console.log(this.selectedCountryCode)
           }
           this.originalMobileNo = applicantMobileNumber;
 

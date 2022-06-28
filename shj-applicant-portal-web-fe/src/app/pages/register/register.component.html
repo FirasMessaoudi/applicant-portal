@@ -148,7 +148,7 @@
               <button class="btn btn-link ltr country-prefix-button" id="dropdown1"
                       ngbDropdownToggle
                       (click)="openTypeahead()" [disabled]="!this.registerForm.enabled">
-                <span class="flag-icon flag-icon-{{selectedCountryName?.toLowerCase()}}"></span>
+                <span *ngIf="selectedCountryName" class="flag-icon flag-icon-{{selectedCountryName?.toLowerCase()}}"></span>
                 {{selectedCountryPrefix}}
               </button>
               <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="15"
