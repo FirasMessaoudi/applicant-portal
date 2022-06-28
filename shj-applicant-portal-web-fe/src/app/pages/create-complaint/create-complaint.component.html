@@ -1,0 +1,119 @@
+<nav aria-label="breadcrumb" class="pt-2">
+  <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
+    <li class="breadcrumb-item active" aria-current="page "></li>
+  </ol>
+</nav>
+<div class="content__wrapper">
+  <div class="title__Page mx-n3">
+    <h3 class="sectionTitle">{{"complaint-management.create_title" | translate }}</h3>
+  </div>
+  <div class="content__section" *ngIf="!canSeeAddUpdateComplaints">
+    {{'header.welcome' | translate}} <span
+    class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+  </div>
+
+  <div class="content__section">
+    <form [formGroup]="complaintForm">
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+
+      <div class="form-group col">
+        <label class="col-form-label">{{"complaint-management.complaint_type" | translate }}<span class="text-danger small px-1">*</span></label>
+        <div class="input-group flex-grow-1">
+          <div class="setBox flex-grow-1" role="group">
+            <select class="custom-select" formControlName="typeCode"
+                    [class.is-invalid]="f.typeCode.invalid && f.typeCode.touched">
+              <option value="" selected></option>
+              <option [ngValue]="complaintType.code" *ngFor="let complaintType of lookupService().localizedItemsByLang(complaintTypes)">
+                {{complaintType.label}}
+              </option>
+            </select>
+            <div *ngIf="f.typeCode.invalid && f.typeCode.touched" class="invalid-feedback">
+              <div *ngIf="f.typeCode.errors.required">
+                {{ "general.field_validation_required" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col">
+        <label class="col-form-label">{{"complaint-management.complaint_city" | translate }}<span class="text-danger small px-1">*</span></label>
+        <div class="input-group flex-grow-1">
+          <div class="setBox flex-grow-1" role="group">
+            <select class="custom-select" formControlName="city" (ngModelChange)="onCityChange($event)"
+                    [class.is-invalid]="f.city.invalid && f.city.touched">
+              <option value="" selected></option>
+              <option [ngValue]="complaintType.code" *ngFor="let complaintType of lookupService().localizedItemsByLang(cities)">
+                {{complaintType.label}}
+              </option>
+            </select>
+            <div *ngIf="f.city.invalid && f.city.touched" class="invalid-feedback">
+              <div *ngIf="f.city.errors.required">
+                {{ "general.field_validation_required" | translate }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col" *ngIf="f.city && f.city.value == 'HOLY_SITES'">
+        <label class="col-form-label">{{"complaint-management.camp_number" | translate }}<span class="text-danger small px-1">*</span></label>
+        <div class="input-group">
+          <input type="text" class="form-control" formControlName="campNumber" maxlength="40" [class.is-invalid]="f.campNumber.invalid && f.campNumber.touched" />
+          <div *ngIf="f.campNumber.invalid && f.campNumber.touched" class="invalid-feedback">
+            <div *ngIf="f.campNumber.errors.required">
+              {{ "general.field_validation_required" | translate }}
+            </div>
+            <div *ngIf="f.campNumber.invalid && !f.campNumber.errors?.required">
+              {{ "general.field_validation_pattern" | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row rows-cols-1">
+      <div class="form-group col">
+        <label class="col-form-label">{{"complaint-management.complaint_description" | translate }}<span class="text-danger small px-1">*</span></label>
+        <textarea formControlName="description" class="form-control" rows="3" maxlength="500"
+                  [class.is-invalid]="f.description.invalid && f.description.touched"></textarea>
+        <div *ngIf="f.description.invalid && f.description.touched" class="invalid-feedback">
+          <div *ngIf="f.description.errors.required">
+            {{ "general.field_validation_required" | translate }}
+          </div>
+          <div *ngIf="f.description.invalid && !f.description.errors?.required">
+            {{ "general.field_validation_pattern" | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+        <div class="form-group col">
+      <div class="input-group">
+        <div class="custom-file">
+          <input title="{{'data-request-management.choose_file' | translate}}" type="file" class="custom-file-input" id="fileData" [required]="false" (change)="onFileChange($event)"
+                 accept=".apng,.avif,.gif,.jpeg,.jpg,.png,.svg,.webp,.bmp,.tiff,.mp4,.mov,.wmv,.avi,.flv,.avchd,.mkv"
+          />
+          <label class="custom-file-label" for="fileData"><i class="fas fa-search"></i> {{(f.fileData && f.fileData.value ? f.fileData.value.name : 'data-request-management.choose_file') | translate}}</label>
+        </div>
+      </div>
+        </div>
+        <div class="form-group col">
+          <div class="avatar" *ngIf="file">
+            {{file.name}}
+          </div>
+        </div>
+        </div>
+
+    <hr class="my-4 w-100">
+
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-dcc-primary px-4"
+                (click)="cancel()">{{"general.btn_cancel" | translate}}</button>
+        <button class="btn btn-dcc-primary px-4"
+                (click)="save()">{{"general.btn_send" | translate}}</button>
+      </div>
+    </form>
+  </div>
+
+
+</div>
