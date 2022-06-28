@@ -267,7 +267,6 @@ export class CreateIncidentComponent implements OnInit {
           this.toastr.error(this.translate.instant('staff-management.file_size_invalid'), this.translate.instant('staff-management.change-avatar'));
           return;
         }
-
         for (var j = 0; j < this.allowedFileExtension.length; j++) {
           var sCurExtension = this.allowedFileExtension[j];
           if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
