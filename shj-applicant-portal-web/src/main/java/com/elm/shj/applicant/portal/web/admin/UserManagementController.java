@@ -412,14 +412,14 @@ public class UserManagementController {
         databaseUser.setEmail(userContacts.getEmail());
         databaseUser.setMobileNumber(userContacts.getMobileNumber());
         databaseUser.setCountryPhonePrefix(userContacts.getCountryPhonePrefix());
-        databaseUser.setCountryCode(userContacts.getCountryCode());
+      //  databaseUser.setCountryCode(userContacts.getCountryCode());
         try {
             userService.save(databaseUser);
         } catch (Exception e) {
             log.error("Error while updating user contacts.", e);
             return ResponseEntity.of(Optional.empty());
         }
-        returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
+      //  returnedApplicant.setCountryCode(databaseUser.getCountryPhonePrefix());
         return ResponseEntity.ok(Objects.requireNonNull(returnedApplicant));
     }
 

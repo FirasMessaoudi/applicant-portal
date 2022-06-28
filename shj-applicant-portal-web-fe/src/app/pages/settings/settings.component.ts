@@ -142,7 +142,7 @@ export class SettingsComponent implements OnInit {
         this.selectedCountryCode = data?.countryCode?.toLowerCase();
         this.originalCountryPrefix = '+' + data.countryPhonePrefix;
         this.selectedCountryPrefix = '+' + data.countryPhonePrefix;
-        this.selectedCountryName = this.countries.find(country=>country.code==this.selectedCountryCode).countryNamePrefix;
+        this.selectedCountryName = this.countries.find(country=>country.countryPhonePrefix== this.selectedCountryPrefix).countryNamePrefix;
       } else {
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
           this.translate.instant('general.dialog_error_title'));
@@ -153,16 +153,17 @@ export class SettingsComponent implements OnInit {
       if (data) {
         console.log(data);
         this.emergencyDataForm.controls['emergencyContactName'].setValue(data.body.emergencyContactName);
-          this.emergencyDataForm.controls['emergencyContactMobileNumber'].setValue(data?.body?.emergencyContactMobileNumber?.substring(4));
-        this.emergencyDataOriginalMobileNo = data?.body?.emergencyContactMobileNumber?.substring(4);
+          this.emergencyDataForm.controls['emergencyContactMobileNumber'].setValue(data?.body?.emergencyContactMobileNumber?.substring(1));
+        this.emergencyDataOriginalMobileNo = data?.body?.emergencyContactMobileNumber;
+        this.emergencyDataOriginalCountryPrefix = data?.body?.emergencyContactMobileNumber;
       /*  this.emergencyDataOriginalContactName = data.email;
         this.emergencyDataOriginalCountryCode = data?.countryCode?.toLowerCase();
         this.emergencyDataSelectedCountryCode = data?.countryCode?.toLowerCase();
-        this.emergencyDataSelectedCountryNamePrefix = data?.countryCode?.toLowerCase();*/
+        this.emergencyDataSelectedCountryNamePrefix = data?.countryCode?.toLowerCase();
         if(data.body.emergencyContactMobileNumber!=null) {
-          this.emergencyDataOriginalCountryPrefix = data?.body?.emergencyContactMobileNumber?.substring(0, 4);
-          this.emergencyDataSelectedCountryPrefix = data?.body?.emergencyContactMobileNumber?.substring(0, 4);
-        }
+          this.emergencyDataOriginalCountryPrefix = data?.body?.emergencyContactMobileNumber;
+          //this.emergencyDataSelectedCountryPrefix = data?.body?.emergencyContactMobileNumber;
+        }*/
       } else {
 
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
@@ -211,7 +212,7 @@ export class SettingsComponent implements OnInit {
   private createEmergencyDataForm() {
     this.emergencyDataForm = this.formBuilder.group({
       emergencyContactName: ['', []],
-      emergencyContactMobileNumber: ['', [Validators.maxLength(16),Validators.pattern("^[0-9]*$")]],
+      emergencyContactMobileNumber: ['', [Validators.maxLength(20),Validators.pattern("^[0-9]*$")]],
     });
   }
 
