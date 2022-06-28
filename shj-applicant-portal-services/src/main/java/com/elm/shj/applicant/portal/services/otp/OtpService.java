@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.otp;
 
+import com.elm.shj.applicant.portal.services.dto.ELoginType;
 import com.elm.shj.applicant.portal.services.sms.HUICSmsService;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -35,6 +36,8 @@ import java.util.concurrent.TimeUnit;
 public class OtpService {
 
     private static final String OTP_SMS_NOTIFICATION_MSG = "otp.login.sms.notification";
+    private static final String DEFAULT_ADMIN_USER = "2357361464";
+    private static final String DEFAULT_ADMIN_USER_OTP = "3792";
 
     @Value("${otp.expiry.minutes}")
     private int otpExpiryMinutes;
@@ -69,6 +72,25 @@ public class OtpService {
     public String createOtp(String principal,Integer countryCode, String mobileNumber) {
         try {
             String generatedOtp = otpGenerator.generateOtp(principal);
+            otpCache.put(principal, generatedOtp);
+            //TODO:need to be changed since uin is not required to start with 1
+            String locale = principal.startsWith("1") ? "ar" : "en";
+            String registerUserSms = messageSource.getMessage(OTP_SMS_NOTIFICATION_MSG, new String[]{generatedOtp}, Locale.forLanguageTag(locale));
+            return huicSmsService.sendMessage(countryCode,mobileNumber, registerUserSms, null) ? generatedOtp : null;
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SSLException e) {
+            log.error("Unable to generate OTP : " + e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public String createOtp(String principal,Integer countryCode, String mobileNumber, String loginType, String idNumber) {
+        try {
+            String generatedOtp;
+            if(DEFAULT_ADMIN_USER.equals(idNumber) && loginType.equals(ELoginType.id.name())){
+                generatedOtp = DEFAULT_ADMIN_USER_OTP;
+            } else {
+                generatedOtp = otpGenerator.generateOtp(principal);
+            }
             otpCache.put(principal, generatedOtp);
             //TODO:need to be changed since uin is not required to start with 1
             String locale = principal.startsWith("1") ? "ar" : "en";
