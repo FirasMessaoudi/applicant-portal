@@ -652,5 +652,9 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public WsResponse updateApplicantEmergencyContactByUin(ApplicantEmergencyContactDto applicantEmergencyNumber, String uin) {
         return integrationService.updateApplicantEmergencyContactByUin(uin, applicantEmergencyNumber);
     }
+
+    public String findMobileNumber(long loggedInUserId) {
+        return userRepository.findMobileNumber(loggedInUserId);
+    }
 }
 

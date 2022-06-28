@@ -43,6 +43,9 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     List<JpaUser> findDistinctByDeletedFalseAndActivatedTrueAndBlockedFalse();
 
+    @Query("SELECT concat(u.countryPhonePrefix,u.mobileNumber) FROM JpaUser u WHERE u.id = :userId")
+    String findMobileNumber(@Param("userId") long userId);
+
     @Modifying
     @Query("update JpaUser user set user.deleted = true, user.actionDate = CURRENT_TIMESTAMP where user.id =:userId")
     void markDeleted(@Param("userId") long userId);
