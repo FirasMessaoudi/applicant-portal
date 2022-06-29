@@ -101,7 +101,7 @@ public class IncidentWsController {
         log.info("adding applicant incident");
         // log.info(incidentAttachment.getContentType());
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
+        Long applicantRitualId = userService.findIdApplicantRitualId(loggedInUserUin);
         ApplicantIncidentLiteDto incidentDto = new ApplicantIncidentLiteDto();
         incidentDto.setTypeCode(typeCode);
         incidentDto.setCity(city);
@@ -112,7 +112,7 @@ public class IncidentWsController {
         incidentDto.setDescription(description);
         if (locationLng != null)
             incidentDto.setLocationLng(Double.parseDouble(locationLng));
-        incidentDto.setApplicantRitualId(applicantRitualDto.getId());
+        incidentDto.setApplicantRitualId(applicantRitualId);
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         if (incidentAttachment != null && !incidentAttachment.isEmpty() && incidentAttachment.getSize() > 0)
             builder.part("attachment", incidentAttachment.getResource());

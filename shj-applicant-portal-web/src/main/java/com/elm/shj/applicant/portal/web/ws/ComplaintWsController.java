@@ -89,7 +89,7 @@ public class ComplaintWsController {
         log.info("adding applicant complaint");
         // log.info(complaintAttachment.getContentType());
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        ApplicantRitualDto applicantRitualDto = userService.findApplicantRitual(loggedInUserUin);
+        Long applicantRitualId = userService.findIdApplicantRitualId(loggedInUserUin);
         ApplicantComplaintLiteDto complaintDto = new ApplicantComplaintLiteDto();
         complaintDto.setTypeCode(typeCode);
         complaintDto.setCity(city);
@@ -100,7 +100,7 @@ public class ComplaintWsController {
         complaintDto.setDescription(description);
         if (locationLng != null)
             complaintDto.setLocationLng(Double.parseDouble(locationLng));
-        complaintDto.setApplicantRitualId(applicantRitualDto.getId());
+        complaintDto.setApplicantRitualId(applicantRitualId);
         MultipartBodyBuilder builder = new MultipartBodyBuilder();
         if (complaintAttachment != null && !complaintAttachment.isEmpty() && complaintAttachment.getSize() > 0)
             builder.part("attachment", complaintAttachment.getResource());
