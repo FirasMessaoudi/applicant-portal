@@ -13,6 +13,7 @@ import {Lookup} from "@model/lookup.model";
 import {LookupService} from "@core/utilities/lookup.service";
 import {CardService, UserService} from "@core/services";
 import { CountryLookup } from '@app/_shared/model/country-lookup.model';
+import {ToastService} from "@shared/components/toast";
 
 
 @Component({
@@ -49,6 +50,7 @@ export class LoginComponent implements OnInit {
               private titleService: Title,
               private translate: TranslateService,
               private lookupsService: LookupService,
+              private toastr: ToastService,
               private cardService: CardService,
               private userService: UserService) {
   }
@@ -112,7 +114,12 @@ export class LoginComponent implements OnInit {
         console.log(user);
         //TODO:to be checked in which scenario it is called or we have to remove this check for password expiry
 
-        this.userService.updatePreferredLang(this.selectedLang.code, this.loginForm.value.username).subscribe(response => {
+        if(user.uin == 0){
+          this.toastr.warning(this.translate.instant("login.invalid_username_or_password"), this.translate.instant("register.verification_error"));
+          return;
+        }
+
+        this.userService.updatePreferredLang(this.selectedLang.code, user.uin).subscribe(response => {
         });
         if (user.passwordExpired) {
           console.log('redirect to change password page');
@@ -156,13 +163,13 @@ export class LoginComponent implements OnInit {
   refreshRegisterData() {
     this.authenticationService.updateOtpSubject({});
   }
-  
+
 
 
   onCaptchaSuccess(captchaResponse: string): void {
     console.log(captchaResponse);
   }
-  
+
 
   loadLookups() {
     this.authenticationService.findSupportedLanguages().subscribe(result => {
@@ -174,7 +181,7 @@ export class LoginComponent implements OnInit {
       this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.startsWith('ar') ? "ar" : "en"));
       this.setLanguage(this.selectedLang.lang.toLowerCase());
     });
-    
+
     this.cardService.findCountries().subscribe(result => {
       this.countriesList = result;
     });
