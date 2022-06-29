@@ -42,7 +42,7 @@
             <span>{{incident.statusCode ? lookupService().localizedLabel(incidentStatuses, incident.statusCode) : '---'}}</span>
           </td>
           <td>
-            <button [routerLink]="['/incidents/details', incident.id]"
+            <button [routerLink]="['/incident/details', incident.id]"
                     class="btn btn-sm btn-outline-dcc-primary tblView">
               {{"general.btn_view" | translate}}
             </button>

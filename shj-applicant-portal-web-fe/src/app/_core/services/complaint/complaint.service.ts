@@ -1,5 +1,13 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams, HttpRequest} from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHeaders,
+  HttpParams,
+  HttpRequest,
+  HttpResponse
+} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Lookup} from "@model/lookup.model";
 import {catchError} from "rxjs/internal/operators";
@@ -35,22 +43,22 @@ export class ComplaintService {
     return this.http.get<any>('/core/api/lookup/complaint-sts/list');
   }
 
-  // /**
-  //  * Finds complaint by its ID from the server.
-  //  *
-  //  *@param complaintId the complaint id
-  //  * @return {Observable<ApplicantComplaint>} The complaint identified by complaintId.
-  //  */
-  // find(complaintId: number): Observable<ApplicantComplaint> {
-  //   return this.http.get<any>('/core/api/complaints/find/' + complaintId).pipe(
-  //     catchError(
-  //       (error: any, caught: Observable<HttpEvent<any>>) => {
-  //         console.error(error);
-  //         return of(null);
-  //       }
-  //     )
-  //   );
-  // }
+  /**
+   * Finds complaint by its ID from the server.
+   *
+   *@param complaintId the complaint id
+   * @return {Observable<ApplicantComplaint>} The complaint identified by complaintId.
+   */
+  find(complaintId: number): Observable<ApplicantComplaint> {
+    return this.http.get<any>('/core/api/complaints/find/' + complaintId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
 
   /**
    * Create complaint.
@@ -71,12 +79,12 @@ export class ComplaintService {
     });
     return this.http.request(req);
   }
-  //
-  // /**
-  //  * Download complaint attachment.
-  //  */
-  // downloadComplaintAttachment(id) {
-  //   return this.http.get('/core/api/complaints/attachments/' + id, {responseType: 'blob'});
-  // }
+
+  /**
+   * Download complaint attachment.
+   */
+  downloadComplaintAttachment(id) {
+    return this.http.get('/core/api/complaints/attachments/' + id, {responseType: 'blob'});
+  }
 
 }

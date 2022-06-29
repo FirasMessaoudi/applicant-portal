@@ -1,5 +1,13 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpEvent, HttpHeaders, HttpParams, HttpRequest} from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHeaders,
+  HttpParams,
+  HttpRequest,
+  HttpResponse
+} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Lookup} from "@model/lookup.model";
 import {catchError} from "rxjs/internal/operators";
@@ -35,22 +43,22 @@ export class IncidentService {
     return this.http.get<any>('/core/api/lookup/incident-sts/list');
   }
 
-  // /**
-  //  * Finds incident by its ID from the server.
-  //  *
-  //  *@param incidentId the incident id
-  //  * @return {Observable<ApplicantIncident>} The incident identified by incidentId.
-  //  */
-  // find(incidentId: number): Observable<ApplicantIncident> {
-  //   return this.http.get<any>('/core/api/incidents/find/' + incidentId).pipe(
-  //     catchError(
-  //       (error: any, caught: Observable<HttpEvent<any>>) => {
-  //         console.error(error);
-  //         return of(null);
-  //       }
-  //     )
-  //   );
-  // }
+  /**
+   * Finds incident by its ID from the server.
+   *
+   *@param incidentId the incident id
+   * @return {Observable<ApplicantIncident>} The incident identified by incidentId.
+   */
+  find(incidentId: number): Observable<ApplicantIncident> {
+    return this.http.get<any>('/core/api/incidents/find/' + incidentId).pipe(
+      catchError(
+        (error: any, caught: Observable<HttpEvent<any>>) => {
+          console.error(error);
+          return of(null);
+        }
+      )
+    );
+  }
 
   /**
    * Create incident.
@@ -71,12 +79,12 @@ export class IncidentService {
     });
     return this.http.request(req);
   }
-  //
-  // /**
-  //  * Download incident attachment.
-  //  */
-  // downloadIncidentAttachment(id) {
-  //   return this.http.get('/core/api/incidents/attachments/' + id, {responseType: 'blob'});
-  // }
+
+  /**
+   * Download incident attachment.
+   */
+  downloadIncidentAttachment(id) {
+    return this.http.get('/core/api/incidents/attachments/' + id, {responseType: 'blob'});
+  }
 
 }

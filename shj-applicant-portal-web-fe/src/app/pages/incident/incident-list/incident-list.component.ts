@@ -77,7 +77,7 @@ export class IncidentListComponent implements OnInit, OnDestroy {
     this.listSubscription = this.incidentService
       .list()
       .subscribe((data) => {
-        this.incidents = data.body;
+        this.incidents = data;
       });
   }
 

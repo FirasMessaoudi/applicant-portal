@@ -94,7 +94,7 @@ export class CreateComplaintComponent implements OnInit {
   }
 
   navigateToList() {
-    this.router.navigate(['/complaints/list']);
+    this.router.navigate(['/complaint/list']);
   }
 
 

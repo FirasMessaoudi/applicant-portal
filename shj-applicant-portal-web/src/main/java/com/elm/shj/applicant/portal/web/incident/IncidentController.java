@@ -15,6 +15,7 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -54,13 +55,11 @@ public class IncidentController {
      */
 
     @GetMapping("/list")
-    public ResponseEntity<WsResponse<?>> findIncidents(Authentication authentication) {
+    public ResponseEntity<?> findIncidents(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         List<ApplicantIncidentDto> incidentList = incidentService.findIncidents(userService.findIdApplicantRitualId(loggedInUserUin));
 
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(incidentList).build());
+        return ResponseEntity.ok(incidentList);
     }
 
     /**
@@ -72,7 +71,7 @@ public class IncidentController {
      * @throws Exception
      */
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WsResponse<?>> createIncident(@RequestPart("incident") ApplicantIncidentLiteDto incident,
+    public ResponseEntity<?> createIncident(@RequestPart("incident") ApplicantIncidentLiteDto incident,
                                                          @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile incidentAttachment, Authentication authentication) throws Exception {
         log.info("adding applicant incident");
         // log.info(incidentAttachment.getContentType());
@@ -90,9 +89,33 @@ public class IncidentController {
             builder.part("attachment", incidentAttachment.getResource());
         builder.part("incident", incidentDto);
         WsResponse response = incidentService.createIncident(builder);
-        return ResponseEntity.ok(
-                WsResponse.builder().status(response.getStatus())
-                        .body(response.getBody()).build());
+        return ResponseEntity.ok(response.getBody());
+    }
+
+    /**
+     * get incident by id
+     *
+     * @param authentication the authenticated user
+     * @return the incident
+     */
+
+    @GetMapping("/find/{complaintId}")
+    public ResponseEntity<?> findIncidentBuId(@PathVariable long complaintId) {
+        ApplicantIncidentDto incident = incidentService.findIncidentById(complaintId);
+
+        return ResponseEntity.ok(incident);
+    }
+
+    /**
+     * Downloads applicant complaint attachment
+     *
+     * @param attachmentId data request Id
+     * @return WsResponse of  the saved complaint attachment
+     */
+    @GetMapping("/attachments/{attachmentId}")
+    public ResponseEntity<Resource> downloadAttachment(@PathVariable long attachmentId) throws Exception {
+        log.info("Downloading complaint attachment with id# {} ", attachmentId);
+        return ResponseEntity.ok(incidentService.downloadApplicantIncidentAttachment(attachmentId));
     }
 
 }

@@ -10,6 +10,7 @@ import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.client.MultipartBodyBuilder;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,18 @@ public class IncidentComplaintService {
         return integrationService.createIncident(builder);
     }
 
+    /**
+     * Find incidents by id.
+     *
+     * @param id
+     * @return
+     */
+    public ApplicantIncidentDto findIncidentById(long id) {
+        return integrationService.findIncidentById(id);
+    }
+
+    public Resource downloadApplicantIncidentAttachment(long complaintAttachmentId) throws Exception {
+        return integrationService.downloadApplicantIncidentAttachment(complaintAttachmentId);
+    }
 
 }

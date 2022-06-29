@@ -77,7 +77,7 @@ export class ComplaintListComponent implements OnInit, OnDestroy {
     this.listSubscription = this.complaintService
       .list()
       .subscribe((data) => {
-        this.complaints = data.body;
+        this.complaints = data;
       });
   }
 

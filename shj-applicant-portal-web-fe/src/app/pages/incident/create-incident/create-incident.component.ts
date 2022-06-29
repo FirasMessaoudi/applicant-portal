@@ -94,7 +94,7 @@ export class CreateIncidentComponent implements OnInit {
   }
 
   navigateToList() {
-    this.router.navigate(['/incidents/list']);
+    this.router.navigate(['/incident/list']);
   }
 
   get canSeeAddUpdateIncidents(): boolean {

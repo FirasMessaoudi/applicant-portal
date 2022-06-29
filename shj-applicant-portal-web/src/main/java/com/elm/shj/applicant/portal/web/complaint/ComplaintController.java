@@ -7,7 +7,6 @@ import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.shj.applicant.portal.services.complaint.ComplaintService;
 import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintDto;
 import com.elm.shj.applicant.portal.services.dto.ApplicantComplaintLiteDto;
-import com.elm.shj.applicant.portal.services.dto.ApplicantRitualDto;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
 import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -16,6 +15,7 @@ import com.elm.shj.applicant.portal.web.security.jwt.JwtTokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -55,13 +55,25 @@ public class ComplaintController {
      */
 
     @GetMapping("/list")
-    public ResponseEntity<WsResponse<?>> findComplaints(Authentication authentication) {
+    public ResponseEntity<?> findComplaints(Authentication authentication) {
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
         List<ApplicantComplaintDto> complaintList = complaintService.findComplaints(userService.findIdApplicantRitualId(loggedInUserUin));
 
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
-                        .body(complaintList).build());
+        return ResponseEntity.ok(complaintList);
+    }
+
+    /**
+     * get incident by id
+     *
+     * @param authentication the authenticated user
+     * @return the incident
+     */
+
+    @GetMapping("/find/{complaintId}")
+    public ResponseEntity<?> findComplaintBuId(@PathVariable long complaintId) {
+        ApplicantComplaintDto complaint = complaintService.findComplaintById(complaintId);
+
+        return ResponseEntity.ok(complaint);
     }
 
     /**
@@ -73,7 +85,7 @@ public class ComplaintController {
      * @throws Exception
      */
     @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WsResponse<?>> createComplaint(@RequestPart("complaint") ApplicantComplaintLiteDto complaint,
+    public ResponseEntity<?> createComplaint(@RequestPart("complaint") ApplicantComplaintLiteDto complaint,
                                                          @RequestPart(value = "attachment", required = false) @SafeFile MultipartFile complaintAttachment, Authentication authentication) throws Exception {
         log.info("adding applicant complaint");
         // log.info(complaintAttachment.getContentType());
@@ -91,9 +103,18 @@ public class ComplaintController {
             builder.part("attachment", complaintAttachment.getResource());
         builder.part("complaint", complaintDto);
         WsResponse response = complaintService.createComplaint(builder);
-        return ResponseEntity.ok(
-                WsResponse.builder().status(response.getStatus())
-                        .body(response.getBody()).build());
+        return ResponseEntity.ok(response.getBody());
     }
 
+    /**
+     * Downloads applicant complaint attachment
+     *
+     * @param attachmentId data request Id
+     * @return WsResponse of  the saved complaint attachment
+     */
+    @GetMapping("/attachments/{attachmentId}")
+    public ResponseEntity<Resource> downloadAttachment(@PathVariable long attachmentId) throws Exception {
+        log.info("Downloading complaint attachment with id# {} ", attachmentId);
+        return ResponseEntity.ok(complaintService.downloadApplicantComplaintAttachment(attachmentId));
+    }
 }
