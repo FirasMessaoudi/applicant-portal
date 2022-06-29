@@ -17,8 +17,6 @@
         <thead>
         <tr>
           <th scope="col">{{'complaint-management.complaint_number' | translate}}</th>
-<!--          <th scope="col">{{'complaint-management.applicant_shaaer_id' | translate}}</th>-->
-          <th scope="col">{{'complaint-management.applicant_name' | translate}}</th>
           <th scope="col">{{'complaint-management.complaint_type' | translate}}</th>
           <th scope="col">{{'complaint-management.complaint_date' | translate}}</th>
           <th scope="col">{{'complaint-management.status' | translate}}</th>
@@ -34,9 +32,6 @@
         </tr>
         <tr *ngFor="let complaint of complaints">
           <td class="ltr">{{complaint.referenceNumber}}</td>
-<!--          <td class="ltr">{{complaint.applicantRitual?.applicant?.uin}}</td>-->
-          <td
-            class="ltr">{{currentLanguage?.startsWith('ar') ? complaint.applicantRitual?.applicant?.fullNameAr : complaint.applicantRitual?.applicant?.fullNameEn}}</td>
           <td
             class="ltr">{{complaint.typeCode ? lookupService().localizedLabel(complaintTypes, complaint.typeCode) : '---'}}</td>
           <td>{{formatDate(complaint?.creationDate)}}

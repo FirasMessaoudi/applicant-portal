@@ -17,8 +17,6 @@
         <thead>
         <tr>
           <th scope="col">{{'incident-management.incident_number' | translate}}</th>
-<!--          <th scope="col">{{'incident-management.applicant_shaaer_id' | translate}}</th>-->
-          <th scope="col">{{'incident-management.applicant_name' | translate}}</th>
           <th scope="col">{{'incident-management.incident_type' | translate}}</th>
           <th scope="col">{{'incident-management.incident_date' | translate}}</th>
           <th scope="col">{{'incident-management.status' | translate}}</th>
@@ -34,9 +32,6 @@
         </tr>
         <tr *ngFor="let incident of incidents">
           <td class="ltr">{{incident.referenceNumber}}</td>
-<!--          <td class="ltr">{{incident.applicantRitual?.applicant?.uin}}</td>-->
-          <td
-            class="ltr">{{currentLanguage?.startsWith('ar') ? incident.applicantRitual?.applicant?.fullNameAr : incident.applicantRitual?.applicant?.fullNameEn}}</td>
           <td
             class="ltr">{{incident.typeCode ? lookupService().localizedLabel(incidentTypes, incident.typeCode) : '---'}}</td>
           <td>{{formatDate(incident?.creationDate)}}
