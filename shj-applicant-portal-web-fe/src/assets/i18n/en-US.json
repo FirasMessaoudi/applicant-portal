@@ -330,6 +330,7 @@
     "incident_process_information": "Processing Information",
     "incident_process_text": "Processing text",
     "incident_process_date": "Processing date",
+    "attachments": "Attachments",
     "location": "Location Address",
     "incident_description": "Incident Description",
     "incident_creation": "Incident Creation",
@@ -337,7 +338,7 @@
     "processing_error": "Error occurred while processing Incident",
     "dialog_create_incident_success_text": "The incident created",
     "dialog_create_incident_confirmation_text": "Are you sure you want to create new incident?",
-    "incident_city": "city",
+    "incident_city": "City",
     "camp_number": "Camp Number"
   },
   "address": {
