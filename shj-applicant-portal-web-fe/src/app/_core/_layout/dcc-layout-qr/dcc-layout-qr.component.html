@@ -1,0 +1,236 @@
+<div class="flex-center-column">
+  <!-- <span class="lang-switch">
+    <button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('en')"
+      (click)="setLanguage('ar-SA')">
+      <span>عربي</span>
+    </button>
+    <button class="btn btn-md border btn-light px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
+      (click)="setLanguage('en-US')">
+      <span>English</span>
+    </button>
+  </span> -->
+<!-- CONTENT (ROUTER OUTLET) -->
+  <!-- <div class="row wrapper">
+    <div class="flex-center-column flex-grow-1">
+      <div class="z-index min-vw-100" [@scaleAnimation]="o.isActivated ? o.activatedRoute : ''">
+        <router-outlet #o="outlet" (activate)="onActivate($event)"></router-outlet>
+      </div>
+    </div>
+  </div> -->
+</div>
+
+<header class="header-qr border-bottom">
+
+  <div class="container flex-center-between py-4">
+    <div class="flex-center">
+      <a href="javascript:void(0)" [routerLink]="['/']">
+        <img src="assets/images/login_logo.png" class="logo-rq" alt="logo"/>
+      </a>
+    
+      <div class="d-flex ml-4 ml-lg-6">
+        <a href="index.html" target="_blank" class="h5 d-block mr-4 mr-lg-6 hover-animate">بوابة المستفيدين</a>
+        <a href="user-guide.pdf" target="_blank" class="h5 d-block mr-4 mr-lg-6 hover-animate">دليل المستخدم</a>
+      </div>
+    </div> 
+  
+    <span>
+      <button class="btn shadow-none px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('en')"
+        (click)="setLanguage('ar-SA')">
+        <span class="mr-2 d-none d-md-inline-block">عربي</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="23.676" height="23.673"  viewBox="0 0 23.673 23.673"><g data-name="Group 3593"><path data-name="Path 4965" d="M11.824 0a11.855 11.855 0 0 0-1.27.068 11.174 11.174 0 0 0-1.146.183l-.219.048a11.838 11.838 0 0 0-5.84 3.27q-.222.228-.435.469A11.851 11.851 0 0 0 20.3 20.134q.222-.228.435-.469A11.851 11.851 0 0 0 11.824 0ZM3.876 4.162c.062-.065.127-.127.191-.19s.147-.145.222-.215.134-.121.2-.181.152-.135.23-.2.139-.114.21-.17.158-.126.239-.187.145-.107.218-.158.164-.119.247-.173.15-.1.226-.148.169-.107.255-.158l.233-.136s.175-.1.263-.146l.24-.122a13.628 13.628 0 0 1 .515-.243l.281-.119.246-.1c.083-.034.192-.07.289-.1s.165-.058.249-.085.2-.061.3-.09c.083-.024.166-.049.25-.072l.1-.023a9.8 9.8 0 0 0-2.525 4.1A13.269 13.269 0 0 1 3.84 4.201Zm-.568.636a13.726 13.726 0 0 0 3 1.193 20.5 20.5 0 0 0-.8 5.465H.772a11.037 11.037 0 0 1 2.536-6.658Zm0 14.107a11.039 11.039 0 0 1-2.536-6.659h4.736a20.5 20.5 0 0 0 .8 5.465 13.735 13.735 0 0 0-3 1.194Zm5.666 3.633c-.08-.02-.162-.046-.245-.07-.1-.029-.2-.058-.3-.09a10.338 10.338 0 0 1-.248-.085c-.1-.034-.194-.068-.29-.1s-.163-.064-.245-.1l-.282-.119q-.121-.053-.241-.11l-.277-.134c-.079-.04-.158-.079-.237-.122s-.178-.1-.266-.147-.154-.089-.23-.135-.172-.106-.258-.161-.15-.1-.224-.146-.168-.116-.25-.175-.145-.1-.216-.158-.162-.125-.242-.189l-.208-.168c-.069-.057-.155-.134-.232-.2a6.79 6.79 0 0 1-.422-.395c-.073-.073-.128-.125-.191-.189l-.034-.037a13.259 13.259 0 0 1 2.707-1.042 9.8 9.8 0 0 0 2.525 4.1Zm2.455.344c-1.69-.24-3.172-2-4.1-4.61a20.076 20.076 0 0 1 4.1-.483v5.089Zm0-5.883a20.8 20.8 0 0 0-4.353.519 19.763 19.763 0 0 1-.776-5.272h5.13v4.752Zm0-5.542H6.3a19.759 19.759 0 0 1 .778-5.271 20.811 20.811 0 0 0 4.353.519Zm0-5.542a20.055 20.055 0 0 1-4.1-.483c.932-2.605 2.414-4.37 4.1-4.61v5.092Zm8.911-1.117a11.039 11.039 0 0 1 2.536 6.659h-4.737a20.5 20.5 0 0 0-.8-5.465 13.74 13.74 0 0 0 3.001-1.194Zm-5.669-3.633c.083.021.166.047.248.071.1.029.2.058.3.09.083.027.166.056.248.085.1.034.194.068.29.1s.163.064.245.1l.282.119q.121.053.241.11l.275.138c.079.04.158.079.237.122s.178.1.266.147.154.089.23.135.172.106.258.161.15.1.224.146.167.116.25.175.145.1.216.158.161.125.241.189l.208.168c.069.057.155.134.232.2s.135.119.2.179.149.143.222.216.128.125.191.189l.034.037A13.259 13.259 0 0 1 17.1 5.24a9.8 9.8 0 0 0-2.528-4.1ZM12.219.821c1.69.24 3.172 2 4.1 4.61a20.076 20.076 0 0 1-4.1.483V.821Zm0 5.883a20.8 20.8 0 0 0 4.353-.519 19.763 19.763 0 0 1 .778 5.271h-5.13Zm0 5.542h5.13a19.759 19.759 0 0 1-.778 5.271 20.811 20.811 0 0 0-4.353-.519Zm0 10.635v-5.092a20.055 20.055 0 0 1 4.1.483c-.928 2.606-2.41 4.369-4.1 4.606Zm7.553-3.341c-.062.064-.127.126-.19.189s-.147.145-.222.216-.133.119-.2.18-.153.136-.231.2l-.21.169c-.071.056-.158.126-.239.187s-.145.107-.218.158-.164.119-.247.173-.15.1-.226.148-.17.107-.256.158l-.232.136q-.131.075-.264.146l-.237.124a13.628 13.628 0 0 1-.515.243l-.285.121-.245.1a3.26 3.26 0 0 1-.29.1 9.018 9.018 0 0 1-.248.085c-.1.032-.2.061-.3.09l-.249.072-.1.023a9.8 9.8 0 0 0 2.525-4.1A13.269 13.269 0 0 1 19.8 19.5a.142.142 0 0 1-.028.041Zm.568-.636a13.726 13.726 0 0 0-3-1.193 20.5 20.5 0 0 0 .8-5.465h4.737a11.037 11.037 0 0 1-2.537 6.659Z" fill="#3b7937"/></g></svg>
+      </button>
+      <button class="btn shadow-none px-3 mt-4 mb-3" *ngIf="currentLanguage.startsWith('ar')"
+        (click)="setLanguage('en-US')">
+        <span class="mr-2 d-none d-md-inline-block">English</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"  viewBox="0 0 23.673 23.673"><g data-name="Group 3593"><path data-name="Path 4965" d="M11.824 0a11.855 11.855 0 0 0-1.27.068 11.174 11.174 0 0 0-1.146.183l-.219.048a11.838 11.838 0 0 0-5.84 3.27q-.222.228-.435.469A11.851 11.851 0 0 0 20.3 20.134q.222-.228.435-.469A11.851 11.851 0 0 0 11.824 0ZM3.876 4.162c.062-.065.127-.127.191-.19s.147-.145.222-.215.134-.121.2-.181.152-.135.23-.2.139-.114.21-.17.158-.126.239-.187.145-.107.218-.158.164-.119.247-.173.15-.1.226-.148.169-.107.255-.158l.233-.136s.175-.1.263-.146l.24-.122a13.628 13.628 0 0 1 .515-.243l.281-.119.246-.1c.083-.034.192-.07.289-.1s.165-.058.249-.085.2-.061.3-.09c.083-.024.166-.049.25-.072l.1-.023a9.8 9.8 0 0 0-2.525 4.1A13.269 13.269 0 0 1 3.84 4.201Zm-.568.636a13.726 13.726 0 0 0 3 1.193 20.5 20.5 0 0 0-.8 5.465H.772a11.037 11.037 0 0 1 2.536-6.658Zm0 14.107a11.039 11.039 0 0 1-2.536-6.659h4.736a20.5 20.5 0 0 0 .8 5.465 13.735 13.735 0 0 0-3 1.194Zm5.666 3.633c-.08-.02-.162-.046-.245-.07-.1-.029-.2-.058-.3-.09a10.338 10.338 0 0 1-.248-.085c-.1-.034-.194-.068-.29-.1s-.163-.064-.245-.1l-.282-.119q-.121-.053-.241-.11l-.277-.134c-.079-.04-.158-.079-.237-.122s-.178-.1-.266-.147-.154-.089-.23-.135-.172-.106-.258-.161-.15-.1-.224-.146-.168-.116-.25-.175-.145-.1-.216-.158-.162-.125-.242-.189l-.208-.168c-.069-.057-.155-.134-.232-.2a6.79 6.79 0 0 1-.422-.395c-.073-.073-.128-.125-.191-.189l-.034-.037a13.259 13.259 0 0 1 2.707-1.042 9.8 9.8 0 0 0 2.525 4.1Zm2.455.344c-1.69-.24-3.172-2-4.1-4.61a20.076 20.076 0 0 1 4.1-.483v5.089Zm0-5.883a20.8 20.8 0 0 0-4.353.519 19.763 19.763 0 0 1-.776-5.272h5.13v4.752Zm0-5.542H6.3a19.759 19.759 0 0 1 .778-5.271 20.811 20.811 0 0 0 4.353.519Zm0-5.542a20.055 20.055 0 0 1-4.1-.483c.932-2.605 2.414-4.37 4.1-4.61v5.092Zm8.911-1.117a11.039 11.039 0 0 1 2.536 6.659h-4.737a20.5 20.5 0 0 0-.8-5.465 13.74 13.74 0 0 0 3.001-1.194Zm-5.669-3.633c.083.021.166.047.248.071.1.029.2.058.3.09.083.027.166.056.248.085.1.034.194.068.29.1s.163.064.245.1l.282.119q.121.053.241.11l.275.138c.079.04.158.079.237.122s.178.1.266.147.154.089.23.135.172.106.258.161.15.1.224.146.167.116.25.175.145.1.216.158.161.125.241.189l.208.168c.069.057.155.134.232.2s.135.119.2.179.149.143.222.216.128.125.191.189l.034.037A13.259 13.259 0 0 1 17.1 5.24a9.8 9.8 0 0 0-2.528-4.1ZM12.219.821c1.69.24 3.172 2 4.1 4.61a20.076 20.076 0 0 1-4.1.483V.821Zm0 5.883a20.8 20.8 0 0 0 4.353-.519 19.763 19.763 0 0 1 .778 5.271h-5.13Zm0 5.542h5.13a19.759 19.759 0 0 1-.778 5.271 20.811 20.811 0 0 0-4.353-.519Zm0 10.635v-5.092a20.055 20.055 0 0 1 4.1.483c-.928 2.606-2.41 4.369-4.1 4.606Zm7.553-3.341c-.062.064-.127.126-.19.189s-.147.145-.222.216-.133.119-.2.18-.153.136-.231.2l-.21.169c-.071.056-.158.126-.239.187s-.145.107-.218.158-.164.119-.247.173-.15.1-.226.148-.17.107-.256.158l-.232.136q-.131.075-.264.146l-.237.124a13.628 13.628 0 0 1-.515.243l-.285.121-.245.1a3.26 3.26 0 0 1-.29.1 9.018 9.018 0 0 1-.248.085c-.1.032-.2.061-.3.09l-.249.072-.1.023a9.8 9.8 0 0 0 2.525-4.1A13.269 13.269 0 0 1 19.8 19.5a.142.142 0 0 1-.028.041Zm.568-.636a13.726 13.726 0 0 0-3-1.193 20.5 20.5 0 0 0 .8-5.465h4.737a11.037 11.037 0 0 1-2.537 6.659Z" fill="#3b7937"/></g></svg>
+      </button>
+    </span>
+  </div>
+
+</header>
+
+<main class="flex-shrink-0">
+  
+  <section class="banner-section"> 
+    <div class="container">   
+      <div class="banner-in">
+        <div class="row w-100"> 
+          <div class="col-md-8 col-lg-6 px-0 py-4">
+            <h2 class="Elm-fontb text-dark lh-lg mb-4 fs-1 fadeInRight animate delay">الحج بكل يسر وسهولة</h2>
+            <p class="lead mb-5 text-muted fs-4 fadeInRight animate delay1 ">
+              تطبيق الحج يمكنك من الوصول لمختلف الخدمات الرقمية لتسهيل رحلتك وأداء مناسكك بكل يسر و سهولة
+            </p>
+            <div class="fadeInRight animate delay2">
+              <h3 class="text-dcc-primary mb-4 Elm-fontb fs-4">تحميل تطبيق الحج</h3>
+              <!-- En -->
+              <div class="btn-wrap">
+                <a href="#" target="_blank" class="btn-store mr-3 hover-animate d-ltr mb-4">
+                  <img src="assets/images/google-play-top-en.png" alt="download Haj app from app store">
+                </a>
+                <a href="#" target="_blank" class="btn-store hover-animate d-ltr mb-4">
+                  <img src="assets/images/app-store-top-en.svg" alt="download Haj app from app store">
+                </a> 
+              </div>
+              <!-- Ar -->
+              <div class="btn-wrap">
+                <a href="#" target="_blank" class="btn-store mr-3 hover-animate d-rtl mb-4">
+                  <img src="assets/images/google-play-top-ar.png" alt="download Haj app from app store">
+                </a>
+                <a href="#" target="_blank" class="btn-store hover-animate  d-rtl mb-4">
+                  <img src="assets/images/app-store-top-ar.svg" alt="download Haj app from app store">
+                </a> 
+              </div>
+            </div> 
+          </div>
+        </div>  
+      </div>
+    </div>
+  </section>
+  
+  <section class="my-5 text-center py-5 home-features">
+    <div class="container">  
+      <h2 class="mb-5 Elm-fontb text-dark fs-2">مزايا تطبيق الحج</h2>
+      <div class="row g-lg-5">
+        <div class="col-md-4 mb-4">
+          <div class="align-items-center bg-white card-feature d-flex flex-md-column flex-row h-100 hover-animate2 justify-content-md-center p-4 p-xxl-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="222.955" height="171" viewBox="0 0 222.955 171"><defs><linearGradient id="a" x1=".5" y1="-.558" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset=".744" stop-color="#f6e198"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><g data-name="Group 3609" transform="translate(-1394.522 -1122)"><circle data-name="Ellipse 62" cx="85.5" cy="85.5" r="85.5" transform="translate(1394.522 1122)" opacity=".623" fill="url(#a)"/><path data-name="Path 4881" d="M1483.871 1231.24h40.634l2.406-2.169v-5.533l-4.895-9.143-11.05-5.816v-2.268l2.779-5.77v-11.819l-5.236-3.866-5.787-1.076-6.088 2.372-1.809 4.279-1.478 3.879v6.229l3.287 8.038-8.976 4.659-3.788 5.643-3.656 6v4.187Z" fill="#fff" stroke="#707070"/><g data-name="Group 3570"><g data-name="line icons" fill="#3b7937"><path data-name="Path 4868" d="M1605.328 1272.093h-131.611a12.163 12.163 0 0 1-12.15-12.143v-87.036a12.176 12.176 0 0 1 12.148-12.174h45.833a2.228 2.228 0 1 1 0 4.455h-45.831a7.718 7.718 0 0 0-7.7 7.72v87.036a7.7 7.7 0 0 0 7.7 7.7h131.611a7.7 7.7 0 0 0 7.7-7.7v-87.037a7.718 7.718 0 0 0-7.7-7.72h-45.831a2.228 2.228 0 0 1 0-4.455h45.831a12.177 12.177 0 0 1 12.15 12.174v87.036a12.163 12.163 0 0 1-12.15 12.143Z"/><path data-name="Path 4869" d="M1556.425 1173.774h-33.806a5.3 5.3 0 0 1-5.29-5.29v-18.288a5.3 5.3 0 0 1 5.29-5.29h33.806a5.3 5.3 0 0 1 5.29 5.29v18.288a5.3 5.3 0 0 1-5.29 5.29Zm-33.806-24.416a.837.837 0 0 0-.835.835v18.291a.837.837 0 0 0 .835.835h33.806a.837.837 0 0 0 .835-.835v-18.288a.837.837 0 0 0-.835-.835Z"/><path data-name="Path 4870" d="M1504.017 1209.089a13.642 13.642 0 1 1 13.642-13.644 13.642 13.642 0 0 1-13.642 13.644Zm0-22.83a9.188 9.188 0 1 0 9.188 9.188 9.188 9.188 0 0 0-9.188-9.188Z"/><path data-name="Path 4871" d="M1528.045 1232.48h-48.055a2.227 2.227 0 0 1-2.227-2.29 26.264 26.264 0 0 1 52.508 0 2.227 2.227 0 0 1-2.227 2.29Zm-45.655-4.453h43.249a21.812 21.812 0 0 0-43.245 0Z"/><path data-name="Path 4872" d="M1599.055 1189.287h-49.152a2.228 2.228 0 1 1 0-4.455h49.152a2.228 2.228 0 1 1 0 4.455Z"/><path data-name="Path 4873" d="M1599.055 1209.87h-49.152a2.228 2.228 0 1 1 0-4.455h49.152a2.228 2.228 0 1 1 0 4.455Z"/><path data-name="Path 4874" d="M1599.055 1230.452h-49.152a2.228 2.228 0 1 1 0-4.455h49.152a2.228 2.228 0 1 1 0 4.455Z"/><path data-name="Path 4875" d="M1599.056 1251.041h-119.065a2.228 2.228 0 1 1 0-4.455h119.065a2.228 2.228 0 1 1 0 4.455Z"/></g><path data-name="Path 4880" d="m1514.067 1207.5-31.567 21.959" fill="none" stroke="#4a773f" stroke-width="4"/></g></g></svg>
+            <h3 class="fs-4 mt-4">بطاقة الحاج الرقمية</h3>
+          </div>
+        </div> 
+        <div class="col-md-4 mb-4">
+          <div class="align-items-center bg-white card-feature d-flex flex-md-column flex-row h-100 hover-animate2 justify-content-md-center p-4 p-xxl-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="181.096" height="171" viewBox="0 0 181.096 171"><defs><linearGradient id="a" x1=".5" y1="-.558" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset=".744" stop-color="#f6e198"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><g data-name="Group 3611" transform="translate(-853 -1122)"><circle data-name="Ellipse 63" cx="85.5" cy="85.5" r="85.5" transform="translate(853 1122)" opacity=".623" fill="url(#a)"/><circle data-name="Ellipse 64" cx="25" cy="25" r="25" transform="translate(982 1222)" fill="#fff"/><g fill="#3b7937"><path data-name="Path 4856" d="M1023.664 1159.423h-10.433v-4.173a8.346 8.346 0 0 0-16.692 0v4.173h-16.693v-4.173a8.346 8.346 0 0 0-16.692 0v4.173h-16.692v-4.173a8.346 8.346 0 1 0-16.692 0v4.173h-10.433a10.433 10.433 0 0 0-10.433 10.433v83.462a10.433 10.433 0 0 0 10.433 10.433h58.423a2.087 2.087 0 1 0 0-4.173h-58.423a6.278 6.278 0 0 1-6.26-6.26v-64.683h116.847v35.469a2.087 2.087 0 0 0 4.173 0v-54.248a10.433 10.433 0 0 0-10.433-10.433Zm-22.952-4.173a4.173 4.173 0 0 1 8.346 0v12.519a4.173 4.173 0 0 1-8.346 0Zm-33.385 0a4.173 4.173 0 1 1 8.346 0v12.519a4.173 4.173 0 0 1-8.346 0Zm-33.385 0a4.173 4.173 0 1 1 8.346 0v12.519a4.173 4.173 0 1 1-8.346 0Zm95.982 29.212H913.077v-14.606a6.278 6.278 0 0 1 6.26-6.26h10.432v4.173a8.346 8.346 0 0 0 16.692 0v-4.173h16.693v4.173a8.346 8.346 0 0 0 16.692 0v-4.173h16.693v4.173a8.346 8.346 0 0 0 16.692 0v-4.173h10.433a6.278 6.278 0 0 1 6.26 6.26Z"/><path data-name="Path 4857" d="M967.327 1203.241a4.173 4.173 0 0 0-4.173-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173h8.346a4.173 4.173 0 0 0 4.173-4.173Zm-12.519 6.26v-6.26h8.346v6.26Z"/><path data-name="Path 4858" d="M942.288 1203.241a4.173 4.173 0 0 0-4.173-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173h8.346a4.173 4.173 0 0 0 4.173-4.173Zm-12.519 6.26v-6.26h8.346v6.26Z"/><path data-name="Path 4859" d="M1013.231 1213.674a4.173 4.173 0 0 0 4.173-4.173v-6.26a4.173 4.173 0 0 0-4.173-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173Zm-8.346-10.433h8.346v6.26h-8.346Z"/><path data-name="Path 4860" d="M967.327 1222.019a4.173 4.173 0 0 0-4.173-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173h8.346a4.173 4.173 0 0 0 4.173-4.173Zm-12.519 6.26v-6.26h8.346v6.26Z"/><path data-name="Path 4861" d="M942.288 1222.019a4.173 4.173 0 0 0-4.173-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173h8.346a4.173 4.173 0 0 0 4.173-4.173Zm-12.519 6.26v-6.26h8.346v6.26Z"/><path data-name="Path 4862" d="M963.154 1236.625h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173h8.346a4.173 4.173 0 0 0 4.173-4.173v-6.26a4.173 4.173 0 0 0-4.173-4.173Zm-8.346 10.433v-6.26h8.346v6.26Z"/><path data-name="Path 4863" d="M979.846 1213.674h8.346a4.173 4.173 0 0 0 4.173-4.173v-6.26a4.173 4.173 0 0 0-4.173-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173Zm0-10.433h8.346v6.26h-8.346Z"/><path data-name="Path 4864" d="M975.673 1228.279a4.173 4.173 0 0 0 4.173 4.173 2.087 2.087 0 1 0 0-4.173v-6.26h8.346a2.087 2.087 0 1 0 0-4.173h-8.346a4.173 4.173 0 0 0-4.173 4.173Z"/><path data-name="Path 4865" d="M938.115 1236.625h-8.346a4.173 4.173 0 0 0-4.173 4.173v6.26a4.173 4.173 0 0 0 4.173 4.173h8.346a4.173 4.173 0 0 0 4.173-4.173v-6.26a4.173 4.173 0 0 0-4.173-4.173Zm-8.346 10.433v-6.26h8.346v6.26Z"/><path data-name="Path 4866" d="M1006.971 1217.846a27.125 27.125 0 1 0 27.125 27.125 27.125 27.125 0 0 0-27.125-27.125Zm0 50.077a22.952 22.952 0 1 1 22.952-22.952 22.952 22.952 0 0 1-22.952 22.952Z"/><path data-name="Path 4867" d="m1019.028 1236.224-16.225 16.229-7.38-7.378a2.087 2.087 0 1 0-2.951 2.951l8.851 8.853a2.087 2.087 0 0 0 2.95 0l17.7-17.7a2.087 2.087 0 1 0-2.951-2.951Z"/></g></g></svg>
+            <h3 class="fs-4 mt-4">  جدول التفويج</h3>
+          </div>
+        </div> 
+        <div class="col-md-4 mb-4">
+          <div class="align-items-center bg-white card-feature d-flex flex-md-column flex-row h-100 hover-animate2 justify-content-md-center p-4 p-xxl-5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="201" height="171" viewBox="0 0 201 171"><defs><linearGradient id="a" x1=".5" y1="-.558" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset=".744" stop-color="#f6e198"/><stop offset="1" stop-color="#fff"/></linearGradient></defs><g data-name="Group 3610" transform="translate(-287 -1122)"><circle data-name="Ellipse 65" cx="85.5" cy="85.5" r="85.5" transform="translate(287 1122)" opacity=".623" fill="url(#a)"/><path data-name="Path 4882" d="M389.539 1220.085c.748-.49 8.325 2.216 11.525 10.132s0 12.135 0 12.135-10.454 23.14-12.9 24.941a28.3 28.3 0 0 1-5.183 2.946l-8.559-10.844-7.421-26.4s2.53-8.6 3.15-9.008 10-5.756 10-5.756l8.009 1.856Z" fill="#fff"/><g fill="#3b7937"><path data-name="Path 4876" d="M488 1270.233v-108.397a10.909 10.909 0 0 0-10.767-10.767h-30.476a19.1 19.1 0 0 0-37.988 0h-57A10.88 10.88 0 0 0 341 1161.836v108.4A10.779 10.779 0 0 0 351.767 1281h125.466c4.58 0 10.767-4.307 10.767-10.767Zm-45.567-42.76 41.26-42.6v83.862Zm-14.67-89.166a14.786 14.786 0 0 1 14.791 14.747c0 5.8-2.3 13.948-6 21.256-3.811 7.525-7.435 10.91-8.792 10.91-1.3 0-4.861-3.071-8.9-11.314-3.577-7.3-5.889-15.482-5.889-20.852a14.786 14.786 0 0 1 14.79-14.747Zm-82.456 23.529a6.421 6.421 0 0 1 .645-2.812l23.448 23.444-24.093 24.089Zm0 108.4v-35.385l38.235-38.236 80.078 80.079H351.767a6.467 6.467 0 0 1-6.46-6.46Zm131.927 6.46h-7.522l-84.647-84.649a2.154 2.154 0 0 0-3.045 0l-36.713 36.713v-16.112l28.657-28.657a2.153 2.153 0 0 0 0-3.045l-24.952-24.952a6.419 6.419 0 0 1 2.755-.618h12.478l62.182 62.181a2.154 2.154 0 0 0 3.06-.015l27.229-27.771c1.949-1.988-1.125-5-3.075-3.015l-25.706 26.218-57.6-57.6h38.434c.575 6.825 3.483 14.835 6.225 20.427 5.855 11.942 10.513 13.725 12.769 13.725 5.337 0 10.613-9.281 12.634-13.272 3.585-7.08 5.887-14.691 6.366-20.88h30.47a6.447 6.447 0 0 1 4.93 2.292l-19.98 20.377c-1.946 1.985 1.122 5.007 3.075 3.015l18.435-18.8v16.422L437.866 1226a2.153 2.153 0 0 0 .024 3.021l44.747 44.747a6.458 6.458 0 0 1-5.4 2.926Z"/><path data-name="Path 4877" d="M427.763 1163.629a10.075 10.075 0 1 0-10.055-10.075 10.076 10.076 0 0 0 10.055 10.075Zm0-15.843a5.768 5.768 0 1 1-5.748 5.768 5.765 5.765 0 0 1 5.748-5.768Z"/><path data-name="Path 4878" d="M401.403 1226.947c-1.242-2.492-5.1-.569-3.854 1.922a14.56 14.56 0 0 1 1.541 6.555c0 5.8-2.3 13.948-6 21.256-3.811 7.525-7.435 10.91-8.792 10.91-1.3 0-4.861-3.072-8.9-11.314-3.577-7.3-5.889-15.481-5.889-20.852a14.8 14.8 0 0 1 20.97-13.4c2.53 1.162 4.328-2.752 1.8-3.914a19.1 19.1 0 0 0-27.076 17.314c0 7.256 3.269 16.508 6.328 22.748 5.855 11.942 10.513 13.725 12.769 13.725 5.337 0 10.613-9.281 12.634-13.272 4.047-7.992 6.464-16.666 6.464-23.2a18.832 18.832 0 0 0-1.994-8.477Z"/><path data-name="Path 4879" d="M384.301 1225.849a10.075 10.075 0 1 0 10.055 10.075 10.076 10.076 0 0 0-10.055-10.075Zm0 15.843a5.768 5.768 0 1 1 5.748-5.768 5.765 5.765 0 0 1-5.748 5.768Z"/></g></g></svg>
+            <h3 class="fs-4 mt-4">خارطة المواقع الرئيسية</h3>
+          </div>
+        </div> 
+      </div>
+    </div>
+  </section>
+
+  <section class="home-mobile pb-5">
+    <div class="container">
+      <div class="d-flex-center mobile-in flex-column-reverse flex-md-row">
+        <div class="mobile-cover py-5">
+          <img src="assets/images/iphone.png" alt=""> 
+        </div> 
+        <h2 class="mb-5 Elm-fontb fs-2 lh-base px-xxl-5">
+          <span class="d-block">المناسك</span>
+          والخدمات الإسلامية
+        </h2>
+      </div> 
+    </div>
+  </section>
+
+  <section class="py-5 text-center home-good">
+    <div class="container py-4 py-xxl-5">  
+      <h2 class="mb-5 Elm-fontb fs-2">خصائص التطبيق</h2>
+      <div class="row g-lg-4">
+        <div class="col-6 col-md-4 col-lg-2 mb-5 mb-lg-4">
+          <div class="card-good d-flex-center flex-column hover-animate2 h-100 py-4">
+            <div class="icon-good">
+              <svg xmlns="http://www.w3.org/2000/svg" width="80.824" height="80.824" viewBox="0 0 80.824 80.824"><defs><linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset="1" stop-color="#f9e59c"/></linearGradient></defs><path data-name="Path 4952" d="M33.677 80.821a12.649 12.649 0 0 0 12.374-10.1H21.304a12.65 12.65 0 0 0 12.373 10.1Zm0 0" fill="#3b7937"/><path data-name="Path 4953" d="M59.19 48.818c-.088 0-.168.014-.256.014A26.9 26.9 0 0 1 37.045 6.243V3.367a3.368 3.368 0 0 0-6.736 0v3.638A23.589 23.589 0 0 0 10.1 30.309V39.7a22.581 22.581 0 0 1-8.039 17.284 5.893 5.893 0 0 0 3.832 10.37H61.46a5.891 5.891 0 0 0 3.8-10.4 22.594 22.594 0 0 1-6.07-8.136Zm0 0" fill="#3b7937"/><path data-name="Path 4954" d="M256.557 0a21.89 21.89 0 1 0 21.89 21.89A21.915 21.915 0 0 0 256.557 0Zm3.368 29.467a2.526 2.526 0 0 1-5.052 0V18.522h-1.683a2.526 2.526 0 0 1 0-5.052h4.21a2.527 2.527 0 0 1 2.526 2.53Zm0 0" transform="translate(-197.623)" fill="url(#a)"/></svg>
+            </div> 
+            <h4 class="Elm-fontb fs-4 text-dcc-primary mt-4">الاشعارات</h4>
+          </div>
+        </div> 
+
+        <div class="col-6 col-md-4 col-lg-2 mb-5 mb-lg-4">
+          <div class="card-good d-flex-center flex-column hover-animate2 h-100 py-4">
+            <div class="icon-good">
+              <svg xmlns="http://www.w3.org/2000/svg" width="87.601" height="79.045" viewBox="0 0 87.601 79.045"><defs><linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset="1" stop-color="#f9e59c"/></linearGradient></defs><path data-name="Path 4961" d="M43.776 7.269C24.681-9.431.4 5.242.005 25.135A25.83 25.83 0 0 0 4.28 39.694h18.882l3.358-5.6a2.566 2.566 0 0 1 4.366-.057l7.086 11.135L48.3 23.371a2.568 2.568 0 0 1 4.579-.118l8.854 16.441h21.539c15.956-24.937-15.578-53.346-39.5-32.426Z" fill="#3b7937"/><path data-name="Path 4962" d="m98.347 214.587-7.175-13.324-10.145 21.418a2.568 2.568 0 0 1-4.484.279l-7.351-11.552-1.97 3.283a2.566 2.566 0 0 1-2.2 1.246H48.746c.51.534-2.209-2.18 33.626 33.47a2.566 2.566 0 0 0 3.62 0c35.283-35.1 33.117-32.937 33.626-33.47h-19.012a2.565 2.565 0 0 1-2.259-1.35Z" transform="translate(-40.406 -171.109)" fill="url(#a)"/></svg>
+            </div> 
+            <h4 class="Elm-fontb fs-4 text-dcc-primary mt-4">المعلومات الصحية</h4>
+          </div>
+        </div> 
+
+        <div class="col-6 col-md-4 col-lg-2 mb-5 mb-lg-4">
+          <div class="card-good d-flex-center flex-column hover-animate2 h-100 py-4">
+            <div class="icon-good">
+              <svg xmlns="http://www.w3.org/2000/svg" width="75.15" height="75.148" viewBox="0 0 75.15 75.148"><defs><linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset="1" stop-color="#f9e59c"/></linearGradient></defs><g data-name="Group 3588"><g data-name="Group 3587"><path data-name="Path 4963" d="M30.969 22.751C13.974 22.751 0 34.436 0 48.803a24.263 24.263 0 0 0 6.312 16.1L.544 71.497A2.2 2.2 0 0 0 2.2 75.151h30.971c12.549 0 28.768-10.806 28.768-26.345 0-14.37-13.974-26.055-30.97-26.055ZM17.613 52.838a4.4 4.4 0 1 1 4.4-4.4 4.409 4.409 0 0 1-4.4 4.4Zm13.356 0a4.4 4.4 0 1 1 4.4-4.4 4.409 4.409 0 0 1-4.4 4.4Zm13.356 0a4.4 4.4 0 1 1 4.4-4.4 4.409 4.409 0 0 1-4.399 4.4Z" fill="#3b7937"/></g></g><g data-name="Group 3590"><g data-name="Group 3589"><path data-name="Path 4964" d="m179.208 44.806-5.184-6.048a21.87 21.87 0 0 0 5.715-14.534C179.739 10.87 166.9.006 151.118.006c-14.27 0-26.394 8.893-28.535 20.468a40.736 40.736 0 0 1 12.977-2.122c19.28 0 35.12 13.466 35.351 30.089h6.626a2.2 2.2 0 0 0 1.671-3.635Z" transform="translate(-104.591 -.006)" fill="url(#a)"/></g></g></svg>
+            </div> 
+            <h4 class="Elm-fontb fs-4 text-dcc-primary mt-4">المحادثة</h4>
+          </div>
+        </div> 
+        
+        <div class="col-6 col-md-4 col-lg-2 mb-5 mb-lg-4">
+          <div class="card-good d-flex-center flex-column hover-animate2 h-100 py-4">
+            <div class="icon-good">
+              <svg xmlns="http://www.w3.org/2000/svg" width="82.756" height="89.165" viewBox="0 0 82.756 89.165"><defs><linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset="1" stop-color="#f9e59c"/></linearGradient></defs><path data-name="Path 4942" d="M38.983 10.057a9.83 9.83 0 0 0-.243.715 2.747 2.747 0 1 0 5.277 1.528c.022-.076.069-.2.119-.338a6.957 6.957 0 0 0-.281-6.008 1.819 1.819 0 0 1 .021-2.063A2.748 2.748 0 1 0 38.88 1.6a7.136 7.136 0 0 0 .021 6.725 1.651 1.651 0 0 1 .082 1.732Z" fill="#3b7937"/><path data-name="Path 4943" d="M52.746 10.057a9.83 9.83 0 0 0-.243.715 2.746 2.746 0 1 0 5.276 1.528c.022-.076.069-.2.119-.338a6.957 6.957 0 0 0-.281-6.008 1.819 1.819 0 0 1 .021-2.063A2.748 2.748 0 1 0 52.643 1.6a7.136 7.136 0 0 0 .021 6.725 1.651 1.651 0 0 1 .082 1.732Z" fill="#3b7937"/><path data-name="Path 4944" d="M25.242 10.057a9.83 9.83 0 0 0-.243.715 2.746 2.746 0 1 0 5.276 1.528c.022-.076.069-.2.119-.338a6.957 6.957 0 0 0-.281-6.008 1.819 1.819 0 0 1 .021-2.063A2.747 2.747 0 1 0 25.14 1.6a7.137 7.137 0 0 0 .021 6.725 1.651 1.651 0 0 1 .081 1.732Z" fill="#3b7937"/><path data-name="Path 4945" d="M73.263 22.338a2.746 2.746 0 0 0-2.591-1.836H12.083a2.746 2.746 0 0 0-2.59 1.832L1.352 45.402h80.051Z" fill="#3b7937"/><path data-name="Path 4946" d="M-.002 50.895h82.756v7.69H-.002Z" fill="#3b7937"/><path data-name="Path 4947" d="M32.405 64.077h17.943v6.225H32.405Z" fill="#3b7937"/><path data-name="Path 4948" d="M79.357 350v8.971a2.746 2.746 0 0 1-2.746 2.746H53.176a2.746 2.746 0 0 1-2.746-2.746V350H24.863l8.144 23.245a2.746 2.746 0 0 0 2.592 1.838h58.588a2.746 2.746 0 0 0 2.592-1.838L104.923 350Z" transform="translate(-23.515 -285.923)" fill="url(#a)"/></svg>
+            </div> 
+            <h4 class="Elm-fontb fs-4 text-dcc-primary mt-4">عرض الوجبات</h4>
+          </div>
+        </div> 
+        
+        <div class="col-6 col-md-4 col-lg-2 mb-5 mb-lg-4">
+          <div class="card-good d-flex-center flex-column hover-animate2 h-100 py-4">
+            <div class="icon-good">
+              <svg xmlns="http://www.w3.org/2000/svg" width="85" height="65.682" viewBox="0 0 85 65.682"><defs><linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset="1" stop-color="#f9e59c"/></linearGradient></defs><path data-name="Path 4955" d="M71.508 34.772h11.593a1.933 1.933 0 0 0 0-3.864H71.508a1.933 1.933 0 0 0 0 3.864Z" fill="#3b7937"/><path data-name="Path 4956" d="M69.576 19.315a1.979 1.979 0 0 0 1.372-.56l5.8-5.8a1.926 1.926 0 1 0-2.724-2.724l-5.8 5.8a1.929 1.929 0 0 0 1.352 3.284Z" fill="#3b7937"/><path data-name="Path 4957" d="M74 55.467a1.927 1.927 0 0 0 2.724-2.724l-5.8-5.8a1.927 1.927 0 1 0-2.72 2.73Z" fill="#3b7937"/><path data-name="Path 4958" d="M44.998 58.655c.676.638 4.85 5.661 5.681 6.009a5.961 5.961 0 0 0 9.236-4.927V5.944a5.969 5.969 0 0 0-9.333-4.869c-2.995 2.609-6.3 7.343-9.526 9.661a37.441 37.441 0 0 1-21.718 8.521v27.167a39.868 39.868 0 0 1 8.405 1.449 37.421 37.421 0 0 1 17.255 10.782Z" fill="#3b7937"/><path data-name="Path 4959" d="M2.181 36.129a9.74 9.74 0 0 0 9.487 7.922h5.8V17h-5.8a9.665 9.665 0 0 0-9.661 9.661c.058 1.353-.154 8.29.174 9.468Z" transform="translate(-1.992 2.315)" fill="url(#a)"/><path data-name="Path 4960" d="M8.864 33.27A14.043 14.043 0 0 1 5 32.71v10.222c.193 7.632 11.4 7.652 11.593 0V33.27Z" transform="translate(.812 16.96)" fill="url(#a)"/></svg>
+            </div> 
+            <h4 class="Elm-fontb fs-4 text-dcc-primary mt-4">البلاغات والشكاوى </h4>
+          </div>
+        </div> 
+        
+        <div class="col-6 col-md-4 col-lg-2 mb-5 mb-lg-4">
+          <div class="card-good d-flex-center flex-column hover-animate2 h-100 py-4">
+            <div class="icon-good">
+              <svg xmlns="http://www.w3.org/2000/svg" width="88.133" height="88.133" viewBox="0 0 88.133 88.133"><defs><linearGradient id="a" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox"><stop offset="0" stop-color="#ceb063"/><stop offset="1" stop-color="#f9e59c"/></linearGradient></defs><path data-name="Path 4940" d="M15.492 18.576h9.123v9.123h-9.123Z" fill="#3b7937"/><path data-name="Path 4941" d="M80.387 0H7.746A7.755 7.755 0 0 0 0 7.746v56.8A7.755 7.755 0 0 0 7.746 72.3h22.481l11.81 14.861a2.582 2.582 0 0 0 4.043 0L57.891 72.3h22.5a7.755 7.755 0 0 0 7.746-7.746V7.746A7.755 7.755 0 0 0 80.387 0ZM28.94 46.059l-9.851 9.851a2.582 2.582 0 0 1-3.651 0l-4.353-4.353a2.582 2.582 0 0 1 3.651-3.651l2.528 2.527 8.026-8.026a2.582 2.582 0 1 1 3.651 3.651Zm.839-15.778a2.582 2.582 0 0 1-2.579 2.582H12.91a2.582 2.582 0 0 1-2.582-2.582V15.994a2.582 2.582 0 0 1 2.582-2.582H27.2a2.582 2.582 0 0 1 2.582 2.582ZM37.525 15.1h17.609a2.582 2.582 0 1 1 0 5.164H37.525a2.582 2.582 0 1 1 0-5.164Zm37.7 42.089h-37.7a2.582 2.582 0 0 1 0-5.164h37.7a2.582 2.582 0 0 1 0 5.164ZM34.943 43.707a2.582 2.582 0 0 1 2.582-2.582h17.609a2.582 2.582 0 1 1 0 5.164H37.525a2.582 2.582 0 0 1-2.582-2.582Zm40.28-12.536h-37.7a2.582 2.582 0 0 1 0-5.164h37.7a2.582 2.582 0 0 1 0 5.164Z" fill="url(#a)"/><g data-name="survey" fill="#3b7937"><path data-name="Path 4940" d="M15.492 18.576h9.123v9.123h-9.123Z"/><path data-name="Path 4941" d="M80.387 0H7.746A7.755 7.755 0 0 0 0 7.746v29.571c0-1.093 88.326-.116 88.133 0V7.746A7.755 7.755 0 0 0 80.387 0ZM29.779 30.281a2.582 2.582 0 0 1-2.579 2.582H12.91a2.582 2.582 0 0 1-2.582-2.582V15.994a2.582 2.582 0 0 1 2.582-2.582H27.2a2.582 2.582 0 0 1 2.582 2.582ZM37.525 15.1h17.609a2.582 2.582 0 1 1 0 5.164H37.525a2.582 2.582 0 1 1 0-5.164Zm37.7 16.067h-37.7a2.582 2.582 0 0 1 0-5.164h37.7a2.582 2.582 0 0 1 0 5.164Z"/></g></svg>
+            </div> 
+            <h4 class="Elm-fontb fs-4 text-dcc-primary mt-4">استبيان الرضا</h4>
+          </div>
+        </div> 
+        
+      </div>
+    </div>
+  </section>  
+	
+</main>
+
+<footer class="footer bg-dcc-primary"> 
+	<div class=" py-xxl-5 py-4 footer-top">
+		<div class="container d-flex-between flex-wrap"> 
+			<div class="footer-stor-right">
+				<h3 class="mb-5 text-white d-flex">
+          <span>تحميل تطبيق الحج </span>
+          <a class="text-dcc-light small bg-dcc-primary rounded-lg py-2 px-3 ml-3" href="javascript:void(0)"><u class="small">دليل المستخدم</u></a>
+        </h3>
+				<div class="d-flex-center align-items-start ">
+					<img src="assets/images/haj-app-icon.png" alt="haj app icon" class="mr-3">
+					<div class="d-flex align-items-center flex-column footer-store-icons">
+						<!-- En only-->
+						<a href="#" target="_blank" class="mb-3 hover-animate d-ltr">
+							<img src="assets/images/app-store-bottom-en.svg" alt="download Haj app from app store">
+						</a>
+						<a href="#" target="_blank" class="mb-3 hover-animate d-ltr">
+							<img src="assets/images/google-play-bottom-en.png" alt="download Haj app from play store">
+						</a>  
+						<!-- Ar only-->
+						<a href="#" target="_blank" class="mb-3 hover-animate d-rtl">
+							<img src="assets/images/app-store-bottom-ar.svg" alt="download Haj app from app store">
+						</a>
+						<a href="#" target="_blank" class="mb-3 hover-animate d-rtl">
+							<img src="assets/images/google-play-bottom-ar.png" alt="download Haj app from play store">
+						</a>  
+					</div>
+				</div> 
+			</div>
+			<div class="footer-alter-logo">
+				<a href="/" class="d-block">
+					<img src="assets/images/moha-logo-white.png" alt="moha-logo-white.png">
+				</a> 
+			</div>
+		</div>
+	</div>
+		
+	<div class="py-3 text-center footer-bottom">
+		<div class="container">
+			<p class="m-0 text-white"> جميع الحقوق محفوظة © 2022 </p> 
+		</div>
+	</div> 
+		
+</footer>
