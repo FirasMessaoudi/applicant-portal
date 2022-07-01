@@ -26,6 +26,30 @@
     "invalid": "القيمة التي أدخلتها غير صحيحة"
 
   },
+  "dcc-layout-qr" : {
+    "app_title" :"Haj App",
+    "beneficiaries_portal":"بوابة المستفيدين",
+    "language":"عربي",
+    "lang_toggle":"English",
+    "facilitate_your_journey":"الحج بكل يسر وسهولة",
+    "banner_message":" تطبيق الحج يمكنك من الوصول لمختلف الخدمات الرقمية لتسهيل رحلتك وأداء مناسكك بكل يسر و سهولة",
+    "download_the_hajj_app":"تحميل تطبيق الحج",
+    "hajj_app_features":"مزايا تطبيق الحج",
+    "digital_smart_card":"بطاقة الحاج الرقمية",
+    "tafweej_schedule":"جدول التفويج",
+    "key_locations_map":"خارطة المواقع الرئيسية",
+    "rituals":"المناسك",
+    "islamic_services":"ت الإسلامية المناسك",
+    "application_characteristics":"خصائص التطبيق",
+    "notifications":"الاشعارات",
+    "health_information":"المعلومات الصحية",
+    "conversation":"المحادثة",
+    "view_meals":"عرض الوجبات",
+    "reports_and_complaints":"البلاغات والشكاوى",
+    "satisfaction_survey":"استبيان الرضا",
+    "user_guide":"دليل المستخدم",
+    "all_rights_reserved":"جميع الحقوق محفوظة © 2022"
+  },
   "general": {
     "app_name": "تطبيق الحج",
     "app_title": "تطبيق الحج",
