@@ -5,6 +5,7 @@
 package com.elm.shj.applicant.portal.services.dto;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Dto class for applicant incident domain.
@@ -39,9 +39,11 @@ public class ApplicantComplaintDto implements Serializable {
     private String description;
     private Double locationLat;
     private Double locationLng;
+    @JsonIgnore
     private String resolutionComment;
     private String city;
     private String campNumber;
+    @JsonIgnore
     private String crmTicketNumber;
     private ComplaintAttachmentDto complaintAttachment;
     private Date creationDate;

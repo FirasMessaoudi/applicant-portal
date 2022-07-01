@@ -134,7 +134,7 @@ public class OtpAuthenticationProvider implements AuthenticationProvider {
         String maskedEmail = user.getEmail() == null ? null : user.getEmail().replaceAll("\\b(\\w{2})[^@]+@(\\w{2})\\S+(\\.[^\\s.]+)", "$1***@$2****$3");
 
         // return the Otp Token
-        return new OtpToken(true, otpService.getOtpExpiryMinutes(), String.valueOf(user.getUin()), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail);
+        return new OtpToken(true, otpService.getOtpExpiryMinutes(), String.valueOf(user.getUin()), user.getFullNameEn(), user.getFullNameAr(), maskedMobileNumber, maskedEmail, user.getUin());
     }
 
 

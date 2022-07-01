@@ -1,5 +1,5 @@
 import {ApplicantRitual} from "@model/applicant-ritual.model";
-// import {ComplaintAttachment} from "@model/complaint-attachment.model";
+import {ComplaintAttachment} from "@model/complaint-attachment.model";
 
 export class ApplicantComplaint {
   id: number;
@@ -11,7 +11,7 @@ export class ApplicantComplaint {
   locationLat: number;
   locationLng: number;
   resolutionComment: string;
-  // complaintAttachment: ComplaintAttachment;
+  complaintAttachment: ComplaintAttachment;
   creationDate: Date;
   updateDate: Date;
   areaCode: string;

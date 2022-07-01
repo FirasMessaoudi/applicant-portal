@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -82,6 +83,7 @@ public class IntegrationService {
     private final String SUPPORTED_LANGUAGES_LOOKUP = "/ws/language/list";
     private final String HOUSING_DETAILS_URL = "/ws/housing";
     private final String INCIDENT_LIST = "/ws/incident/list/";
+    private final String INCIDENT_FIND = "/ws/incidents/find/";
     private final String INCIDENT_TYPE_LOOKUP = "/ws/incident-type/list";
     private final String INCIDENT_STATUS_LOOKUP = "/ws/incident-status/list";
     private final String INCIDENT_DOWNLOAD = "/ws/incidents/attachment/";
@@ -1588,7 +1590,7 @@ public class IntegrationService {
         WsResponse<List<ApplicantComplaintDto>> wsResponse = null;
         try {
             wsResponse = callIntegrationWs(COMPLAINT_URL+"/applicant/list/" + applicantRitualId, HttpMethod.GET, null,
-                    new ParameterizedTypeReference<WsResponse<List<ApplicantComplaintDto>>>() {
+                    new ParameterizedTypeReference<WsResponse<List<ApplicantComplaintLiteDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to get complaints", e);
@@ -1598,6 +1600,68 @@ public class IntegrationService {
             return new ArrayList<>();
         }
         return wsResponse.getBody();
+    }
+
+    public ApplicantComplaintDto findComplaintById(Long id) {
+        WsResponse<ApplicantComplaintDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(COMPLAINT_URL+"/find/"+id, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantComplaintDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to retreive the complaint .", e);
+            return new ApplicantComplaintDto();
+        } catch (Exception e){
+            log.error("No complaint found", e);
+            return new ApplicantComplaintDto();
+        }
+        return wsResponse.getBody();
+    }
+
+    public Resource downloadApplicantComplaintAttachment(long attachmentId) {
+        try {
+            WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
+                    .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
+                    .retrieve().bodyToMono(WsResponse.class).block();
+            return webClient.method(HttpMethod.GET).uri(commandIntegrationUrl + COMPLAINT_URL+"/attachments/"+attachmentId)
+                    .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .body(null)
+                    .retrieve().bodyToMono(Resource.class).block();
+        } catch (Exception e){
+            log.error("No complaint file found", e);
+            return null;
+        }
+    }
+
+    public ApplicantIncidentDto findIncidentById(Long id) {
+        WsResponse<ApplicantIncidentDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(INCIDENT_FIND+id, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<ApplicantIncidentDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to retreive the complaint .", e);
+            return new ApplicantIncidentDto();
+        } catch (Exception e){
+            log.error("No complaint found", e);
+            return new ApplicantIncidentDto();
+        }
+        return wsResponse.getBody();
+    }
+
+    public Resource downloadApplicantIncidentAttachment(long attachmentId) {
+        try {
+            WsResponse<String> accessTokenWsResponse = webClient.post().uri(commandIntegrationUrl + COMMAND_INTEGRATION_AUTH_URL)
+                    .body(BodyInserters.fromValue(LoginRequestVo.builder().username(integrationAccessUsername).password(integrationAccessPassword).build()))
+                    .retrieve().bodyToMono(WsResponse.class).block();
+            return webClient.method(HttpMethod.GET).uri(commandIntegrationUrl + INCIDENT_DOWNLOAD+attachmentId)
+                    .headers(header -> header.setBearerAuth(accessTokenWsResponse.getBody()))
+                    .body(null)
+                    .retrieve().bodyToMono(Resource.class).block();
+        } catch (Exception e){
+            log.error("No complaint file found", e);
+            return null;
+        }
     }
 
     public WsResponse createComplaint(MultipartBodyBuilder builder) {

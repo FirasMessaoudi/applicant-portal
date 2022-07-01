@@ -5,27 +5,23 @@
 </nav>
 <div class="content__wrapper">
   <div class="title__Page mx-n3">
-    <h3 class="sectionTitle">{{"complaint-management.create_title" | translate }}</h3>
-  </div>
-  <div class="content__section" *ngIf="!canSeeAddUpdateComplaints">
-    {{'header.welcome' | translate}} <span
-    class="font-weight-bold text-dcc-primary">{{'general.app_name' | translate}}</span>
+    <h3 class="sectionTitle">{{"incident-management.create_title" | translate }}</h3>
   </div>
 
   <div class="content__section">
-    <form [formGroup]="complaintForm">
+    <form [formGroup]="incidentForm">
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
 
       <div class="form-group col">
-        <label class="col-form-label">{{"complaint-management.complaint_type" | translate }}<span class="text-danger small px-1">*</span></label>
+        <label class="col-form-label">{{"incident-management.incident_type" | translate }}<span class="text-danger small px-1">*</span></label>
         <div class="input-group flex-grow-1">
           <div class="setBox flex-grow-1" role="group">
             <select class="custom-select" formControlName="typeCode"
                     [class.is-invalid]="f.typeCode.invalid && f.typeCode.touched">
               <option value="" selected></option>
-              <option [ngValue]="complaintType.code" *ngFor="let complaintType of lookupService().localizedItemsByLang(complaintTypes)">
-                {{complaintType.label}}
+              <option [ngValue]="incidentType.code" *ngFor="let incidentType of lookupService().localizedItemsByLang(incidentTypes)">
+                {{incidentType.label}}
               </option>
             </select>
             <div *ngIf="f.typeCode.invalid && f.typeCode.touched" class="invalid-feedback">
@@ -37,14 +33,14 @@
         </div>
       </div>
       <div class="form-group col">
-        <label class="col-form-label">{{"complaint-management.complaint_city" | translate }}<span class="text-danger small px-1">*</span></label>
+        <label class="col-form-label">{{"incident-management.incident_city" | translate }}<span class="text-danger small px-1">*</span></label>
         <div class="input-group flex-grow-1">
           <div class="setBox flex-grow-1" role="group">
             <select class="custom-select" formControlName="city" (ngModelChange)="onCityChange($event)"
                     [class.is-invalid]="f.city.invalid && f.city.touched">
               <option value="" selected></option>
-              <option [ngValue]="complaintType.code" *ngFor="let complaintType of lookupService().localizedItemsByLang(cities)">
-                {{complaintType.label}}
+              <option [ngValue]="incidentType.code" *ngFor="let incidentType of lookupService().localizedItemsByLang(cities)">
+                {{incidentType.label}}
               </option>
             </select>
             <div *ngIf="f.city.invalid && f.city.touched" class="invalid-feedback">
@@ -56,7 +52,7 @@
         </div>
       </div>
       <div class="form-group col" *ngIf="f.city && f.city.value == 'HOLY_SITES'">
-        <label class="col-form-label">{{"complaint-management.camp_number" | translate }}<span class="text-danger small px-1">*</span></label>
+        <label class="col-form-label">{{"incident-management.camp_number" | translate }}<span class="text-danger small px-1">*</span></label>
         <div class="input-group">
           <input type="text" class="form-control" formControlName="campNumber" maxlength="40" [class.is-invalid]="f.campNumber.invalid && f.campNumber.touched" />
           <div *ngIf="f.campNumber.invalid && f.campNumber.touched" class="invalid-feedback">
@@ -73,7 +69,7 @@
 
     <div class="row rows-cols-1">
       <div class="form-group col">
-        <label class="col-form-label">{{"complaint-management.complaint_description" | translate }}<span class="text-danger small px-1">*</span></label>
+        <label class="col-form-label">{{"incident-management.incident_description" | translate }}<span class="text-danger small px-1">*</span></label>
         <textarea formControlName="description" class="form-control" rows="3" maxlength="500"
                   [class.is-invalid]="f.description.invalid && f.description.touched"></textarea>
         <div *ngIf="f.description.invalid && f.description.touched" class="invalid-feedback">

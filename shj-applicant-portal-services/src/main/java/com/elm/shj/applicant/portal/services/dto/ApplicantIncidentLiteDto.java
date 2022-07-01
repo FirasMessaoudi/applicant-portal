@@ -3,6 +3,7 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,11 +37,13 @@ public class ApplicantIncidentLiteDto implements Serializable {
     private String description;
     private Double locationLat;
     private Double locationLng;
+    @JsonIgnore
     private String resolutionComment;
     private String city;
     private String campNumber;
+    @JsonIgnore
     private String crmTicketNumber;
-    private List<IncidentAttachmentLiteDto> incidentAttachments;
+    private IncidentAttachmentLiteDto incidentAttachment;
     private String mobileNumber;
     private Date creationDate;
     private Date updateDate;
