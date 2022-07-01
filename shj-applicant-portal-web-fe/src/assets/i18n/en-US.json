@@ -27,7 +27,7 @@
   },
   "dcc-layout-qr" : {
     "app_title" :"Haj App",
-    "beneficiaries_portal":"Beneficiaries Portal",
+    "beneficiaries_portal":"Pilgrims Portal",
     "language":"English",
     "lang_toggle":"عربي",
     "facilitate_your_journey":"Facilitate Your Journey",
@@ -44,7 +44,7 @@
     "health_information":"Health information",
     "conversation":"Conversation",
     "view_meals":"View meals",
-    "reports_and_complaints":"Reports and complaints",
+    "reports_and_complaints":"Incidents and complaints",
     "satisfaction_survey":"Satisfaction survey ",
     "user_guide":"User's guide",
     "all_rights_reserved":"All rights reserved © 2022"
