@@ -40,7 +40,7 @@
 
     <div class="row row-cols-1 row-cols-md-2">
       <div class="mb-3 col">
-        <label>{{idFieldName()}}<span class="text-danger small px-1">*</span></label>
+        <label>{{applicantValidated? ("register.smart_id_number" | translate) : idFieldName()}}<span class="text-danger small px-1">*</span></label>
         <input id="uin" formControlName="uin" class="form-control" [readonly]="isApplicantVerified"
                onkeypress="return this.value.length < 30"
                min="0" step="1" [class.is-invalid]="f.uin.touched" maxlength="50"/>

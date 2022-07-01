@@ -30,7 +30,6 @@ import {LookupService} from '@app/_core/utilities/lookup.service';
 export class RegisterComponent implements OnInit, OnDestroy {
 
   model: NgbDateStruct;
-  isValid: boolean = true;
   error: string;
   registerForm: FormGroup;
   loading = false;
@@ -39,7 +38,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   _maxPickerDate: any;
 
   isApplicantVerified: boolean = false;
-  fullName: string;
+  applicantValidated: boolean = false;
   user: User;
   showSuccessPage: boolean = false;
   originalEmail: any;
@@ -52,7 +51,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild('termsCheckbox')
   termsCheckbox: ElementRef;
 
-  recaptcha: any = null;
 
   selectedDateOfBirth: NgbDateStruct;
   maxDateOfBirthGregorian: NgbDateStruct;
@@ -63,7 +61,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   selectedDateType: any;
   dateStructGreg: any;
   dateStructHijri: any;
-  applicantCountry: any;
   registerType = 'uin';
   uin: any;
   countries: CountryLookup[] = [];
@@ -293,9 +290,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.isApplicantVerified = false;
+    this.applicantValidated = false;
     let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
     let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
-    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin.value, gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
+    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin?.value.trim(), gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
       if (response && response.digitalIds.length > 0) {
         this.user = response;
         console.log(response.digitalIds[0].uin);
@@ -342,6 +340,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
         }
         this.isApplicantVerified = true;
+        this.applicantValidated = true;
         this.registerForm.markAsUntouched();
 
       } else {
