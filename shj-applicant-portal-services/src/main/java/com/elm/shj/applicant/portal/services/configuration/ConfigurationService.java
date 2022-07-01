@@ -39,8 +39,14 @@ public class ConfigurationService {
     @Value("${user.location.tracking.enabled}")
     private String userLocationTrackingEnabled;
 
-    @Value("${emergency.phone.number}")
-    private String emergencyPhoneNumber;
+    @Value("${medical.emergency.phone.number}")
+    private String medicalEmergencyPhoneNumber;
+    @Value("${security.emergency.phone.number}")
+    private String securityEmergencyPhoneNumber;
+    @Value("$mohu.emergency.phone.number}")
+    private String mohuEmergencyPhoneNumber;
+    @Value("${holy.mosque.emergency.phone.number}")
+    private String holyMosqueEmergencyPhoneNumber;
 
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
@@ -49,6 +55,9 @@ public class ConfigurationService {
         configList.add(getGoogleMapKeyConfig());
         configList.add(getUserLocationTrackingEnabled());
         configList.add(getEmergencyPhoneNumber());
+        configList.add(getSecurityEmergencyPhoneNumber());
+        configList.add(getMohuEmergencyPhoneNumber());
+        configList.add(getHolyMosqueEmergencyPhoneNumber());
         return configList;
     }
 
@@ -79,7 +88,28 @@ public class ConfigurationService {
     } public ConfigDto getEmergencyPhoneNumber(){
         ConfigDto config = new ConfigDto();
         config.setConfKey("emergency.phone.number");
-        config.setConfValue(String.valueOf(emergencyPhoneNumber));
+        config.setConfValue(String.valueOf(medicalEmergencyPhoneNumber));
+        return config;
+    }
+
+    public ConfigDto getSecurityEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("medical.emergency.phone.number");
+        config.setConfValue(String.valueOf(securityEmergencyPhoneNumber));
+        return config;
+    }
+
+    public ConfigDto getMohuEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("mohu.emergency.phone.number");
+        config.setConfValue(String.valueOf(mohuEmergencyPhoneNumber));
+        return config;
+    }
+
+    public ConfigDto getHolyMosqueEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("holy.mosque.emergency.phone.number");
+        config.setConfValue(String.valueOf(holyMosqueEmergencyPhoneNumber));
         return config;
     }
 
