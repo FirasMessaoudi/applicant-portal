@@ -32,7 +32,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   url: any = 'assets/images/default-avatar.svg';
   applicantStatuses: Lookup[] = [];
   applicantPackage: ApplicantPackageDetails = null;
-  loading = true
+  loading = false
   ritualTypes: Lookup[] = [];
   housingCategories: Lookup[];
   housingTypes: Lookup[];
@@ -241,6 +241,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.loading = true;
+    this.loading = false;
   }
 }
