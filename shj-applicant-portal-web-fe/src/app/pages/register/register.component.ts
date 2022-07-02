@@ -291,8 +291,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.isApplicantVerified = false;
     this.applicantValidated = false;
-    let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
-    let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
+    let gregorianDate = this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd');
+    let hijriDate = this.registerForm?.controls.dateOfBirthHijri.value;
     this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin?.value.trim(), gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
       if (response && response.digitalIds.length > 0) {
         this.user = response;
@@ -357,6 +357,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       if (error.status == 560) {
         this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
       } else if (error.status == 561) {
+        this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
+      }else if (error.status == 561) {
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
       } else {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));

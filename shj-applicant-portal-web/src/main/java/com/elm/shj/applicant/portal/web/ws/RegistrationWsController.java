@@ -44,6 +44,8 @@ public class RegistrationWsController {
     private final UserService userService;
     private final OtpService otpService;
     private final IntegrationService integrationService;
+    private static final int INVALID_DATE_OF_BIRTH = 564;
+    private static final int INVALID_DATE_OF_BIRTH_COMMAND = 139;
 
 
     @PostMapping("/verify")
@@ -66,15 +68,20 @@ public class RegistrationWsController {
         }
 
         ApplicantLiteDto userFromAdminPortal = userService.verify(command);
-        if (userFromAdminPortal == null) {
+        if (userFromAdminPortal == null ) {
 
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.NOT_FOUND_IN_ADMIN.getCode()).referenceNumber(command.getIdentifier()).build()).build());
 
+        } else if ( userFromAdminPortal.getApplicantVerifyStatus() != null && userFromAdminPortal.getApplicantVerifyStatus() == INVALID_DATE_OF_BIRTH_COMMAND) {
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
+                            .body(WsError.builder().error(INVALID_DATE_OF_BIRTH).referenceNumber(command.getIdentifier()).build()).build());
+        } else {
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(userFromAdminPortal).build());
         }
-        return ResponseEntity.ok(
-                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(userFromAdminPortal).build());
 
     }
 
