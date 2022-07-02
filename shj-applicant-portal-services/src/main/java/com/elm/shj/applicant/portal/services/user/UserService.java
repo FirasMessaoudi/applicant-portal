@@ -4,6 +4,7 @@
 package com.elm.shj.applicant.portal.services.user;
 
 import com.elm.dcc.foundation.providers.email.service.EmailService;
+import com.elm.dcc.foundation.providers.filescan.model.FileScanInfo;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
@@ -54,6 +55,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public static final String RESET_PASSWORD_EMAIL_SUBJECT = "Reset User Password إعادة تعيين كلمة السر";
     private static final long APPLICANT_ROLE_ID = 1L;
     private static final String DEFFAULT_HISTORY_PASSWORD = "$2a$10$A81/FuMFJWcxaJhUcL8isuVeKKa.hk7GVzTVTyf7xe/XoMVWuKckK";
+    private static final int INVALID_DATE_OF_BIRTH = 139;
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -471,7 +473,11 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         } catch (Exception ex) {
             return null;
         }
-        if (WsResponse.EWsResponseStatus.FAILURE.getCode() == wsResponse.getStatus()) {
+        if (wsResponse.getStatus() == INVALID_DATE_OF_BIRTH) {
+            ApplicantLiteDto applicantLiteDto = new ApplicantLiteDto();
+            applicantLiteDto.setApplicantVerifyStatus(INVALID_DATE_OF_BIRTH);
+            return applicantLiteDto;
+        } else if (WsResponse.EWsResponseStatus.FAILURE.getCode() == wsResponse.getStatus()) {
             return null;
         } else {
             return wsResponse.getBody();

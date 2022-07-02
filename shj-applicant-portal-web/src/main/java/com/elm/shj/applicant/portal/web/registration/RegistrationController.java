@@ -44,6 +44,8 @@ public class RegistrationController {
     private static final int USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE = 561;
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
     private static final int UPDATE_FAILED_IN_ADMIN_PORTAL = 563;
+    private static final int INVALID_DATE_OF_BIRTH = 564;
+    private static final int INVALID_DATE_OF_BIRTH_COMMAND = 139;
 
 
     @PostMapping
@@ -84,10 +86,13 @@ public class RegistrationController {
         }
 
         ApplicantLiteDto userFromAdminPortal = userService.verify(command);
-        if (userFromAdminPortal == null) {
+        if (userFromAdminPortal == null && userFromAdminPortal.getApplicantVerifyStatus() == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
+        } else if (userFromAdminPortal == null && userFromAdminPortal.getApplicantVerifyStatus() == INVALID_DATE_OF_BIRTH_COMMAND) {
+            return ResponseEntity.status(INVALID_DATE_OF_BIRTH).body(null);
+        } else {
+            return ResponseEntity.ok(userFromAdminPortal);
         }
-        return ResponseEntity.ok(userFromAdminPortal);
     }
 
 

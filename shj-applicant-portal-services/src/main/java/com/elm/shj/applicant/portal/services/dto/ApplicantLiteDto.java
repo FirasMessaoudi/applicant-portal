@@ -38,4 +38,5 @@ public class ApplicantLiteDto implements Serializable {
     private String countryCode;
     private String gender;
     private String nationalityCode;
+    private Integer applicantVerifyStatus;
 }
