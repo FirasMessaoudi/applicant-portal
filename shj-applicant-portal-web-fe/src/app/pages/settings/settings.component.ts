@@ -379,7 +379,7 @@ export class SettingsComponent implements OnInit {
 
 
       this.emergencyData.emergencyContactName = this.emergencyDataForm.controls['emergencyContactName'].value;
-      this.emergencyData.emergencyContactMobileNumber = this.emergencyDataSelectedCountryPrefix+ this.emergencyDataForm.controls['emergencyContactMobileNumber'].value.replace(reg1, "").replace(reg3, "");
+      this.emergencyData.emergencyContactMobileNumber = this.emergencyDataForm.controls['emergencyContactMobileNumber'].value;
 
         if (this.emergencyData?.emergencyContactName?.trim() === '' || this.emergencyData?.emergencyContactMobileNumber?.trim() === '') {
           this.toastr.warning(this.translate.instant("emergency_data.update_fail_empty"), this.translate.instant("general.dialog_error_text"));
