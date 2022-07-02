@@ -44,7 +44,8 @@ public class RegistrationWsController {
     private final UserService userService;
     private final OtpService otpService;
     private final IntegrationService integrationService;
-
+    private static final int INVALID_DATE_OF_BIRTH = 564;
+    private static final int INVALID_DATE_OF_BIRTH_COMMAND = 139;
 
     @PostMapping("/verify")
     public ResponseEntity<WsResponse<?>> verify(@RequestBody ValidateApplicantCmd command) {
