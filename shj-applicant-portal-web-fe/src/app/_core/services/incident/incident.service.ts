@@ -1,25 +1,21 @@
 import {Injectable} from "@angular/core";
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpEvent,
   HttpHeaders,
-  HttpParams,
-  HttpRequest,
-  HttpResponse
+  HttpRequest
 } from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Lookup} from "@model/lookup.model";
 import {catchError} from "rxjs/internal/operators";
 import {ApplicantIncident} from "@model/applicant-incident.model";
-import {CookieService} from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class IncidentService {
 
-  constructor(private http: HttpClient, private cookieService: CookieService) {
+  constructor(private http: HttpClient) {
   }
 
   /**

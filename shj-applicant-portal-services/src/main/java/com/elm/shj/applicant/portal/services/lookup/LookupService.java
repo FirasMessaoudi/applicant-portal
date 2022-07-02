@@ -35,6 +35,7 @@ public class LookupService {
     private List<RelativeRelationshipLookupDto> relativeRelationships;
     private List<MaritalStatusLookupDto> maritalStatuses;
     private List<CountryLookupDto> countries;
+    private List<NationalityLookupDto> nationalities;
     private List<HealthSpecialNeedsTypeLookupDto> healthSpecialNeeds;
     private List<HousingCategoryLookupDto> housingCategories;
     private List<HousingTypeLookupDto> housingTypes;
@@ -70,6 +71,7 @@ public class LookupService {
         this.relativeRelationships = integrationService.loadRelativeRelationships();
         this.maritalStatuses = integrationService.loadMaritalStatuses();
         this.countries = integrationService.loadCountries();
+        this.nationalities = integrationService.loadNationalities();
         this.healthSpecialNeeds = integrationService.loadSpecialNeedsTypes();
         this.ritualSteps = integrationService.loadRitualSteps();
         this.staffTitles = integrationService.loadCompanyStaffTitles();
@@ -113,6 +115,10 @@ public class LookupService {
 
     public List<CountryLookupDto> retrieveCountries() {
         return this.countries;
+    }
+
+    public List<NationalityLookupDto> retrieveNationalities() {
+        return this.nationalities;
     }
 
     public List<HealthSpecialNeedsTypeLookupDto> retrieveHealthSpecialNeedsTypes() {

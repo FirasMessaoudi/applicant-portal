@@ -46,6 +46,7 @@ public class IntegrationService {
     private final String RELATIVE_RELATIONSHIPS_LOOKUP_URL = "/ws/relative-relationship/list";
     private final String MARITAL_STATUS_LOOKUP_URL = "/ws/marital-status/list";
     private final String COUNTRIES_LOOKUP_URL = "/ws/country/list";
+    private final String NATIONALITIES_LOOKUP_URL = "/ws/nationality/list";
     private final String HEALTH_SPECIAL_NEEDS_LOOKUP_URL = "/ws/health-special-needs/list";
     private final String RITUAL_SEASON_URL = "/ws/find/ritual-seasons";
     private final String RITUAL_LITE_URL = "/ws/find/ritual-lite";
@@ -278,10 +279,25 @@ public class IntegrationService {
      * @return
      */
     public List<CountryLookupDto> loadCountries() {
-        WsResponse<List<CountryLookupDto>> wsResponse = null;
+        //TODO: should be updated to countries and countries should be updated to nationalities
+        WsResponse<List<CountryLookupDto>> wsResponse;
         try {
             wsResponse = callIntegrationWs(COUNTRIES_LOOKUP_URL, HttpMethod.GET, null,
                     new ParameterizedTypeReference<WsResponse<List<CountryLookupDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load card statuses.", e);
+            return Collections.emptyList();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<NationalityLookupDto> loadNationalities() {
+        //TODO: should be updated to countries and countries should be updated to nationalities
+        WsResponse<List<NationalityLookupDto>> wsResponse;
+        try {
+            wsResponse = callIntegrationWs(NATIONALITIES_LOOKUP_URL, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<NationalityLookupDto>>>() {
                     });
         } catch (WsAuthenticationException e) {
             log.error("Cannot authenticate to load card statuses.", e);
