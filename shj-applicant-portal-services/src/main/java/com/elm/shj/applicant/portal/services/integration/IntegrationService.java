@@ -106,6 +106,8 @@ public class IntegrationService {
     private final String COMPLAINT_STATUSES_LOOKUP_URL = "/ws/complaint-sts/list";
     private final String COMPLAINT_TYPES_LOOKUP_URL = "/ws/complaint-types/list";
     private final String CITY_LOOKUP_URL = "/ws/city/list";
+    private final String CHAT_BOT_ITEM_LIST_URL = "/ws/chatbot-items/list";
+
 
 
     private final String BADGE_URL = "/ws/badge";
@@ -1691,5 +1693,22 @@ public class IntegrationService {
             return null;
         }
         return wsResponse;
+    }
+
+    public  List<ChatBotItemDto> findAllChatBotItems(String lang) {
+        WsResponse<List<ChatBotItemDto>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(CHAT_BOT_ITEM_LIST_URL+"/" + lang, HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<ChatBotItemDto>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to get chat bot items", e);
+            return Collections.emptyList();
+        }
+        if (wsResponse == null) {
+            log.info("chat bot item not found for lang .. {}", lang);
+            return new ArrayList<>();
+        }
+        return wsResponse.getBody();
     }
 }
