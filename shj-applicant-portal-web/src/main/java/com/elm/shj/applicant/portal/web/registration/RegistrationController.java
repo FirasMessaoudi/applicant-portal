@@ -17,7 +17,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +49,7 @@ public class RegistrationController {
 
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam String pin) throws JSONException {
+    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam String pin) {
 
         if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
             return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
