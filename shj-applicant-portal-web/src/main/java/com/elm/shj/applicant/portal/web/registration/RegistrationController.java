@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,7 +75,7 @@ public class RegistrationController {
 
     @PostMapping("/verify")
     public ResponseEntity<ApplicantLiteDto> verify(@RequestBody ValidateApplicantCmd command) {
-        Optional<UserDto> userInApplicantPortal = null;
+        Optional<UserDto> userInApplicantPortal = Optional.empty();
         if (command.getType().equals("uin"))
             userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
         if (command.getType().equals("passport"))
@@ -84,11 +85,10 @@ public class RegistrationController {
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-
         ApplicantLiteDto userFromAdminPortal = userService.verify(command);
-        if (userFromAdminPortal == null || userFromAdminPortal.getApplicantVerifyStatus() == null) {
+        if (userFromAdminPortal == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
-        } else if (userFromAdminPortal == null && userFromAdminPortal.getApplicantVerifyStatus() == INVALID_DATE_OF_BIRTH_COMMAND) {
+        } else if ( userFromAdminPortal.getApplicantVerifyStatus() != null && userFromAdminPortal.getApplicantVerifyStatus() == INVALID_DATE_OF_BIRTH_COMMAND) {
             return ResponseEntity.status(INVALID_DATE_OF_BIRTH).body(null);
         } else {
             return ResponseEntity.ok(userFromAdminPortal);
