@@ -86,7 +86,7 @@ public class RegistrationController {
         }
 
         ApplicantLiteDto userFromAdminPortal = userService.verify(command);
-        if (userFromAdminPortal == null && userFromAdminPortal.getApplicantVerifyStatus() == null) {
+        if (userFromAdminPortal == null || userFromAdminPortal.getApplicantVerifyStatus() == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
         } else if (userFromAdminPortal == null && userFromAdminPortal.getApplicantVerifyStatus() == INVALID_DATE_OF_BIRTH_COMMAND) {
             return ResponseEntity.status(INVALID_DATE_OF_BIRTH).body(null);
