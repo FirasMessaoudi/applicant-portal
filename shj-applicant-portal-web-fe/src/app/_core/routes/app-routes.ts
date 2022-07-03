@@ -30,5 +30,9 @@ export const APP_ROUTES: Routes = [
   {
     path: 'notifications',
     loadChildren: () => import('@pages/notifications/notifications.module').then(m => m.NotificationsModule)
+  },
+  {
+    path: 'rating',
+    loadChildren: () => import('@pages/rating/rating.module').then(m => m.RatingModule)
   }
 ];
