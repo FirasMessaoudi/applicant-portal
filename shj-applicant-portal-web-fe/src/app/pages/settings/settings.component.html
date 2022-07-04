@@ -25,13 +25,8 @@
             <label for="inputEmail">{{ "general.language" | translate }}</label>
             <div class="input-group flex-grow-1">
                 <div class="setBox flex-grow-1" role="group">
-                    <select class="custom-select" (change)="selectedLanguage = $event.target.value">
-                      <option value="ar-SA" [selected]="selectedLanguage.startsWith('ar')">
-                        العربية
-                      </option>
-                      <option value="en-US" [selected]="selectedLanguage.startsWith('en')">
-                        English
-                      </option>
+                    <select class="custom-select" [formControl]="selectedLang">
+                      <option *ngFor="let lang of localizedSupportedLanguages" [value]="lang.lang"> {{lang.label}}  </option>
                     </select>
                 </div>
             </div>

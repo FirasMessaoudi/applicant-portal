@@ -3,7 +3,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {finalize} from 'rxjs/operators';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
-import {I18nService} from "@dcc-commons-ng/services";
 import {ReCaptcha2Component, ReCaptchaV3Service} from "ngx-captcha";
 import {environment} from "@env/environment";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -14,6 +13,7 @@ import {LookupService} from "@core/utilities/lookup.service";
 import {CardService, UserService} from "@core/services";
 import { CountryLookup } from '@app/_shared/model/country-lookup.model';
 import {ToastService} from "@shared/components/toast";
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 
 @Component({
@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
               private formBuilder: FormBuilder,
-              private i18nService: I18nService,
+              private i18nService: CustomI18nService,
               private route: ActivatedRoute,
               private router: Router,
               private reCaptchaV3Service: ReCaptchaV3Service,
@@ -178,7 +178,7 @@ export class LoginComponent implements OnInit {
     //TODO:remove this second filtration when we have other supported languages
       //this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => (item.lang.toLowerCase() === "ar" || item.lang.toLowerCase() === "en"));
       this.selectedLang = new Lookup();
-      this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.startsWith('ar') ? "ar" : "en"));
+      this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.slice(0, 2)));
       this.setLanguage(this.selectedLang.lang.toLowerCase());
     });
 

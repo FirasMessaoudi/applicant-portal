@@ -5,6 +5,7 @@ import {SettingsComponent} from './settings.component';
 import {TranslateModule} from "@ngx-translate/core";
 import {SharedModule} from "@shared/shared.module";
 import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import {NgbDropdownModule} from "@ng-bootstrap/ng-bootstrap";
     SettingsRoutingModule,
     TranslateModule,
     NgbDropdownModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   declarations: [SettingsComponent]
 })

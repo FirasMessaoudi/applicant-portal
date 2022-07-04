@@ -4,12 +4,11 @@ import {AuthenticationService, CardService, UserService} from "@core/services";
 import {LookupService} from "@core/utilities/lookup.service";
 import {ToastService} from "@shared/components/toast";
 import {TranslateService} from "@ngx-translate/core";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {DccValidators} from "@shared/validators";
 import {UserContacts} from "@model/UserContacts.model";
 import {Router} from "@angular/router";
 import {User} from "@shared/model";
-import {I18nService} from "@dcc-commons-ng/services";
 import {merge, Observable, Subject} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {ApplicantRitualLite} from "@model/applicant-ritual-lite.model";
@@ -19,6 +18,7 @@ import {NotificationService} from '@app/_core/services/notification/notification
 import {NotificationCategory} from '@app/_shared/model/notification-category.model';
 import {UserNotificationCategoryPreference} from '@app/_shared/model/user-notification-category-preference.model';
 import {EmergencyData} from "@model/emergency-data.model";
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 @Component({
   selector: 'app-settings',
@@ -31,12 +31,14 @@ export class SettingsComponent implements OnInit {
   selectedSeason: number;
   selectedApplicantRitualPackage: ApplicantRitualLite;
   ritualTypes: Lookup[] = [];
+  supportedLanguages: Lookup[];
+  localizedSupportedLanguages: Lookup[];
+
   notificationsList: any[] = [];
   notificationsListLookup: any[] = [];
   notificationsListPreference: UserNotificationCategoryPreference[] = [];
   preferenceIsLoaded: boolean = false;
   enableEditLanguage = false;
-  selectedLanguage = "";
   contactsForm: FormGroup;
   originalEmail: any;
   originalMobileNo: any;
@@ -57,7 +59,6 @@ export class SettingsComponent implements OnInit {
   countryListDropdown2: NgbDropdown;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
-
   emergencyDataForm: FormGroup;
   emergencyDataOriginalContactName: any;
   emergencyDataOriginalMobileNo: any;
@@ -67,6 +68,7 @@ export class SettingsComponent implements OnInit {
   emergencyDataSelectedCountryPrefix='+966';
   emergencyDataSelectedCountryNamePrefix='SA';
   emergencyData: EmergencyData = new EmergencyData();
+  selectedLang = new FormControl('');
 
   /*   notificationsList = [
       {
@@ -115,7 +117,7 @@ export class SettingsComponent implements OnInit {
   constructor(private modalService: NgbModal,
               private userService: UserService,
               private cardService: CardService,
-              private i18nService: I18nService,
+              private i18nService: CustomI18nService,
               private toastr: ToastService,
               private formBuilder: FormBuilder,
               private translate: TranslateService,
@@ -131,7 +133,6 @@ export class SettingsComponent implements OnInit {
 
     this.loadLookups();
     this.loadUserNotificationCategory();
-    this.selectedLanguage = this.currentLanguage;
     this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
       if (data && data.id) {
         this.contactsForm.controls['email'].setValue(data.email);
@@ -189,9 +190,9 @@ export class SettingsComponent implements OnInit {
 
   updateUserLanguage() {
     this.enableEditLanguage = true;
-    if (this.selectedLanguage != "" && this.selectedLanguage != this.currentLanguage) {
-      this.setLanguage(this.selectedLanguage);
-      this.userService.updatePreferredLang(this.selectedLanguage?.startsWith('ar') ? "ar" : "en", this.authenticationService.currentUser.principal).subscribe(response => {
+    if (this.selectedLang.value != "" && this.selectedLang.value != this.currentLanguage.slice(0,2)) {
+      this.setLanguage(this.selectedLang.value);
+      this.userService.updatePreferredLang(this.selectedLang.value, this.authenticationService.currentUser.principal).subscribe(response => {
         if (response && response.errors) {
           this.toastr.warning(this.translate.instant("general.dialog_error_text"), this.translate.instant("general.dialog_edit_title"));
         } else {
@@ -220,6 +221,11 @@ export class SettingsComponent implements OnInit {
     this.cardService.findCountries().subscribe(result => {
       result.forEach(c => c.countryPhonePrefix = '+' + c.countryPhonePrefix);
       this.countries = result;
+    });
+    this.authenticationService.findSupportedLanguages().subscribe(result => {
+      this.localizedSupportedLanguages = result.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
+      const savedLanguage = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage?.slice(0,2)));
+      this.selectedLang.setValue(savedLanguage.lang);
     });
   }
 
@@ -450,4 +456,5 @@ export class SettingsComponent implements OnInit {
       }
     });
   }
+
 }

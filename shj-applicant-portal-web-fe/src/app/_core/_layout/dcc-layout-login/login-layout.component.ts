@@ -1,4 +1,7 @@
 import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
+import { TranslateService } from '@ngx-translate/core';
 import {$animations} from '@shared/animate/animate.animations';
 
 @Component({
@@ -14,7 +17,18 @@ export class LoginLayoutComponent implements OnInit {
   sideBtnKey: string = 'general.btn_more';
   childComponent: any;
 
-  constructor() { }
+  constructor(private i18nService: CustomI18nService, private titleService: Title, private translate: TranslateService) {  
+    this.setLanguage();
+    this.titleService.setTitle(this.translate.instant('general.app_title'));
+  }
+
+  setLanguage() {
+    this.i18nService.language = this.currentLanguage;
+  }
+
+  get currentLanguage(): string {
+    return this.i18nService.language;
+  }
 
   ngOnInit() {
   }

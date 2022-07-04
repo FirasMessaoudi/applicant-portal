@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnDestroy, OnInit, ViewChildren, ViewEncapsula
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
-import {I18nService} from "@dcc-commons-ng/services";
 import {finalize} from "rxjs/operators";
 import {Subscription} from "rxjs";
 import {Location} from "@angular/common";
@@ -11,6 +10,7 @@ import {RegisterService, UserService} from "@core/services";
 import {ToastService} from "@shared/components/toast";
 import {UserContacts} from "@model/UserContacts.model";
 import {OtpStorage} from "@pages/otp/otp.storage";
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -38,7 +38,7 @@ export class OtpComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private i18nService: I18nService,
+    private i18nService: CustomI18nService,
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,

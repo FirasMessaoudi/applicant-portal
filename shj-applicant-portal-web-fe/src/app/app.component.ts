@@ -4,8 +4,8 @@ import { Router, ResolveStart, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { SwUpdate } from '@angular/service-worker';
-import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
+import { CustomI18nService } from './_core/utilities/custom-i18n.service';
 
 @Component({
   selector: 'body',
@@ -24,7 +24,6 @@ import {environment} from "@env/environment";
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Shaaer';
-
   rippleInitListener: any;
   rippleMouseDownListener: any;
 
@@ -35,13 +34,12 @@ export class AppComponent implements OnInit, OnDestroy {
     public zone: NgZone,
     private router: Router,
     private swUpdate: SwUpdate,
-    private i18nService: I18nService
+    private i18nService: CustomI18nService
   ) { }
 
   ngOnInit() {
 
     this.zone.runOutsideAngular(() => { this.bindRipple(); });
-
 
     // Setup translations
     this.i18nService.init(environment.defaultLanguage, environment.supportedLanguages);
