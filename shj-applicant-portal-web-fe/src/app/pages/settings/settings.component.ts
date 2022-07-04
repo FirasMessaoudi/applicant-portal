@@ -224,6 +224,8 @@ export class SettingsComponent implements OnInit {
     });
     this.authenticationService.findSupportedLanguages().subscribe(result => {
       this.localizedSupportedLanguages = result.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
+      //TODO:remove this second filtration when we support the urdu language
+      this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => item.code !== 'UR');
       const savedLanguage = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage?.slice(0,2)));
       this.selectedLang.setValue(savedLanguage.lang);
     });

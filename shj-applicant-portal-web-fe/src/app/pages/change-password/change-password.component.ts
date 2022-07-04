@@ -59,8 +59,8 @@ export class ChangePasswordComponent implements OnInit {
     this.authenticationService.findSupportedLanguages().subscribe(result => {
       this.supportedLanguages = result;
       this.localizedSupportedLanguages = this.supportedLanguages.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
-      //TODO:remove this second filtration when we have other supported languages
-      // this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => (item.lang.toLowerCase() === "ar" || item.lang.toLowerCase() === "en"));
+      //TODO:remove this second filtration when we support the urdu language
+      this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => item.code !== 'UR');
       this.selectedLang = new Lookup();
       this.selectedLang = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage.slice(0,2)));
       this.setLanguage(this.selectedLang.lang.toLowerCase());
