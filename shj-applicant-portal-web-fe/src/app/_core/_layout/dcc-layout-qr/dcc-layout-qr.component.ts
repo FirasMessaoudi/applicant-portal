@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {$animations} from "@shared/animate/animate.animations";
-import {I18nService} from "@dcc-commons-ng/services";
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 @Component({
   selector: 'app-dcc-layout-qr',
@@ -13,7 +13,7 @@ export class DccLayoutQrComponent implements OnInit {
   sideBtnKey: string = 'general.btn_more';
   childComponent: any;
 
-  constructor(private i18nService: I18nService) { }
+  constructor(private i18nService: CustomI18nService) { }
 
   ngOnInit() {
   }
@@ -32,7 +32,7 @@ export class DccLayoutQrComponent implements OnInit {
       // common action to be done here
     }
   }
-  
+
   get currentLanguage(): string {
     return this.i18nService.language;
   }

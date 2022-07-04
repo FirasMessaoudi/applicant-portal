@@ -39,7 +39,7 @@
     "tafweej_schedule":"جدول التفويج",
     "key_locations_map":"خارطة المواقع الرئيسية",
     "rituals":"المناسك",
-    "islamic_services":"ت الإسلامية المناسك",
+    "islamic_services":"الخدمات الإسلامية",
     "application_characteristics":"خصائص التطبيق",
     "notifications":"الاشعارات",
     "health_information":"المعلومات الصحية",
@@ -48,6 +48,8 @@
     "reports_and_complaints":"البلاغات والشكاوى",
     "satisfaction_survey":"استبيان الرضا",
     "user_guide":"دليل المستخدم",
+    "awareness_guide":"الدليل التوعوي",
+    "ethrai_platfrom":"منصة إثرائي",
     "all_rights_reserved":"جميع الحقوق محفوظة © 2022"
   },
   "general": {
