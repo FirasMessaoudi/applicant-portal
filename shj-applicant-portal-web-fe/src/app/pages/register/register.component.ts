@@ -2,7 +2,6 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} 
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
-import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
 import {NgbDateStruct, NgbDropdown, NgbModal, NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 import {InvisibleReCaptchaComponent} from "ngx-captcha";
@@ -21,6 +20,7 @@ import {CountryLookup} from "@model/country-lookup.model";
 import {merge, Observable, Subject, Subscription} from "rxjs";
 import {filter, map} from "rxjs/operators";
 import {LookupService} from '@app/_core/utilities/lookup.service';
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private i18nService: I18nService,
+    private i18nService: CustomI18nService,
     private router: Router,
     private authenticationService: AuthenticationService,
     private registerService: RegisterService,
@@ -255,7 +255,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private createForm() {
 
     this.registerForm = this.formBuilder.group({
-      uin: [''],
+      uin: ['', Validators.required],
       fullNameEn: {disabled: true},
       fullNameAr: {disabled: true},
       dateOfBirthGregorian: ['', Validators.required],
