@@ -667,5 +667,14 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
     public String findMobileNumber(long loggedInUserId) {
         return userRepository.findMobileNumber(loggedInUserId);
     }
+
+    public List<BadgeVO> findApplicantBadges(String loggedInUserUin) {
+        return integrationService.findApplicantBadges(loggedInUserUin);
+    }
+
+    public ApplicantHealthBasicDto updateHealth(ApplicantHealthBasicDto applicantHealthBasicDto) {
+        return integrationService.updateApplicantHealth(applicantHealthBasicDto);
+    }
+
 }
 

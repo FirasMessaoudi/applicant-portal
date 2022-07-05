@@ -21,7 +21,7 @@ import java.io.Serializable;
 public class ApplicantHealthDiseaseLiteDto implements Serializable {
 
     private static final long serialVersionUID = -7681170162543116274L;
-
+    private Long id;
     private String labelAr;
     private String labelEn;
 }

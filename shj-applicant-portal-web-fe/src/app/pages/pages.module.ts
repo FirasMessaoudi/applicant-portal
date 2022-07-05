@@ -14,7 +14,7 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
   declarations: [
     ...fromPages.pages,
     ModalContentComponent
-    
+
   ],
     imports: [
         CommonModule,

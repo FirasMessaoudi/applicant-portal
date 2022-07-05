@@ -145,7 +145,8 @@
     "main": "Main",
     "language": "Language",
     "no-data-found": " No Data Found",
-    "nationality": "Nationality"
+    "nationality": "Nationality",
+    "update_health": "Update Health Profile"
   },
   "header": {
     "welcome": "Welcome",

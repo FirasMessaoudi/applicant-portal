@@ -8,9 +8,7 @@ import * as moment_ from 'moment-hijri';
 
 const moment = momentjs;
 
-
 const momentHijri = moment_;
-
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -22,10 +20,10 @@ export class HijriGregorianDatepickerComponent implements OnInit {
 
   @ViewChild('d') datePicker: any;
 
-
   @Input() selectedDateType: DateType;
   @Input() selectedDate: NgbDateStruct;
   @Output() selectedDateChange: EventEmitter<NgbDateStruct> = new EventEmitter();
+  @Output() selectedDateTypeChange: EventEmitter<DateType> = new EventEmitter();
 
   @Input() name: string;
 
@@ -48,11 +46,13 @@ export class HijriGregorianDatepickerComponent implements OnInit {
 
   @Input() placeHolder: string;
 
+  @Input() hideToggleButton = false;
+
   get DateType() {
     return DateType;
   }
 
-  constructor( private dateFormatterService: DateFormatterService) { }
+  constructor(private dateFormatterService: DateFormatterService) { }
 
   ngOnInit() {
     if (!this.selectedDateType) {
@@ -62,6 +62,14 @@ export class HijriGregorianDatepickerComponent implements OnInit {
 
   close() {
     this.datePicker.close();
+  }
+
+  onBlur(event){
+    if(!this.selectedDate && this.isRequired){
+      this.selectedDate = undefined;
+      this.selectedDateChange.emit(null);
+    }
+
   }
 
   clear() {
@@ -94,6 +102,7 @@ export class HijriGregorianDatepickerComponent implements OnInit {
     //to hijri
     this.selectedDate = this.dateFormatterService.toHijri(this.selectedDate);
     this.selectedDateChange.emit(this.selectedDate);
+    this.selectedDateTypeChange.emit(this.selectedDateType);
   }
   gregClick() {
     if (this.selectedDateType == DateType.Gregorian) {
@@ -103,5 +112,6 @@ export class HijriGregorianDatepickerComponent implements OnInit {
     //to Gregorian
     this.selectedDate = this.dateFormatterService.toGregorian(this.selectedDate);
     this.selectedDateChange.emit(this.selectedDate);
+    this.selectedDateTypeChange.emit(this.selectedDateType);
   }
 }

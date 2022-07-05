@@ -146,7 +146,9 @@
     "main": "الرئيسية",
     "language": "اللغة",
     "no-data-found": " لا توجد بيانات",
-    "nationality": "الجنسية"
+    "nationality": "الجنسية",
+    "update_health": "تحديث بيانات الصحة"
+
   },
   "header": {
     "welcome": "مرحبا",

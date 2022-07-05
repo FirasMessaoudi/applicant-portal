@@ -106,6 +106,7 @@ public class IntegrationService {
     private final String COMPLAINT_STATUSES_LOOKUP_URL = "/ws/complaint-sts/list";
     private final String COMPLAINT_TYPES_LOOKUP_URL = "/ws/complaint-types/list";
     private final String CITY_LOOKUP_URL = "/ws/city/list";
+    private final String UPDATE_HEALTH = "/ws/applicant/update-health-profile";
     private final String CHAT_BOT_ITEM_LIST_URL = "/ws/chatbot-items/list";
 
 
@@ -1708,6 +1709,36 @@ public class IntegrationService {
         if (wsResponse == null) {
             log.info("chat bot item not found for lang .. {}", lang);
             return new ArrayList<>();
+        }
+        return wsResponse.getBody();
+    }
+
+    public List<BadgeVO> findApplicantBadges(String loggedInUserUin) {
+        WsResponse<List<BadgeVO>> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(BADGE_URL + "/applicant/frontback/"+loggedInUserUin,
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<WsResponse<List<BadgeVO>>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to update applicant chat contact", e);
+            return null;
+        }
+        if(wsResponse!=null) {
+            return wsResponse.getBody();
+        }
+        return null;
+    }
+
+    public ApplicantHealthBasicDto updateApplicantHealth(ApplicantHealthBasicDto applicantHealthBasicDto) {
+        WsResponse<ApplicantHealthBasicDto> wsResponse = null;
+        try {
+            wsResponse = callIntegrationWs(UPDATE_HEALTH, HttpMethod.PUT, applicantHealthBasicDto,
+                    new ParameterizedTypeReference<WsResponse<ApplicantHealthBasicDto>>() {
+                    });
+        } catch (WsAuthenticationException e) {
+            log.error("Cannot authenticate to load applicant health details.", e);
+            return null;
         }
         return wsResponse.getBody();
     }

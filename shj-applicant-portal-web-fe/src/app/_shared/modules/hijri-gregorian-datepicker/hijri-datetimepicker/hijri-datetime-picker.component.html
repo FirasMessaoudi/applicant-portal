@@ -1,0 +1,45 @@
+<div class="input-group">
+<input
+  class="form-control hijriInput" appNgbDatepickerI18nTitle
+  [(ngModel)]="selectedDate"
+  [placeholder]="placeHolder ? placeHolder : 'DD/MM/YYYY HH:MM'"
+  ngbDatepicker
+  (click)="d.toggle()"
+  (dateSelect)="onDateChange($event)"
+  #d="ngbDatepicker"
+  [readonly]="readonly"
+  [minDate]="min"
+  [maxDate]="max"
+  [required]="isRequired"
+  [name]="name"
+  (blur)="onBlur()"
+  autoClose="autoClose"
+  [footerTemplate]="footerTemplate"
+  [disabled]="disabled">
+<!--
+<input
+  [placeholder]="placeHolder ? placeHolder : 'DD/MM/YYYY HH:MM'"
+  class="form-control m-0"
+  (blur)="inputBlur($event)"
+  [ngModel]="date | date: inputDatetimeFormat"
+  (change)="onInputChange($event)"
+  [disabled]="disabled"
+  [readonly]="readonly"
+  (click)="toggle()"
+>-->
+</div>
+
+<ng-template #footerTemplate>
+  <ngb-timepicker
+    class="ngb-dt"
+    [seconds]="false"
+    name="timepicker"
+    [(ngModel)]="timeStruct"
+    (ngModelChange)="onTimeChange($event)"
+  ></ngb-timepicker>
+  <hr class="my-0">
+  <button class="btn btn-dcc-primary-outline btn-sm m-2 float-right" type="button"
+          (click)="d.close()">{{'general.btn_close'| translate}}</button>
+  <button class="btn btn-dcc-primary btn-sm m-2 float-left" type="button"
+          (click)="clear()">{{'general.btn_clear'| translate}}</button>
+</ng-template>

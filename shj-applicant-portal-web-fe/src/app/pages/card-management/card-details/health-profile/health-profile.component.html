@@ -1,0 +1,241 @@
+<section>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <div class="form-group col-6">
+      <label class="col-form-label">
+        {{"card-management.blood_type" | translate}}
+        <svg-icon styleClass="fa-w-20 h4" icon="edit" (click)="editBloodType()"></svg-icon>
+      </label>
+      <ng-container *ngIf="!bloodTypeEditMode">
+        <span class="form-control-plaintext">{{updatedHealthProfile?.bloodType}}</span>
+      </ng-container>
+      <ng-container *ngIf="bloodTypeEditMode">
+        <form [formGroup]="bloodTypeEditForm">
+          <div class="form-group">
+            <select formControlName="bloodType" class="form-control-sm ml-auto mr-1 mr-lg-3 mr-md-2">
+              <option [ngValue]="null" selected>{{"general.select_option" | translate}}</option>
+              <option *ngFor="let bloodType of bloodTypes" [ngValue]="bloodType.code">
+                {{bloodType.code}}
+              </option>
+            </select>
+            <svg-icon styleClass="fa-w-15 h3 ml-auto mr-1 mr-lg-3 mr-md-2" icon="check-circle" (click)="saveBloodType()"
+                      style="color: green"></svg-icon>
+            <svg-icon styleClass="fa-w-15 h3" icon="empty-set"
+                      (click)="cancelEditBloodType()" style="color: red"></svg-icon>
+          </div>
+        </form>
+      </ng-container>
+      <label class="col-form-label">{{"card-management.special_needs_assistance_needed" | translate}}</label>
+      <span class="form-control-plaintext"
+            *ngIf="updatedHealthProfile?.specialNeeds && updatedHealthProfile?.specialNeeds?.length > 0; else elseBlock">{{ "general.label_yes" | translate }}</span>
+      <ng-template #elseBlock>
+        <span class="form-control-plaintext">{{ "general.label_no" | translate }}</span>
+      </ng-template>
+    </div>
+
+    <div class="form-group col-6">
+      <label class="col-form-label">{{"card-management.have_chronic_diseases" | translate}}</label>
+      <span class="form-control-plaintext"
+            *ngIf="updatedHealthProfile?.diseases && updatedHealthProfile?.diseases?.length > 0; else elseBlock">{{ "general.label_yes" | translate }}</span>
+      <ng-template #elseBlock>
+        <span class="form-control-plaintext">{{ "general.label_no" | translate }}</span>
+      </ng-template>
+      <label class="col-form-label">{{"card-management.vaccinated" | translate}}</label>
+      <span class="form-control-plaintext"
+            *ngIf="updatedHealthProfile?.immunizations && updatedHealthProfile?.immunizations?.length > 0; else elseBlock">{{ "general.label_yes" | translate }}</span>
+      <ng-template #elseBlock>
+        <span class="form-control-plaintext">{{ "general.label_no" | translate }}</span>
+      </ng-template>
+    </div>
+  </div>
+</section>
+<hr class="my-4 w-100"/>
+<section>
+  <span class="form-control-plaintext">
+    {{"card-management.vaccinations" | translate}}
+    <svg-icon styleClass="fa-w-20 h6" icon="plus" (click)="addImmunization()"></svg-icon>
+  </span>
+  <div class="table-responsive my-4">
+    <table class="table table-striped table-hover">
+      <thead>
+      <tr>
+        <th scope="col">
+          {{ "card-management.vaccination_name" | translate }}
+        </th>
+        <th scope="col">
+          {{ "card-management.vaccination_date" | translate }}
+        </th>
+        <th scope="col" class="text-center">
+          {{'general.actions' | translate}}
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngIf="immunizationAddMode">
+        <td colspan="2">
+          <form [formGroup]="immunizationAddForm">
+            <div class="row">
+              <div class="col">
+                <select formControlName="immunizationCode" class="custom-select"
+                        [class.is-invalid]="fImmune.immunizationCode.invalid && fImmune.immunizationCode.touched">
+                  <option [ngValue]="null" selected>{{"general.select_option" | translate}}</option>
+                  <option *ngFor="let vaccine of allowedVaccines" [ngValue]="vaccine.code">
+                    {{ vaccine.code ? lookupService().localizedLabel(immunizations, vaccine.code) : '---'}}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <hijri-gregorian-datepicker [showLabel]="false" ngDefaultControl
+                                            placeHolder="DD/MM/YYYY"
+                                            name="vaccineDate"
+                                            formControlName="immunizationDate"
+                                            buttonClass="dcc-primary"
+                                            class="datepicker {{fImmune.immunizationDate.invalid && fImmune.immunizationDate.touched ? 'is-invalid' : ''}}"
+                                            [isRequired]="true"
+                                            [maxGreg]="maxVaccineDateGregorian"
+                                            [maxHijri]="maxVaccineDateHijri"
+                                            [GregLabel]="'general.cal_greg' | translate"
+                                            [hijriLabel]="'general.cal_hijri' | translate"
+                                            [selectedDateType]="selectedDateType"
+                                            [readonly]="true"
+                                            [hideToggleButton]="true"
+                                            (selectedDateChange)="onVaccineDateChange($event)"
+                                            #datePicker>
+                </hijri-gregorian-datepicker>
+              </div>
+            </div>
+          </form>
+        </td>
+        <td class="text-center" width="20%" style="vertical-align: middle">
+          <div class="text-nowrap">
+            <svg-icon styleClass="fa-w-15 h3 ml-auto mr-1 mr-lg-3 mr-md-2" icon="check-circle"
+                      (click)="saveImmunization()" style="color: green"></svg-icon>
+            <svg-icon styleClass="fa-w-15 h3" icon="empty-set"
+                      (click)="cancelImmunizationAdd()" style="color: red"></svg-icon>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="!updatedHealthProfile?.immunizations || updatedHealthProfile?.immunizations.length <= 0">
+        <td class="text-center" colspan="3">
+          <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+          <p class="text-light-gray mb-3">{{ "general.table_empty_text" | translate }}</p>
+        </td>
+      </tr>
+      <ng-container *ngIf="updatedHealthProfile?.immunizations && updatedHealthProfile?.immunizations.length > 0">
+        <tr *ngFor="let immunization of updatedHealthProfile?.immunizations">
+          <td
+            class="ltr">{{ immunization.immunizationCode ? lookupService().localizedLabel(immunizations, immunization.immunizationCode) : '---'}}</td>
+          <td class="ltr">{{ immunization.immunizationDate | gregorianDateFormat }}</td>
+          <td class="text-center" width="20%" style="text-align:center">
+            <div class="text-nowrap">
+              <svg-icon styleClass="fa-w-15 h5" icon="trash-alt"
+                        (click)="deleteImmunization(immunization.immunizationCode)"></svg-icon>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+  </div>
+</section>
+<hr class="my-4 w-100"/>
+<section>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+    <div class="form-group col-6">
+      <span class="form-control-plaintext">
+        {{"card-management.special_needs" | translate}}
+        <svg-icon styleClass="fa-w-20 h6" icon="plus" (click)="addSpecialNeed()"></svg-icon>
+      </span>
+      <div class="table-responsive my-4">
+        <table class="table table-striped table-hover">
+          <tr *ngIf="specialNeedAddMode">
+            <td>
+              <form [formGroup]="specialNeedAddForm">
+                <div class="form-group">
+                  <select formControlName="specialNeedTypeCode" class="custom-select"
+                          [class.is-invalid]="fSpecialNeed.specialNeedTypeCode.invalid && fSpecialNeed.specialNeedTypeCode.touched">
+                    <option [ngValue]="null" selected>{{"general.select_option" | translate}}</option>
+                    <option *ngFor="let specialNeed of allowedSpecialNeeds" [ngValue]="specialNeed.code">
+                      {{ specialNeed.code ? lookupService().localizedLabel(healthSpecialNeeds, specialNeed.code) : ''}}
+                    </option>
+                  </select>
+                </div>
+              </form>
+            </td>
+            <td class="text-center" width="20%" style="vertical-align: middle">
+              <div class="text-nowrap">
+                <svg-icon styleClass="fa-w-15 h3 ml-auto mr-1 mr-lg-3 mr-md-2" icon="check-circle"
+                          (click)="saveSpecialNeed()" style="color: green"></svg-icon>
+                <svg-icon styleClass="fa-w-15 h3" icon="empty-set"
+                          (click)="cancelSpecialNeedAdd()" style="color: red"></svg-icon>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!updatedHealthProfile?.specialNeeds || updatedHealthProfile?.specialNeeds.length <= 0">
+            <td class="text-center" colspan="2">
+              <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+              <p class="text-light-gray mb-3">{{ "general.table_empty_text" | translate }}</p>
+            </td>
+          </tr>
+          <tr *ngFor="let specialNeed of updatedHealthProfile?.specialNeeds">
+            <td class="ltr">
+              {{ specialNeed.specialNeedTypeCode ? lookupService().localizedLabel(healthSpecialNeeds, specialNeed.specialNeedTypeCode) : ''}}
+            </td>
+            <td class="text-center" width="20%" style="text-align:center">
+              <div class="text-nowrap">
+                <svg-icon styleClass="fa-w-15 h5" icon="trash-alt"
+                          (click)="deleteSpecialNeed(specialNeed.specialNeedTypeCode)"></svg-icon>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="form-group col-6">
+      <span class="form-control-plaintext">
+        {{"card-management.chronic_diseases" | translate}}
+        <svg-icon styleClass="fa-w-20 h6" icon="plus" (click)="addDisease()"></svg-icon>
+      </span>
+      <div class="table-responsive my-4">
+        <table class="table table-striped table-hover">
+          <tr *ngIf="diseaseAddMode">
+            <td>
+              <form [formGroup]="diseaseAddForm">
+                <div class="form-group">
+                  <input id="disease" formControlName="disease" class="form-control" [maxlength]="30"
+                         [class.is-invalid]="fDisease.disease.invalid && fDisease.disease.touched">
+                </div>
+              </form>
+            </td>
+            <td class="text-center" width="20%" style="vertical-align: middle">
+              <div class="text-nowrap">
+                <svg-icon styleClass="fa-w-15 h3 ml-auto mr-1 mr-lg-3 mr-md-2" icon="check-circle"
+                          (click)="saveDisease()" style="color: green"></svg-icon>
+                <svg-icon styleClass="fa-w-15 h3" icon="empty-set"
+                          (click)="cancelDiseaseAdd()" style="color: red"></svg-icon>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="!updatedHealthProfile?.diseases || updatedHealthProfile?.diseases.length <= 0">
+            <td class="text-center" colspan="2">
+              <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
+              <p class="text-light-gray mb-3">{{ "general.table_empty_text" | translate }}</p>
+            </td>
+          </tr>
+          <tr *ngFor="let disease of updatedHealthProfile?.diseases">
+            <td class="ltr">
+              {{currentLanguage.startsWith("ar")
+              ? (disease.labelAr ? disease.labelAr : disease.labelEn)
+              : (disease.labelEn ? disease.labelEn : disease.labelAr)
+              }}
+            </td>
+            <td class="text-center" width="20%" style="text-align:center">
+              <div class="text-nowrap">
+                <svg-icon styleClass="fa-w-15 h5" icon="trash-alt" (click)="deleteDisease(disease.newId)"></svg-icon>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
