@@ -229,4 +229,12 @@ public class ApplicantWsController {
                         .body(userService.findApplicantBadge(loggedInUserUin,true)).build());
     }
 
+    @PostMapping("/update-health-profile")
+    public ResponseEntity<WsResponse<?>> updateHealthProfile(@RequestBody ApplicantHealthBasicDto applicantHealthBasicDto){
+         return ResponseEntity.ok(
+                WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
+                        .body(userService.updateHealth(applicantHealthBasicDto)).build());
+
+    }
+
 }
