@@ -58,7 +58,7 @@ public class Navigation {
     public static final String API_INTEGRATION_SURVEY = "/api/ws/survey";
     public static final String API_INTEGRATION_SUPPLICATION= "/api/ws/supplications";
     public static final String API_INTEGRATION_ROSARY = "/api/ws/rosary";
-
+    public static final String API_SURVEY = "/api/survey";
     // chatbot Integration
     public static final String API_INTEGRATION_CHATBOT = "/api/ws/chatbot";
 

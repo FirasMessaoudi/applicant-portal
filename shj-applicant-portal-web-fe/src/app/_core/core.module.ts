@@ -22,6 +22,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {LookupService} from "@core/utilities/lookup.service";
 import {OtpStorage} from "@pages/otp/otp.storage";
 import {NotificationService} from "@core/services/notification/notification.service";
+import {SurveyService} from "@core/services/survey/survey.service";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {NotificationService} from "@core/services/notification/notification.serv
     AuthenticationService,
     CardService,
     LookupService,
+    SurveyService,
     OtpStorage,
     {provide: 'environment', useValue: environment}
   ]
