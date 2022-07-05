@@ -29,7 +29,7 @@ export class ComplaintListComponent implements OnInit, OnDestroy {
   selectedDateType: DateType;
   todayGregorian: NgbDateStruct;
   todayHijri: NgbDateStruct;
-
+  loading: boolean;
   @ViewChild('picker') picker: any;
 
   constructor(
@@ -74,9 +74,11 @@ export class ComplaintListComponent implements OnInit, OnDestroy {
   }
 
   loadComplaintList() {
+    this.loading = true;
     this.listSubscription = this.complaintService
       .list()
       .subscribe((data) => {
+        this.loading = false;
         this.complaints = data;
       });
   }

@@ -71,6 +71,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.loading = true;
     this.userService.selectedApplicantRitualPackage.subscribe(selectedApplicantRitualPackage => {
       this.selectedApplicantRitualPackage = selectedApplicantRitualPackage;
       this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));

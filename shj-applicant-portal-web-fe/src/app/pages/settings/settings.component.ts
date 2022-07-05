@@ -45,6 +45,7 @@ export class SettingsComponent implements OnInit {
   originalCountryCode: any;
   userContacts: UserContacts = new UserContacts();
   countries: any;
+  loading: boolean;
   selectedCountryCode;
   selectedCountryName;
   selectedCountryPrefix: any;
@@ -130,7 +131,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.loading = true;
     this.loadLookups();
     this.loadUserNotificationCategory();
     this.userService.find(this.authenticationService.currentUser?.id).subscribe(data => {
@@ -170,6 +171,7 @@ export class SettingsComponent implements OnInit {
         this.toastr.error(this.translate.instant('general.route_item_not_found', {itemId: this.authenticationService.currentUser.id}),
           this.translate.instant('general.dialog_error_title'));
       }
+      this.loading = false;
     });
 
     this.createForm();
@@ -218,16 +220,19 @@ export class SettingsComponent implements OnInit {
   }
 
   loadLookups() {
+    this.loading = true;
     this.cardService.findCountries().subscribe(result => {
       result.forEach(c => c.countryPhonePrefix = '+' + c.countryPhonePrefix);
       this.countries = result;
     });
     this.authenticationService.findSupportedLanguages().subscribe(result => {
+      
       this.localizedSupportedLanguages = result.filter(item => item.lang.toLowerCase() === item.code.toLowerCase());
       //TODO:remove this second filtration when we support the urdu language
       this.localizedSupportedLanguages = this.localizedSupportedLanguages.filter(item => item.code !== 'UR');
       const savedLanguage = this.localizedSupportedLanguages.find(item => item.lang.toLowerCase() === (this.currentLanguage?.slice(0,2)));
       this.selectedLang.setValue(savedLanguage.lang);
+      this.loading = false;
     });
   }
 

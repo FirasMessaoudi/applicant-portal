@@ -29,7 +29,7 @@ export class IncidentListComponent implements OnInit, OnDestroy {
   selectedDateType: DateType;
   todayGregorian: NgbDateStruct;
   todayHijri: NgbDateStruct;
-
+  loading: boolean;
   @ViewChild('picker') picker: any;
 
   constructor(
@@ -74,9 +74,11 @@ export class IncidentListComponent implements OnInit, OnDestroy {
   }
 
   loadIncidentList() {
+    this.loading = true;
     this.listSubscription = this.incidentService
       .list()
       .subscribe((data) => {
+        this.loading = false;
         this.incidents = data;
       });
   }

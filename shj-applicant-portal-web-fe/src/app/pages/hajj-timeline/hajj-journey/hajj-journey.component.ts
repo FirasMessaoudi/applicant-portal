@@ -23,6 +23,7 @@ export class HajjJourneyComponent implements OnInit {
   selectedApplicantRitualPackage: ApplicantRitualPackage;
   lookupService: LookupService;
   ritualStepsLookups: Lookup[] = [];
+  loading: boolean;
 
   constructor(private ritualTimelineService: RitualTimelineService, private userService: UserService, lookupService: LookupService,  private route: ActivatedRoute,
               private router: Router, private cardService: CardService) {
@@ -30,6 +31,7 @@ export class HajjJourneyComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.loadLookups();
     this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));
 
@@ -57,6 +59,7 @@ export class HajjJourneyComponent implements OnInit {
         this.ritualSteps = result;
         this.ritualStepsMap = groupByArray(this.ritualSteps);
         this.handleIsActiveStep();
+        this.loading = false;
       }
     );
   }

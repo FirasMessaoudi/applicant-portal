@@ -36,6 +36,7 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import {NotificationListComponent} from "@shared/components/notification-list/notification-list.component";
 import {RouterModule} from "@angular/router";
+import { LoadingComponent } from './components/loading/loading.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -53,7 +54,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IbanStatusPipe,
     ArabicNumberPipe,
     NotificationListComponent,
-    DateTimeFormatPipe
+    DateTimeFormatPipe,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -102,7 +104,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     NotificationListComponent,
     DateTimeFormatPipe,
-    RouterModule
+    RouterModule,
+    LoadingComponent
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,

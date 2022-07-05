@@ -1,88 +1,90 @@
 <nav aria-label="breadcrumb" class="pt-2">
-    <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
-        <li class="breadcrumb-item active" aria-current="page "></li>
-    </ol>
+  <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
+    <li class="breadcrumb-item active" aria-current="page "></li>
+  </ol>
 </nav>
+<app-loading [loading]="loading"></app-loading>
 
 <div class="content__wrapper">
-    <div class="title__Page mx-n3">
-        <h3 class="sectionTitle">
-            {{ "settings.settings" | translate }}
-        </h3>
-        <!-- lg screen change password-->
-        <a class="d-none d-sm-inline btn btn-outline-dcc-primary px-4 setBox" [routerLink]="['/change-password']" routerLinkActive="router-link-active">
-          {{ "header.change_password" | translate }}
-        </a>
+  <div class="title__Page mx-n3">
+    <h3 class="sectionTitle">
+      {{ "settings.settings" | translate }}
+    </h3>
+    <!-- lg screen change password-->
+    <a class="d-none d-sm-inline btn btn-outline-dcc-primary px-4 setBox" [routerLink]="['/change-password']"
+      routerLinkActive="router-link-active">
+      {{ "header.change_password" | translate }}
+    </a>
 
-        <!-- mobile change password-->
-        <a class="d-block d-sm-none btn btn-link bg-light shadow-sm mx-3" [routerLink]="['/change-password']" routerLinkActive="router-link-active" ngbTooltip="{{ 'header.change_password' | translate }}">
-            <svg-icon styleClass="mb-0 h4 text-dcc-primary" icon="lock-alt"></svg-icon>
-        </a>
+    <!-- mobile change password-->
+    <a class="d-block d-sm-none btn btn-link bg-light shadow-sm mx-3" [routerLink]="['/change-password']"
+      routerLinkActive="router-link-active" ngbTooltip="{{ 'header.change_password' | translate }}">
+      <svg-icon styleClass="mb-0 h4 text-dcc-primary" icon="lock-alt"></svg-icon>
+    </a>
+  </div>
+
+  <form class="" *ngIf="!loading">
+    <div class="form-group col-md-4 col-12">
+      <label for="inputEmail">{{ "general.language" | translate }}</label>
+      <div class="input-group flex-grow-1">
+        <div class="setBox flex-grow-1" role="group">
+          <select class="custom-select" [formControl]="selectedLang">
+            <option *ngFor="let lang of localizedSupportedLanguages" [value]="lang.lang"> {{lang.label}} </option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <form class="">
-        <div class="form-group col-md-4 col-12">
-            <label for="inputEmail">{{ "general.language" | translate }}</label>
-            <div class="input-group flex-grow-1">
-                <div class="setBox flex-grow-1" role="group">
-                    <select class="custom-select" [formControl]="selectedLang">
-                      <option *ngFor="let lang of localizedSupportedLanguages" [value]="lang.lang"> {{lang.label}}  </option>
-                    </select>
-                </div>
+    <form [formGroup]="contactsForm">
+      <div class="form-group col-md-4 col-12">
+        <label>{{ "general.email" | translate }}</label>
+        <div class="input-group">
+          <input type="email" class="form-control" formControlName="email" maxlength="50"
+            [class.is-invalid]="f.email.invalid && f.email.touched" />
+          <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
+            <div *ngIf="f.email.errors.required">
+              {{ "general.field_validation_required" | translate }}
             </div>
+            <div *ngIf="f.email.invalid && !f.email.errors?.required">
+              {{ "general.field_validation_pattern" | translate }}
+            </div>
+          </div>
         </div>
-
-        <form [formGroup]="contactsForm">
-            <div class="form-group col-md-4 col-12">
-                <label>{{ "general.email" | translate }}</label>
-                <div class="input-group">
-                    <input type="email" class="form-control" formControlName="email" maxlength="50" [class.is-invalid]="f.email.invalid && f.email.touched" />
-                    <div *ngIf="f.email.invalid && f.email.touched" class="invalid-feedback">
-                        <div *ngIf="f.email.errors.required">
-                            {{ "general.field_validation_required" | translate }}
-                        </div>
-                        <div *ngIf="f.email.invalid && !f.email.errors?.required">
-                            {{ "general.field_validation_pattern" | translate }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group col-md-4 col-12">
-                <label> {{ "general.mobile_number" | translate }}</label>
-                <div class="input-group flex-nowrap">
-                    <div ngbDropdown #countryListDropdown="ngbDropdown" (openChange)="onOpenChange($event)" class="d-inline-block w-100">
-                        <div class="input-group">
-                            <button class="btn btn-link ltr country-prefix-button" id="dropdown1" ngbDropdownToggle (click)="openTypeahead()">
-                <span
-                  class="flag-icon flag-icon-{{
+      </div>
+      <div class="form-group col-md-4 col-12">
+        <label> {{ "general.mobile_number" | translate }}</label>
+        <div class="input-group flex-nowrap">
+          <div ngbDropdown #countryListDropdown="ngbDropdown" (openChange)="onOpenChange($event)"
+            class="d-inline-block w-100">
+            <div class="input-group">
+              <button class="btn btn-link ltr country-prefix-button" id="dropdown1" ngbDropdownToggle
+                (click)="openTypeahead()">
+                <span class="flag-icon flag-icon-{{
                     selectedCountryName?.toLowerCase()
-                  }}"
-                ></span>
+                  }}"></span>
                 {{ selectedCountryPrefix }}
               </button>
-                            <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="20" onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15" [class.is-invalid]="
-                  f.mobileNumber.invalid && f.mobileNumber.touched
-                " />
+              <input class="form-control mobile-number-input" formControlName="mobileNumber" maxlength="20"
+                onkeypress="return event.keyCode === 8 || event.charCode >= 48 && event.charCode <= 57 && this.value.length < 15"
+                [class.is-invalid]="f.mobileNumber.invalid && f.mobileNumber.touched" />
 
-                            <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown1">
-                                <ng-template #rt let-r="result" let-t="term">
-                                    <span class="flag-icon flag-icon-{{
-                      r['countryNamePrefix'].toLowerCase()
-                    }} flag-icon-selected"></span>
-                                    <ngb-highlight [result]="r.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
-                                </ng-template>
-                                <input id="typeahead-template" type="text" class="form-control country-prefix-search-input" placeholder="{{
-                    'settings.search_country_dialing_code' | translate
-                  }}" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="inputFormatter" (selectItem)="onSelect($event, elem)" (focus)="focus$.next($event.target.value)" (click)="click$.next($event.target.value)" #instance="ngbTypeahead"
-                                    #elem />
-                            </div>
-                        </div>
-                    </div>
+              <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown1">
+                <ng-template #rt let-r="result" let-t="term">
+                  <span class="flag-icon flag-icon-{{r['countryNamePrefix'].toLowerCase()}} flag-icon-selected"></span>
+                  <ngb-highlight [result]="r.countryPhonePrefix + ' ' + r.label" [term]="t"></ngb-highlight>
+                </ng-template>
+                <input id="typeahead-template" type="text" class="form-control country-prefix-search-input" placeholder="{{
+                    'settings.search_country_dialing_code' | translate }}" [ngbTypeahead]="search" [resultTemplate]="rt" [inputFormatter]="inputFormatter"
+                  (selectItem)="onSelect($event, elem)" (focus)="focus$.next($event.target.value)"
+                  (click)="click$.next($event.target.value)" #instance="ngbTypeahead" #elem />
+              </div>
+            </div>
+          </div>
 
-                    <div class="input-group-append">
-                    </div>
-                </div>
-                <small *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" class="text-danger mobile-number-errors">
+          <div class="input-group-append">
+          </div>
+        </div>
+        <small *ngIf="f.mobileNumber.errors && f.mobileNumber.touched" class="text-danger mobile-number-errors">
           <div *ngIf="f.mobileNumber.errors?.required">
             {{ "general.field_validation_required" | translate }}
           </div>
@@ -93,80 +95,80 @@
             {{ "general.field_validation_pattern" | translate }}
           </div>
         </small>
-            </div>
-        </form>
+      </div>
+    </form>
 
-        <hr class="mb-4" />
-<!-- Emergency Data-->
+    <hr class="mb-4" />
+    <!-- Emergency Data-->
 
-      <form [formGroup]="emergencyDataForm">
-        <div class="form-group col-md-4 col-12">
-          <label>{{ "emergency_data.contact_name" | translate }}</label>
-          <div class="input-group">
-            <input type="text" class="form-control" formControlName="emergencyContactName" maxlength="50"  />
+    <form [formGroup]="emergencyDataForm">
+      <div class="form-group col-md-4 col-12">
+        <label>{{ "emergency_data.contact_name" | translate }}</label>
+        <div class="input-group">
+          <input type="text" class="form-control" formControlName="emergencyContactName" maxlength="50" />
 
-          </div>
         </div>
-        <div class="form-group col-md-4 col-12">
-          <label> {{ "emergency_data.mobile_number" | translate }}</label>
+      </div>
+      <div class="form-group col-md-4 col-12">
+        <label> {{ "emergency_data.mobile_number" | translate }}</label>
 
-            <input type="text" class="form-control" formControlName="emergencyContactMobileNumber" maxlength="20" />
+        <input type="text" class="form-control" formControlName="emergencyContactMobileNumber" maxlength="20" />
 
-            <div class="input-group-append">
-            </div>
+        <div class="input-group-append">
         </div>
-      </form>
+      </div>
+    </form>
 
-      <hr class="mb-4" />
-        <!-- notification -->
-        <section>
-          <h3 class="h5">{{ "settings.notifications" | translate }}</h3>
-          <p>{{ "settings.select_notifications" | translate }}</p>
+    <hr class="mb-4" />
+    <!-- notification -->
+    <section>
+      <h3 class="h5">{{ "settings.notifications" | translate }}</h3>
+      <p>{{ "settings.select_notifications" | translate }}</p>
 
-          <div class="row mt-4">
-            <div
-              *ngFor="let notification of preferenceIsLoaded? notificationsListPreference:lookupService().localizedItemsByLang(notificationsListLookup)"
-              class="col-md-4 col-12 mb-4 notification_card">
-              <div class="card h-100">
-                <div class="p-3 card-header bg-white d-flex align-items-baseline justify-content-between">
-                  <h5 class="card-title text-black mb-md-0 mt-md-2">
-                                <span [class]="
+      <div class="row mt-4">
+        <div
+          *ngFor="let notification of preferenceIsLoaded? notificationsListPreference:lookupService().localizedItemsByLang(notificationsListLookup)"
+          class="col-md-4 col-12 mb-4 notification_card">
+          <div class="card h-100">
+            <div class="p-3 card-header bg-white d-flex align-items-baseline justify-content-between">
+              <h5 class="card-title text-black mb-md-0 mt-md-2">
+                <span [class]="
                     'notification_header_icon notification_' +
                     getCategoryColor(preferenceIsLoaded? notification.categoryCode :notification.code)
                   ">
                   <svg-icon
                     [styleClass]="'text-' + getCategoryColor(preferenceIsLoaded? notification.categoryCode :notification.code)"
-                    [icon]="getCategoryIcon(preferenceIsLoaded? notification.categoryCode :notification.code)"
-                  ></svg-icon>
+                    [icon]="getCategoryIcon(preferenceIsLoaded? notification.categoryCode :notification.code)">
+                  </svg-icon>
                 </span> {{ lookupService().localizedLabel(notificationsListLookup, preferenceIsLoaded?
-                    notification.categoryCode :notification.code)}}
-                      </h5>
-                            <div class="custom-control custom-checkbox my-1 mx-0 px-0">
-                              <input type="checkbox"
-                                     (change)="updateUserNotificationCategory($event, preferenceIsLoaded? notification.categoryCode :notification.code)"
-                                     [disabled]="lookupService().localizedNotificationMandatory(notificationsListLookup, preferenceIsLoaded? notification.categoryCode :notification.code)"
-                                     class="custom-control-input" [id]="'notification_' + notification.id"
-                                     [checked]="notification.enabled == null ? true: notification.enabled"/>
-                                <label class="custom-control-label pointer" [for]="'notification_' + notification.id">
+                notification.categoryCode :notification.code)}}
+              </h5>
+              <div class="custom-control custom-checkbox my-1 mx-0 px-0">
+                <input type="checkbox"
+                  (change)="updateUserNotificationCategory($event, preferenceIsLoaded? notification.categoryCode :notification.code)"
+                  [disabled]="lookupService().localizedNotificationMandatory(notificationsListLookup, preferenceIsLoaded? notification.categoryCode :notification.code)"
+                  class="custom-control-input" [id]="'notification_' + notification.id"
+                  [checked]="notification.enabled == null ? true: notification.enabled" />
+                <label class="custom-control-label pointer" [for]="'notification_' + notification.id">
                 </label>
-                            </div>
-                        </div>
-
-                        <div class="p-3 card-body">
-                            <p class="card-text">{{"settings.example" | translate}}</p>
-                          <p class="card-text">{{
-                            lookupService().localizedNotificationDescription(notificationsListLookup,
-                            preferenceIsLoaded? notification.categoryCode :notification.code) }}</p>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </section>
-    </form>
 
-    <div class="d-flex flex-column flex-md-row pb-4 pt-2">
-        <button class="btn btn-dcc-primary px-5" (click)="finalSave()"> {{ "general.btn_save" | translate }}</button>
-    </div>
+            <div class="p-3 card-body">
+              <p class="card-text">{{"settings.example" | translate}}</p>
+              <p class="card-text">{{
+                lookupService().localizedNotificationDescription(notificationsListLookup,
+                preferenceIsLoaded? notification.categoryCode :notification.code) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+
+  <div class="d-flex flex-column flex-md-row pb-4 pt-2" *ngIf="!loading">
+    <button class="btn btn-dcc-primary px-5" (click)="finalSave()"> {{ "general.btn_save" | translate }}</button>
+  </div>
 </div>
 
 <ng-template #showDelete let-modal>
@@ -176,9 +178,9 @@
       {{ "settings.dialog_save_confirm_text" | translate }}
     </div>
   </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary">{{ "general.btn_cancel" | translate }}</button>
-      <button type="button" class="btn btn-dcc-primary">{{ "settings.save_button" | translate }}</button>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary">{{ "general.btn_cancel" | translate }}</button>
+    <button type="button" class="btn btn-dcc-primary">{{ "settings.save_button" | translate }}</button>
 
-    </div>
+  </div>
 </ng-template>
