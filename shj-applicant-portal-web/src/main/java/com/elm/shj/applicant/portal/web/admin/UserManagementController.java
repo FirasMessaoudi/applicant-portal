@@ -596,4 +596,12 @@ public class UserManagementController {
 
     }
 
+    @PostMapping("/update-health-profile")
+    public ApplicantHealthBasicDto updateHealthProfile(@RequestBody ApplicantHealthBasicDto applicantHealthBasicDto){
+        return userService.updateHealth(applicantHealthBasicDto);
+
+    }
+
+
+
 }

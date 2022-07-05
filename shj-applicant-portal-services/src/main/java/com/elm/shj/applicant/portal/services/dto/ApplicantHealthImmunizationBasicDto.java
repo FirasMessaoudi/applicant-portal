@@ -1,5 +1,6 @@
 package com.elm.shj.applicant.portal.services.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,18 +11,20 @@ import java.util.Date;
 /**
  * Dto class for the applicant health immunization lite domain.
  *
- * @author Slim Ben Hadj
- * @since 1.0.0
+ * @author f.messaoudi
+ * @since 1.3.0
  */
 @NoArgsConstructor
 @Getter
 @Setter
-public class ApplicantHealthImmunizationLiteDto implements Serializable {
+public class ApplicantHealthImmunizationBasicDto implements Serializable {
 
     private static final long serialVersionUID = -5478275049682327662L;
-
-    private Long id;
+    private long id;
     private String immunizationCode;
     private Date immunizationDate;
     private boolean mandatory;
+    @JsonBackReference
+    private ApplicantHealthBasicDto applicantHealth;
+
 }

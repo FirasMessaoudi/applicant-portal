@@ -11,10 +11,11 @@ import {TranslateModule} from "@ngx-translate/core";
 import {SharedModule} from "@shared/shared.module";
 import {NgbCollapseModule, NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {GroupLeadersComponent} from "@pages/card-management/card-details/group-leaders/group-leaders.component";
+import {HealthProfileComponent} from './health-profile/health-profile.component';
 
 
 @NgModule({
-  declarations: [MainDetailsComponent, HamlahDetailsComponent, HealthDetailsComponent, TafweejDetailsComponent, CardDetailsComponent, GroupLeadersComponent],
+  declarations: [MainDetailsComponent, HamlahDetailsComponent, HealthDetailsComponent, TafweejDetailsComponent, CardDetailsComponent, GroupLeadersComponent, HealthProfileComponent],
     imports: [
         CommonModule,
         CardDetailsRoutingModule,
@@ -22,6 +23,7 @@ import {GroupLeadersComponent} from "@pages/card-management/card-details/group-l
         SharedModule,
         NgbCollapseModule,
         NgbModule
-    ]
+    ],
+
 })
 export class CardDetailsModule { }

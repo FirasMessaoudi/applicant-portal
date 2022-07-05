@@ -228,4 +228,5 @@ public class ApplicantWsController {
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode())
                         .body(userService.findApplicantBadge(loggedInUserUin,true)).build());
     }
+
 }

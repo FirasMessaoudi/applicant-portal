@@ -336,6 +336,7 @@
         }}</a>
       <ng-template ngbNavContent>
         <app-health-details
+          [applicantId]="applicant.id"
           [healthDetails]="healthDetails"
           [currentLanguage]="currentLanguage"
           [healthSpecialNeeds]="healthSpecialNeeds"

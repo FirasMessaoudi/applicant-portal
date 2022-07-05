@@ -1,3 +1,6 @@
+<button (click)="openUpdateHealthProfileModal()" class="btn btn-outline-dcc-primary px-4">
+  <svg-icon styleClass="mr-2" icon="plus"></svg-icon> <span>{{ "general.update_health" | translate }}</span>
+</button>
 <section>
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
     <div class="form-group col">
@@ -137,4 +140,17 @@
       </tbody>
     </table>
   </div>
+
+  <app-modal-dialog #updateHealthProfileModal [modalConfig]="updateHealthProfileModalConfig"
+                    (submitForm)="updateHealthProfile()" (dismissModal)="cancelUpdateHealthProfile()">
+
+     <app-health-profile #healthProfile
+                         [healthDetails]="healthDetails"
+                         [currentLanguage]="currentLanguage"
+                         [healthSpecialNeeds]="healthSpecialNeeds"
+                         [immunizations]="immunizations"
+     ></app-health-profile>
+  </app-modal-dialog>
 </section>
+
+

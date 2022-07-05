@@ -1,0 +1,76 @@
+<div class="form-group m-0" provideParentForm>
+  <label class="requiredInput" *ngIf="showLabel">{{ label }} </label>
+
+  <div class="input-group position-relative">
+
+    <input class="form-control m-0 ngb-date-picker position-absolute"
+           [placeholder]="placeHolder ? placeHolder : 'DD/MM/YYYY HH:MM'"
+           [name]="name"
+           *ngIf="selectedDateType == DateType.Gregorian"
+           [(ngModel)]="selectedDate"
+           ngbDatepicker (click)="d.toggle()"
+           (dateSelect)="onDateChange($event)"
+           autocomplete="off"
+           [readonly]="readonly"
+           [minDate]="minGreg" [maxDate]="maxGreg"
+           [required]="isRequired"
+           [disabled]="grayed"
+           autoClose="autoClose"
+           [footerTemplate]="footerTemplate" appNgbDatepickerI18nTitle
+           #d="ngbDatepicker">
+
+    <input
+      [class.disabled-control]="grayed"
+      [placeholder]="placeHolder ? placeHolder : 'DD/MM/YYYY HH:MM'"
+      *ngIf="selectedDateType == DateType.Gregorian"
+      class="form-control m-0 ngb-date-picker-input-trigger"
+      [ngModel]="date | date: inputDatetimeFormat"
+      (change)="onInputChange($event)"
+      [disabled]="grayed"
+      [readonly]="true"
+      (click)="toggle()"
+    >
+
+    <ng-template #footerTemplate>
+      <ngb-timepicker
+        class="ngb-dt"
+        [seconds]="false"
+        name="timepicker"
+        [(ngModel)]="timeStruct"
+        (ngModelChange)="onTimeChange($event)"
+      ></ngb-timepicker>
+      <hr class="my-0">
+      <button class="btn btn-outline-dcc-primary  btn-sm m-2 float-right" type="button"
+              (click)="close()">{{'general.btn_close'| translate}}</button>
+      <button class="btn btn-dcc-primary btn-sm m-2 float-left" type="button"
+              (click)="clear()">{{'general.btn_clear'| translate}}</button>
+    </ng-template>
+
+    <hijri-datetime-picker ngDefaultControl [placeHolder]="placeHolder ? placeHolder : 'DD/MM/YYYY HH:MM'"
+                           [min]="minHijri" [max]="maxHijri"
+                           *ngIf="selectedDateType == DateType.Hijri"
+                           [(ngModel)]="selectedDate"
+                           (selectedDateChange)="onDateChange($event)"
+                           [readonly]="readonly"
+                           style="flex: 1 1 auto; border: none;"
+                           class="form-control p-0"
+                           [name]="name"
+                           [isRequired]="isRequired"
+                           [disabled]="grayed">
+    </hijri-datetime-picker>
+
+    <div class="input-group-append gregorian-hijri-buttons">
+      <button
+        class="btn btn-sm shadow-none {{selectedDateType == DateType.Hijri ? 'btn-'+buttonClass+' focus active' :  'btn-outline-'+ buttonClass}}"
+        (click)="hijriClick()" type="button" [disabled]="disabled">
+        {{hijriLabel ? hijriLabel : 'Hijri'}}
+      </button>
+      <button
+        class="btn btn-sm shadow-none {{selectedDateType == DateType.Gregorian ? 'btn-'+buttonClass+' focus active' :  'btn-outline-'+ buttonClass}}"
+        (click)="gregClick()" [disabled]="disabled" type="button">
+        {{GregLabel ? GregLabel : 'Gregorian'}}
+      </button>
+    </div>
+
+  </div>
+</div>

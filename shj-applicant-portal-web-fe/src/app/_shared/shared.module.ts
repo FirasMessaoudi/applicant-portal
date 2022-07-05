@@ -6,7 +6,6 @@ import {AccordionModule} from './modules/accordion/accordion.module';
 // @ng-bootstrap
 import {NgBootstrapModule} from '@shared/ng-bootstrap.module';
 /* import {NgbModule} from '@ng-bootstrap/ng-bootstrap'; */
-
 // SVG Icons
 import {SvgIconModule} from '@app/_shared/components/svg-icon/svg-icon.module';
 import {ArchwizardModule} from 'angular-archwizard';
@@ -25,17 +24,16 @@ import {NgxCaptchaModule} from "ngx-captcha";
 import {DccCommonsNgPipesModule} from '@dcc-commons-ng/pipes';
 import {HijriGregorianDatepickerModule} from "@shared/modules/hijri-gregorian-datepicker/hijri-gregorian-datepicker.module";
 import {NgMultiSelectDropDownModule} from "ng-multiselect-dropdown";
-import { GoogleMapsModule } from '@angular/google-maps'
+import {GoogleMapsModule} from '@angular/google-maps'
 import {MonthDayHijriFormatPipe} from "@shared/pipes/date/month-day-hijri-format.pipe";
 import {ArabicNumberPipe} from "@shared/pipes/numbers/arabic-number.pipe";
 import {NgxIntlTelInputModule} from "ngx-intl-tel-input";
 
 // Notification scrollbar
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {NotificationListComponent} from "@shared/components/notification-list/notification-list.component";
 import {RouterModule} from "@angular/router";
+import {ModalDialogComponent} from "@shared/components/modal-dialog/modal-dialog.component";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -53,7 +51,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     IbanStatusPipe,
     ArabicNumberPipe,
     NotificationListComponent,
-    DateTimeFormatPipe
+    DateTimeFormatPipe,
+    ModalDialogComponent,
+
   ],
   imports: [
     CommonModule,
@@ -102,12 +102,14 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     NotificationListComponent,
     DateTimeFormatPipe,
-    RouterModule
+    RouterModule,
+    ModalDialogComponent
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,
     ConfirmDialogComponent
-  ]
+  ],
+
 })
 export class SharedModule {
 }

@@ -1,0 +1,84 @@
+@import "src/assets/theme/variables";
+
+.is-invalid .form-control {
+  border-color: #dc3545;
+}
+
+
+.ngb-dp-navigation-chevron {
+  [dir='rtl'] & {
+    transform: rotate(227deg) !important;
+    margin-right: -2px;
+  }
+}
+
+.right .ngb-dp-navigation-chevron {
+  [dir='rtl'] & {
+    transform: rotate(46deg) !important;
+    margin-left: -2px;
+  }
+}
+
+[dir='rtl'] .dropdown-menu {
+  right: auto;
+  text-align: right;
+}
+
+.ngb-dp-navigation-chevron {
+  color: $dcc-primary !important;
+}
+
+.btn.ngb-dp-arrow-btn {
+  padding: 0;
+}
+
+[dir='rtl'] .ngb-dp-header .ngb-dp-navigation-select .custom-select {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.ngb-dp-header .ngb-dp-navigation-select .custom-select {
+  background-size: 12px;
+}
+
+[dir='rtl'] .ngb-dp-arrow {
+  max-width: 25px;
+}
+
+
+.ngb-dp-weekday {
+  color: #666 !important;
+}
+
+.ngb-dp-week .btn-light.bg-primary {
+  background-color: $dcc-primary !important;
+}
+
+
+.multiselect-item-checkbox input[type=checkbox]:checked
++ div:before {
+
+  background: $dcc-primary !important;
+}
+
+.multiselect-item-checkbox input[type=checkbox] + div:before {
+  color: $dcc-primary !important;
+  border: 2px solid $dcc-primary !important;
+}
+
+
+.multiselect-dropdown .dropdown-btn .selected-item {
+  border: 1px solid $dcc-primary !important;
+
+  background: $dcc-primary !important;
+}
+
+.ngb-tp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ngb-tp-chevron {
+  color: $dcc-primary !important;
+}

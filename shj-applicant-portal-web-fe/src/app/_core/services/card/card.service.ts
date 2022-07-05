@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpParams} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpEvent, HttpParams} from "@angular/common/http";
+import {Observable, of, throwError} from "rxjs";
 import {Card} from "@model/card.model";
 import {catchError} from "rxjs/internal/operators";
 import {Lookup} from "@model/lookup.model";
@@ -11,6 +11,7 @@ import {ApplicantRitualCard} from "@model/applicant-ritual-card";
 import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
+import {map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -216,5 +217,13 @@ export class CardService {
     return this.http.get<any>('/core/api/users/badge');
   }
 
-
+  updateHealthProfile(applicantHealh: ApplicantHealth): Observable<ApplicantHealth> {
+    return this.http.post<any>('/core/api/users/update-health-profile',applicantHealh)
+      .pipe(map(response => {
+          return response;
+        }), catchError((err: HttpErrorResponse) => {
+          return throwError(err);
+        })
+      )
+  }
 }
