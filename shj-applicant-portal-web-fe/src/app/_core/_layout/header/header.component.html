@@ -52,6 +52,14 @@
                 <a (click)="isActive = false" class="py-2 d-block h6 "
                    [routerLink]="['/incident/list']">{{ 'header.incident' | translate }}</a>
               </li>
+              <li routerLinkActive="active">
+                <a (click)="isActive = false" class="py-2 d-block h6 "
+                   [routerLink]="['/rating']">{{ 'header.survey' | translate }}</a>
+              </li>
+              <li routerLinkActive="active">
+                <a (click)="isActive = false" class="py-2 d-block h6 "
+                   [routerLink]="['/company-rating']">{{ 'header.company_survey' | translate }}</a>
+              </li>
             </ul>
           </div>
         </nav>

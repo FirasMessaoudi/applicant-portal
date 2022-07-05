@@ -15,18 +15,18 @@ const moment = momentjs;
 const momentHijri = moment_;
 @Component({
   selector: 'app-rating',
-  templateUrl: './rating.component.html',
-  styleUrls: ['./rating.component.scss']
+  templateUrl: './company-rating.component.html',
+  styleUrls: ['./company-rating.component.scss']
 })
-export class RatingComponent implements OnInit {
+export class CompanyRatingComponent implements OnInit {
 
   surveyForm: SurveyForm = new SurveyForm(new UserSurvey());
   userSurveyQuestions: Array<SurveyQuestion>;
   loading: boolean = false;
   surveyAlreadySubmitted : boolean = false;
   surveyNotAvailable : boolean = false;
-  todayDate: any;
   surveyAvailable : boolean = false;
+  todayDate: any;
 
   constructor(private surveyService: SurveyService,
               private lookupsService: LookupService,
@@ -39,15 +39,15 @@ export class RatingComponent implements OnInit {
     this.surveyAlreadySubmitted = false;
     this.loading = true;
     this.todayDate = momentHijri(new Date());
-    this.surveyService.listSurveyQuestions("DAILY").subscribe(result => {
+    this.surveyService.listSurveyQuestions("END_OF_RITUAL").subscribe(result => {
 
       if (result == 131) {
-        this.surveyNotAvailable = true;
         this.surveyAlreadySubmitted = false;
+        this.surveyNotAvailable = true;
         this.loading = false;
       } else if (result == 133) {
-        this.surveyAlreadySubmitted = true;
         this.surveyNotAvailable = false;
+        this.surveyAlreadySubmitted = true;
         this.loading = false;
       } else {
         this.surveyNotAvailable = true;
@@ -84,7 +84,7 @@ export class RatingComponent implements OnInit {
     }
     this.loading = true;
 
-    this.surveyForm.userSurvey.surveyType="DAILY";
+    this.surveyForm.userSurvey.surveyType="END_OF_RITUAL";
     this.surveyForm.userSurvey.surveyDate = this.loadSurveyDate();
 
     let userSurveyQuestions: UserSurveyQuestion[] = this.userSurveyQuestions.map(usq => {

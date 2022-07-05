@@ -1,36 +1,49 @@
-<nav aria-label="breadcrumb" class="pt-2">
-  <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
-    <li class="breadcrumb-item active" aria-current="page "></li>
-  </ol>
-</nav>
 
-<div class="content__wrapper">
-  <div class="title__Page">
-    <h3 class="sectionTitle">
-      التقييم اليومي
-    </h3>
+<app-loading [loading]="loading"></app-loading>
+<div *ngIf="!loading">
+
+  <div class="content__section flex-center flex-center-vert" *ngIf="!surveyAlreadySubmitted">
+    <span class="font-weight-bold text-dcc-primary">{{'survey.already_submitted' | translate}}</span>
   </div>
 
-
-<div class="rating p-3 my-4">
-  <p class="text-black-50">تقييم اليوم</p>
-  <h5 class="text-dark Elm-fontb">السبت ،12 ذو الحجة 1446</h5>
-</div>
-
-
-
-<div class="flex-center-between py-4 border-bottom" *ngFor="let rating of currentRate">
-  <b>مدى رضاك عن الطعام؟</b>
-  <ngb-rating [rate]="rating" [max]=5>
-    <ng-template let-fill="fill">
-      <span class="star" [ngClass]="'color'"[class.filled]="fill === 100">&#9733;</span>
-    </ng-template>
-  </ngb-rating>
+  <div class="content__section flex-center flex-center-vert" *ngIf="!surveyNotAvailable">
+    <span class="font-weight-bold text-dcc-primary">{{'survey.not_available' | translate}}</span>
   </div>
 
+  <div class="content__section " *ngIf="surveyAvailable">
+    <nav aria-label="breadcrumb" class="pt-2">
+      <ol class="breadcrumb bg-white mb-0 px-0 d-none d-md-flex">
+        <li class="breadcrumb-item active" aria-current="page "></li>
+      </ol>
+    </nav>
+    <div class="content__wrapper">
+      <div class="title__Page">
+        <h3 class="sectionTitle">
+          {{'survey.daily_survey_title' | translate}}
+        </h3>
+      </div>
 
-  <div class="d-flex justify-content-between mt-4">
-    <button class="btn btn-dcc-primary px-4">إرسال التقييم</button>
+
+      <div class="rating p-3 my-4">
+        <p class="text-black-50">{{'survey.daily_survey_today' | translate}}</p>
+        <h5 class="text-dark Elm-fontb">{{getTodayDate()}}</h5>
+      </div>
+
+      <div class="flex-center-between py-4 border-bottom" *ngFor="let userSurveyQuestion of userSurveyQuestions">
+        <b> {{userSurveyQuestion.surveyQuestion.label}}</b>
+        <ngb-rating [rate]=0 [max]=5 (rateChange)="onChangeRating($event, userSurveyQuestion)">
+          <ng-template let-fill="fill">
+            <span class="star" [ngClass]="'color'"[class.filled]="fill === 100">&#9733;</span>
+          </ng-template>
+        </ngb-rating>
+      </div>
+
+
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-dcc-primary px-4" (click)="submitSurvey()">{{'general.btn_send' | translate}}</button>
+      </div>
+
+    </div>
   </div>
 
 </div>

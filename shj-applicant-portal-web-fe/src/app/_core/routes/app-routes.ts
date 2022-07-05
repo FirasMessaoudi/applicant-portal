@@ -34,5 +34,9 @@ export const APP_ROUTES: Routes = [
   {
     path: 'rating',
     loadChildren: () => import('@pages/rating/rating.module').then(m => m.RatingModule)
+  },
+  {
+    path: 'company-rating',
+    loadChildren: () => import('@pages/company-rating/company-rating.module').then(m => m.CompanyRatingModule)
   }
 ];

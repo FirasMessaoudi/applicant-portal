@@ -160,6 +160,8 @@
     "my_program": "My Program",
     "complaint": "Complaints",
     "incident": "Incidents",
+    "survey": "Survey",
+    "company_survey": "Company Survey",
     "ritual_schedule": "Ritual Schedule",
     "alert_button_text": "Back to latest season data",
     "change_ritual_modal_title": "Choose the Hajj or Umrah season you want to view data",
@@ -657,5 +659,17 @@
     "upload": "File Upload",
     "file_size_invalid": "File size should not exceed 15 MB.",
     "file_extension_invalid": "Invalid file extension."
+  },
+  "survey": {
+    "already_submitted": "Survey already submitted",
+    "not_available": "Survey not available",
+    "invalid_survey_type": "Invalid survey type",
+    "survey-error": "Survey error",
+    "user_not_found": "User not found",
+    "submit_successfully": "Survey submitted successfully!",
+    "survey_success_title": "Success",
+    "daily_survey_title": "Daily Survey",
+    "daily_survey_today": "Today's Survey",
+    "unrated_question_error": "Please rate all questions"
   }
 }
