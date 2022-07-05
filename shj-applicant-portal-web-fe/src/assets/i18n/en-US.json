@@ -146,7 +146,9 @@
     "language": "Language",
     "no-data-found": " No Data Found",
     "nationality": "Nationality",
-    "update_health": "Update Health Profile"
+    "update_health": "Update Health Profile",
+    "table_emtpy_text": "No Results Found",
+    "no-data-found": "No Results Found"
   },
   "header": {
     "welcome": "Welcome",

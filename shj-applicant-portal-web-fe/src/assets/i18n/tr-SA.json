@@ -118,7 +118,10 @@
     "main": "Ana",
     "language": "Dil",
     "no-data-found": " Hiçbir Veri Bulunamadı",
-    "nationality": "Milliyet"
+    "nationality": "Milliyet",
+    "update_health": "Modifier les données de la santé",
+    "table_emtpy_text": "Hiçbir Sonuç Bulunamadı"
+
   },
   "header": {
     "welcome": "Hoş Geldiniz",

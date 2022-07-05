@@ -9,6 +9,7 @@ import {HealthProfileComponent} from "@pages/card-management/card-details/health
 import * as cloneDeep from 'lodash/cloneDeep';
 import {take} from "rxjs/operators";
 import {CardService} from "@core/services";
+import {ToastService} from "@shared/components/toast";
 
 @Component({
   selector: 'app-health-details',
@@ -34,6 +35,7 @@ export class HealthDetailsComponent implements OnInit {
     private lookupsService: LookupService,
     private translate: TranslateService,
     private cardService: CardService,
+    private toastr: ToastService,
 
 
   ) {
@@ -48,7 +50,7 @@ export class HealthDetailsComponent implements OnInit {
 
   async openUpdateHealthProfileModal() {
     this.updateHealthProfileModalConfig = {
-      modalTitle: this.translate.instant('general.update_health_profile'),
+      modalTitle: this.translate.instant('general.update_health'),
       closeButtonLabel: this.translate.instant('general.btn_save'),
       dismissButtonLabel: this.translate.instant('general.btn_cancel')
     };
@@ -75,15 +77,15 @@ export class HealthDetailsComponent implements OnInit {
     this.cardService.updateHealthProfile(this.healthDetails)
       .pipe(take(1))
       .subscribe(result => {
-       /* this.toastr.success(
+        this.toastr.success(
           this.translate.instant('applicant-management.health_profile_updated_successfully'),
           this.translate.instant('general.dialog_edit_title')
-        );*/
+        );
       }, () => {
-       /* this.toastr.error(
+        this.toastr.error(
           this.translate.instant('general.dialog_error_text'),
           this.translate.instant('general.dialog_error_title')
-        );*/
+        );
       });
   }
 

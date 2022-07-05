@@ -147,7 +147,9 @@
     "language": "اللغة",
     "no-data-found": " لا توجد بيانات",
     "nationality": "الجنسية",
-    "update_health": "تحديث بيانات الصحة"
+    "update_health": "تحديث بيانات الصحة",
+    "table_emtpy_text": "لا يوجد بيانات",
+    "no-data-found": "لا يوجد بيانات"
 
   },
   "header": {

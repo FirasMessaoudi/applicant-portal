@@ -118,7 +118,11 @@
     "main": "اصلی",
     "language": "زبان",
     "no-data-found": " داده‌ای یافت نشد",
-    "nationality": "ملیت"
+    "nationality": "ملیت",
+    "update_health": "تحديث بيانات الصحة",
+    "table_emtpy_text": "نتیجه‌ای پیدا نشد"
+
+
   },
   "header": {
     "welcome": "خوش آمدید",

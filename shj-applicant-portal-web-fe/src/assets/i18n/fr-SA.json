@@ -118,7 +118,11 @@
     "main": "Principal",
     "language": "Langue",
     "no-data-found": " Aucune donnée n’a été trouvée",
-    "nationality": "Nationalité"
+    "nationality": "Nationalité",
+    "update_health": "Modifier les données de la santé",
+    "table_emtpy_text": "Aucun résultat n’a été trouvé"
+
+
   },
   "header": {
     "welcome": "Bienvenue",
