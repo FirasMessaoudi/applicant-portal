@@ -85,6 +85,12 @@ public class LookupController {
         return lookupService.retrieveCountries();
     }
 
+    @GetMapping("/nationality/list")
+    public List<NationalityLookupDto> listNationalities() {
+        log.debug("list nationalities...");
+        return lookupService.retrieveNationalities();
+    }
+
     /**
      * List health special needs types.
      *

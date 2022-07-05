@@ -126,10 +126,6 @@ export class AuthenticationService {
     return this.currentUser.preferredLanguage;
   }
 
-  updatePreferredLanguage(language: string) {
-    this.currentUser.preferredLanguage = language;
-  }
-
   updateSubject(user: any) {
     if (user && user.principal) {
       this.setCurrentUser(user);

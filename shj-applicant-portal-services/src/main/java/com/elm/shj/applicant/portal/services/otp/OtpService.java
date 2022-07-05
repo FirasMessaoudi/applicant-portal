@@ -70,8 +70,10 @@ public class OtpService {
      * @return the created otp
      */
     public String createOtp(String principal,Integer countryCode, String mobileNumber) {
+        log.info("start createOtp with username: {} and countryCode: {}, and mobileNumber: {}", principal, countryCode, mobileNumber);
         try {
             String generatedOtp = otpGenerator.generateOtp(principal);
+            log.info("Otp generated for username:{} and otp: {}", principal, generatedOtp);
             otpCache.put(principal, generatedOtp);
             //TODO:need to be changed since uin is not required to start with 1
             String locale = principal.startsWith("1") ? "ar" : "en";
@@ -84,6 +86,7 @@ public class OtpService {
     }
 
     public String createOtp(String principal,Integer countryCode, String mobileNumber, String loginType, String idNumber) {
+        log.info("start createOtp with username: {} and countryCode: {}, and mobileNumber: {}", principal, countryCode, mobileNumber);
         try {
             String generatedOtp;
             if(DEFAULT_ADMIN_USER.equals(idNumber) && loginType.equals(ELoginType.id.name())){
@@ -91,6 +94,7 @@ public class OtpService {
             } else {
                 generatedOtp = otpGenerator.generateOtp(principal);
             }
+            log.info("Otp generated for username:{} and otp: {}", principal, generatedOtp);
             otpCache.put(principal, generatedOtp);
             //TODO:need to be changed since uin is not required to start with 1
             String locale = principal.startsWith("1") ? "ar" : "en";
@@ -110,10 +114,13 @@ public class OtpService {
      * @return result of verification
      */
     public boolean validateOtp(String principal, String otpToVerify) {
+        log.info("Start Verify otp for username:{} and otpToVerify: {}", principal, otpToVerify);
         if (mockEnabled || Objects.equals(otpCache.getIfPresent(principal), otpToVerify)) {
             otpCache.invalidate(principal);
+            log.info("End with otp Verified for username:{} and otpToVerify: {}", principal, otpToVerify);
             return true;
         }
+        log.info("Otp not matched with OtpCache for username:{} and otpToVerify: {}", principal, otpToVerify);
         return false;
     }
 

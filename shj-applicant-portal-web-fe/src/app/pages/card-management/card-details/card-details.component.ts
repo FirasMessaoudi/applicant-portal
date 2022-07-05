@@ -12,11 +12,11 @@ import {ApplicantMainData} from "@model/applicant-main-data.model";
 import {Language} from "@model/enum/language.enum";
 import {ApplicantHealth} from "@model/applicant-health.model";
 import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
-import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
 import {CardStatus} from "@model/enum/card-status.enum";
 import {DigitalIdStatus} from "@model/enum/digital-id-status.enum";
 import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
+import {NationalityLookup} from "@model/nationality-lookup.model";
 
 @Component({
   selector: 'app-card-details',
@@ -32,7 +32,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   url: any = 'assets/images/default-avatar.svg';
   applicantStatuses: Lookup[] = [];
   applicantPackage: ApplicantPackageDetails = null;
-  loading = true
+  loading = false
   ritualTypes: Lookup[] = [];
   housingCategories: Lookup[];
   housingTypes: Lookup[];
@@ -41,6 +41,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   transportationTypes: Lookup[];
   relativeRelationships: Lookup[] = [];
   countries: CountryLookup[] = [];
+  nationalities: NationalityLookup[] = [];
   healthSpecialNeeds: Lookup[] = [];
   maritalStatuses: Lookup[] = [];
   ritualStepsLabels: Lookup[];
@@ -70,6 +71,7 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
+    this.loading = true;
     this.userService.selectedApplicantRitualPackage.subscribe(selectedApplicantRitualPackage => {
       this.selectedApplicantRitualPackage = selectedApplicantRitualPackage;
       this.selectedApplicantRitualPackage = JSON.parse(localStorage.getItem('selectedApplicantRitualPackage'));
@@ -146,6 +148,9 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
     });
     this.cardService.findCountries().subscribe(result => {
       this.countries = result;
+    });
+    this.cardService.findNationalities().subscribe(result => {
+      this.nationalities = result;
     });
     this.cardService.findHealthSpecialNeeds().subscribe(result => {
       this.healthSpecialNeeds = result;
@@ -237,6 +242,6 @@ export class CardDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.loading = true;
+    this.loading = false;
   }
 }

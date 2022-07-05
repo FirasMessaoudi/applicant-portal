@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, NgControl, Validators} from '@angular/forms';
 import {ReCaptcha2Component} from "ngx-captcha";
 import {TranslateService} from "@ngx-translate/core";
-import {I18nService} from "@dcc-commons-ng/services";
 import {CardService, DEFAULT_MAX_USER_AGE, UserService} from "@core/services";
 import {environment} from "@env/environment";
 import {ToastService} from "@shared/components/toast/toast-service";
@@ -14,6 +13,7 @@ import {HijriGregorianDatepickerComponent} from "@shared/modules/hijri-gregorian
 import {DccValidators, IdType} from "@shared/validators";
 import { CountryLookup } from '@app/_shared/model/country-lookup.model';
 import { LookupService } from '@app/_core/utilities/lookup.service';
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 
 @Component({
@@ -54,7 +54,7 @@ export class ResetPasswordComponent implements OnInit {
               private formBuilder: FormBuilder,
               private toastr: ToastService,
               private translate: TranslateService,
-              private i18nService: I18nService,
+              private i18nService: CustomI18nService,
               private userService: UserService,
               private lookupsService: LookupService,
               private cardService: CardService,
@@ -149,7 +149,7 @@ export class ResetPasswordComponent implements OnInit {
     // everything is fine we move to recaptcha check
     // if we get a successful response from recaptcha, then we send the form
     this.userService.resetPassword(user, this.captchaElem.getCurrentResponse()).subscribe(response => {
-      if (response) {
+      if (response) { 
         this.error = response;
         this.toastr.warning(this.translate.instant('reset-password.invalid_uin_or_birthdate'), this.translate.instant('reset-password.title'));
         this.captchaElem.reloadCaptcha();
@@ -166,8 +166,8 @@ export class ResetPasswordComponent implements OnInit {
       } else {
         this.toastr.success(this.translate.instant('reset-password.success_text'), this.translate.instant('reset-password.title'));
         this.router.navigate(['/login']);
-        this.loading = false;
       }
+      this.loading = false;
     },error => {
       console.log(error);
 

@@ -44,10 +44,12 @@ public class RegistrationController {
     private static final int USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE = 561;
     private static final int INVALID_OTP_RESPONSE_CODE = 562;
     private static final int UPDATE_FAILED_IN_ADMIN_PORTAL = 563;
+    private static final int INVALID_DATE_OF_BIRTH = 564;
+    private static final int INVALID_DATE_OF_BIRTH_COMMAND = 139;
 
 
     @PostMapping
-    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam String pin) throws JSONException {
+    public ResponseEntity<UserDto> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @RequestParam String pin) {
 
         if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
             return ResponseEntity.status(INVALID_OTP_RESPONSE_CODE).body(null);
@@ -72,7 +74,7 @@ public class RegistrationController {
 
     @PostMapping("/verify")
     public ResponseEntity<ApplicantLiteDto> verify(@RequestBody ValidateApplicantCmd command) {
-        Optional<UserDto> userInApplicantPortal = null;
+        Optional<UserDto> userInApplicantPortal = Optional.empty();
         if (command.getType().equals("uin"))
             userInApplicantPortal = userService.findByUin(Long.parseLong(command.getIdentifier()));
         if (command.getType().equals("passport"))
@@ -82,12 +84,14 @@ public class RegistrationController {
         if (userInApplicantPortal.isPresent()) {
             return ResponseEntity.status(USER_ALREADY_REGISTERED_RESPONSE_CODE).body(null);
         }
-
         ApplicantLiteDto userFromAdminPortal = userService.verify(command);
         if (userFromAdminPortal == null) {
             return ResponseEntity.status(USER_NOT_FOUND_IN_ADMIN_PORTAL_RESPONSE_CODE).body(null);
+        } else if ( userFromAdminPortal.getApplicantVerifyStatus() != null && userFromAdminPortal.getApplicantVerifyStatus() == INVALID_DATE_OF_BIRTH_COMMAND) {
+            return ResponseEntity.status(INVALID_DATE_OF_BIRTH).body(null);
+        } else {
+            return ResponseEntity.ok(userFromAdminPortal);
         }
-        return ResponseEntity.ok(userFromAdminPortal);
     }
 
 

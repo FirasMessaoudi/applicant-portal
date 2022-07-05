@@ -3,6 +3,8 @@
     <li class="breadcrumb-item active" aria-current="page "></li>
   </ol>
 </nav>
+<app-loading [loading]="loading"></app-loading>
+
 <div class="content__wrapper">
   <div class="title__Page d-flex justify-content-">
     <h3 class="sectionTitle">
@@ -11,7 +13,7 @@
     <button class="btn btn-outline-dcc-primary px-4" type="button" [routerLink]="['/complaint/create']">{{'complaint-management.create_title'| translate}}</button>
   </div>
 
-  <div class="content__section" >
+  <div class="content__section" *ngIf="!loading">
     <div class="table-responsive mb-4">
       <table id="systemDefinedNotifications" class="table table-striped table-hover">
         <thead>

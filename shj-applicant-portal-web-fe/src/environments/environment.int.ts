@@ -10,11 +10,14 @@ export const environment = {
   version: env.npm_package_version + '-dev',
   backendMappings: [{mapping:'/core', url:'https://hajjwdemo.elm.sa/shj-applicant/'}],
   websocketConnection: [{url: ''}],
-  defaultLanguage: 'ar-SA',
+  defaultLanguage: localStorage.getItem('language') || 'ar-SA',
   termsAndConditionsUrl: '',
   supportedLanguages: [
     'en-US',
-    'ar-SA'
+    'ar-SA',
+    'fr-SA',
+    'tr-SA',
+    'fa-SA'
   ],
   mockData: [
     {url: '/api/auth/login', data: '{"authorities":[{"authority":"CHANGE_ROLE_STATUS"},{"authority":"EDIT_USER"},{"authority":"RESET_PASSWORD"},{"authority":"RESET_USER_PASSWORD"},{"authority":"ADMIN_DASHBOARD"},{"authority":"USER_MANAGEMENT"},{"authority":"ROLE_MANAGEMENT"},{"authority":"DELETE_ROLE"},{"authority":"CHANGE_USER_STATUS"},{"authority":"EDIT_ROLE"},{"authority":"DELETE_USER"},{"authority":"ADD_USER"},{"authority":"ADD_ROLE"}],"details":null,"authenticated":true,"principal":"1234567897","credentials":null,"token":null,"tokenExpirationDate":0,"passwordExpired":false,"role":{"id":1,"nameArabic":"مشر�? النظام","nameEnglish":"System Admin","deleted":false,"activated":true,"roleAuthorities":null,"creationDate":1595839440000,"updateDate":null},"firstName":"سعد","lastName":"الغامدي","name":"1234567897"}'},

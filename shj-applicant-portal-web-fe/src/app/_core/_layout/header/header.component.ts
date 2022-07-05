@@ -1,7 +1,6 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {AuthenticationService, CardService, UserService} from '@app/_core/services';
-import {I18nService} from "@dcc-commons-ng/services";
 import {Location} from "@angular/common";
 import {$animations} from "@shared/animate/animate.animations";
 import {Lookup} from "@model/lookup.model";
@@ -18,6 +17,7 @@ import {PerfectScrollbarComponent, PerfectScrollbarConfigInterface} from 'ngx-pe
 import {UtilityService} from "@core/utilities/utility.service";
 import {ApplicantRitualPackage} from "@model/applicant-ritual-package.model";
 import {Subscription, timer} from "rxjs";
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 const momentHijri = moment_;
 
@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private location: Location,
     public router: Router,
-    private i18nService: I18nService,
+    private i18nService: CustomI18nService,
     private authenticationService: AuthenticationService,
     private el: ElementRef,
     public userService: UserService,

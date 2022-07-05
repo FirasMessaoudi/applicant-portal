@@ -16,6 +16,8 @@ import {LANDING_ROUTES} from "@core/routes/landing-routes";
 import {OTP_PRIVATE_ROUTES} from "@core/routes/otp-private-routes";
 import {COMPLAINT_ROUTES} from "@core/routes/complaint-routes";
 import {INCIDENT_ROUTES} from "@core/routes/incident-routes";
+import { QR_ROUTES } from '@core/routes/qr-routes';
+import { DccLayoutQrComponent } from '@core/_layout/dcc-layout-qr/dcc-layout-qr.component';
 
 const routes: Routes = [
 
@@ -62,6 +64,11 @@ const routes: Routes = [
     path: '',
     component: DccLayoutLandingComponent,
     children: LANDING_ROUTES
+  },
+  {
+    path: '',
+    component: DccLayoutQrComponent,
+    children: QR_ROUTES
   },
   {
     path: '',

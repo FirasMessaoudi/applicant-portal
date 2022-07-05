@@ -3,6 +3,7 @@ import {Injectable} from "@angular/core";
 import {Lookup} from "@model/lookup.model";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {CountryLookup} from "@model/country-lookup.model";
 
 
 const defaultLang = 'ar';
@@ -22,6 +23,13 @@ export class LookupService {
       item = lookupItems.find(type => type.code === code && type.lang.startsWith(defaultLang));
     return item?.label;
   }
+
+  // localizedLabelByCountryPhonePrefix(lookupItems: CountryLookup[], countryPhonePrefix: string): string {
+  //   let item: Lookup = lookupItems.find(type => type.countryPhonePrefix === countryPhonePrefix && this.i18nService.language.startsWith(type.lang));
+  //   if (!item)
+  //     item = lookupItems.find(type => type.code === countryPhonePrefix && type.lang.startsWith(defaultLang));
+  //   return item?.label;
+  // }
 
   localizedDescription(lookupItems: Lookup[], code: string): string {
     let item: Lookup = lookupItems.find(type => type.code === code && this.i18nService.language.startsWith(type.lang));
@@ -55,12 +63,6 @@ export class LookupService {
     return this.http.get<any>('/core/api/lookup/map-key', {responseType: 'text' as 'json'});
   }
 
-  localizedItems(lookupItems: Lookup[], code: string): Lookup[] {
-    let items: Lookup[] = lookupItems.filter(value => value.code === code && this.i18nService.language.startsWith(value.lang));
-    if (!items)
-      items = lookupItems.filter(value => value.lang.startsWith(defaultLang));
-    return items;
-  }
 
   localizedItemsByLang(lookupItems: any[]): any[] {
     return lookupItems.filter(value => this.i18nService.language.startsWith(value.lang));

@@ -1,0 +1,21 @@
+@import 'variables';
+
+.rating{
+    border: 1px #DBDBDB solid;
+    border-right: 5px $dcc-primary solid;
+}
+
+.star {
+    width: 31px;
+    height: 29px;
+    display: block;
+    margin: 0.5rem;
+    text-indent: 1000px;
+    overflow: hidden;
+    background-image: url('assets/images/star.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .filled.color {
+    background-image: url('assets/images/starfilled.svg');
+  }

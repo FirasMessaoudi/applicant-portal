@@ -39,8 +39,27 @@ public class ConfigurationService {
     @Value("${user.location.tracking.enabled}")
     private String userLocationTrackingEnabled;
 
-    @Value("${emergency.phone.number}")
-    private String emergencyPhoneNumber;
+    @Value("${medical.emergency.phone.number}")
+    private String medicalEmergencyPhoneNumber;
+    @Value("${security.emergency.phone.number}")
+    private String securityEmergencyPhoneNumber;
+    @Value("${mohu.emergency.phone.number}")
+    private String mohuEmergencyPhoneNumber;
+    @Value("${holy.mosque.emergency.phone.number}")
+    private String holyMosqueEmergencyPhoneNumber;
+    @Value("${fatwas.phone.number}")
+    private String fatwasPhoneNumber;
+
+
+    @Value("${ethrai.url}")
+    private String ethraiUrl;
+
+    @Value("${adahi.url}")
+    private String adahiUrl;
+
+    @Value("${awareness.url}")
+    private String awarenessUrl;
+
 
     public List<ConfigDto> getMobileConfigurationsList() {
         List<ConfigDto> configList =new ArrayList<>();
@@ -49,6 +68,13 @@ public class ConfigurationService {
         configList.add(getGoogleMapKeyConfig());
         configList.add(getUserLocationTrackingEnabled());
         configList.add(getEmergencyPhoneNumber());
+        configList.add(getSecurityEmergencyPhoneNumber());
+        configList.add(getMohuEmergencyPhoneNumber());
+        configList.add(getHolyMosqueEmergencyPhoneNumber());
+        configList.add(getEthraiUrl());
+        configList.add(getAdahiUrl());
+        configList.add(getAwarenessUrl());
+        configList.add(getFatwasPhoneNumber());
         return configList;
     }
 
@@ -78,8 +104,57 @@ public class ConfigurationService {
         return config;
     } public ConfigDto getEmergencyPhoneNumber(){
         ConfigDto config = new ConfigDto();
-        config.setConfKey("emergency.phone.number");
-        config.setConfValue(String.valueOf(emergencyPhoneNumber));
+        config.setConfKey("medical.emergency.phone.number");
+        config.setConfValue(String.valueOf(medicalEmergencyPhoneNumber));
+        return config;
+    }
+
+    public ConfigDto getSecurityEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("security.emergency.phone.number");
+        config.setConfValue(String.valueOf(securityEmergencyPhoneNumber));
+        return config;
+    }
+
+    public ConfigDto getMohuEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("mohu.emergency.phone.number");
+        config.setConfValue(String.valueOf(mohuEmergencyPhoneNumber));
+        return config;
+    }
+
+    public ConfigDto getHolyMosqueEmergencyPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("holy.mosque.emergency.phone.number");
+        config.setConfValue(String.valueOf(holyMosqueEmergencyPhoneNumber));
+        return config;
+    }
+    public ConfigDto getFatwasPhoneNumber(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("fatwas.phone.number");
+        config.setConfValue(String.valueOf(fatwasPhoneNumber));
+        return config;
+    }
+
+
+    public ConfigDto getEthraiUrl(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("ethrai.url");
+        config.setConfValue(String.valueOf(ethraiUrl));
+        return config;
+    }
+
+    public ConfigDto getAdahiUrl(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("adahi.url");
+        config.setConfValue(String.valueOf(adahiUrl));
+        return config;
+    }
+
+    public ConfigDto getAwarenessUrl(){
+        ConfigDto config = new ConfigDto();
+        config.setConfKey("awareness.url");
+        config.setConfValue(String.valueOf(awarenessUrl));
         return config;
     }
 

@@ -10,11 +10,14 @@ export const environment = {
   version: env.npm_package_version,
   backendMappings: [{mapping:'/core', url:'https://shp.haj.gov.sa/'}],
   websocketConnection: [{url: ''}],
-  defaultLanguage: 'ar-SA',
+  defaultLanguage: localStorage.getItem('language') || 'ar-SA',
   termsAndConditionsUrl: '',
   supportedLanguages: [
     'en-US',
-    'ar-SA'
+    'ar-SA',
+    'fr-SA',
+    'tr-SA',
+    'fa-SA'
   ],
   mockData: [{}]
 };

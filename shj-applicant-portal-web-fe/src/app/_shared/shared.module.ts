@@ -34,6 +34,7 @@ import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScroll
 import {NotificationListComponent} from "@shared/components/notification-list/notification-list.component";
 import {RouterModule} from "@angular/router";
 import {ModalDialogComponent} from "@shared/components/modal-dialog/modal-dialog.component";
+import { LoadingComponent } from './components/loading/loading.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -53,7 +54,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NotificationListComponent,
     DateTimeFormatPipe,
     ModalDialogComponent,
-
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -103,7 +104,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     NotificationListComponent,
     DateTimeFormatPipe,
     RouterModule,
-    ModalDialogComponent
+    ModalDialogComponent,
+    LoadingComponent
   ],
   entryComponents: [
     NgbdDatepickerIslamicumalqura,

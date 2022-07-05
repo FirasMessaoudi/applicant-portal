@@ -22,9 +22,9 @@ export class StaffQrComponent implements AfterViewInit {
     let isiPhone = ua.indexOf("iphone") > -1 && ua.indexOf("mobile") > -1;
     let isiPad = ua.indexOf("ipad") > -1 && ua.indexOf("mobile") > -1;
     if (isAndroid) {
-      //this.googleLink.nativeElement.click();
+      this.googleLink.nativeElement.click();
     } else if (isiPhone || isiPad) {
-      //this.appleLink.nativeElement.click();
+      this.appleLink.nativeElement.click();
     } else {
       // do nothing
     }

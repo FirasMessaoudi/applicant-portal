@@ -219,7 +219,7 @@
               <br>
               <span class="form-control-plaintext"
                     *ngIf="applicant?.contacts[0]?.countryCode  as value; else elseBlock">{{lookupService().localizedLabel(
-                countries,
+                nationalities,
                 value.toUpperCase()
               )}}</span>
 

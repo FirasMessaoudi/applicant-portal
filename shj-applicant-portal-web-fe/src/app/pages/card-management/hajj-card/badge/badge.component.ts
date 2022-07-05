@@ -25,7 +25,7 @@ export class BadgeComponent implements OnInit {
   badgeImage: SafeResourceUrl;
   @Input() uin = '';
   @Input() cardStatus = '';
-
+  loading: boolean;
   constructor(private toastr: ToastService,
               private cardService: CardService,
               private translate: TranslateService,
@@ -36,9 +36,11 @@ export class BadgeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loading = true;
     this.loadLookups();
     this.cardService.findApplicantBadge().subscribe(
       res=>{
+        this.loading = false;
         console.log(res);
         if(res!=null){
           this.badgeImage = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,'

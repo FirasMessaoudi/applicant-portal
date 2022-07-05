@@ -2,7 +2,6 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} 
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '@app/_core/services/authentication/authentication.service';
-import {I18nService} from "@dcc-commons-ng/services";
 import {environment} from "@env/environment";
 import {NgbDateStruct, NgbDropdown, NgbModal, NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
 import {InvisibleReCaptchaComponent} from "ngx-captcha";
@@ -21,6 +20,7 @@ import {CountryLookup} from "@model/country-lookup.model";
 import {merge, Observable, Subject, Subscription} from "rxjs";
 import {filter, map} from "rxjs/operators";
 import {LookupService} from '@app/_core/utilities/lookup.service';
+import { CustomI18nService } from '@app/_core/utilities/custom-i18n.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -30,7 +30,6 @@ import {LookupService} from '@app/_core/utilities/lookup.service';
 export class RegisterComponent implements OnInit, OnDestroy {
 
   model: NgbDateStruct;
-  isValid: boolean = true;
   error: string;
   registerForm: FormGroup;
   loading = false;
@@ -39,7 +38,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   _maxPickerDate: any;
 
   isApplicantVerified: boolean = false;
-  fullName: string;
+  applicantValidated: boolean = false;
   user: User;
   showSuccessPage: boolean = false;
   originalEmail: any;
@@ -52,7 +51,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   @ViewChild('termsCheckbox')
   termsCheckbox: ElementRef;
 
-  recaptcha: any = null;
 
   selectedDateOfBirth: NgbDateStruct;
   maxDateOfBirthGregorian: NgbDateStruct;
@@ -63,7 +61,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   selectedDateType: any;
   dateStructGreg: any;
   dateStructHijri: any;
-  applicantCountry: any;
   registerType = 'uin';
   uin: any;
   countries: CountryLookup[] = [];
@@ -87,7 +84,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private modalService: NgbModal,
     private formBuilder: FormBuilder,
-    private i18nService: I18nService,
+    private i18nService: CustomI18nService,
     private router: Router,
     private authenticationService: AuthenticationService,
     private registerService: RegisterService,
@@ -258,7 +255,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private createForm() {
 
     this.registerForm = this.formBuilder.group({
-      uin: [''],
+      uin: ['', Validators.required],
       fullNameEn: {disabled: true},
       fullNameAr: {disabled: true},
       dateOfBirthGregorian: ['', Validators.required],
@@ -293,9 +290,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.loading = true;
     this.isApplicantVerified = false;
-    let gregorianDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd') : null;
-    let hijriDate = this.dateOfBirthPicker.selectedDateType == DateType.Gregorian ? null : this.registerForm?.controls.dateOfBirthHijri.value;
-    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin.value, gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
+    this.applicantValidated = false;
+    let gregorianDate = this.datepipe.transform(this.registerForm?.controls.dateOfBirthGregorian.value, 'yyyy-MM-dd');
+    let hijriDate = this.registerForm?.controls.dateOfBirthHijri.value;
+    this.registerService.verifyApplicant(this.registerType, this.registerForm?.controls?.uin?.value.trim(), gregorianDate, hijriDate, this.selectedNationality).subscribe(response => {
       if (response && response.digitalIds.length > 0) {
         this.user = response;
         console.log(response.digitalIds[0].uin);
@@ -342,6 +340,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
         }
         this.isApplicantVerified = true;
+        this.applicantValidated = true;
         this.registerForm.markAsUntouched();
 
       } else {
@@ -358,6 +357,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       if (error.status == 560) {
         this.toastr.warning(this.translate.instant("register.user_already_registered"), this.translate.instant("register.verification_error"));
       } else if (error.status == 561) {
+        this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
+      }else if (error.status == 561) {
         this.toastr.warning(this.translate.instant("register.applicant_not_found"), this.translate.instant("register.verification_error"));
       } else {
         this.toastr.warning(this.translate.instant("general.dialog_form_error_text"), this.translate.instant("register.header_title"));

@@ -33,6 +33,7 @@ export class HajjRitualsComponent implements OnInit {
   selectedMarker: Marker;
   selectedApplicantRitualPackage: ApplicantRitualPackage;
   mapIsReady = false;
+  loading: boolean;
   @ViewChild('ritualStepDom') ritualStepDom: ElementRef;
   mapOptions: google.maps.MapOptions = {
     center: {lat: 21.423461874376475, lng: 39.825553299746616},
@@ -111,6 +112,7 @@ export class HajjRitualsComponent implements OnInit {
   }
 
   findRitualSteps() {
+    this.loading = true;
     this.cardService.findTafweejDetails().subscribe(data => {
       if (data) {
         const today = new Date();
@@ -137,6 +139,7 @@ export class HajjRitualsComponent implements OnInit {
         this.toastr.error(this.translate.instant('general.route_item_not_found'),
           this.translate.instant('general.dialog_error_title'));
       }
+      this.loading = false;
     });
   }
 
@@ -160,10 +163,12 @@ export class HajjRitualsComponent implements OnInit {
   }
 
   async loadMapkey() {
+    this.loading = true;
     this.lookupsService.loadGoogleMapKey().subscribe(result => {
       this.loadScript(result).then(() => {
         this.mapIsReady = true
       });
+      this.loading = false;
     });
   }
 

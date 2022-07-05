@@ -12,6 +12,7 @@ import {ApplicantPackageDetails} from "@model/applicant-package-details.model";
 import {CompanyRitualMainDataStep} from "@model/company-ritual-step";
 import {GroupLeader} from "@model/group-leader.model";
 import {map} from "rxjs/operators";
+import {NationalityLookup} from "@model/nationality-lookup.model";
 
 @Injectable({
   providedIn: 'root'
@@ -117,6 +118,10 @@ export class CardService {
 
   findCountries(): Observable<CountryLookup[]> {
     return this.http.get<any>('/core/api/lookup/country/list');
+  }
+
+  findNationalities(): Observable<NationalityLookup[]> {
+    return this.http.get<any>('/core/api/lookup/nationality/list');
   }
 
   findHealthSpecialNeeds(): Observable<Lookup[]> {
