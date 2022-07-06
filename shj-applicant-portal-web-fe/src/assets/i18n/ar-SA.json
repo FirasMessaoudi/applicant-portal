@@ -672,9 +672,13 @@
   "survey-error": "خطأ في التقييم",
   "user_not_found": "المستخدم غير موجود",
   "submit_successfully": "تم تسليم التقييم",
-  "survey_success": "تم تنفيذ العملية بنجاح",
+  "survey_success_title": "تم تنفيذ العملية بنجاح",
    "daily_survey_title": "التقييم اليومي",
    "daily_survey_today": "تقييم اليوم",
-   "unrated_question_error": "الرجاء تقييم جميع العناصر الموجودة"
+   "unrated_question_error": "الرجاء تقييم جميع العناصر الموجودة",
+   "company_survey_title": "تقييم الشركة"
+  },
+  "applicant-management": {
+    "health_profile_updated_successfully": "تم تحديث الملف الصحي بنجاح"
   }
 }

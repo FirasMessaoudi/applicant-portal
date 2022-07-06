@@ -670,6 +670,10 @@
     "survey_success_title": "Success",
     "daily_survey_title": "Daily Survey",
     "daily_survey_today": "Today's Survey",
-    "unrated_question_error": "Please rate all questions"
+    "unrated_question_error": "Please rate all questions",
+    "company_survey_title": "Company Survey"
+  },
+  "applicant-management": {
+    "health_profile_updated_successfully": "Health profile updated successfully!"
   }
 }
