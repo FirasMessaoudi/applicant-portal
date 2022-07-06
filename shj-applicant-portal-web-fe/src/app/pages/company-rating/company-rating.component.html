@@ -3,11 +3,15 @@
 <div *ngIf="!loading">
 
   <div class="content__section flex-center flex-center-vert" *ngIf="!surveyAlreadySubmitted">
-    <span class="font-weight-bold text-dcc-primary">{{'survey.already_submitted' | translate}}</span>
+    <h3 class="sectionTitle">
+      {{'survey.already_submitted' | translate}}
+    </h3>
   </div>
 
   <div class="content__section flex-center flex-center-vert" *ngIf="!surveyNotAvailable">
-    <span class="font-weight-bold text-dcc-primary">{{'survey.not_available' | translate}}</span>
+    <h3 class="sectionTitle">
+      {{'survey.not_available' | translate}}
+    </h3>
   </div>
 
     <div class="content__section " *ngIf="surveyAvailable">
@@ -18,10 +22,15 @@
       </nav>
 
       <div class="content__wrapper">
+        <div class="title__Page">
+          <h3 class="sectionTitle">
+            {{'survey.company_survey_title' | translate}}
+          </h3>
+        </div>
 
         <div class="flex-center-between py-4 border-bottom" *ngFor="let userSurveyQuestion of userSurveyQuestions">
           <b> {{userSurveyQuestion.surveyQuestion.label}}</b>
-          <ngb-rating [rate]=0 [max]=5 (rateChange)="onChangeRating($event, userSurveyQuestion)">
+          <ngb-rating [rate]="userSurveyQuestion.rate" [max]=5 (rateChange)="onChangeRating($event, userSurveyQuestion)">
             <ng-template let-fill="fill">
               <span class="star" [ngClass]="'color'"[class.filled]="fill === 100">&#9733;</span>
             </ng-template>
