@@ -117,7 +117,7 @@
       <tr *ngIf="!updatedHealthProfile?.immunizations || updatedHealthProfile?.immunizations.length <= 0">
         <td class="text-center" colspan="3">
           <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
-          <p class="text-light-gray mb-3">{{ "general.table_empty_text" | translate }}</p>
+          <p class="text-light-gray mb-3">{{ "general.table_emtpy_text" | translate }}</p>
         </td>
       </tr>
       <ng-container *ngIf="updatedHealthProfile?.immunizations && updatedHealthProfile?.immunizations.length > 0">
@@ -173,7 +173,7 @@
           <tr *ngIf="!updatedHealthProfile?.specialNeeds || updatedHealthProfile?.specialNeeds.length <= 0">
             <td class="text-center" colspan="2">
               <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
-              <p class="text-light-gray mb-3">{{ "general.table_empty_text" | translate }}</p>
+              <p class="text-light-gray mb-3">{{ "general.table_emtpy_text" | translate }}</p>
             </td>
           </tr>
           <tr *ngFor="let specialNeed of updatedHealthProfile?.specialNeeds">
@@ -218,7 +218,7 @@
           <tr *ngIf="!updatedHealthProfile?.diseases || updatedHealthProfile?.diseases.length <= 0">
             <td class="text-center" colspan="2">
               <svg-icon styleClass="display-1 text-dcc-light" icon="empty-set"></svg-icon>
-              <p class="text-light-gray mb-3">{{ "general.table_empty_text" | translate }}</p>
+              <p class="text-light-gray mb-3">{{ "general.table_emtpy_text" | translate }}</p>
             </td>
           </tr>
           <tr *ngFor="let disease of updatedHealthProfile?.diseases">
