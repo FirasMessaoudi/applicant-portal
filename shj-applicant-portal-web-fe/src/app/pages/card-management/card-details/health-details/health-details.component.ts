@@ -67,12 +67,17 @@ export class HealthDetailsComponent implements OnInit {
     console.log(this.healthDetails);
     this.healthDetails.applicant = {'id': this.applicantId};
     if (this.healthDetails.diseases) {
-      Object.keys(this.healthDetails.diseases).forEach(key => {
+      /*Object.keys(this.healthDetails.diseases).forEach(key => {
         if (this.healthDetails.diseases[key].newId) {
           delete this.healthDetails.diseases[key].newId;
           this.healthDetails.diseases[key].id = 0;
         }
-      });
+      });*/
+      this.healthDetails.diseases.forEach(disease => {
+        if(disease.id >= 1000000){
+          disease.id = 0;
+        }
+      })
     }
     this.cardService.updateHealthProfile(this.healthDetails)
       .pipe(take(1))

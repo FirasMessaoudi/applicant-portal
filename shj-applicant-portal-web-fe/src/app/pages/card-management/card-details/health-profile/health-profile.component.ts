@@ -171,7 +171,8 @@ export class HealthProfileComponent implements OnInit {
   }
 
   deleteDisease(diseaseId: number) {
-    this.updatedHealthProfile.diseases = this.updatedHealthProfile.diseases.filter(({id}) => id !== diseaseId);
+    this.updatedHealthProfile.diseases =
+      this.updatedHealthProfile.diseases.filter(({id}) => id != diseaseId);
   }
 
   deleteImmunization(immunizationCodeDeleted: string) {
