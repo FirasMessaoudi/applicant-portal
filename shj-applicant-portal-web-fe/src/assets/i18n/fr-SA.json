@@ -36,6 +36,7 @@
     "dialog_add_success_text": "L'élément a bien été ajouté",
     "dialog_add_title": "Créer",
     "dialog_edit_success_text": "L'élément a bien été mis à jour",
+    "no_data_found_matching_given_criteria": "There's no data found match search criteria",
     "dialog_edit_user_success_text": "Les contacts de l'utilisateur ont bien été mis à jour",
     "dialog_edit_title": "Mettre à jour",
     "dialog_form_error_text": "Désolé, mais le formulaire que vous avez envoyé comportait une ou plusieurs erreurs",
@@ -141,7 +142,9 @@
     "alert_text": "Toutes les données affichées maintenant sont vos données précédentes pour la",
     "season": "saison",
     "view_with_map": "Afficher sous forme de carte",
-    "view_with_timeline": "Afficher sous forme de calendrier"
+    "view_with_timeline": "Afficher sous forme de calendrier",
+    "complaint": "Complaints",
+    "incident": "Incidents"
   },
   "settings": {
     "ritual-type": "Type de rituel",
@@ -333,7 +336,13 @@
     "location": "Adresse du lieu",
     "btn_processing": "Traitement",
     "processing_error": "Une erreur s'est produite lors du traitement de l'incident",
-    "city": "ville"
+    "city": "ville",
+    "create_title": "Create Incident",
+    "incident_description": "Incident Description",
+    "incident_creation": "Incident Creation",
+    "dialog_create_incident_confirmation_text": "Are you sure you want to create new incident?",
+    "incident_city": "City",
+    "camp_number": "Camp Number"
   },
   "address": {
     "address-title": "Adresse",
@@ -478,7 +487,20 @@
     "my_card": "Ma carte",
     "staff_id": "Numéro d'identification du membre du personnel",
     "staff_name": "Nom du membre du personnel",
-    "staff_title": "Fonction du membre du personnel"
+    "staff_title": "Fonction du membre du personnel",
+    "applicant_shaaer_id_status": "Card Status",
+    "hajj_identity": "Card",
+    "FULL_BOARD": "Full Board",
+    "BREAKFAST_DINNER": "Breakfast Dinner",
+    "BREAKFAST_LUNCH": "Breakfast Lunch",
+    "ONLY_BREAKFAST": "Only Breakfast",
+    "OTHERS": "Others"
+  },
+  "program-management": {
+    "transportation_type": "Transportation type",
+    "departure_time": "Departure time",
+    "add_to_alerts": "Add to alerts",
+    "added_to_alerts": "Added to alerts"
   },
   "printing-management": {
     "title": "Gestion de l'impression",
@@ -563,11 +585,51 @@
     "private_notifications": "Notifications privées",
     "public_notifications": "Notifications générales",
     "view_all": "Tout voir",
-    "view_all_notifications": "Voir toutes les notifications"
+    "view_all_notifications": "Voir toutes les notifications",
+    "cancel_confirmation_text": "Are you sure, you want to cancel changes?"
   },
   "emergency_data": {
     "mobile_number": "Numéro de portable d’urgence",
     "contact_name": "Nom de la personne de contact en cas d’urgence",
     "update_fail_empty": "Le champ du numéro de portable d’urgence ou du nom de la personne de contact en cas d’urgence est vide"
+  },
+
+  "complaint-management": {
+    "title": "إدارة الشكاوى",
+    "create_title": "إنشاء شكوى",
+    "applicant_shaaer_id": "رقم البطاقة",
+    "applicant_name": "اسم مقدم الشكوى",
+    "complaint_type": "نوع الشكوى",
+    "complaint_date": "تاريخ تقديم الشكوى",
+    "status": "حالة الشكوى",
+    "all": "الكل",
+    "complaint_number": "رقم الشكوى",
+    "complaint_details": "تفاصيل الشكوى",
+    "attachments": "المرفقات",
+    "no_location": "لم يتم اختيار موقع لهذه الشكوى",
+    "location": "الموقع على الخريطة",
+    "complaint_description": "وصف الشكوى",
+    "complaint_resolution": "معالجة الشكوى",
+    "complaint_creation": "شكوى جديدة",
+    "operation": "الإجراء",
+    "mark_as_resolved": "تم حل الشكوى",
+    "mark_as_closed": "تم إغلاق الشكوى",
+    "comments": "الملاحظات",
+    "comments_caution": "سوف تظهر لمقدم الشكوى",
+    "dialog_resolve_complaint_confirmation_text": "هل تريد تحويل حالة الشكوى إلى تم الحل وإشعار مقدم الشكوى بذلك؟",
+    "dialog_close_complaint_confirmation_text": "هل تريد تحويل حالة الشكوى إلى مغلقة وإشعار مقدم الشكوى بذلك؟",
+    "dialog_resolve_complaint_success_text": "تم تحويل حالة الشكوى إلى تم الحل",
+    "dialog_close_complaint_success_text": "تم تحويل حالة الشكوى إلى مغلقة",
+    "dialog_create_complaint_success_text": "تم إنشاء الشكوى",
+    "dialog_create_complaint_confirmation_text": "هل تريد إنشاء شكوى جديدة؟",
+    "cancel_confirmation_text": "هل أنت متأكد أنك تريد إلغاء أي تعديلات؟",
+    "operation_date": "تاريخ الإجراء",
+    "complaint_city": "المدينة",
+    "camp_number": "رقم المخيم"
+  },
+  "file-management": {
+    "upload": "رفع ملف",
+    "file_size_invalid": "حجم الملف يجب ان لايتعدى 15 MB",
+    "file_extension_invalid": "امتداد ملف غير صحيح"
   }
 }

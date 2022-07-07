@@ -35,6 +35,7 @@
     "dialog_confirmation_cancel": "خیر",
     "dialog_add_success_text": "مورد با موفقیت اضافه شد",
     "dialog_add_title": "ایجاد",
+    "no_data_found_matching_given_criteria": "There's no data found match search criteria",
     "dialog_edit_success_text": "مورد با موفقیت به‌روز شد",
     "dialog_edit_user_success_text": "مخاطبین کاربر با موفقیت به روز شدند",
     "dialog_edit_title": "به‌روزرسانی",
@@ -141,7 +142,9 @@
     "alert_text": "همه داده‌هایی که اکنون نمایش داده می‌شوند، داده‌های قبلی شما هستند برای",
     "season": "فصل",
     "view_with_map": "مشاهده به‌عنوان نقشه",
-    "view_with_timeline": "مشاهده به‌عنوان یک خط‌زمان"
+    "view_with_timeline": "مشاهده به‌عنوان یک خط‌زمان",
+    "complaint": "Complaints",
+    "incident": "Incidents"
   },
   "settings": {
     "ritual-type": "نوع مناسک",
@@ -178,6 +181,12 @@
     "users_deleted": "حذف‌شده",
     "welcome": "خوش آمدید به:",
     "legend": "افسانه"
+  },
+  "program-management": {
+    "transportation_type": "Transportation type",
+    "departure_time": "Departure time",
+    "add_to_alerts": "Add to alerts",
+    "added_to_alerts": "Added to alerts"
   },
   "role-management": {
     "title": "مدیریت نقش",
@@ -333,7 +342,13 @@
     "location": "نشانی مکان",
     "btn_processing": "پردازش",
     "processing_error": "هنگام پردازش حادثه خطایی روی داد",
-    "city": "شهر"
+    "city": "شهر",
+    "create_title": "Create Incident",
+    "incident_description": "Incident Description",
+    "incident_creation": "Incident Creation",
+    "dialog_create_incident_confirmation_text": "Are you sure you want to create new incident?",
+    "incident_city": "City",
+    "camp_number": "Camp Number"
   },
   "address": {
     "address-title": "نشانی",
@@ -380,6 +395,7 @@
     "filter_choose": "لطفاً انتخاب کنید"
   },
   "card-management": {
+    
     "title": "مدیریت کارت",
     "add_exceptional_card": "اضافه کردن کارت",
     "cards_list": "فهرست کارت‌ها",
@@ -478,7 +494,14 @@
     "my_card": "کارت من",
     "staff_id": "شماره شناسنامه کارکنان",
     "staff_name": "نام کارکنان",
-    "staff_title": "عنوان کارمند"
+    "staff_title": "عنوان کارمند",
+    "applicant_shaaer_id_status": "Card Status",
+    "hajj_identity": "Card",
+    "FULL_BOARD": "Full Board",
+    "BREAKFAST_DINNER": "Breakfast Dinner",
+    "BREAKFAST_LUNCH": "Breakfast Lunch",
+    "ONLY_BREAKFAST": "Only Breakfast",
+    "OTHERS": "Others"
   },
   "printing-management": {
     "title": "مدیریت چاپ",
@@ -563,11 +586,51 @@
     "private_notifications": "اعلان‌های حریم‌خصوصی",
     "public_notifications": "اعلان‌های عمومی",
     "view_all": "مشاهده همه",
-    "view_all_notifications": "مشاهده همه اعلان‌ها"
+    "view_all_notifications": "مشاهده همه اعلان‌ها",
+    "cancel_confirmation_text": "Are you sure, you want to cancel changes?"
   },
   "emergency_data": {
     "mobile_number": "شماره همراه اضطراری",
     "contact_name": "نام مخاطب اضطراری",
     "update_fail_empty": "شماره همراه یا نام مخاطب اضطراری خالی است"
+  },
+
+  "complaint-management": {
+    "title": "إدارة الشكاوى",
+    "create_title": "إنشاء شكوى",
+    "applicant_shaaer_id": "رقم البطاقة",
+    "applicant_name": "اسم مقدم الشكوى",
+    "complaint_type": "نوع الشكوى",
+    "complaint_date": "تاريخ تقديم الشكوى",
+    "status": "حالة الشكوى",
+    "all": "الكل",
+    "complaint_number": "رقم الشكوى",
+    "complaint_details": "تفاصيل الشكوى",
+    "attachments": "المرفقات",
+    "no_location": "لم يتم اختيار موقع لهذه الشكوى",
+    "location": "الموقع على الخريطة",
+    "complaint_description": "وصف الشكوى",
+    "complaint_resolution": "معالجة الشكوى",
+    "complaint_creation": "شكوى جديدة",
+    "operation": "الإجراء",
+    "mark_as_resolved": "تم حل الشكوى",
+    "mark_as_closed": "تم إغلاق الشكوى",
+    "comments": "الملاحظات",
+    "comments_caution": "سوف تظهر لمقدم الشكوى",
+    "dialog_resolve_complaint_confirmation_text": "هل تريد تحويل حالة الشكوى إلى تم الحل وإشعار مقدم الشكوى بذلك؟",
+    "dialog_close_complaint_confirmation_text": "هل تريد تحويل حالة الشكوى إلى مغلقة وإشعار مقدم الشكوى بذلك؟",
+    "dialog_resolve_complaint_success_text": "تم تحويل حالة الشكوى إلى تم الحل",
+    "dialog_close_complaint_success_text": "تم تحويل حالة الشكوى إلى مغلقة",
+    "dialog_create_complaint_success_text": "تم إنشاء الشكوى",
+    "dialog_create_complaint_confirmation_text": "هل تريد إنشاء شكوى جديدة؟",
+    "cancel_confirmation_text": "هل أنت متأكد أنك تريد إلغاء أي تعديلات؟",
+    "operation_date": "تاريخ الإجراء",
+    "complaint_city": "المدينة",
+    "camp_number": "رقم المخيم"
+  },
+  "file-management": {
+    "upload": "رفع ملف",
+    "file_size_invalid": "حجم الملف يجب ان لايتعدى 15 MB",
+    "file_extension_invalid": "امتداد ملف غير صحيح"
   }
 }
