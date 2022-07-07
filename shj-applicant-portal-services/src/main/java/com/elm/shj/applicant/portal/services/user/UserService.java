@@ -345,7 +345,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      * @return generated password
      */
     private String generatePassword() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%&*-_+|";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%&*-_+";
         return RandomStringUtils.random(8, characters);
     }
 
