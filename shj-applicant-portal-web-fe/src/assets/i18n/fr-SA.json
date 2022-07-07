@@ -25,6 +25,32 @@
     "password-contains-username": "Le mot de passe ne doit pas contenir votre nom d'utilisateur",
     "invalid": "La valeur que vous avez saisie n'est pas valide"
   },
+  "dcc-layout-qr" : {
+    "app_title" :"Haj App",
+    "beneficiaries_portal":"Pilgrims Portal",
+    "language":"English",
+    "lang_toggle":"عربي",
+    "facilitate_your_journey":"Make your Hajj journey easy",
+    "banner_message":" Hajj App enables you to access various digital services to facilitate your journey and perform your rituals with ease",
+    "download_the_hajj_app":"Download the Hajj app",
+    "hajj_app_features":"Hajj App Features",
+    "digital_smart_card":"Digital Smart Card",
+    "tafweej_schedule":"Tafweej Schedule",
+    "key_locations_map":"Key Locations Map",
+    "rituals":"Rituals",
+    "islamic_services":"Islamic Services",
+    "application_characteristics":"Application characteristics",
+    "notifications":"Notifications",
+    "health_information":"Health information",
+    "conversation":"Conversation",
+    "view_meals":"View meals",
+    "reports_and_complaints":"Incidents and complaints",
+    "satisfaction_survey":"Satisfaction survey ",
+    "user_guide":"User's guide",
+    "awareness_guide":"Awareness Guide",
+    "ethrai_platfrom":"Ethrai Platform",
+    "all_rights_reserved":"All rights reserved © 2022"
+  },
   "general": {
     "app_name": "Produit Elm",
     "app_title": "Application Hajj",
@@ -120,10 +146,7 @@
     "language": "Langue",
     "no-data-found": " Aucune donnée n’a été trouvée",
     "nationality": "Nationalité",
-    "update_health": "Modifier les données de la santé",
-    "table_emtpy_text": "Aucun résultat n’a été trouvé"
-
-
+    "update_health": "Modifier les données de la santé"
   },
   "header": {
     "welcome": "Bienvenue",
@@ -631,5 +654,21 @@
     "upload": "رفع ملف",
     "file_size_invalid": "حجم الملف يجب ان لايتعدى 15 MB",
     "file_extension_invalid": "امتداد ملف غير صحيح"
+  },
+  "survey": {
+    "already_submitted": "Survey already submitted",
+    "not_available": "Survey not available",
+    "invalid_survey_type": "Invalid survey type",
+    "survey-error": "Survey error",
+    "user_not_found": "User not found",
+    "submit_successfully": "Survey submitted successfully!",
+    "survey_success_title": "Success",
+    "daily_survey_title": "Daily Survey",
+    "daily_survey_today": "Today's Survey",
+    "unrated_question_error": "Please rate all questions",
+    "company_survey_title": "Company Survey"
+  },
+  "applicant-management": {
+    "health_profile_updated_successfully": "Health profile updated successfully!"
   }
 }

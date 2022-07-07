@@ -22,7 +22,8 @@ export const environment = {
     'ar-SA',
     'fr-SA',
     'tr-SA',
-    'fa-SA'
+    'fa-SA',
+    'ms-SA'
   ],
   selectedApplicantRitualPackage: '[{"id":1,"seasonStart":14430210,"seasonEnd":14430410,"ritualSeason":{"id":1,"seasonYear":1443,"ritualTypeCode":"INTERNAL_HAJJ","seasonStart":14430210,"seasonEnd":14430410,"activated":false}},{"id":2,"seasonStart":14420210,"seasonEnd":14420410,"ritualSeason":{"id":2,"seasonYear":1442,"ritualTypeCode":"EXTERNAL_HAJJ","seasonStart":14420210,"seasonEnd":14420410,"activated":false}},{"id":4,"seasonStart":14410210,"seasonEnd":14410410,"ritualSeason":{"id":4,"seasonYear":1443,"ritualTypeCode":"INTERNAL_UMRAH","seasonStart":14430210,"seasonEnd":14430410,"activated":false}},{"id":3,"seasonStart":14400210,"seasonEnd":14400410,"ritualSeason":{"id":3,"seasonYear":1441,"ritualTypeCode":"EXTERNAL_UMRAH","seasonStart":14410210,"seasonEnd":14410410,"activated":false}}]',
   mockData: [
