@@ -4,7 +4,6 @@
 package com.elm.shj.applicant.portal.services.user;
 
 import com.elm.dcc.foundation.providers.email.service.EmailService;
-import com.elm.dcc.foundation.providers.filescan.model.FileScanInfo;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
 import com.elm.shj.applicant.portal.orm.repository.RoleRepository;
 import com.elm.shj.applicant.portal.orm.repository.UserRepository;
@@ -345,7 +344,7 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
      * @return generated password
      */
     private String generatePassword() {
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%&*-_+";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         return RandomStringUtils.random(8, characters);
     }
 
