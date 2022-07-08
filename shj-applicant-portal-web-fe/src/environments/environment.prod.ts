@@ -17,7 +17,8 @@ export const environment = {
     'ar-SA',
     'fr-SA',
     'tr-SA',
-    'fa-SA'
+    'fa-SA',
+    'ms-SA'
   ],
   mockData: [{}]
 };

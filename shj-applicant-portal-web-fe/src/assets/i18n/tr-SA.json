@@ -25,6 +25,32 @@
     "password-contains-username": "Parola, kullanıcı adınızı içermemelidir",
     "invalid": "Girdiğiniz değer geçersiz"
   },
+  "dcc-layout-qr" : {
+    "app_title" :"Haj App",
+    "beneficiaries_portal":"Pilgrims Portal",
+    "language":"English",
+    "lang_toggle":"عربي",
+    "facilitate_your_journey":"Make your Hajj journey easy",
+    "banner_message":" Hajj App enables you to access various digital services to facilitate your journey and perform your rituals with ease",
+    "download_the_hajj_app":"Download the Hajj app",
+    "hajj_app_features":"Hajj App Features",
+    "digital_smart_card":"Digital Smart Card",
+    "tafweej_schedule":"Tafweej Schedule",
+    "key_locations_map":"Key Locations Map",
+    "rituals":"Rituals",
+    "islamic_services":"Islamic Services",
+    "application_characteristics":"Application characteristics",
+    "notifications":"Notifications",
+    "health_information":"Health information",
+    "conversation":"Conversation",
+    "view_meals":"View meals",
+    "reports_and_complaints":"Incidents and complaints",
+    "satisfaction_survey":"Satisfaction survey ",
+    "user_guide":"User's guide",
+    "awareness_guide":"Awareness Guide",
+    "ethrai_platfrom":"Ethrai Platform",
+    "all_rights_reserved":"All rights reserved © 2022"
+  },
   "general": {
     "app_name": "Elm Ürünü",
     "app_title": "Hajj Uygulaması",
@@ -35,6 +61,7 @@
     "dialog_confirmation_cancel": "Hayır",
     "dialog_add_success_text": "Öğe başarıyla eklendi",
     "dialog_add_title": "Oluştur",
+    "no_data_found_matching_given_criteria": "There's no data found match search criteria",
     "dialog_edit_success_text": "Öğe başarıyla güncellendi",
     "dialog_edit_user_success_text": "Kullanıcı iletişim kişileri başarıyla güncellendi",
     "dialog_edit_title": "Güncelle",
@@ -119,9 +146,7 @@
     "language": "Dil",
     "no-data-found": " Hiçbir Veri Bulunamadı",
     "nationality": "Milliyet",
-    "update_health": "Modifier les données de la santé",
-    "table_emtpy_text": "Hiçbir Sonuç Bulunamadı"
-
+    "update_health": "Modifier les données de la santé"
   },
   "header": {
     "welcome": "Hoş Geldiniz",
@@ -140,7 +165,9 @@
     "alert_text": "Şu anda görüntülenen tüm veriler sezon için önceki",
     "season": "verilerinizdir",
     "view_with_map": "Harita Olarak Görüntüle",
-    "view_with_timeline": "Zaman Çizgisi Olarak Görüntüle"
+    "view_with_timeline": "Zaman Çizgisi Olarak Görüntüle",
+    "complaint": "Complaints",
+    "incident": "Incidents"
   },
   "settings": {
     "ritual-type": "İbadet türü",
@@ -332,7 +359,13 @@
     "location": "Konum Adresi",
     "btn_processing": "İşlem",
     "processing_error": "Olay işlenirken hata oluştu",
-    "city": "şehir"
+    "city": "şehir",
+    "create_title": "Create Incident",
+    "incident_description": "Incident Description",
+    "incident_creation": "Incident Creation",
+    "dialog_create_incident_confirmation_text": "Are you sure you want to create new incident?",
+    "incident_city": "City",
+    "camp_number": "Camp Number"
   },
   "address": {
     "address-title": "Adres",
@@ -477,7 +510,20 @@
     "my_card": "Kartım",
     "staff_id": "Personel Kimlik Numarası",
     "staff_name": "Personel Adı",
-    "staff_title": "Personel Unvanı"
+    "staff_title": "Personel Unvanı",
+    "applicant_shaaer_id_status": "Card Status",
+    "hajj_identity": "Card",
+    "FULL_BOARD": "Full Board",
+    "BREAKFAST_DINNER": "Breakfast Dinner",
+    "BREAKFAST_LUNCH": "Breakfast Lunch",
+    "ONLY_BREAKFAST": "Only Breakfast",
+    "OTHERS": "Others"
+  },
+  "program-management": {
+    "transportation_type": "Transportation type",
+    "departure_time": "Departure time",
+    "add_to_alerts": "Add to alerts",
+    "added_to_alerts": "Added to alerts"
   },
   "printing-management": {
     "title": "Yazdırma Yönetimi",
@@ -562,11 +608,67 @@
     "private_notifications": "Özel Bildirimler",
     "public_notifications": "Genel Bildirimler",
     "view_all": "Tümünü Görüntüle",
-    "view_all_notifications": "Tüm Bildirimleri Görüntüle"
+    "view_all_notifications": "Tüm Bildirimleri Görüntüle",
+    "cancel_confirmation_text": "Are you sure, you want to cancel changes?"
   },
   "emergency_data": {
     "mobile_number": "Acil Durum Cep Telefonu Numarası",
     "contact_name": "Acil Durum İletişim Kişisi Adı",
     "update_fail_empty": "Acil Durum Cep Telefonu numarası veya iletişim kişisi adı boş"
+  },
+
+  "complaint-management": {
+    "title": "إدارة الشكاوى",
+    "create_title": "إنشاء شكوى",
+    "applicant_shaaer_id": "رقم البطاقة",
+    "applicant_name": "اسم مقدم الشكوى",
+    "complaint_type": "نوع الشكوى",
+    "complaint_date": "تاريخ تقديم الشكوى",
+    "status": "حالة الشكوى",
+    "all": "الكل",
+    "complaint_number": "رقم الشكوى",
+    "complaint_details": "تفاصيل الشكوى",
+    "attachments": "المرفقات",
+    "no_location": "لم يتم اختيار موقع لهذه الشكوى",
+    "location": "الموقع على الخريطة",
+    "complaint_description": "وصف الشكوى",
+    "complaint_resolution": "معالجة الشكوى",
+    "complaint_creation": "شكوى جديدة",
+    "operation": "الإجراء",
+    "mark_as_resolved": "تم حل الشكوى",
+    "mark_as_closed": "تم إغلاق الشكوى",
+    "comments": "الملاحظات",
+    "comments_caution": "سوف تظهر لمقدم الشكوى",
+    "dialog_resolve_complaint_confirmation_text": "هل تريد تحويل حالة الشكوى إلى تم الحل وإشعار مقدم الشكوى بذلك؟",
+    "dialog_close_complaint_confirmation_text": "هل تريد تحويل حالة الشكوى إلى مغلقة وإشعار مقدم الشكوى بذلك؟",
+    "dialog_resolve_complaint_success_text": "تم تحويل حالة الشكوى إلى تم الحل",
+    "dialog_close_complaint_success_text": "تم تحويل حالة الشكوى إلى مغلقة",
+    "dialog_create_complaint_success_text": "تم إنشاء الشكوى",
+    "dialog_create_complaint_confirmation_text": "هل تريد إنشاء شكوى جديدة؟",
+    "cancel_confirmation_text": "هل أنت متأكد أنك تريد إلغاء أي تعديلات؟",
+    "operation_date": "تاريخ الإجراء",
+    "complaint_city": "المدينة",
+    "camp_number": "رقم المخيم"
+  },
+  "file-management": {
+    "upload": "رفع ملف",
+    "file_size_invalid": "حجم الملف يجب ان لايتعدى 15 MB",
+    "file_extension_invalid": "امتداد ملف غير صحيح"
+  },
+  "survey": {
+    "already_submitted": "Survey already submitted",
+    "not_available": "Survey not available",
+    "invalid_survey_type": "Invalid survey type",
+    "survey-error": "Survey error",
+    "user_not_found": "User not found",
+    "submit_successfully": "Survey submitted successfully!",
+    "survey_success_title": "Success",
+    "daily_survey_title": "Daily Survey",
+    "daily_survey_today": "Today's Survey",
+    "unrated_question_error": "Please rate all questions",
+    "company_survey_title": "Company Survey"
+  },
+  "applicant-management": {
+    "health_profile_updated_successfully": "Health profile updated successfully!"
   }
 }

@@ -124,7 +124,7 @@ public class UserManagementWsController {
      * @return the found user or <code>null</code>
      */
     @PostMapping("/change-password")
-    public ResponseEntity<WsResponse<?>> changeUserPassword(@RequestBody @Valid ChangePasswordCmd command) throws MethodArgumentNotValidException, NoSuchMethodException {
+    public ResponseEntity<WsResponse<?>> changeUserPassword(@RequestBody @Valid ChangePasswordCmd command) {
         log.debug("WS Handler for {}", "Change User Password");
 
         JwtToken loggedInUser = (JwtToken) SecurityContextHolder.getContext().getAuthentication();

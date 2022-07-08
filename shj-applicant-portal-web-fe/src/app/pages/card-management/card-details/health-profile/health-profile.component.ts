@@ -211,7 +211,8 @@ export class HealthProfileComponent implements OnInit {
 
     let newDisease = {
       labelAr: this.currentLanguage.startsWith('ar') ? addedDisease.disease : null,
-      labelEn: !this.currentLanguage.startsWith('ar') ? addedDisease.disease : null
+      labelEn: !this.currentLanguage.startsWith('ar') ? addedDisease.disease : null,
+      id: this.updatedHealthProfile.diseases == null ? 1000000 : this.updatedHealthProfile.diseases.length + 1000000
     };
     if (!this.updatedHealthProfile.diseases) {
       this.updatedHealthProfile.diseases = [];

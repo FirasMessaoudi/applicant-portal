@@ -4,7 +4,7 @@
 package com.elm.shj.applicant.portal.web.admin;
 
 import com.elm.dcc.foundation.commons.validation.FieldMatch;
-import com.elm.dcc.foundation.commons.validation.Password;
+import com.elm.shj.applicant.portal.services.data.validators.HajjPassword;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -22,7 +22,7 @@ public class ChangePasswordCmd implements Serializable {
 
     @NotBlank
     private String oldPassword;
-    @Password
+    @HajjPassword
     private String newPassword;
     private String newPasswordConfirm;
 

@@ -3,10 +3,10 @@
  */
 package com.elm.shj.applicant.portal.services.dto;
 
-import com.elm.dcc.foundation.commons.validation.Password;
 import com.elm.dcc.foundation.commons.validation.SafeFile;
 import com.elm.dcc.foundation.commons.validation.Unique;
 import com.elm.shj.applicant.portal.orm.entity.JpaUser;
+import com.elm.shj.applicant.portal.services.data.validators.HajjPassword;
 import com.google.common.base.MoreObjects;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -52,7 +52,7 @@ public class UserDto implements Serializable {
     private MultipartFile avatarFile;
     private String avatar;
     private int numberOfTries;
-    @Password
+    @HajjPassword
     private String password;
     private String passwordHash;
     private String preferredLanguage;
