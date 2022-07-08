@@ -158,8 +158,8 @@
     "my_program": "Program Saya",
     "complaint": "Aduan",
     "incident": "Insiden",
-    "survey": "Survey",
-    "company_survey": "Company Survey",
+    "survey": "Tinjauan Harian",
+    "company_survey": "Tinjauan Ibadah yang Selesai",
     "ritual_schedule": "Jadual Ibadah",
     "alert_button_text": "Kembali ke data musim terkini",
     "change_ritual_modal_title": "Pilih musim Haji atau Umrah yang anda ingin lihat data",
@@ -665,10 +665,10 @@
     "user_not_found": "User not found",
     "submit_successfully": "Survey submitted successfully!",
     "survey_success_title": "Success",
-    "daily_survey_title": "Daily Survey",
+    "daily_survey_title": "Tinjauan Harian",
     "daily_survey_today": "Today's Survey",
     "unrated_question_error": "Please rate all questions",
-    "company_survey_title": "Company Survey"
+    "company_survey_title": "Tinjauan Ibadah yang Selesai"
   },
   "applicant-management": {
     "health_profile_updated_successfully": "Health profile updated successfully!"
