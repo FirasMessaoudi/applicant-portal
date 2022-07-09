@@ -183,7 +183,7 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
     List<CountVo> countMonthDayDeletedUsers(@Param("currentDate") Date startOfMonthDate);
 
     @Modifying
-    @Query("update JpaUser user set user.deleted = :isDeleted, user.actionDate = CURRENT_TIMESTAMP where user.uin =:userUin")
+    @Query("update JpaUser user set user.deleted = :isDeleted, user.updateDate = CURRENT_TIMESTAMP where user.uin =:userUin")
     int markAccountAsDeleted(@Param("userUin") Long userUin,@Param("isDeleted") boolean isDeleted);
 
     JpaUser findByUinAndActivatedTrue(long uin);
