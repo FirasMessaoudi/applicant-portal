@@ -209,17 +209,17 @@ public class AuthenticationWsController {
     public ResponseEntity<WsResponse<?>> removeAccount(Authentication authentication) {
 
         String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
-        log.debug("removeAccount started ::: user uin: {}", loggedInUserUin);
+        log.info("removeAccount started ::: user uin: {}", loggedInUserUin);
 
 
         try {
             long uin=  Long.parseLong(loggedInUserUin);
             int affectedRows = userService.markAccountAsDeleted(uin, true);
             if (affectedRows == 1) {
-                log.debug("removeAccount Finished And the account has been deleted::: user uin: {}", loggedInUserUin);
+                log.info("removeAccount Finished And the account has been deleted::: user uin: {}", loggedInUserUin);
                 return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
             } else {
-                log.debug("removeAccount Finished And the account has not been deleted::: user uin: {}", loggedInUserUin);
+                log.info("removeAccount Finished And the account has not been deleted::: user uin: {}", loggedInUserUin);
                 return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body(WsError.builder().error(WsError.EWsError.INVALID_INPUT.getCode()).build()).build());
             }
         } catch (RuntimeException e) {
