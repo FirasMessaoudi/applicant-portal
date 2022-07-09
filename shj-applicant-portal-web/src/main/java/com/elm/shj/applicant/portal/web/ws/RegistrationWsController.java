@@ -104,41 +104,57 @@ public class RegistrationWsController {
 
     @PostMapping("/{needToUpdate}")
     public ResponseEntity<WsResponse<?>> register(@RequestBody @Validated({UserDto.CreateUserValidationGroup.class, Default.class}) UserDto user, @PathVariable("needToUpdate") boolean needToUpdateInAdminPortal, @RequestParam String pin) throws JSONException {
-
+        log.debug("registerAccount Started ::: with user uin: {}", user.getUin());
         if (!otpService.validateOtp(String.valueOf(user.getUin()), pin)) {
-
+            log.debug("registerAccount Finished ::: invalid otp with user uin: {}", user.getUin());
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.INVALID_OTP.getCode()).referenceNumber(user.getUin()+"").build()).build());
         }
-        Optional<UserDto> userInApplicantPortal = userService.findByUin(user.getUin());
-        if (userInApplicantPortal.isPresent()) {
+        Optional<UserDto> userInApplicantPortal = userService.findByUinWithoutDeleted(user.getUin());
+        if (userInApplicantPortal.isPresent() && userInApplicantPortal.get().isDeleted()==false) {
+            log.debug("registerAccount Finished ::: ALREADY_REGISTERED with user uin: {}", user.getUin());
             return ResponseEntity.ok(
                     WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                             .body(WsError.builder().error(WsError.EWsError.ALREADY_REGISTERED.getCode()).build()).build());
 
         }
         if (needToUpdateInAdminPortal) {
+
             UpdateApplicantCmd applicantCmd = new UpdateApplicantCmd(String.valueOf(user.getUin()), user.getEmail(), user.getCountryPhonePrefix() + user.getMobileNumber(), user.getCountryCode(), user.getDateOfBirthGregorian(), user.getDateOfBirthHijri(), EChannel.MOBILE.name());
 
             ApplicantLiteDto returnedApplicant = userService.updateUserInAdminPortal(applicantCmd);
-            if (returnedApplicant == null)
+            if (returnedApplicant == null) {
+                log.debug("registerAccount Finished ::: APPLICANT_NOT_MATCHED with user uin: {}", user.getUin());
                 return ResponseEntity.ok(
                         WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                                 .body(WsError.builder().error(WsError.EWsError.APPLICANT_NOT_MATCHED.getCode()).referenceNumber(user.getUin() + "").build()).build());
-
+            }
         }else{
             userService.markAsRegistered(String.valueOf(user.getUin()), EChannel.MOBILE.name());
         }
 
+        if (userInApplicantPortal.isPresent() && userInApplicantPortal.get().isDeleted()==true){
+            Long uin = userInApplicantPortal.get().getUin();
+          int affectedRows=  userService.markAccountAsDeleted(uin, false);
+            if (affectedRows == 1) {
+                log.debug("registerAccount Finished ::: SUCCESS only update delete flag with user uin: {}", uin);
+                userInApplicantPortal.get().setDeleted(false);
+                return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(userInApplicantPortal.get()).build());
+            } else {
+                log.debug("registerAccount Finished ::: FAILURE only update delete flag with user uin: {}", uin);
+                return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body(WsError.builder().error(WsError.EWsError.INVALID_INPUT.getCode()).build()).build());
+            }
 
-        UserDto createdUser = userService.createUser(user);
-        log.info("New user has been created with {} Uin number", createdUser.getUin());
-        // store the action in mobile audit log
-        integrationService.storeSignupAction(createdUser.getUin());
-
+        }else {
+            UserDto createdUser = userService.createUser(user);
+            log.info("New user has been created with {} Uin number", createdUser.getUin());
+            // store the action in mobile audit log
+            integrationService.storeSignupAction(createdUser.getUin());
+            log.debug("registerAccount Finished ::: SUCCESS with user uin: {}", user.getUin());
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(createdUser).build());
+        }
     }
 
 

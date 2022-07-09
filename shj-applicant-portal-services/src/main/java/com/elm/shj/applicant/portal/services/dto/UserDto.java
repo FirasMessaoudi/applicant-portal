@@ -42,7 +42,7 @@ public class UserDto implements Serializable {
     private String mobileNumber;
     private String countryPhonePrefix;
     private String countryCode;
-    @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
+  //  @Unique(columnName = "uin", entityClass = JpaUser.class, groups = {CreateUserValidationGroup.class})
     private Long uin;
     private Long nin;
     private String passportNumber;

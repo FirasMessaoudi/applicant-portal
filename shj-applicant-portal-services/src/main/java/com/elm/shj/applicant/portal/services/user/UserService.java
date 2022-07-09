@@ -675,5 +675,26 @@ public class UserService extends GenericService<JpaUser, UserDto, Long> {
         return integrationService.updateApplicantHealth(applicantHealthBasicDto);
     }
 
+    @Transactional
+    public int markAccountAsDeleted(long uin , boolean isDeleted) {
+
+      int numberOfUpdatedRows =   userRepository.markAccountAsDeleted(uin,isDeleted);
+        return numberOfUpdatedRows;
+    }
+
+    public Optional<UserDto> findByUinWithoutDeleted(long uin) {
+        JpaUser user = userRepository.findByUinAndActivatedTrue(uin);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
+
+    public Optional<UserDto> findByPassportNumberWithoutDeleted(String passportNumber, String nationalityCode) {
+        JpaUser user = userRepository.findByPassportNumberAndNationalityCodeAndActivatedTrue(passportNumber, nationalityCode);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
+
+    public Optional<UserDto> findByIdNumberWithoutDeleted(String idNumber) {
+        JpaUser user = userRepository.findByIdNumberAndActivatedTrue(idNumber);
+        return (user != null) ? Optional.of(getMapper().fromEntity(user, mappingContext)) : Optional.empty();
+    }
 }
 

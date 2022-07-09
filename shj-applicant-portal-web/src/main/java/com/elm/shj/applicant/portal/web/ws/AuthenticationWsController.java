@@ -7,6 +7,7 @@ import com.elm.dcc.foundation.providers.recaptcha.exception.RecaptchaException;
 import com.elm.shj.applicant.portal.services.dto.ApplicantLoginCmd;
 import com.elm.shj.applicant.portal.services.integration.IntegrationService;
 import com.elm.shj.applicant.portal.services.integration.WsResponse;
+import com.elm.shj.applicant.portal.services.user.UserService;
 import com.elm.shj.applicant.portal.web.error.DeactivatedUserException;
 import com.elm.shj.applicant.portal.web.error.UserAlreadyLoggedInException;
 import com.elm.shj.applicant.portal.web.navigation.Navigation;
@@ -55,6 +56,7 @@ public class AuthenticationWsController {
     private final OtpAuthenticationProvider otpAuthenticationProvider;
     private final JwtTokenService jwtTokenService;
     private final IntegrationService integrationService;
+    private final UserService userService;
     @Value("${login.simultaneous.enabled}")
     private boolean simultaneousLoginEnabled;
 
@@ -201,6 +203,31 @@ public class AuthenticationWsController {
         return ResponseEntity.ok(
                 WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode())
                         .body(WsError.builder().error(WsError.EWsError.USER_ALREADY_LOGGED_IN.getCode()).referenceNumber(ex.getMessage()).build()).build());
+    }
+
+    @PostMapping("/remove")
+    public ResponseEntity<WsResponse<?>> removeAccount(Authentication authentication) {
+
+        String loggedInUserUin = ((User) authentication.getPrincipal()).getUsername();
+        log.debug("removeAccount started ::: user uin: {}", loggedInUserUin);
+
+
+        try {
+            long uin=  Long.parseLong(loggedInUserUin);
+            int affectedRows = userService.markAccountAsDeleted(uin, true);
+            if (affectedRows == 1) {
+                log.debug("removeAccount Finished And the account has been deleted::: user uin: {}", loggedInUserUin);
+                return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.SUCCESS.getCode()).body(true).build());
+            } else {
+                log.debug("removeAccount Finished And the account has not been deleted::: user uin: {}", loggedInUserUin);
+                return ResponseEntity.ok(WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body(WsError.builder().error(WsError.EWsError.INVALID_INPUT.getCode()).build()).build());
+            }
+        } catch (RuntimeException e) {
+            log.error("removeAccount Finished ::: user uin: {} And throw this exception ", loggedInUserUin, e);
+            return ResponseEntity.ok(
+                    WsResponse.builder().status(WsResponse.EWsResponseStatus.FAILURE.getCode()).body(WsError.builder().error(WsError.EWsError.GENERIC.getCode()).build()).build());
+        }
+
     }
 
 }

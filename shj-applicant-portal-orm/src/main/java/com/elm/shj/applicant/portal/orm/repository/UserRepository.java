@@ -35,6 +35,7 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
 
     JpaUser findByUinAndDeletedFalseAndActivatedTrue(String uin);
 
+
     JpaUser findByPassportNumberAndCountryCodeAndDeletedFalseAndActivatedTrue(String passportNumber, String countryCode);
 
     JpaUser findByPassportNumberAndNationalityCodeAndDeletedFalseAndActivatedTrue(String passportNumber, String nationalityCode);
@@ -180,4 +181,12 @@ public interface UserRepository extends JpaRepository<JpaUser, Long> {
             "WHERE u.deleted = true AND u.actionDate >= :currentDate " +
             "GROUP BY FUNCTION('DAY', u.actionDate) ORDER BY FUNCTION('DAY', u.actionDate)")
     List<CountVo> countMonthDayDeletedUsers(@Param("currentDate") Date startOfMonthDate);
+
+    @Modifying
+    @Query("update JpaUser user set user.deleted = :isDeleted, user.actionDate = CURRENT_TIMESTAMP where user.uin =:userUin")
+    int markAccountAsDeleted(@Param("userUin") Long userUin,@Param("isDeleted") boolean isDeleted);
+
+    JpaUser findByUinAndActivatedTrue(long uin);
+    JpaUser findByPassportNumberAndNationalityCodeAndActivatedTrue(String passportNumber, String nationalityCode);
+    JpaUser findByIdNumberAndActivatedTrue(String idNumber);
 }
