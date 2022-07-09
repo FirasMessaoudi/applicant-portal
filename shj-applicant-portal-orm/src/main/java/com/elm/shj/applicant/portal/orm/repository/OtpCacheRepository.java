@@ -16,5 +16,7 @@ import java.util.Optional;
  */
 public interface OtpCacheRepository extends JpaRepository<JpaOtpCache, Long> {
 
-    Optional<JpaOtpCache> findByPrincipleAndOtp(String principle, String otp);
+    Optional<JpaOtpCache> findDistinctTopByPrincipleAndOtpOrderByCreationDate(String principle, String otp);
+
+    void deleteAllByPrinciple(String principle);
 }

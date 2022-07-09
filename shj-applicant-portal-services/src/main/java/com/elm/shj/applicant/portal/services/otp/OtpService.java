@@ -62,6 +62,8 @@ public class OtpService {
         try {
             String generatedOtp = otpGenerator.generateOtp(principal);
             log.info("Otp generated for username:{} and otp: {}", principal, generatedOtp);
+            // remove old otp records if exist for the same principle
+            otpCacheService.deletePrincipleOtps(principal);
             OtpCacheDto createdOtpCacheDto = otpCacheService.save(OtpCacheDto.builder().principle(principal).otp(generatedOtp).creationDate(new Date()).build());
             log.info("Created otp {} for {} principle ", createdOtpCacheDto.getOtp(), createdOtpCacheDto.getPrinciple());
             //TODO:need to be changed since uin is not required to start with 1
@@ -88,6 +90,8 @@ public class OtpService {
                 generatedOtp = otpGenerator.generateOtp(principal);
             }
             log.info("Otp generated for username:{} and otp: {}", principal, generatedOtp);
+            // remove old otp records if exist for the same principle
+            otpCacheService.deletePrincipleOtps(principal);
             OtpCacheDto createdOtpCacheDto = otpCacheService.save(OtpCacheDto.builder().principle(principal).otp(generatedOtp).creationDate(new Date()).build());
             log.info("Created otp {} for {} principle ", createdOtpCacheDto.getOtp(), createdOtpCacheDto.getPrinciple());
             //TODO:need to be changed since uin is not required to start with 1
@@ -115,7 +119,7 @@ public class OtpService {
         }
         Optional<OtpCacheDto> otpCache = otpCacheService.findByPrincipleAndOtp(principal, otpToVerify);
         if (otpCache.isPresent()) {
-            otpCacheService.deleteOtp(otpCache.get().getId());
+            otpCacheService.deletePrincipleOtps(principal);
             log.info("End with otp Verified for username:{} and otpToVerify: {}", principal, otpToVerify);
             return true;
         }

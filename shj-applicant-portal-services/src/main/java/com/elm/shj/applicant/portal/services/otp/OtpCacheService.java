@@ -21,7 +21,7 @@ public class OtpCacheService extends GenericService<JpaOtpCache, OtpCacheDto, Lo
 
     public Optional<OtpCacheDto> findByPrincipleAndOtp(String principle, String otp) {
         log.info("Start findByPrincipleAndOtp for {} principle and {} otp value.", principle, otp);
-        Optional<JpaOtpCache> otpCache = otpCacheRepository.findByPrincipleAndOtp(principle, otp);
+        Optional<JpaOtpCache> otpCache = otpCacheRepository.findDistinctTopByPrincipleAndOtpOrderByCreationDate(principle, otp);
         if (otpCache.isPresent()) {
             return Optional.of(getMapper().fromEntity(otpCache.get(), mappingContext));
         }
@@ -30,7 +30,7 @@ public class OtpCacheService extends GenericService<JpaOtpCache, OtpCacheDto, Lo
     }
 
     @Transactional
-    public void deleteOtp(Long otpCacheId) {
-        otpCacheRepository.deleteById(otpCacheId);
+    public void deletePrincipleOtps(String principle) {
+        otpCacheRepository.deleteAllByPrinciple(principle);
     }
 }
