@@ -74,7 +74,7 @@
     "dialog_edit_contacts_error_text": "مخاطبین کاربر به روز نمی‌شوند. لطفاً دوباره امتحان کنید.",
     "dialog_file_upload_error_text": "چهره‌نما آپلود نمی‌شود، فایل ممکن است آلوده شده باشد.",
     "dialog_file_upload_success_text": "چهره‌نما با موفقیت به روز شد",
-    "table_emtpy_text": "نتیجه‌ای پیدا نشد",
+    "table_empty_text": "نتیجه‌ای پیدا نشد",
     "btn_ok": "تأیید",
     "btn_more": "جزئیات بیشتر...",
     "btn_close": "بستن",
@@ -146,7 +146,13 @@
     "language": "زبان",
     "no-data-found": " داده‌ای یافت نشد",
     "nationality": "ملیت",
-    "update_health": "تحديث بيانات الصحة"
+    "update_health": "تحديث بيانات الصحة",
+    "awareness_url":"Awareness Guide",
+    "adahi_url":"Adahi platform",
+    "ethari_url":"Ethraae platform",
+    "important_links":"Important links",
+    "tv_url": "Saoudian tv youtube"
+
   },
   "header": {
     "welcome": "خوش آمدید",
@@ -421,7 +427,7 @@
     "filter_choose": "لطفاً انتخاب کنید"
   },
   "card-management": {
-    
+
     "title": "مدیریت کارت",
     "add_exceptional_card": "اضافه کردن کارت",
     "cards_list": "فهرست کارت‌ها",

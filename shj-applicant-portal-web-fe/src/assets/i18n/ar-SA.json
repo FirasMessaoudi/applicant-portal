@@ -75,7 +75,7 @@
     "dialog_file_upload_error_text": "لا يمكن تعديل الصورة, الملف المرفق غير سليم",
     "no_data_found_matching_given_criteria": "لا يوجد بيانات يمكن عرضها",
     "dialog_file_upload_success_text": "تم تعديل الصورة بنجاح",
-    "table_emtpy_text": "لا يوجد بيانات",
+    "table_empty_text": "لا يوجد بيانات",
     "btn_ok": "موافق",
     "btn_more": "المزيد من التفاصيل...",
     "btn_close": "إغلاق",
@@ -148,8 +148,12 @@
     "no-data-found": " لا توجد بيانات",
     "nationality": "الجنسية",
     "update_health": "تحديث بيانات الصحة",
-    "table_emtpy_text": "لا يوجد بيانات",
-    "no-data-found": "لا يوجد بيانات"
+    "awareness_url":"دليل الاحرام التوعوي",
+    "adahi_url":"منصة اضاحي",
+    "ethari_url":"منصة اثرائي",
+    "important_links":"روابط مهمة",
+    "tv_url": "موقع التلفزيون السعودي على اليوتيوب"
+
 
   },
   "header": {

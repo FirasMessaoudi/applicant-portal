@@ -74,7 +74,7 @@
     "dialog_file_upload_error_text": "Cannot upload avatar, file maybe infected.",
     "no_data_found_matching_given_criteria": "There's no data found match search criteria",
     "dialog_file_upload_success_text": "Avatar has been successfully updated",
-    "table_emtpy_text": "No Results Found",
+    "table_empty_text": "No Results Found",
     "btn_ok": "Ok",
     "btn_more": "More details...",
     "btn_close": "Close",
@@ -147,8 +147,11 @@
     "no-data-found": " No Data Found",
     "nationality": "Nationality",
     "update_health": "Update Health Profile",
-    "table_emtpy_text": "No Results Found",
-    "no-data-found": "No Results Found"
+    "awareness_url":"Awareness Guide",
+    "adahi_url":"Adahi platform",
+    "ethari_url":"Ethraae platform",
+    "important_links":"Important links",
+    "tv_url": "Saoudian tv youtube"
   },
   "header": {
     "welcome": "Welcome",

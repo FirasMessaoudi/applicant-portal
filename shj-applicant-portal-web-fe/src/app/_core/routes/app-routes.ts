@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
 export const APP_ROUTES: Routes = [
   {
@@ -38,5 +38,9 @@ export const APP_ROUTES: Routes = [
   {
     path: 'company-rating',
     loadChildren: () => import('@pages/company-rating/company-rating.module').then(m => m.CompanyRatingModule)
+  },
+  {
+    path: 'links',
+    loadChildren: () => import('@pages/important-links/important-links.module').then(m => m.ImportantLinksModule)
   }
 ];

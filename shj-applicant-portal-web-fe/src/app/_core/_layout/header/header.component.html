@@ -60,6 +60,10 @@
                 <a (click)="isActive = false" class="py-2 d-block h6 "
                    [routerLink]="['/company-rating']">{{ 'header.company_survey' | translate }}</a>
               </li>
+              <li routerLinkActive="active">
+                <a (click)="isActive = false" class="py-2 d-block h6"
+                   [routerLink]="['/links']">{{'general.important_links'| translate}}</a>
+              </li>
             </ul>
           </div>
         </nav>

@@ -146,7 +146,13 @@
     "language": "Bahasa",
     "no-data-found": " Tiada Data Ditemui",
     "nationality": "Kewarganegaraan",
-    "update_health": "Kemas Kini Profil Kesihatan"
+    "update_health": "Kemas Kini Profil Kesihatan",
+    "awareness_url":"Awareness Guide",
+    "adahi_url":"Adahi platform",
+    "ethari_url":"Ethraae platform",
+    "important_links":"Important links",
+    "tv_url": "Saoudian tv youtube"
+
   },
   "header": {
     "welcome": "Selamat Datang",

@@ -74,7 +74,7 @@
     "dialog_edit_contacts_error_text": "Les contacts de l'utilisateur n'ont pas été mis à jour. Veuillez réessayer.",
     "dialog_file_upload_error_text": "Impossible de télécharger l'avatar, le fichier est peut-être infecté.",
     "dialog_file_upload_success_text": "L'avatar a bien été mis à jour",
-    "table_emtpy_text": "Aucun résultat n’a été trouvé",
+    "table_empty_text": "Aucun résultat n’a été trouvé",
     "btn_ok": "Ok",
     "btn_more": "Plus de détails...",
     "btn_close": "Fermer",
@@ -146,7 +146,12 @@
     "language": "Langue",
     "no-data-found": " Aucune donnée n’a été trouvée",
     "nationality": "Nationalité",
-    "update_health": "Modifier les données de la santé"
+    "update_health": "Modifier les données de la santé",
+    "awareness_url":"Awareness Guide",
+    "adahi_url":"Adahi platform",
+    "ethari_url":"Ethraae platform",
+    "important_links":"Important links",
+    "tv_url": "Saoudian tv youtube"
   },
   "header": {
     "welcome": "Bienvenue",
